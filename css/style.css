@@ -1,0 +1,199 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    box-sizing: border-box;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    color: #9e9b9b;
+}
+
+body {
+    background-image: url("../img/neurons_01.jpg");
+    background-size: auto;
+}
+
+header,
+main,
+footer {
+    background: #393939;
+    display: block;
+    width: 60%;
+    margin: 0 auto;
+    /* border-left: 1px solid rgba(16, 57, 113, 0.3);
+    border-right: 1px solid rgba(0, 166, 199, .3); */
+
+}
+
+main>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+footer {
+    border-bottom: 1px solid #9e9b9b;
+    padding: 2em 0;
+    background: #393939;
+}
+
+footer address {
+    color: #9e9b9b;
+    font-size: .7em;
+    padding: .2em 1em;
+}
+
+
+header {
+    /* padding-top: 2em; */
+}
+
+
+header h1,
+h2 {
+    margin-bottom: 0;
+    margin-top: 1em;
+    padding: .2em .6em;
+    color: #32BECB;
+}
+
+main {
+    padding-top: 1em;
+    padding-bottom: 2em;
+}
+
+
+
+aside table {
+    padding: 0 .6em;
+
+}
+
+aside figure {
+    margin: 0;
+}
+
+aside figure figcaption {
+    color: #9e9b9b;
+    font-size: .6em;
+}
+
+main>section>div,
+footer>address,
+aside figure {
+    padding: .7em .7em;
+}
+
+a,
+a:visited {
+    color: #00A6C7;
+}
+
+a:hover {
+    color: #00d6ff;
+}
+
+a:focus {
+    color: #016277;
+}
+
+
+nav {
+    padding-left: .6em;
+    padding-top: 1em;
+    flex-basis: 200px;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0), 0%, rgba(255, 255, 255, 0.3), url(../img/flashlight01.jpg));
+}
+
+
+nav a,
+nav a:hover,
+nav a:focus,
+nav a:visited {
+    text-decoration: none;
+    display: inline-table;
+    padding: .3em 1em .3em 1em;
+    margin-right: .3em;
+    margin-top: .3em;
+
+}
+
+nav a:not([href='#']) {
+    color: #9e9b9b;
+    background: #E3E27D;
+
+}
+
+nav a:hover:not([href='#']) {
+    color: #9e9b9b;
+    background: #32BECB;
+}
+
+nav a[href='#'] {
+    color: rgba(0, 74, 126, 0.65);
+    background: #F6835C;
+    text-shadow: none;
+}
+
+
+section>div {
+    flex: 1;
+}
+
+
+
+@media (max-width:1160px) {
+    .quote {
+        font-weight: 300;
+        font-size: 45px;
+        padding-left: 1em;
+        padding-top: 1em;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #myFL a {
+        display: inline-block;
+        margin-right: 1em;
+        width: 400px;
+        height: 400px;
+        overflow-x: hidden;
+        background-color: grey;
+    }
+
+}
+
+@media only screen and (max-width: 1100px) {
+    body {
+        font-size: 14pt;
+    }
+
+    main {
+        flex-direction: column;
+    }
+
+    nav {
+        background: none;
+    }
+
+    main section {
+        flex-basis: 0;
+    }
+
+    nav {
+        flex-basis: 0;
+    }
+
+    aside {
+        flex-basis: 300px;
+    }
+}
+
+@media only screen and (max-width: 680px) {
+    body {
+        font-size: 12pt;
+    }
+
+    h1 {
+        padding: 0em;
+    }
+}
