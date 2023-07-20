@@ -1,0 +1,532 @@
+Here is complex.cpp:
+<pre><code>
+#include "complex.hpp"
+
+#include <cstdio>
+
+// x+iy + (x'+iy') = (x+x') + i (y+y')
+Complex add(Complex a, Complex b) {
+  Complex c;
+  c.im = a.im + b.im;
+  c.re = a.re + b.re;
+  return c;
+}
+
+// (x+iy) * (x'+iy') = xx' - yy' + i (xy' +x'y)
+Complex mult(Complex a, Complex b) {
+  Complex c;
+  c.re = a.re * b.re - a.im * b.im;
+  c.im = a.re * b.im + a.im * b.re;
+  return c;
+}
+
+// -(x+iy) = -x + i*(-y)
+Complex unary_minus(Complex a) {
+  Complex c;
+  c.re = -a.re;
+  c.im = -a.im;
+  return c;
+}
+
+bool equal(Complex a, Complex b) { return (a.re == b.re) && (a.im == b.im); }
+
+// (x+iy) / (x'+iy') = (x+iy) * (x'-iy') / (x'^2 - y'^2)
+// = (xx' + yy') / (x'^2 - y'^2) + i * (-xy' + x'y) / (x'^2 - y'^2)
+Complex div(Complex a, Complex b) {
+  Complex c;
+  const double norm = (b.re * b.re + b.im * b.im);
+  c.re = (a.re * b.re + a.im * b.im) / norm;
+  c.im = (-a.re * b.im + a.im * b.re) / norm;
+  return c;
+}
+
+// 1/ (x+iy) = (x-iy) / (x^2 - y^2)
+Complex inverse(Complex a) {
+  Complex c;
+  const double norm = (a.re * a.re + a.im * a.im);
+  c.re = a.re / norm;
+  c.im = -a.im / norm;
+  return c;
+}
+
+void print(Complex a) { printf("%f +i * %f\n", a.re, a.im); }
+
+double norm2(Complex a) { return (a.re * a.re + a.im * a.im); }
+
+Complex minus(Complex a, Complex b) { return add(a, unary_minus(b)); }
+</code></pre>
+Here is image.cpp:
+<pre><code>
+#include "image.hpp"
+
+#include <cmath>
+#include <cstdio>
+
+#include "complex.hpp"
+#include "poly.hpp"
+
+Image::Image(int width, int height) : width(width), height(height) {
+  data = (int *)malloc(width * height * 3 * sizeof(int));
+}
+
+Image::~Image() { free(data); }
+
+void Image::update_pixel(int x, int y, int r, int g, int b) {
+  int offset = y * width * 3 + x * 3;
+  data[offset + 0] = r;
+  data[offset + 1] = g;
+  data[offset + 2] = b;
+}
+
+void Image::write(const char *filename) {
+  FILE *fp = fopen(filename, "w");
+  if (!fp)
+    exit(-1);
+
+  const char *comment = "# file created by Image class";
+
+  fprintf(fp, "P3\n %s\n %d\n %d\n 255\n", comment, width, height);
+
+  for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
+      int offset = y * width * 3 + x * 3;
+      fprintf(fp, "%d %d %d ", data[offset + 0], data[offset + 1],
+              data[offset + 2]);
+    }
+    fprintf(fp, "\n");
+  }
+
+  fclose(fp);
+}
+
+void Image::smooth() {
+  const int field_size = 5;
+  const int half_field_size = field_size / 2;
+
+  int *smoothed_data = (int *)malloc(width * height * 3 * sizeof(int));
+
+  for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
+      int sum_r = 0;
+      int sum_g = 0;
+      int sum_b = 0;
+      int count = 0;
+
+      for (int i = (y - half_field_size >= 0 ? y - half_field_size : 0);
+           i <= (y + half_field_size <= height - 1 ? y + half_field_size
+                                                   : height - 1);
+           ++i) {
+        for (int j = (x - half_field_size >= 0 ? x - half_field_size : 0);
+             j <= (x + half_field_size <= width - 1 ? x + half_field_size
+                                                    : width - 1);
+             ++j) {
+          int offset = i * width * 3 + j * 3;
+          sum_r += data[offset + 0];
+          sum_g += data[offset + 1];
+          sum_b += data[offset + 2];
+          count++;
+        }
+      }
+
+      int offset = y * width * 3 + x * 3;
+      smoothed_data[offset + 0] = sum_r / count;
+      smoothed_data[offset + 1] = sum_g / count;
+      smoothed_data[offset + 2] = sum_b / count;
+    }
+  }
+
+  free(data);
+  data = smoothed_data;
+}
+</code></pre>
+Here is imageMain.cpp:
+<pre><code>
+// Copyright 2023, AFL
+
+#include "complex.hpp"
+#include "image.hpp"
+#include "newton_fractal.hpp"
+#include "poly.hpp"
+
+int main() {
+  int max_iterations = 100;
+  // int max_iterations = 50;
+  double precision = 1e-3;
+
+  double x_start = -3.0;
+  double x_end = 3.0;
+  double x_step = 0.01;
+  double y_start = -3.0;
+  double y_end = 3.0;
+  double y_step = 0.01;
+
+  int size_x = (x_end - x_start) / x_step;
+  int size_y = (y_end - y_start) / y_step;
+
+  NewtonFractal fractal(x_start, x_step, x_end, y_start, y_step, y_end,
+                        max_iterations, precision);
+  Image img = fractal.calculate();
+  img.smooth();
+  img.write("newton_fractal.ppm");
+
+  return 0;
+}
+</code></pre>
+Here is imageTest.cpp:
+<pre><code>
+#include "image.hpp"
+#include "gtest/gtest.h"
+
+TEST(ImageTest, atX0Y0_UpdateR) {
+  Image image(2, 2);
+  image.update_pixel(0, 0, 255, 0, 0);
+  EXPECT_EQ(image.data[0], 255);
+  EXPECT_EQ(image.data[1], 0);
+  EXPECT_EQ(image.data[2], 0);
+}
+
+TEST(ImageTest, atX2Y1_UpdateRGB) {
+  Image image(4, 4);
+  image.update_pixel(2, 1, 100, 100, 100);
+  int offset = (1 * image.width * 3) + (2 * 3);
+  EXPECT_EQ(image.data[offset + 0], 100);
+  EXPECT_EQ(image.data[offset + 1], 100);
+  EXPECT_EQ(image.data[offset + 2], 100);
+}
+
+TEST(ImageTest, atX1Y1_UpdateRGB_Multiple) {
+  Image image(2, 2);
+  image.update_pixel(1, 1, 50, 50, 50);
+  int offset = (1 * image.width * 3) + (1 * 3);
+  EXPECT_EQ(image.data[offset + 0], 50);
+  EXPECT_EQ(image.data[offset + 1], 50);
+  EXPECT_EQ(image.data[offset + 2], 50);
+
+  image.update_pixel(1, 1, 100, 100, 100);
+  offset = (1 * image.width * 3) + (1 * 3);
+  EXPECT_EQ(image.data[offset + 0], 100);
+  EXPECT_EQ(image.data[offset + 1], 100);
+  EXPECT_EQ(image.data[offset + 2], 100);
+
+  image.update_pixel(1, 1, -10, -10, -10); // negative values
+  offset = (1 * image.width * 3) + (1 * 3);
+  EXPECT_EQ(image.data[offset + 0], -10);
+  EXPECT_EQ(image.data[offset + 1], -10);
+  EXPECT_EQ(image.data[offset + 2], -10);
+}
+</code></pre>
+Here is newton.cpp:
+<pre><code>
+#include "newton.hpp"
+#include <cmath>
+#include <cstdio>
+
+#include "poly.hpp"
+
+Complex next_value(Complex z) {
+  Polynom p;
+  Complex x = div(p.poly(z), p.derived_poly(z));
+  return minus(z, x);
+}
+
+// We use the squared norm instead of taking the square root.
+// Therefore, we square the precision.
+int classify_root(Complex a, double precision) {
+  const Complex z1 = {1, 0};
+  const Complex z2 = {-.5, sqrt(3) / 2.};
+  const Complex z3 = {-.5, -sqrt(3) / 2.};
+
+  if (norm2(minus(a, z1)) < precision * precision)
+    return 1;
+  if (norm2(minus(a, z2)) < precision * precision)
+    return 2;
+  if (norm2(minus(a, z3)) < precision * precision)
+    return 3;
+  return 0;
+}
+
+Solution converges_to(Complex z, double precision, int max_iterations) {
+  bool finished = false;
+  int root = 0, i;
+
+  for (i = 0; i < max_iterations && !finished; ++i, z = next_value(z)) {
+    root = classify_root(z, precision);
+    finished = (root != 0);
+  }
+
+  return {root, i};
+}
+</code></pre>
+Here is newton_fractal.cpp:
+<pre><code>
+#include "newton_fractal.hpp"
+
+#include "complex.hpp"
+#include "image.hpp"
+#include "newton.hpp"
+#include "poly.hpp"
+
+NewtonFractal::NewtonFractal(double x_start, double x_step, double x_end,
+                             double y_start, double y_step, double y_end,
+                             int max_iterations, double precision)
+    : x_start(x_start), x_step(x_step), x_end(x_end), y_start(y_start),
+      y_step(y_step), y_end(y_end), max_iterations(max_iterations),
+      precision(precision) {}
+
+Image NewtonFractal::calculate() {
+  const int x_size = (x_end - x_start) / x_step;
+  const int y_size = (y_end - y_start) / y_step;
+
+  Image image(x_size, y_size);
+
+  for (int i = 0; i < y_size; ++i) {
+    for (int j = 0; j < x_size; ++j) {
+      const Complex starting_point = {
+          x_start + j * x_step,
+          y_start + i * y_step,
+      };
+
+      Solution sol = converges_to(starting_point, precision, max_iterations);
+      int color =
+          static_cast<int>(((double)max_iterations - sol.number_of_iterations) /
+                           (double)max_iterations * (double)255);
+      int r = 0;
+      int g = 0;
+      int b = 0;
+      switch (sol.sol_number) {
+      case 1:
+        r = color;
+        break;
+      case 2:
+        g = color;
+        break;
+      case 3:
+        b = color;
+        break;
+      default:
+        break;
+      }
+
+      image.update_pixel(j, i, r, g, b);
+    }
+  }
+
+  return image;
+}
+</code></pre>
+Here is poly.cpp:
+<pre><code>
+#include "poly.hpp"
+
+#include "complex.hpp"
+
+Complex Polynom::poly(Complex z) {
+  Complex z3 = mult(mult(z, z), z);
+  Complex one = {1, 0};
+  return minus(z3, one);
+}
+
+Complex Polynom::derived_poly(Complex z) {
+  Complex three = {3, 0};
+  Complex z2 = mult(z, z);
+  Complex z3 = mult(z2, three);
+  return z3;
+}
+</code></pre>
+Here is complex.hpp:
+<pre><code>
+#ifndef COMPLEX_HPP
+#define COMPLEX_HPP
+
+/// Represents a complex number (CN) with real (re) and imaginary (im) parts
+struct Complex {
+  double re;
+  double im;
+};
+
+/// Check if two CNs are equal
+bool equal(Complex a, Complex b);
+
+/// Multiply two CNs
+Complex mult(Complex a, Complex b);
+
+/// Divide two CNs
+Complex div(Complex a, Complex b);
+
+/// Add two CNs
+Complex add(Complex a, Complex b);
+
+// -z
+Complex unary_minus(Complex);
+
+/// Calculate the inverse of a CN. The argument should not be zero.
+Complex inverse(Complex);
+
+/// Print a CN with a line break
+void print(Complex);
+
+// square absolute value
+double norm2(Complex);
+
+// Subtract two CNs
+Complex minus(Complex, Complex);
+
+#endif // COMPLEX_HPP</code></pre>
+Here is image.hpp:
+<pre><code>
+#ifndef IMAGE_HPP
+#define IMAGE_HPP
+
+/// Class storing the image as an array
+class Image {
+public:
+  int width;
+  int height;
+  int *data;
+
+  /// Constructor that takes the width and height of the image as arguments
+  Image(int width, int height);
+
+  /// Destructor that frees the memory allocated for the image data
+  ~Image();
+
+  /// Updates the RGB color values of a pixel at the given coordinates
+  void update_pixel(int x, int y, int r, int g, int b);
+
+  /// Writes the image data to a PPM file with the given filename
+  void write(const char *filename);
+
+  /// Applies a smoothing filter to the image
+  void smooth();
+};
+
+#endif // IMAGE_HPP
+</code></pre>
+Here is newton.hpp:
+<pre><code>
+#ifndef NEWTON_HPP
+#define NEWTON_HPP
+
+#include "complex.hpp"
+
+/// Structure representing the result of applying Newton's procedure. It
+/// contains to which solution the procedure converged to and the number of
+/// iterations that was required.
+struct Solution {
+  int sol_number;
+  int number_of_iterations;
+};
+///  classify_root (Complex a, double precision)
+int classify_root(Complex a, double precision);
+
+/// Newton procedure to find root starting at z, until the precision is reached
+/// or we run of iterals
+Solution converges_to(Complex z, double precision, int max_iterations);
+
+#endif // NEWTON_HPP</code></pre>
+Here is newton_fractal.hpp:
+<pre><code>
+#ifndef NEWTONFRACTAL_HPP
+#define NEWTONFRACTAL_HPP
+
+#include "complex.hpp"
+#include "image.hpp"
+#include "newton.hpp"
+#include "newton_fractal.hpp"
+#include "poly.hpp"
+
+class NewtonFractal {
+public:
+  double x_start;
+  double x_step;
+  double x_end;
+  double y_start;
+  double y_step;
+  double y_end;
+  int max_iterations;
+  double precision;
+  // Constructor that takes the parameters for generating the Newton fractal as
+  // arguments
+  NewtonFractal(double x_start, double x_step, double x_end, double y_start,
+                double y_step, double y_end, int max_iterations,
+                double precision);
+
+  // Generates the Newton fractal and returns an Image object containing the
+  // generated image
+  Image calculate();
+};
+
+#endif // NEWTONFRACTAL_HPP
+</code></pre>
+Here is poly.hpp:
+<pre><code>
+#ifndef POLYNOM_HPP
+#define POLYNOM_HPP
+
+#include "complex.hpp"
+
+class Polynom {
+public:
+  /// Calculates the value of the polynomial at a given complex number z
+  Complex poly(Complex z);
+
+  /// Calculates the value of the derivative of the polynomial at a given
+  /// complex number z
+  Complex derived_poly(Complex z);
+};
+
+#endif // POLYNOM_HPP
+</code></pre>
+Here is erfahrungen.txt:
+<pre><code>
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 05                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+Generell: 
+  S. Erfahrungen.txt für Blatt 4, Zeilen 15-20. 
+  Bezüglich des Tests: Es wäre sehr hilfreich, vorgegebene Tests zu bekommen. 
+  Ansonsten hat mir das Erstellen von Fraktalbildern gefallen. 
+  
+Zeitbedarf: ca. 15,0 Stunden 
+
+(Aufgabe 1):
+  Die Implementierung der [ch].pp-Dateien habe ich auf Basis der Musterlösung vorgenommen. 
+  </code></pre>
+Here is feedback.txt:
+<pre><code>
+# Feedback Blatt-05
+
+## Aufgabe 1 (14/15)
+
+### poly (2/2)
+### image (8/9)
+
+Die RGB Werte hast du in der .ppm Datei nicht zu 65535 skaliert. [-1]
+
+### NewtonFractal (2/2)
+### Makefile und Sonstiges (2/2)
+
+Insgesamt sehr gut!
+
+## Aufgabe 2 (5/5)
+
+Sieht gut aus.
+
+## Aufgabe 3 (0/0)
+
+Danke für die Rückmeldung!
+
+-----------------
+## Gesamt (19/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net></code></pre>

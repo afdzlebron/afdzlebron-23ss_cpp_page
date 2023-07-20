@@ -1,0 +1,28 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 04                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+Generell: 
+
+Ein großer Teil meiner Schwierigkeit in der Bearbeitung dieses Blatts lag 
+in meinem Verständnis der Aufgaben anhand der Wortlaute der jeweiligen Aufgabestellung. 
+
+Vermutung: ungeteilte Aufmerksamkeit bei der Verfassung der neuen oder Korrektur 
+der bereit erstellten Aufgabestellungen, könnte zum reibungslosen 
+Aufgabenverständnis führen.
+
+Zeitbedarf: ca 17.0 h
+
+(Aufgabe 2)
+    Behandlung von `nan`: 
+    `if (std::isnan(result.re) && std::isnan(result.im)) {
+    result.re = 0;
+    result.im = 0;}`

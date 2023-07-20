@@ -1,0 +1,76 @@
+Beachte `skeleton_07`, was verschiedene .hpp und .cpp Dateien beinhaltet. Nun.
+
+Aufgabe 0:
+
+Im Laufe der nächsten Übungen werden wir uns fÜr das Damenproblem interessieren. 
+In dem Problem geht es darum, auf einem `n × n`-Brett genau `n` Damen zu platzieren, ohne dass die eine die andere angreifen kann. 
+Zwei Damen dÜrfen also niemals auf derselben Diagonale oder Linie sein. 
+Das Problem besteht darin herauszufinden, wie viele Lösungen es gibt. Lösungen können
+Symmetrien aufweisen, aber das interessiert uns erst einmal nicht.
+In dem Folgende werden wir dieses Problem mit einer besonderen Darstellung lösen: BDDs (binary decision diagrams). 
+Das ist ein Graph (im Moment: ein Baum) von Knoten. 
+Jeder Knoten beschreibt eine Position einer Dame und stellt die Frage ¨Ist die Dame an der nächsten Stelle da?”. 
+Jeder Knoten hat dann zwei Nachfolger : “wenn sie da ist” und “wenn sie nicht da ist”, daher auch der Name “If-Then-Else” fÜr jeden Knoten.
+Es gibt zwei besondere Blätter: 0 (keine Lösung zum Damenproblem) und 1 (Lösung zum Damenproblem).
+FÜr den Nachfolger einer Position stellen wir eine Dame in der ersten leeren Spalte (von links
+nach rechts) und setzen sie dort ein oder setzen keine Dame an dieser Stelle.
+Eine Position ist:
+ *voll* (full) wenn alle Damen auf dem Brett stehen;
+*(in)korrekt* (valid), wenn (nicht) alle Regeln befolgt werden (also dass zwei Damen sind nehmen können)
+Achtung Das leere Brett ist korrekt, aber nicht voll und deshalb auch keine Lösung zum Damenproblem.
+
+
+
+Auf dem `bild01.png` ist der Anfang von einem BDD gezeichnet. In jedem Knoten ist ein 4 × 4 Brett, bei dem d bedeutet, dass eine Dame dort ist, . bedeutet, dass dort keine Dame stehen kann. Die
+vollen Pfeile bedeuten “Wenn die Dame dort ist” und die anderen “Wenn die Dame nicht dort
+ist”.
+Einer der Algorithmen, den wir hier implementieren wollen, ist folgender:
+void baue_den_BDD_auf(die Größe n)
+Stappel positionen_zu_bearbeiten := [keine_Damen] [Aufgabe 1]
+BDD := leerer Graph [üB 8, Aufgabe 4]
+Solange positionen_zu_bearbeiten nicht leer ist: [Aufgabe 1]
+Position P := nimm eine Position aus positionen_zu_bearbeiten [Aufgabe 2]
+for beide Nachfolger "ist da" und "ist nicht da" von der Position P
+wenn der Nachfolger voll ist oder [Aufgabe 1]
+der Nachfolger inkorrekt ist [Aufgabe 1]
+setze 0 oder 1 als Nachfolger im BDD [üB 8, Aufgabe 4]
+sonst
+füge den Nachfolger im BDD und in positionen_zu_bearbeiten
+verbinde den Nachfolger es mit der Position
+
+
+Machen Sie nichts.
+(Ende Aufgabe 0)
+
+
+Aufgabe 1 (Positionen, `board.cpp`):
+
+Um eine Position (`Board Klasse`) darzustellen, nehmen wir ein Array von der richtigen Länge, in
+dem folgendes stehen kann:
+1.: `0` (kein Inhalt und noch nicht gesetzt)
+2.: `n >= 1`: Die Dame ist an der Position `n`
+3.: `n <= −1`: Die Dame ist nicht in den ersten `n`.
+Zum Beispiel bedeutet `[5, 1, 8, -6, 0, 0, 0, 0]`, dass die erste Dame auf der 5. Position
+steht, die zweite auf der 1. Position, die dritte ganz oben auf der 8. Position, und die letzte nicht
+auf den ersten 6 Positionen platziert ist. Der Nachfolger besteht darin, die erste Stelle zu nehmen,
+an der noch keine Dame steht (hier −6), und entweder eine Dame hinzuzufÜgen oder keine Dame
+an dieser Stelle zu platzieren (von links nach rechts).
+Implementieren Sie die Funktion `is_valid`, die prÜft, ob alle Regeln befolgt werden, und die
+Funktion `is_full`, die prÜft, ob alle Damen vorhanden sind.
+
+
+
+Aufgabe 2 (Stapel, `stack.[ch]pp`):
+
+Implementieren Sie ein Stapel fÜr Positionen
+mit den normalen Operationen:
+einfÜgen `void push(Board);` von einem Board in dem Stappel.
+das Element oben `Board top();` von eine Board zu holen.
+Ein Test `bool empty() const` was testet, ob der Stappel leer ist.
+das höchste Elemente rausnehmen `void pop()` (und wie standard, wird das `top()` Element einfach rausgenommen) unter der Annahme, dass es mindestens ein Element gibt.
+den Destruktor
+
+Wie im `blatt 06` nutzen Sie dabei die Kapazität capacity und die Größe size und
+verdoppeln Sie die Kapazität, wenn nötig, beim EinfÜgen.
+Der Code ist nicht sonderlich anders als der von letztem Mal. Nutzen Sie jedoch new und delete,
+und Valgrind sollte keine Memory-Leaks zeigen (bei den Tests!).

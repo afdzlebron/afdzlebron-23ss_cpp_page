@@ -1,0 +1,27 @@
+# Feedback Blatt-05
+
+## Aufgabe 1 (14/15)
+
+### poly (2/2)
+### image (8/9)
+
+Die RGB Werte hast du in der .ppm Datei nicht zu 65535 skaliert. [-1]
+
+### NewtonFractal (2/2)
+### Makefile und Sonstiges (2/2)
+
+Insgesamt sehr gut!
+
+## Aufgabe 2 (5/5)
+
+Sieht gut aus.
+
+## Aufgabe 3 (0/0)
+
+Danke für die Rückmeldung!
+
+-----------------
+## Gesamt (19/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net>

@@ -1,0 +1,30 @@
+# Feedback Blatt-08
+
+## Aufgabe 3 (5/5)
+
+Gut.
+
+## Aufgabe 4 (9.5/10)
+
+Sieht grundsätzlich gut aus.
+Aber die 2 Blätter true und false hast du irgendwie "doppelt" deklariert.
+  Node invalid_true_node{1, Board()};
+  Node invalid_false_node{2, Board()};
+  Node *false_node;
+  Node *true_node;
+Das ist nicht unbedingt notwendig gewesen. (siehe Musterlösung)
+Zudem ist sind die Indices der Knoten versetzt (beginnend mit 2) [-0.5]
+
+## Aufgabe 5 (4/5)
+
+Hier hast du die Darstellung der Blätter (true/false) nicht vollständig. [-1]
+Ansonsten sind alle inneren Knoten vorhanden.
+
+Danke für die Rückmeldung!
+
+-----------------
+## Gesamt (.5 wird aufgerundet) (19/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net>
+Wenn du noch keine Mail bzgl. Tutorentreffen von mir bekommen hast, melde dich bitte!

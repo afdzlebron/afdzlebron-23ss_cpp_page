@@ -1,0 +1,39 @@
+# Feedback Blatt-04
+
+## Aufgabe 1 (4/4)
+
+Gut!
+
+## Aufgabe 2 (8/8)
+
+Ok. classify_root sollte eigentlich nur sowas tun wie dein nearRoot, aber insgesamt
+kommt am Ende das richtige raus!
+
+Allgemein fände ich es gut, wenn du noch ein paar Kommentare an die Deklarationen in den .hpp Dateien schreibst.
+
+## Aufgabe 3 (4/4)
+
+Korrekterweise müsstest du in der polyMain.cpp (main Funktion) noch `delete[] image;` ganz am Schluss schreiben,
+damit der Pointer, der in der newton_fractal Funktion mit new[] erstellt wurde, wieder gefreed wird.
+
+wenn du valgrind installiert hast, kannst du solche Dinge mit dem Befehl
+    valgrind --leak-check=full ./polyMain
+herausfinden. (um polyMain auf Memory leaks zu prüfen)
+
+## Aufgabe 4 (4/4)
+
+Sehr gut! Das Bild sieht sinnvoll aus!
+
+## Aufgabe 5 (0/0)
+
+Danke für die Rückmeldung!
+
+"Behandlung von `nan`" hättest du ignorieren können. 
+Du hättest davon ausgehen dürfen, dass nie durch 0 geteilt wird o.ä.
+Das muss dann natürlich vor jedem Aufruf abgefangen werden.
+
+-----------------
+## Gesamt (20/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net>

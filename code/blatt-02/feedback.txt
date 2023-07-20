@@ -1,0 +1,30 @@
+# Feedback Blatt-02
+
+## Aufgabe 1 (8/8)
+
+Alles gut.
+Bei späteren Abgaben solltest du aber auch Header Guards verwenden und die Funktionen in den .hpp Dateien 
+kurz mit einem Kommentar dokumentieren.
+
+## Aufgabe 2 (7/8)
+
+Gut. Aber bitte füge auch Targets für die .o Dateien hinzu.
+Make erstellt zwar automatisch .o Targets, aber es wäre schön, wenn du sie explizit aufführst. [-1]
+
+## Aufgabe 3 (0/4)
+
+Die Funktion ist immer noch nicht korrekt. [-4]
+Beispielsweise sollte ASSERT_EQ(false, is_pythagorean_triple(4, false)); oder ASSERT_EQ(false, is_pythagorean_triple(6, false)); sein.
+Entweder ist die Bedingung falsch, oder es muss zusätzlich `c > 0` abgefragt werden.
+
+## Aufgabe 4 (0/0)
+
+Danke für die Rückmeldung!
+
+Bitte nenne die Datei in Zukunft aber erfahrungen.txt, auch wenn es freiwillig ist.
+
+-----------------
+## Gesamt (15/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net>

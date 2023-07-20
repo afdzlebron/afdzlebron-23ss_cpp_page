@@ -1,0 +1,25 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 10                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+Zeitbedarf: ca 0.0 h
+
+Blatt-10: 
+
+    Bei einigen Versuchen scheiterten meine Implementierungen von has_symmetries() und horizontal_flip() immer wieder. 
+    Da ich ausreichend Punkte habe, überspringe ich dieses Blatt, da sie bereits von der Veranstaltungsorganisation vorgesehen und wie angekündigt sind.    
+
+(Aufgabe Online-Evaluation):
+ 
+    gemacht. 
+
+

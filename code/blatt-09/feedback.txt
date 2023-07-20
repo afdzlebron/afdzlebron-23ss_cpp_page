@@ -1,0 +1,22 @@
+# Feedback Blatt-09
+
+## Aufgabe 6 (15/15)
+
+Sehr gut!
+
+## Aufgabe 7 (5/5)
+
+Prima!
+
+## Aufgabe 8 (0/0)
+
+Danke für die Rückmeldung!
+
+In BDD::count_true_paths() wäre auch std::stack ok gewesen.
+
+-----------------
+## Gesamt (20/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net>
+Wenn du noch keine Mail bzgl. Tutorentreffen von mir bekommen hast, melde dich bitte!

@@ -1,0 +1,193 @@
+<pre>
+Aufgabestellung für Blatt-01:
+Programmiere das Folgende in C++: 
+
+Erstelle eine Funktion bool_is_pythagorean_triple(int n, bool verbose),
+die f ̈ur eine gegebene nat ̈urliche Zahl n berechnet, ob es zwei andere Zahlen a und b gibt wo
+n^2 = a^2 + b^2.
+Falls verbose den Wert true hat, soll die Funktion bei der Berechnung folgende Informationen
+ausgeben in einer Zeile: n^2 = a^2 + b^2 wo n, a, und b durch den jeweiligen Wert ersetzt werden.
+</pre>
+
+
+Here is main.cpp:
+<pre><code>
+// Copyright 2023, AFL
+
+#include "./ptn.cpp"
+
+int main(int argc, char **argv) {
+  int n = 1303601;
+  bool result = is_pythagorean_triple(n, true);
+  return result;
+}
+</code></pre>
+Here is ptn.cpp:
+<pre><code>
+// Copyright 2023, AFL
+
+#include <cmath>
+#include <cstdio>
+
+bool is_pythagorean_triple(int n, bool verbose) {
+  for (int a = 1; a <= n; a++) {
+    for (int b = a; b <= n; b++) {
+      int c_square = a * a + b * b;
+      int c = sqrt(c_square);
+      if (c * c == c_square && c <= n) {
+        if (verbose) {
+          printf("%d^2 = %d^2 + %d^2\n", c, a, b);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
+</code></pre>
+Here is ptntest.cpp:
+<pre><code>
+// Copyright 2023, AFL
+
+#include <gtest/gtest.h>
+
+#include "./ptn.cpp"
+
+TEST(ptn, is_pythagorean_triple) {
+  ASSERT_EQ(false, is_pythagorean_triple(1, false));
+  ASSERT_EQ(false, is_pythagorean_triple(2, false));
+  ASSERT_EQ(false, is_pythagorean_triple(3, false));
+  ASSERT_EQ(false, is_pythagorean_triple(4, false));
+  ASSERT_EQ(true, is_pythagorean_triple(5, false));
+  ASSERT_EQ(true, is_pythagorean_triple(6, false));
+  ASSERT_EQ(true, is_pythagorean_triple(7, false));
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+
+// g++ -std=c++0x ptntest.cpp -lgtest -lgtest_main -o ptntest
+</code></pre>
+
+Here is Makefile:
+<pre>
+    <code>
+        all: clean compile test checkstyle
+
+        compile: 
+            # Program
+            g++ -o main main.cpp
+            # Test
+            g++ -std=c++0x ptntest.cpp -lgtest -lgtest_main -o ptntest
+        
+        test: 
+            ./ptntest
+        
+        checkstyle: 
+            python3 ../cpplint.py *.cpp	
+        
+        format:
+            clang-format -i *.cpp
+        
+        clean: 
+            rm -f main
+            rm -f ptntest
+        
+        
+        
+        
+        
+    </code>
+</pre>
+
+
+
+
+
+Here is erfahrungen.txt:
+<pre><code>
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 01                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+(F1) Wie lange haben Sie ungefaehr gebraucht?
+    7 Stdn.
+
+
+(F2) An welchen Stellen gab es Probleme und wieviel Zeit hat Sie das gekostet?
+
+    v.a. beim Testen. Dauerte ca. 3 Stdn.
+
+    Testen funktioniert in meinem  Mac OS nur mit der Befehl
+    g++ -std=c++0x ptntest.cpp -lgtest -lgtest_main -o ptntest
+    Warum?
+
+
+(F3) Was denken Sie, in welcher Form Sie die Vorlesung zukünftig konsumieren werden?
+
+    A- und synchron.
+
+    Warum die Frage?
+
+
+
+</code></pre>
+Here is feedback.txt:
+<pre><code>
+# Feedback Blatt-01
+
+## Aufgabe 0 (0/0)
+
+Hat funktioniert!
+
+## Aufgabe 1 (3/5)
+
+Die Berechnung ist nicht richtig. [-2]
+Die richtige Bedingung wäre:
+if (n * n == c_square) {...}
+
+## Aufgabe 2 (4/5)
+
+Prinzipiell richtig, aber die Testfälle sind teilweise falsch. [-1] Beispielsweise müsste es
+ASSERT_EQ(false, is_pythagorean_triple(6, false));
+sein.
+
+## Aufgabe 3 (5/5)
+
+Richtig!
+
+## Aufgabe 4 (5/5)
+
+Danke für die Rückmeldung!
+
+Wenn das Compilieren nur mit -std=c++0x funktioniert, dann wird vermutlich standardmäßig eine andere Version bevorzugt,
+die nicht mit deinem System kompatibel ist. Versuche vielleicht auch mal -std=c++11 oder -std=c++14. 
+Evtl werden wir in späteren Vorlesungen Konzepte von -std=c++11 oder höher verwenden (das weiß ich aber noch nicht).
+Dann würde das nämlich mit -std=c++0x nicht funktionieren.
+
+"Warum die Frage?" einfach um abzuschätzen, wie voll der Vorlesungssaal sein wird.
+
+
+### Sonstiges
+
+Hallo, ich bin Lukas und ich bin für dieses Semester dein Tutor. :)
+Da dieses Semester die Studentenzahl pro Tutor etwas höher ist als gewohnt,
+werde ich das Feedback standardmäßig ggf. etwas kürzer halten. 
+Wenn du gerne etwas mehr Feedback hättest, dann kannst du mir das einfach in der erfahrungen.txt sagen.
+Ansonsten kannst du auch immer gern noch mal im Forum fragen, 
+oder mir persönlich eine Mail schreiben: <lukaskleinert@gmx.net>
+
+-----------------
+## Gesamt (17/20)
+</code></pre>

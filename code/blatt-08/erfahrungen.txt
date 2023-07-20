@@ -1,0 +1,23 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 08                                                          #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+Zeitbedarf: ca 12.0 h
+
+
+Frage: 
+    Im Gegensatz zum skeleton müsste `Board configuration;` eigentlich public sein?
+
+Etwas Herausfordernd: 
+    korrekte Verwaltung der Knoten im BDD
+    Umgang mit true_node und false_node:
+    Fehlerbehandlung und Debugging

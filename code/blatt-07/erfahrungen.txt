@@ -1,0 +1,38 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 07                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+Zeitbedarf: ca 13.0 h
+
+(Aufgabe 0)
+    verstanden.
+
+(Aufgabe 1)
+    Änderungen in Blatt 07 bzgl. BoardTest war hier zu finden <https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1243&t=8069#p31855>
+    Falls Vorlage-Code zu korrigieren ist, wird es hilfreich sein, wenn Korrekturen bereits per svn hochgeladen werden. 
+
+(Tests)
+Momentan: 
+kein Erfolg bei der Behebung des folgenden Problems: 
+``
+Segmentation fault (core dumped)
+failed test stackTest
+make: *** [Makefile:24: test] Error 255
+``
+Aktuelles:
+``
+gdb requires special privileges to access Mach ports.
+You will need to codesign the binary. For instructions, see:
+
+  https://sourceware.org/gdb/wiki/PermissionsDarwin
+``
+Also, das schaffe ich für dieses blatt nicht. 

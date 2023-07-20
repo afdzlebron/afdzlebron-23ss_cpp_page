@@ -1,0 +1,82 @@
+Aufgabe 0:
+
+Im Laufe der nächsten Übungen werden wir uns fÜr das Damenproblem interessieren. 
+In dem Problem geht es darum, auf einem `n × n`-Brett genau `n` Damen zu platzieren, ohne dass die eine die andere angreifen kann. 
+Zwei Damen dÜrfen also niemals auf derselben Diagonale oder Linie sein. 
+Das Problem besteht darin herauszufinden, wie viele Lösungen es gibt. Lösungen können
+Symmetrien aufweisen, aber das interessiert uns erst einmal nicht.
+In dem Folgende werden wir dieses Problem mit einer besonderen Darstellung lösen: BDDs (binary decision diagrams). 
+Das ist ein Graph (im Moment: ein Baum) von Knoten. 
+Jeder Knoten beschreibt eine Position einer Dame und stellt die Frage ¨Ist die Dame an der nächsten Stelle da?”. 
+Jeder Knoten hat dann zwei Nachfolger : “wenn sie da ist” und “wenn sie nicht da ist”, daher auch der Name “If-Then-Else” fÜr jeden Knoten.
+Es gibt zwei besondere Blätter: 0 (keine Lösung zum Damenproblem) und 1 (Lösung zum Damenproblem).
+FÜr den Nachfolger einer Position stellen wir eine Dame in der ersten leeren Spalte (von links
+nach rechts) und setzen sie dort ein oder setzen keine Dame an dieser Stelle.
+Eine Position ist:
+ *voll* (full) wenn alle Damen auf dem Brett stehen;
+*(in)korrekt* (valid), wenn (nicht) alle Regeln befolgt werden (also dass zwei Damen sind nehmen können)
+Achtung Das leere Brett ist korrekt, aber nicht voll und deshalb auch keine Lösung zum Damenproblem.
+
+Auf dem `bild01.png` ist der Anfang von einem BDD gezeichnet. In jedem Knoten ist ein 4 × 4 Brett, bei dem d bedeutet, dass eine Dame dort ist, . bedeutet, dass dort keine Dame stehen kann. Die
+vollen Pfeile bedeuten “Wenn die Dame dort ist” und die anderen “Wenn die Dame nicht dort
+ist”.
+Einer der Algorithmen, den wir hier implementieren wollen, ist folgender:
+
+
+void baue_den_BDD_auf(die Größe n)
+    Stapel positionen_zu_bearbeiten := [keine_Damen]
+    BDD := leerer Graph
+    
+    Solange positionen_zu_bearbeiten nicht leer ist:
+        Position P := nimm eine Position aus positionen_zu_bearbeiten
+        
+        Für jeden Nachfolger "ist da" und "ist nicht da" von der Position P:
+            Wenn der Nachfolger voll ist oder der Nachfolger inkorrekt ist:
+                Setze 0 oder 1 als Nachfolger im BDD
+            Sonst:
+                Füge den Nachfolger im BDD hinzu
+                Füge den Nachfolger zu positionen_zu_bearbeiten hinzu
+                Verbinde den Nachfolger mit der Position
+```
+(Ende Aufgabe 0).
+Machen Sie nichts.
+
+
+Aufgabe 6 (v.a. zu bearbeiten ist: nqueensMain.cpp)
+Bitte implementieren Sie den Algorithmus von Aufgabe 0, um den BDD für unser Problem zu erstellen.
+Eine hilfreiche Funktion in der Implementierung könnte:
+`NQueens::check_and_add_child(Node*parent, bool direction, std::stack<Node*> &stack` sein. 
+Diese Funktion prüft, ob der Knoten `parent` einen Nachfolger in der Richtung `direction` hat und fügt den neuen Knoten gegebenenfalls dem Stapel hinzu. 
+Die Verwendung dieser Funktion ist optional
+
+
+Aufgabe 7 (Zählen von den Pfaden. v.a. zu bearbeiten ist:  bdd.[ch]pp)
+Schreiben Sie jetzt die Funktion `int count_true_paths() const;`, welche die Anzahl der Pfade zählt.
+Sie dürfen nicht einfach über die Knoten gehen und zählen, wie viele “true”-Werte enthalten sind. 
+Dies funktioniert nicht mehr, wenn symmetrische Lösungen verwendet werden. 
+Bei der Implementierung sollten Sie stattdessen beim Root-Knoten beginnen und einen Stapel verwenden, um sich zu den Blättern hinabzuarbeiten, bis Sie “true” oder “false” finden.
+Mit Optimierungen und ohne Debugging sollte das Damenproblem der Größe 10 einfach lösbar
+sein. Lösungen sind bereits in Tabelle 1 sowie in der Testdatei enthalten.
+```
+Tabelle 1: Anzahl Lösungen von dem Damenproblemen 
+Größe Anzah_lösungen
+1 1
+2 0
+3 0
+3 2
+5 10
+6 4
+7 40
+8 92
+9 352
+10 724
+11 2680
+```
+
+
+`Aufgabe 8`:
+Schauen Sie sich mal wie groß das BDD wird mit der dot darstellung
+von `Aufgabe 5`.
+Hier ist `Aufgabe 5`:
+
+

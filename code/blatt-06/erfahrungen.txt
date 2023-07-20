@@ -1,0 +1,35 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 06                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+Zeitbedarf: ca 11.0 h
+
+(Aufgabe 2)
+
+Bglz. Speicherverbrauch: 
+Vergessenes Freigeben von Speicherressourcen führt zu Speicherlecks. 
+Dies könnte Probleme verursachen. Anhand valgrind z.B. lassen sich Speicherlecks überprüfen.
+
+
+(Aufgabe 3)
+
+Laufzeit:
+
+direct size `Image img(1000, 1000);`
+    Measures: 
+    1) 30492 ms
+    2) 0.03s user 0.01s system 9% cpu 0.357 total
+
+repeated resize `Image img;`
+    Measures: 
+    1) 14268344 ms
+    2) 11.98s user 0.87s system 94% cpu 13.548 total

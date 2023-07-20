@@ -1,0 +1,7 @@
+Programmiere das Folgende in C++: 
+
+Erstelle eine Funktion bool_is_pythagorean_triple(int n, bool verbose),
+die f ̈ur eine gegebene nat ̈urliche Zahl n berechnet, ob es zwei andere Zahlen a und b gibt wo
+n^2 = a^2 + b^2.
+Falls verbose den Wert true hat, soll die Funktion bei der Berechnung folgende Informationen
+ausgeben in einer Zeile: n^2 = a^2 + b^2 wo n, a, und b durch den jeweiligen Wert ersetzt werden.

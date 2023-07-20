@@ -1,0 +1,45 @@
+# Feedback Blatt-01
+
+## Aufgabe 0 (0/0)
+
+Hat funktioniert!
+
+## Aufgabe 1 (3/5)
+
+Die Berechnung ist nicht richtig. [-2]
+Die richtige Bedingung wäre:
+if (n * n == c_square) {...}
+
+## Aufgabe 2 (4/5)
+
+Prinzipiell richtig, aber die Testfälle sind teilweise falsch. [-1] Beispielsweise müsste es
+ASSERT_EQ(false, is_pythagorean_triple(6, false));
+sein.
+
+## Aufgabe 3 (5/5)
+
+Richtig!
+
+## Aufgabe 4 (5/5)
+
+Danke für die Rückmeldung!
+
+Wenn das Compilieren nur mit -std=c++0x funktioniert, dann wird vermutlich standardmäßig eine andere Version bevorzugt,
+die nicht mit deinem System kompatibel ist. Versuche vielleicht auch mal -std=c++11 oder -std=c++14. 
+Evtl werden wir in späteren Vorlesungen Konzepte von -std=c++11 oder höher verwenden (das weiß ich aber noch nicht).
+Dann würde das nämlich mit -std=c++0x nicht funktionieren.
+
+"Warum die Frage?" einfach um abzuschätzen, wie voll der Vorlesungssaal sein wird.
+
+
+### Sonstiges
+
+Hallo, ich bin Lukas und ich bin für dieses Semester dein Tutor. :)
+Da dieses Semester die Studentenzahl pro Tutor etwas höher ist als gewohnt,
+werde ich das Feedback standardmäßig ggf. etwas kürzer halten. 
+Wenn du gerne etwas mehr Feedback hättest, dann kannst du mir das einfach in der erfahrungen.txt sagen.
+Ansonsten kannst du auch immer gern noch mal im Forum fragen, 
+oder mir persönlich eine Mail schreiben: <lukaskleinert@gmx.net>
+
+-----------------
+## Gesamt (17/20)

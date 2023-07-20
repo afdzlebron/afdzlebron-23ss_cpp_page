@@ -1,0 +1,22 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 05                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+Generell: 
+  S. Erfahrungen.txt für Blatt 4, Zeilen 15-20. 
+  Bezüglich des Tests: Es wäre sehr hilfreich, vorgegebene Tests zu bekommen. 
+  Ansonsten hat mir das Erstellen von Fraktalbildern gefallen. 
+  
+Zeitbedarf: ca. 15,0 Stunden 
+
+(Aufgabe 1):
+  Die Implementierung der [ch].pp-Dateien habe ich auf Basis der Musterlösung vorgenommen. 
+  

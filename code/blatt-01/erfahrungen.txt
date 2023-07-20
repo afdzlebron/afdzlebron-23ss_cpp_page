@@ -1,0 +1,34 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 01                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+(F1) Wie lange haben Sie ungefaehr gebraucht?
+    7 Stdn.
+
+
+(F2) An welchen Stellen gab es Probleme und wieviel Zeit hat Sie das gekostet?
+
+    v.a. beim Testen. Dauerte ca. 3 Stdn.
+
+    Testen funktioniert in meinem  Mac OS nur mit der Befehl
+    g++ -std=c++0x ptntest.cpp -lgtest -lgtest_main -o ptntest
+    Warum?
+
+
+(F3) Was denken Sie, in welcher Form Sie die Vorlesung zukünftig konsumieren werden?
+
+    A- und synchron.
+
+    Warum die Frage?
+
+
+

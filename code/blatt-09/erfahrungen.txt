@@ -1,0 +1,21 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 09                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+Zeitbedarf: ca 10.0 h
+
+
+(Aufgabe 7)
+ 
+Im bdd.cpp des `skeleton`s wird `#include <vector>` vorgegeben, sodass bei der Implementierung
+`std::vector<Node *> stack;`
+Man könnte dennoch dasselbe mit #include <stack>` machen, oder nicht? 

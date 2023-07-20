@@ -1,0 +1,24 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 02                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+(I) Danke schön für die Anmerkungen. 
+
+(II) Frage ,,Wie schwer fellt es Ihnen fragen in der Vorlesung zu stellen nach der Pandemie?"
+    Leider verstehe ich den Zusammenhang der Fragestellung nicht (Das Fragestellen in der Volesung mit der Situation nach der [COVID-19 verursachten] Pandemie)
+
+
+(III) Makefile 
+    PtnMain compilierte reibungslos im MacOS mit `g++ -o` (auch ohne -std=c++11).
+    PtnTest dagegen nicht. Eine Lösung dafür lieferte die Einfügung von `CXXFLAGS += -std=c++14` in der Makefile. 
+
+    

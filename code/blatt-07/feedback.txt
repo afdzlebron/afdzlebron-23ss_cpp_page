@@ -1,0 +1,36 @@
+# Feedback Blatt-07
+
+## Aufgabe 0 (4/4)
+
+Ok!
+
+## Aufgabe 1 board.cpp (6/6)
+
+perfekt!
+
+## Aufgabe 2 stack.[ch]pp (8/10)
+
+Du bekommst noch einen Segfault, da immer erst ein neuer Stack allokiert wird, wenn capacity <= size - 1 (das steht in reserve).
+Jedoch ist zu Beginn die size 0 und capacity 1, der stack aber noch nullptr. daher der segfault beim Zugriff stack[size] = pos; [-1]
+Einfachster Fix: definiere den Konstruktor so:
+    Stack() : size(0), capacity(1), stack(new Board[1]) {}
+
+Zudem ist der Destruktor nicht implementiert. [-1]
+
+In board.hpp:47 sollte es noch delete[] board; sein.
+
+Ansonsten gut!
+
+
+Danke für die Rückmeldung!
+
+-----------------
+## Gesamt (18/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net>
+Wenn du noch keine Mail bzgl. Tutorentreffen von mir bekommen hast, melde dich bitte!
+
+
+Feedback Mathias:
+GDB Problemen: Versuch es vielleicht mal mit lldb (von clang) statt mit gdb. Das wird meistens unter Mac leicht besser unterstützt (weil von Apple offiziell unterstützt) und ist fast vollständig kompatibel.

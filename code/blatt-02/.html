@@ -1,0 +1,133 @@
+Here is Ptn.cpp:
+<pre><code>
+// Copyright 2023, AFL
+#include "Ptn.hpp"
+#include "PtnPrint.hpp"
+
+bool is_pythagorean_triple(int n, bool verbose) {
+  for (int a = 1; a <= n; a++) {
+    for (int b = a; b <= n; b++) {
+      int c_square = a * a + b * b;
+      int c = sqrt(c_square);
+      if (c * c == c_square) {
+        if (verbose) {
+          printTr("%d^2 = %d^2 + %d^2\n", c, a, b);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
+</code></pre>
+Here is PtnMain.cpp:
+<pre><code>
+// Copyright 2023, AFL
+
+#include "Ptn.hpp"
+#include "PtnPrint.hpp"
+
+int main(int argc, char **argv) {
+  int n = 1303601;
+  bool result = is_pythagorean_triple(n, true);
+  return result;
+}
+</code></pre>
+Here is PtnPrint.cpp:
+<pre><code>
+// Copyright 2023, AFL
+#include <cstdio>
+void printTr(const char *fmt, int a, int b, int c) { printf(fmt, a, b, c); }
+</code></pre>
+Here is PtnTest.cpp:
+<pre><code>
+// Copyright 2023, AFL
+
+#include <gtest/gtest.h>
+
+#include "Ptn.hpp"
+
+TEST(ptn, is_pythagorean_triple) {
+  ASSERT_EQ(false, is_pythagorean_triple(1, false));
+  ASSERT_EQ(false, is_pythagorean_triple(2, false));
+  ASSERT_EQ(false, is_pythagorean_triple(3, false));
+  ASSERT_EQ(true, is_pythagorean_triple(4, false));
+  ASSERT_EQ(true, is_pythagorean_triple(5, false));
+  ASSERT_EQ(true, is_pythagorean_triple(6, false));
+  ASSERT_EQ(true, is_pythagorean_triple(7, false));
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+
+// g++ -std=c++0x ptntest.cpp -lgtest -lgtest_main -o ptntest
+</code></pre>
+Here is Ptn.hpp:
+<pre><code>
+#include <cmath>
+
+bool is_pythagorean_triple(int n, bool verbose);</code></pre>
+Here is PtnPrint.hpp:
+<pre><code>
+void printTr(const char *fmt, int a, int b, int c);</code></pre>
+Here is blatt-02-erfahrungen.txt:
+<pre><code>
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 02                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+(I) Danke schön für die Anmerkungen. 
+
+(II) Frage ,,Wie schwer fellt es Ihnen fragen in der Vorlesung zu stellen nach der Pandemie?"
+    Leider verstehe ich den Zusammenhang der Fragestellung nicht (Das Fragestellen in der Volesung mit der Situation nach der [COVID-19 verursachten] Pandemie)
+
+
+(III) Makefile 
+    PtnMain compilierte reibungslos im MacOS mit `g++ -o` (auch ohne -std=c++11).
+    PtnTest dagegen nicht. Eine Lösung dafür lieferte die Einfügung von `CXXFLAGS += -std=c++14` in der Makefile. 
+
+    
+</code></pre>
+Here is feedback.txt:
+<pre><code>
+# Feedback Blatt-02
+
+## Aufgabe 1 (8/8)
+
+Alles gut.
+Bei späteren Abgaben solltest du aber auch Header Guards verwenden und die Funktionen in den .hpp Dateien 
+kurz mit einem Kommentar dokumentieren.
+
+## Aufgabe 2 (7/8)
+
+Gut. Aber bitte füge auch Targets für die .o Dateien hinzu.
+Make erstellt zwar automatisch .o Targets, aber es wäre schön, wenn du sie explizit aufführst. [-1]
+
+## Aufgabe 3 (0/4)
+
+Die Funktion ist immer noch nicht korrekt. [-4]
+Beispielsweise sollte ASSERT_EQ(false, is_pythagorean_triple(4, false)); oder ASSERT_EQ(false, is_pythagorean_triple(6, false)); sein.
+Entweder ist die Bedingung falsch, oder es muss zusätzlich `c > 0` abgefragt werden.
+
+## Aufgabe 4 (0/0)
+
+Danke für die Rückmeldung!
+
+Bitte nenne die Datei in Zukunft aber erfahrungen.txt, auch wenn es freiwillig ist.
+
+-----------------
+## Gesamt (15/20)
+
+Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+<lukaskleinert@gmx.net></code></pre>

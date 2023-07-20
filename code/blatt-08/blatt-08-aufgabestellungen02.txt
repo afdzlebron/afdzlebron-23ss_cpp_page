@@ -1,0 +1,89 @@
+wir interessieren  uns weiter um BDD (binary decision diagrams) (ganz abstrakt) und noch nicht um das Damenproblem. Sie können wieder die Musterlösung nutzen oder ihre eigene.
+
+Aufgabe 3 (Stappel mit templates, stack.[ch]pp)
+Ändern Sie die Implementierung des Stacks so, dass neben Positionen auch andere Objekte wie `Node*` und `Board*` hinzugefügt werden können. 
+Verwenden Sie dazu Templates und Ihre eigene Implementierung.
+Hinweis: 
+nutzen Sie die Musterlösung oder nutzen Sie den Typ `std::stack<T>`, wobei Sie `T` mit dem Typ ersetzen, den Sie benötigen (zum Beispiel std::stack<int> oder std::stack<Board>). 
+Dafür brauchen Sie `#include <stack>` anstatt `#include "stack.hpp"`.
+
+
+
+Aufgabe 4 (bdd.cpp):
+Schreiben Sie jetzt die BDD-Klasse, die einen BDD darstellt. 
+Dafür gibt es 2 Sachen zu tun:
+
+(1):
+Implementieren Sie die Funktion `Node* import node(const Board& b)`, um eine Position zu importieren und den entsprechenden Knoten zurückzugeben. 
+Zur Nachvollziehbarkeit zählen wir die importierten Positionen über eine aufwärtszählende `fresh_id`. 
+Daher müssen Sie die aktuelle Id dem neuen Knoten zuweisen und anschließend den Wert von `fresh_id` erhöhen.
+(2):
+implementieren Sie auch den Destruktor, der alle Knoten im BDD löscht. 
+Verwenden Sie dafür die Klasse `std::vector<Node*>`, um alle Knoten zu speichern. 
+Die `std::vector-Klasse hat drei wichtige Methoden: `push back()`, um ein Element am Ende hinzuzufügen, `size()`, um die Größe zu erhalten, und `operator []`, um auf ein Element zuzugreifen.
+
+Beachten Sie, dass wir die Knoten `true_node` und `false_node` als ungültige Pointer zu den nicht nutzbaren Adressen 1 und 2 verwenden. 
+Vermeiden Sie den Zugriff auf Knoten, die `true_node` und `false_node` sind. 
+überprüfen Sie diese Knoten jedoch mit dem Debugger, um solche Fälle zu erkennen.
+Zur Info: Die Verwendung eines Stapels war das ursprüngliche Ziel, jedoch funktioniert dies nicht, da wir in Aufgabe 5 über alle Knoten iterieren müssen. 
+Deshalb nutzen wir stattdessen ein vergrößerbares Array. 
+Sie müssen aber keine Implementierungen erstellen, sondern müssen stattdessen `std::vector<Node*>` verwenden.
+
+
+Aufgabe 5 (dot version vom Graph, `bdd.[ch]pp`, `node.[ch]pp`, `position.[ch]pp`):
+Wir nutzen Graphviz zur Betrachtung des Graphen. 
+Es ist ein plattformübergreifendes Open- Source-Programmpaket, das von AT&T und den Bell Labs entwickelt wurde, um Objekte und deren Beziehungen zu visualisieren. 
+Im vorliegenden Fall beschränken wir uns auf die Graphen.
+Die Syntax für die Darstellung ist wie folgt
+```
+digraph BDD
+{
+;optional declaration of nodes:
+<node_name>[label="<the label of the node>"]
+; connect nodes
+<node_name> -> <node_name> [style=dotted]
+; or without style
+<node_name> -> <node_name>
+}```
+
+Wie beim letzten mal `<XXX>` bedeutet, dass Sie das was hin muss (ohne ’<’ und ’>’)
+Es können mehrere Verbindungen angegeben werden, solange es im selben `digraph` bleibt.
+Graphviz enthält mehrere Tools, jedoch werden wir nur dot verwenden. Dieses Tool konvertiert
+den Graphen, der als Text beschrieben wird, zu einer graphischen Darstellung und übernimmt da-
+bei das Layout und die Abstände der Knoten. Zum Beispiel können Sie `dot -Tpdf small_test_bdd.txt`
+`> small_test_bdd.pdf` verwenden, um eine PDF darzustellen.
+Zum Beispiel sieht, der Graph vom Bild oben:
+
+```
+digraph BDD{
+1[fontname="Comic Mono",label= "
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+"]
+2[fontname="Comic Mono",label= "
+|d| | | |
+| | | | |
+| | | | |
+| | | | |
+"]
+...
+1 -> 2;
+1 -> 3[style=dotted];
+3 -> 4;
+3 -> 5[style=dotted];
+5 -> 6;
+5 -> 7[style=dotted];
+...
+}
+```
+Wie sie sehen, habe ich noch die Font verändert, dies ist aber nicht notwendig.
+
+überladen Sie den `<< Operator` für Streams in den Klassen BDD und Node. 
+Das schreiben selbst in vorgegeben in der Funktion `write dot file(std::string file)`. 
+Die Implementierung für Board ist bereits gegeben.
+Beachten Sie, dass wir nicht überprüfen werden, ob ein Graph erfolgreich erstellt wurde und wir erwarten nicht, dass Sie das BDD auf dem SVN hochladen. 
+Graphviz ist lediglich ein praktisches Tool, das gelegentlich nützlich sein kann.
+
+

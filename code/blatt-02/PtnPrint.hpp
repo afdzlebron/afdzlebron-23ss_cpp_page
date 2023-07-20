@@ -1,0 +1,1 @@
+void printTr(const char *fmt, int a, int b, int c);

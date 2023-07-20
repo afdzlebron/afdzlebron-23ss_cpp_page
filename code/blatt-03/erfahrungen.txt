@@ -1,0 +1,32 @@
+###############################################################################
+# University of Freiburg                                                      #
+# Summer Semester 2023                                                        #
+# Course: Programmieren in C++                                                #
+# Exercise Sheet 03                                                           #
+# Group members: af231                                                        #
+###############################################################################
+
+-------------------------------------------------------------------------------
+### Experiences
+-------------------------------------------------------------------------------
+
+
+(Aufgabe 1)
+
+Die Aufgabestellung könnte verbessert werden. 
+
+(Aufgabe 2)
+
+Erübrigte sich `complexMain.cpp`? 
+Wenn ja oder wenn vielleicht nicht unbedignt: 
+wie lässt sich dann complex.cpp und complexTest.cpp ohne complexMain.cpp kompilieren?
+
+
+(Aufgabe 3)
+Hier muss ich noch nachholen, selbst wenn in der Vorl. nicht so tief in Sache Makefile besprochen wurde. 
+
+Disclaimer: 
+"Copyright" in Dateien steht wg. des cpplints
+
+
+    

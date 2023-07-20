@@ -1,0 +1,107 @@
+Aufgabe 1 (5 Punkte, complex.[ch]pp, newton.[ch]pp)
+
+Machen Sie jetzt aus der `struct Complex` eine Klasse. Diese Klasse sollte auch Operator over-
+loading zu benutzen. Zum Beispiel sollte multiplication jetzt mit `*` aufgerufen werden statt mit
+`mult`.
+
+Ändern Sie auch die Polynom Klasse um die neuen Operatoren zu nutzen. Passen Sie auch auf
+das `z*3` jetzt funktioniert ohne vorher 3 explizit konvertieren.
+
+
+Aufgabe 2 (10 Punkte, 
+
+Mit Fokus auf image.[ch]pp, imageMain.cpp. 
+
+Ein Kollege hatte Probleme mit dem Copy-Konstruktor. Implementieren Sie diesen jetzt richtig und vergessen Sie nicht den Destruktor.
+
+Um beide Funktionen zu Testen, schreiben Sie die Funktion die nichts tut imageMain.cpp:
+`void do_nothing (Image image) { }`
+
+Rufen Sie die Funktion in imageMain.cpp zwischen der Berechnung der Fraktale mit calculate aber vor dem Schreiben der Datei mit `write`. Vergleichen Sie die Version mit ihrem Copy Constructor (Hinweis: sollte funktionnieren) und die Version ohne (Hinweis: sollte crashen weil das Array nicht mehr verfügbar ist). Probieren Sie auch GDB und den Sanitizer, damit Sie solche
+Fehler in der Zukunft erkennen könnt!
+
+
+
+Vergrößerung des Speichers. nutzen Sie immer noch malloc/free.
+
+wir haben die Methode `update pixel(int x, int y, int r, int g, int b)`. 
+Diese Methode hat die Farbe (x,y) des Pixels verändert unter der Annahme, das `(x,y)` in dem Array reinpasst. 
+Letztere Annahme wollen wir jetzt wie folgt ändern: 
+Falls der angegebene Pixel nicht in dem Array passt, soll das Array vergrößert werden (mit den Werten des alten Inhaltes).
+Falls `(x,y)` nicht mehr im Array reinpasst, legen Sie ein neues Array an (mit genau der Größe
+damit `(x,y)` yreinpasst) und kopieren Sie den alten Inhalt im neuen und löschen Sie das alte Array.
+Schreiben Sie ihren Code in der Funktion
+
+`void resize(int x, int y);`
+
+die dann in update pixel aufgerufen wird.
+Vergleichen Sie die Laufzeit von der Variante vom Code wo das Array direkt die richtige Größe
+hat und das wo es erst Größe 0 hat und immer wieder verlängert wird. 
+Messen Sie dafür die Laufzeit bei einem großem Bild.
+Schauen Sie auch was mit dem Speicherverbrauch passiert, wenn Sie `free` vergessen. 
+Und hier gilt wieder: Probieren Sie auch GDB und den Sanitizer, damit Sie solche Fehler in der Zukunft erkennen könnt!
+
+Schreiben Sie kurz was dazu in der erfahrungen.txt Datei.
+Bei Benutzung des Programs soll unter keinen Umständen ein memory leak entstehen. Insbesondere soll `valgrind --leak-check=full` sollte keine Fehler produzieren.
+
+Aufgabe 3 (5 Punkte, 
+
+Fokus auf image.[ch]pp.
+Ändern Sie jetzt den Code von Image:
+
+Wenn das Array vergrößert wird, verdoppeln Sie immer die Speichergröße bis der Pixel
+reinpasst und legen dann diesen Speicher auch an. 
+Wir merken uns wie viel wie angelegt haben `_capacity` und wie viel wie brauchen `_size`.
+
+Wenn der Pixel noch reinpasst in dem aktuellen Speicherplatz, dann wird einfach `x_size` erhöht.
+
+Zum Beispiel, wenn die Größen (5, 0), (9, 0), (0, 0), (10, 0), (130, 0) bei resize gegeben werden
+werden, ist die `x_size` 0 (bevor irgendwas ist), dann wird die 6 (aber wir haben schon 8 angelegt),
+10 (aber wir haben schon 16 angelegt), 10 (wir kürzen nicht unsere 16), 11 (nichts musste angelegt
+werden), 131 (und 256 angelegt) gesetzt.
+Als fast als Test geschrieben (test.x_size):
+Image test(0,0);
+
+// (5, 0)
+test.resize(5, 0);
+ASSERT_EQ(test.x_size, 6);
+ASSERT_EQ(test.x_capacity, 8);
+// (9, 0)
+test.resize(9, 0);
+ASSERT_EQ(test.x_size, 10);
+ASSERT_EQ(test.x_capacity, 16);
+// (0, 0)
+test.resize(0, 0);
+ASSERT_EQ(test.x_size, 10);
+ASSERT_EQ(test.x_capacity, 16);
+// (10, 0)
+test.resize(10, 0);
+ASSERT_EQ(test.x_size, 11);
+ASSERT_EQ(test.x_capacity, 16);
+
+// (130, 0)
+test.resize(130, 0);
+ASSERT_EQ(test.x_size, 131);
+ASSERT_EQ(test.x_capacity, 256);
+
+Die Klasse also ein `x_size` (die Größe vom Bild) und ein `x_capacity` (die Größe von alloziertem
+Speicher), und das selbe für y_size und `y_capacity`.
+Schreiben Sie noch eine `void reserve(int new x_capacity, int new y_capacity)` Funktion,
+die direkt den Speicher mit der richtigen Größe alloziert (falls mehr Speicher verlangt wird).
+
+Vergleichen Sie die Laufzeit von der Variante vom Code wo das Array direkt die richtige Größe
+hat und das wo es erst Größe 0 hat und immer wieder verlängert wird. Messen Sie wieder die Zeit
+dafür.
+
+
+
+Wir wollen die Laufzeiten zw. der Variante vom Code, wo das Array direkt die richtige Größe
+hat und der Variante, wo es erst Größe 0 hat und immer wieder verlängert wird. 
+
+Implementieren etas für diesen Vergleich. 
+
+
+
+
+
+https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1264&t=8005#p31625
