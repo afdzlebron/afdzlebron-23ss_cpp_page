@@ -33,10 +33,927 @@
         <h1><i class="fa fa-brain"></i> Blatt-06</h1>
     </header>
     <main>
+        Aufgabestellung für Blatt-06:
+        <pre>
+
+            Aufgabe 1 (5 Punkte, complex.[ch]pp, newton.[ch]pp)
+        
+            Machen Sie jetzt aus der `struct Complex` eine Klasse. Diese Klasse sollte auch Operator over-
+            loading zu benutzen. Zum Beispiel sollte multiplication jetzt mit `*` aufgerufen werden statt mit
+            `mult`.
+            
+            Ändern Sie auch die Polynom Klasse um die neuen Operatoren zu nutzen. Passen Sie auch auf
+            das `z*3` jetzt funktioniert ohne vorher 3 explizit konvertieren.
+            
+            
+            Aufgabe 2 (10 Punkte, 
+            
+            Mit Fokus auf image.[ch]pp, imageMain.cpp. 
+            
+            Ein Kollege hatte Probleme mit dem Copy-Konstruktor. Implementieren Sie diesen jetzt richtig und vergessen Sie nicht den Destruktor.
+            
+            Um beide Funktionen zu Testen, schreiben Sie die Funktion die nichts tut imageMain.cpp:
+            `void do_nothing (Image image) { }`
+            
+            Rufen Sie die Funktion in imageMain.cpp zwischen der Berechnung der Fraktale mit calculate aber vor dem Schreiben der Datei mit `write`. Vergleichen Sie die Version mit ihrem Copy Constructor (Hinweis: sollte funktionnieren) und die Version ohne (Hinweis: sollte crashen weil das Array nicht mehr verfügbar ist). Probieren Sie auch GDB und den Sanitizer, damit Sie solche
+            Fehler in der Zukunft erkennen könnt!
+            
+            
+            
+            Vergrößerung des Speichers. nutzen Sie immer noch malloc/free.
+            
+            wir haben die Methode `update pixel(int x, int y, int r, int g, int b)`. 
+            Diese Methode hat die Farbe (x,y) des Pixels verändert unter der Annahme, das `(x,y)` in dem Array reinpasst. 
+            Letztere Annahme wollen wir jetzt wie folgt ändern: 
+            Falls der angegebene Pixel nicht in dem Array passt, soll das Array vergrößert werden (mit den Werten des alten Inhaltes).
+            Falls `(x,y)` nicht mehr im Array reinpasst, legen Sie ein neues Array an (mit genau der Größe
+            damit `(x,y)` yreinpasst) und kopieren Sie den alten Inhalt im neuen und löschen Sie das alte Array.
+            Schreiben Sie ihren Code in der Funktion
+            
+            `void resize(int x, int y);`
+            
+            die dann in update pixel aufgerufen wird.
+            Vergleichen Sie die Laufzeit von der Variante vom Code wo das Array direkt die richtige Größe
+            hat und das wo es erst Größe 0 hat und immer wieder verlängert wird. 
+            Messen Sie dafür die Laufzeit bei einem großem Bild.
+            Schauen Sie auch was mit dem Speicherverbrauch passiert, wenn Sie `free` vergessen. 
+            Und hier gilt wieder: Probieren Sie auch GDB und den Sanitizer, damit Sie solche Fehler in der Zukunft erkennen könnt!
+            
+            Schreiben Sie kurz was dazu in der erfahrungen.txt Datei.
+            Bei Benutzung des Programs soll unter keinen Umständen ein memory leak entstehen. Insbesondere soll `valgrind --leak-check=full` sollte keine Fehler produzieren.
+            
+            Aufgabe 3 (5 Punkte, 
+            
+            Fokus auf image.[ch]pp.
+            Ändern Sie jetzt den Code von Image:
+            
+            Wenn das Array vergrößert wird, verdoppeln Sie immer die Speichergröße bis der Pixel
+            reinpasst und legen dann diesen Speicher auch an. 
+            Wir merken uns wie viel wie angelegt haben `_capacity` und wie viel wie brauchen `_size`.
+            
+            Wenn der Pixel noch reinpasst in dem aktuellen Speicherplatz, dann wird einfach `x_size` erhöht.
+            
+            Zum Beispiel, wenn die Größen (5, 0), (9, 0), (0, 0), (10, 0), (130, 0) bei resize gegeben werden
+            werden, ist die `x_size` 0 (bevor irgendwas ist), dann wird die 6 (aber wir haben schon 8 angelegt),
+            10 (aber wir haben schon 16 angelegt), 10 (wir kürzen nicht unsere 16), 11 (nichts musste angelegt
+            werden), 131 (und 256 angelegt) gesetzt.
+            Als fast als Test geschrieben (test.x_size):
+            Image test(0,0);
+            
+            // (5, 0)
+            test.resize(5, 0);
+            ASSERT_EQ(test.x_size, 6);
+            ASSERT_EQ(test.x_capacity, 8);
+            // (9, 0)
+            test.resize(9, 0);
+            ASSERT_EQ(test.x_size, 10);
+            ASSERT_EQ(test.x_capacity, 16);
+            // (0, 0)
+            test.resize(0, 0);
+            ASSERT_EQ(test.x_size, 10);
+            ASSERT_EQ(test.x_capacity, 16);
+            // (10, 0)
+            test.resize(10, 0);
+            ASSERT_EQ(test.x_size, 11);
+            ASSERT_EQ(test.x_capacity, 16);
+            
+            // (130, 0)
+            test.resize(130, 0);
+            ASSERT_EQ(test.x_size, 131);
+            ASSERT_EQ(test.x_capacity, 256);
+            
+            Die Klasse also ein `x_size` (die Größe vom Bild) und ein `x_capacity` (die Größe von alloziertem
+            Speicher), und das selbe für y_size und `y_capacity`.
+            Schreiben Sie noch eine `void reserve(int new x_capacity, int new y_capacity)` Funktion,
+            die direkt den Speicher mit der richtigen Größe alloziert (falls mehr Speicher verlangt wird).
+            
+            Vergleichen Sie die Laufzeit von der Variante vom Code wo das Array direkt die richtige Größe
+            hat und das wo es erst Größe 0 hat und immer wieder verlängert wird. Messen Sie wieder die Zeit
+            dafür.
+            
+            
+            Wir wollen die Laufzeiten zw. der Variante vom Code, wo das Array direkt die richtige Größe
+            hat und der Variante, wo es erst Größe 0 hat und immer wieder verlängert wird. 
+            
+            Implementieren etas für diesen Vergleich. 
+        
+        </pre>
+        Here is complex.cpp:
+        <pre><code>
+        #include "complex.hpp"
+        
+        #include <cassert>
+        #include <cstdio>
+        
+        // x+iy + (x'+iy') = (x+x') + i (y+y')
+        Complex Complex::operator+(const Complex& other) const {
+          return Complex(re + other.re, im + other.im);
+        }
+        // (x+iy) * (x'+iy') = xx' - yy' + i (xy' +x'y)
+        Complex Complex::operator*(const Complex& other) const {
+          return Complex(re * other.re - im * other.im, re * other.im + im * other.re);
+        }
+        // -(x+iy) = -x + i*(-y)
+        Complex unary_minus(Complex a) {
+          Complex c;
+          c.re = -a.re;
+          c.im = -a.im;
+          return c;
+        }
+        
+        bool Complex::operator==(const Complex& b) const {
+          return re == b.re && im == b.im;
+        }
+        // (x+iy) / (x'+iy') = (x+iy) * (x'-iy') / (x'^2 - y'^2)
+        // = (xx' + yy') / (x'^2 - y'^2) + i * (-xy' + x'y) / (x'^2 - y'^2)
+        Complex Complex::operator/(const Complex& b) const {
+          double denominator = b.re * b.re + b.im * b.im;
+          return Complex((re * b.re + im * b.im) / denominator,
+                         (im * b.re - re * b.im) / denominator);
+        }
+        
+        // 1/ (x+iy) = (x-iy) / (x^2 - y^2)
+        Complex inverse(Complex a) {
+          Complex c;
+          const double norm = (a.re * a.re + a.im * a.im);
+          c.re = a.re / norm;
+          c.im = -a.im / norm;
+          return c;
+        }
+        
+        void print(Complex a) { printf("%f +i * %f\n", a.re, a.im); }
+        
+        double Complex::norm2() { return (this->re * this->re + this->im * this->im); }
+        
+        Complex Complex::operator-(const Complex& b) const {
+          return Complex(re - b.re, im - b.im);
+        }
+        
+        // namespace Complex
+        </code></pre>
+        Here is complexTest.cpp:
+        <pre><code>
+        #include <gtest/gtest.h>
+        
+        #include "complex.hpp"
+        
+        #define ASSERT_COMPLEX_EQ(a, b)       \
+          {                                   \
+            const Complex mya = (a);          \
+            const Complex myb = (b);          \
+            ASSERT_DOUBLE_EQ(mya.re, myb.re); \
+            ASSERT_DOUBLE_EQ(mya.im, myb.im); \
+          }
+        
+        TEST(complextest, add) {
+          const Complex a(2, 3);
+          const Complex b(3, 2);
+          const Complex c = a + b;
+        
+          ASSERT_COMPLEX_EQ(a, a);
+          const Complex d(6, 5);
+          ASSERT_FALSE(c == d);
+          const Complex e(5, 5);
+          ASSERT_COMPLEX_EQ(c, e);
+          ASSERT_COMPLEX_EQ(c + c, e + e);
+        }
+        
+        TEST(complextest, mult) {
+          const Complex a(2, 4);
+          const Complex two(2);
+          const Complex one(1);
+        
+          ASSERT_COMPLEX_EQ(a * one, a);
+          ASSERT_COMPLEX_EQ(a * two, a + a);
+          ASSERT_COMPLEX_EQ(a * inverse(a), one);
+        }
+        
+        TEST(complextest, div) {
+          const Complex a(2, 4);
+          const Complex two(2);
+          const Complex one(1);
+        
+          ASSERT_COMPLEX_EQ(a / one, a);
+          ASSERT_COMPLEX_EQ(a, (a + a) / two);
+          ASSERT_COMPLEX_EQ(Complex(1.) / (Complex(1.) / a), a);
+        }
+        
+        TEST(complextest, inverse) {
+          const Complex a(2, 4);
+          const Complex two(2);
+          const Complex one(1);
+        
+          ASSERT_COMPLEX_EQ(inverse(one), one);
+          ASSERT_COMPLEX_EQ(one, a * inverse(a));
+          ASSERT_COMPLEX_EQ(inverse(inverse(a)), a);
+        }
+        TEST(complextest, multdiv) {
+          {
+            Complex a(0, 1);
+            Complex b(0, 2);
+            Complex d = a / b;
+            Complex e = inverse(b);
+            Complex f = a * e;
+            ASSERT_COMPLEX_EQ(d, f);
+          }
+        
+          {
+            Complex a(0, 1);
+            Complex b = inverse(a);
+            Complex c = a * b;
+            Complex d(1);
+            ASSERT_COMPLEX_EQ(c, d);
+          }
+        }
+        
+        // int main() {
+        //   testing::InitGoogleTest();
+        //   return RUN_ALL_TESTS();
+        // }
+        </code></pre>
+        Here is image.cpp:
+        <pre><code>
+        #include "image.hpp"
+        
+        #include <stdio.h>
+        
+        #include <algorithm>
+        #include <cassert>
+        #include <cstdio>
+        #include <cstdlib>
+        #include <fstream>
+        
+        #include "newton.hpp"
+        
+        unsigned Image::find_max() const {
+          int curr_max = 0;
+          for (int y = 0; y < y_size; ++y) {
+            for (int x = 0; x < x_size; ++x) {
+              curr_max = std::max(curr_max, image[y * x_size * 3 + x * 3 + 0]);
+              curr_max = std::max(curr_max, image[y * x_size * 3 + x * 3 + 1]);
+              curr_max = std::max(curr_max, image[y * x_size * 3 + x * 3 + 2]);
+            }
+          }
+          return curr_max;
+        }
+        
+        void Image::print_image(const char *filename) const {
+          FILE *fp = fopen(filename, "w");
+        
+          const char *comment = "# file created by Mathias Fleury";
+        
+          unsigned int curr_max = find_max();
+          const int max_bound = 65535;
+        
+          const char *format = "P3";
+          fprintf(fp, "%s\n %s\n %d %d\n %d\n", format, comment, x_size, y_size,
+                  max_bound);
+        
+          for (int y = 0; y < y_size; ++y) {
+            for (int x = 0; x < x_size; ++x) {
+              const int r = image[y * x_size * 3 + x * 3 + 0] * max_bound / curr_max;
+              const int g = image[y * x_size * 3 + x * 3 + 1] * max_bound / curr_max;
+              const int b = image[y * x_size * 3 + x * 3 + 2] * max_bound / curr_max;
+              fprintf(fp, "%d %d %d ", r, g, b);
+            }
+            fprintf(fp, "\n");
+          }
+        
+          fclose(fp);
+        }
+        
+        // resize the underlying array, copies the old content to the new array and
+        // delete the old one.
+        
+        void Image::resize(int x, int y) {
+          if (x >= x_size || y >= y_size) {
+            int new_x_size = std::max(x + 1, x_size);
+            int new_y_size = std::max(y + 1, y_size);
+        
+            while (new_x_size > x_capacity) {
+              x_capacity *= 2;
+            }
+            while (new_y_size > y_capacity) {
+              y_capacity *= 2;
+            }
+            int *new_image = (int *)malloc(x_capacity * y_capacity * 3 * sizeof(int));
+            for (int i = 0; i < y_size; ++i) {
+              for (int j = 0; j < x_size; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                  new_image[(i * x_capacity + j) * 3 + k] =
+                      image[(i * x_size + j) * 3 + k];
+                }
+              }
+            }
+            free(image);
+            x_size = new_x_size;
+            y_size = new_y_size;
+            image = new_image;
+          }
+        }
+        
+        // setting the pixel and resizing if needed.
+        void Image::set_pixel(int x, int y, int r, int g, int b) {
+          // Aufgabe 2 und 3
+          // TODO
+          resize(x, y);
+        
+          // Alte Code
+        
+          image[y * x_size * 3 + x * 3 + 0] = r;
+          image[y * x_size * 3 + x * 3 + 1] = g;
+          image[y * x_size * 3 + x * 3 + 2] = b;
+        }
+        
+        // Calculate the average of the neightboling offset.  To be safe, we do not
+        // assume that we have at least one cell (e.g., if the given point (x,y) is
+        // outside of the picture.
+        unsigned Image::average(int x, int y, int offset) const {
+          assert(offset < 3);
+          int cells = 0;
+          int number_of_cells = 0;
+          const int size_per_side = 10;
+          for (int i = x - size_per_side; i <= x + size_per_side; ++i) {
+            if (i < 0 || i >= x_size) continue;
+            for (int j = y - size_per_side; j <= y + size_per_side; ++j) {
+              if (j < 0 || j >= y_size) continue;
+              ++number_of_cells;
+              cells += image[j * x_size * 3 + i * 3 + offset];
+            }
+          }
+          return number_of_cells ? cells / number_of_cells : 0;
+        }
+        
+        // very stupid smoothing, by simply taking the average, but makes the edges less
+        // sharp
+        void Image::smoothing() {
+          int *new_image = (int *)malloc(x_size * y_size * 3 * sizeof(int));
+        
+          for (int i = 0; i < x_size; ++i) {
+            for (int j = 0; j < y_size; ++j) {
+              for (int col = 0; col < 3; ++col)
+                new_image[j * x_size * 3 + i * 3 + col] = average(i, j, col);
+            }
+          }
+        
+          free(image);
+          image = new_image;
+        }</code></pre>
+        Here is imageMain.cpp:
+        <pre><code>
+        #include <complex>
+        #include <iostream>
+        
+        #include "complex.hpp"
+        #include "image.hpp"
+        #include "newton_fractal.hpp"
+        
+        // Für Aufgabe 2
+        void do_nothing(Image image) {}
+        
+        int main() {
+          // NB: it is important to change both values at the same time if you increase
+          // the number of iterations make the precision close to zero. Remember than
+          // Newton's method converges _fast_.
+          const int max_iterations = 30;
+          const double precision = 0.0001;
+        
+          // I changed the steps to 0.01 to make the code faster to run
+          const double x_start = -2.5;
+          const double x_end = 2.5;
+          const double x_step = 0.01;
+          const double y_start = -5;
+          const double y_end = 5;
+          const double y_step = 0.01;
+        
+          NewtonFractal frac(x_start, x_step, x_end, y_start, y_step, y_end,
+                             max_iterations, precision);
+          Image img = frac.calculate();
+          img.smoothing();
+          do_nothing(img);
+          img.print_image("newton.ppm");
+        
+          return 0;
+        }</code></pre>
+        Here is imageTest.cpp:
+        <pre><code>
+        #include <gtest/gtest.h>
+        #include <math.h>
+        
+        #include "image.hpp"
+        
+        TEST(ImageTest, sizeTest) {
+          Image test;
+          ASSERT_EQ(test.x_size, 0);
+          ASSERT_EQ(test.x_capacity, 1);
+        
+          // (5, 0)
+          test.resize(5, 0);
+          ASSERT_EQ(test.x_size, 6);
+          ASSERT_EQ(test.x_capacity, 8);
+          test.set_pixel(1, 0, 1, 1, 1);
+        
+          // (9, 0)
+          test.resize(9, 0);
+          ASSERT_EQ(test.x_size, 10);
+          ASSERT_EQ(test.x_capacity, 16);
+          test.set_pixel(7, 0, 1, 1, 1);
+        
+          // (0, 0)
+          test.resize(0, 0);
+          ASSERT_EQ(test.x_size, 10);
+          ASSERT_EQ(test.x_capacity, 16);
+        
+          // (10, 0)
+          test.resize(10, 0);
+          ASSERT_EQ(test.x_size, 11);
+          ASSERT_EQ(test.x_capacity, 16);
+        
+          // (130, 0)
+          test.resize(130, 0);
+          ASSERT_EQ(test.x_size, 131);
+          ASSERT_EQ(test.x_capacity, 256);
+        
+          // Testing that pixels have not disappeared
+          ASSERT_EQ(test.image[0 * test.x_size * 3 + 1 * 3 + 0], 1);
+          ASSERT_EQ(test.image[0 * test.x_size * 3 + 7 * 3 + 0], 1);
+        }
+        
+        // int main() {
+        //   testing::InitGoogleTest();
+        //   return RUN_ALL_TESTS();
+        // }
+        </code></pre>
+        Here is newton.cpp:
+        <pre><code>
+        #include "newton.hpp"
+        
+        #include <cstdio>
+        
+        #include "complex.hpp"
+        #include "poly.hpp"
+        
+        Complex next_value(Complex z) {
+          return z - Polynom::poly(z) / Polynom::derived_poly(z);
+        }
+        
+        Solution converges_to(Complex z, double precision, int max_iterations) {
+          bool finished = (z == 0);
+          int root = 0, i;
+        
+          for (i = 0; i < max_iterations && !finished; ++i, z = next_value(z)) {
+            root = Polynom::classify_root(z, precision);
+            finished = (root != 0);
+          }
+        
+          return {.sol_number = root, .number_of_iterations = i};
+        }
+        </code></pre>
+        Here is newton_fractal.cpp:
+        <pre><code>
+        #include "newton_fractal.hpp"
+        
+        #include <cstdio>
+        #include <cstdlib>
+        
+        #include "image.hpp"
+        #include "newton.hpp"
+        
+        Image NewtonFractal::calculate() {
+          const int x_size = (x_end - x_start) / x_step;
+          const int y_size = (y_end - y_start) / y_step;
+          printf("%d", x_size);
+        
+          Image img(x_size, y_size);
+        
+          for (int i = 0; i < y_size; ++i) {
+            for (int j = 0; j < x_size; ++j) {
+              const Complex starting_point(x_start + j * x_step, y_start + i * y_step);
+        
+              Solution sol = converges_to(starting_point, precision, max_iterations);
+              int color =
+                  static_cast<int>(((double)max_iterations - sol.number_of_iterations) /
+                                   (double)max_iterations * (double)255);
+        
+              int red = 0;
+              int green = 0;
+              int blue = 0;
+              switch (sol.sol_number) {
+                case 1:
+                  red = color;
+                  break;
+                case 2:
+                  green = color;
+                  break;
+                case 3:
+                  blue = color;
+                  break;
+                default:
+                  break;
+              }
+        
+              img.set_pixel(j, i, red, green, blue);
+            }
+          }
+        
+          return img;
+        }</code></pre>
+        Here is poly.cpp:
+        <pre><code>
+        #include "poly.hpp"
+        
+        #include <math.h>
+        
+        #include <cstdio>
+        
+        Complex Polynom::poly(Complex z) { return z * z * z - 1; }
+        
+        Complex Polynom::derived_poly(Complex z) { return z * z * 3; }
+        
+        // We use the squared norm instead of taking the square root.
+        int Polynom::classify_root(Complex a, double precision) {
+          const Complex z1(1, 0);
+          const Complex z2(-.5, sqrt(3) / 2.);
+          const Complex z3(-.5, -sqrt(3) / 2.);
+        
+          if ((a - z1).norm2() < precision * precision) return 1;
+          if ((a - z2).norm2() < precision * precision) return 2;
+          if ((a - z3).norm2() < precision * precision) return 3;
+          return 0;
+        }
+        </code></pre>
+        Here is polyTest.cpp:
+        <pre><code>
+        #include <gtest/gtest.h>
+        #include <math.h>
+        
+        #include "poly.hpp"
+        
+        #define ASSERT_COMPLEX_EQ(a, b)       \
+          {                                   \
+            const Complex mya = (a);          \
+            const Complex myb = (b);          \
+            ASSERT_DOUBLE_EQ(mya.re, myb.re); \
+            ASSERT_DOUBLE_EQ(mya.im, myb.im); \
+          }
+        
+        TEST(PolyTest, poly) {
+          const Complex zero(0);
+          const Complex z1(1);
+          const Complex z2(-.5, sqrt(3) / 2.);
+          const Complex z3(-.5, -sqrt(3) / 2.);
+          ASSERT_COMPLEX_EQ(Polynom::poly(z1), zero);
+          ASSERT_TRUE(Polynom::poly(z2).norm2() < 0.00000000001);
+          ASSERT_TRUE(Polynom::poly(z3).norm2() < 0.00000000001);
+        }
+        
+        TEST(PolyTest, derived_poly) {
+          ASSERT_COMPLEX_EQ(Polynom::derived_poly(1), 3);
+          ASSERT_COMPLEX_EQ(Polynom::derived_poly(0), 0);
+        }
+        
+        TEST(PolyTest, classify_root) {
+          const Complex z1(1);
+          const Complex z2(-.5, sqrt(3) / 2.);
+          const Complex z3(-.5, -sqrt(3) / 2.);
+          const double precision = 0.00001;
+          const int r1 = Polynom::classify_root(z1, precision);
+          const int r2 = Polynom::classify_root(z2, precision);
+          const int r3 = Polynom::classify_root(z3, precision);
+          ASSERT_TRUE(r1 != r2);
+          ASSERT_TRUE(r1 != r3);
+          ASSERT_TRUE(r2 != r3);
+          const int r4 = Polynom::classify_root(z3 + z3, precision);
+          ASSERT_TRUE(r4 == 0);
+        }
+        
+        // int main() {
+        //   testing::InitGoogleTest();
+        //   return RUN_ALL_TESTS();
+        // }
+        </code></pre>
+        Here is complex.hpp:
+        <pre><code>
+        #ifndef BLATT_06_COMPLEX_HPP
+        #define BLATT_06_COMPLEX_HPP
+        
+        // very simple modelisation of complex numbers with a real part and an imaginary
+        // part. We put into a namespace to avoid issue with std::equal...
+        class Complex {
+         public:
+          Complex(double real, double imaginary) : re(real), im(imaginary) {}
+          Complex(double real) : re(real), im(0) {}
+          Complex() : re(0), im(0) {}
+          // square absolute value
+          double re;
+          double im;
+          double norm2();
+        
+          Complex operator*(const Complex&) const;
+          Complex operator+(const Complex&) const;
+          Complex operator-(const Complex&) const;
+          bool operator==(const Complex&) const;
+          Complex operator/(const Complex&) const;
+        };
+        
+        Complex unary_minus(Complex);
+        
+        /// inverse of complex numbers. The second should not be zero.
+        Complex inverse(Complex);
+        
+        #endif
+        </code></pre>
+        Here is image.hpp:
+        <pre><code>
+        #ifndef IMAGE_HPP
+        #define IMAGE_HPP
+        
+        #include <gtest/gtest.h>
+        
+        #include <cstdlib>
+        
+        // Very simple class to contain Image
+        //
+        // It supports setting a pixel directly and then some image specific
+        // transformation (smoothing and writing to a PPM file)
+        //
+        // Internally it uses the malloc-approach from the last lecture instead of new
+        // and delete.
+        class Image {
+         public:
+          explicit Image()
+              : image(nullptr), x_size(0), x_capacity(1), y_size(0), y_capacity(1) {}
+        
+          explicit Image(int x_size_, int y_size_)
+              : x_size(x_size_),
+                x_capacity(x_size_),
+                y_size(y_size_),
+                y_capacity(y_size_) {
+            image = (int *)malloc(x_size * y_size * 3 * sizeof(int));
+          }
+        
+          // Copy-Konstruktor
+          Image(const Image &img) {
+            x_size = img.x_size;
+            x_capacity = img.x_capacity;
+            y_size = img.y_size;
+            y_capacity = img.y_capacity;
+            image = (int *)malloc(x_size * y_size * 3 * sizeof(int));
+            std::copy(img.image, img.image + x_size * y_size * 3, image);
+          }
+        
+          // Destruktor
+          ~Image() { free(image); }
+        
+          // write a PPM image from the pixel matrix with the given size.
+          //
+          // It does not free the array representing the image.
+          void print_image(const char *) const;
+        
+          // destructive opteration: average the pixels over the entire picture.
+          void smoothing();
+        
+          // set the pixel (x,y) with the color given by the (r,g,b) as RGB encoding
+          void set_pixel(int x, int y, int r, int g, int b);
+        
+         private:
+          /// array containing the image
+          int *image;
+          // max x of the image
+          int x_size, x_capacity;
+          // max y of the image
+          int y_size, y_capacity;
+        
+          // returns the maximum of the image
+          unsigned find_max() const;
+        
+          // average at pixel at color offset
+          unsigned average(int x, int y, int offset) const;
+        
+          // resize the internal image to the new size and sets the size large enough
+          // according to the policy (Aufgabe 2 -> tight fit; Aufgabe 3 -> doubling the
+          // capacity)
+          void resize(int, int);
+        
+          // reserve enough memory
+          void reserve(int new_x_capacity, int new_y_capacity) {
+            if (new_x_capacity > x_capacity || new_y_capacity > y_capacity) {
+              x_capacity = new_x_capacity;
+              y_capacity = new_y_capacity;
+        
+              int *new_image = (int *)malloc(x_capacity * y_capacity * 3 * sizeof(int));
+        
+              for (int i = 0; i < y_size; ++i) {
+                for (int j = 0; j < x_size; ++j) {
+                  for (int k = 0; k < 3; ++k) {
+                    new_image[(i * x_capacity + j) * 3 + k] =
+                        image[(i * x_capacity + j) * 3 + k];
+                  }
+                }
+              }
+        
+              free(image);
+        
+              image = new_image;
+            }
+          }
+        
+          FRIEND_TEST(ImageTest, sizeTest);
+        };
+        
+        #endif</code></pre>
+        Here is newton.hpp:
+        <pre><code>
+        #ifndef BLATT_06_NEWTON
+        #define BLATT_06_NEWTON
+        
+        #include "complex.hpp"
+        
+        // Structure representing the result of applying Newton's procedure. It contains
+        // to which solution the procedure converged to and the number of iterations
+        // that was required.
+        struct Solution {
+          int sol_number;
+          int number_of_iterations;
+        };
+        
+        // Newton procedure to find root starting at z, until the precision is reached
+        // or we run of iterals
+        Solution converges_to(Complex z, double precision, int max_iterations);
+        
+        #endif
+        </code></pre>
+        Here is newton_fractal.hpp:
+        <pre><code>
+        #ifndef BLATT_06_NEWTON_FRACTAL
+        #define BLATT_06_NEWTON_FRACTAL
+        
+        #include "image.hpp"
+        
+        class NewtonFractal {
+         public:
+          explicit NewtonFractal(double x_start_, double x_step_, double x_end_,
+                                 double y_start_, double y_step_, double y_end_,
+                                 int max_iterations_, double precision_)
+              : x_start(x_start_),
+                x_step(x_step_),
+                x_end(x_end_),
+                y_start(y_start_),
+                y_step(y_step_),
+                y_end(y_end_),
+                max_iterations(max_iterations_),
+                precision(precision_) {}
+        
+          Image calculate();
+        
+         private:
+          double x_start, x_step, x_end;
+          double y_start, y_step, y_end;
+          int max_iterations;
+          double precision;
+        };
+        
+        #endif
+        </code></pre>
+        Here is poly.hpp:
+        <pre><code>
+        #ifndef BLATT_06_POLY
+        #define BLATT_06_POLY
+        
+        #include <gtest/gtest.h>
+        
+        #include "complex.hpp"
+        
+        // Encompasses all calculation related to a polynom.
+        // We use static to avoid create a dummy object, but
+        // creating the object would work too.
+        class Polynom {
+         public:
+          // p: z -> z^3 - 1
+          static Complex poly(Complex);
+          // p: z -> 3*z^2
+          static Complex derived_poly(Complex);
+        
+          // returns the number of the root
+          static int classify_root(Complex a, double precision);
+        
+          FRIEND_TEST(PolyTest, poly);
+          FRIEND_TEST(PolyTest, derived_poly);
+          FRIEND_TEST(PolyTest, classify_root);
+        };
+        
+        #endif
+        </code></pre>
+
+        Here is Makefile:
+        <pre>
+    <code>
+        CXX = g++
+        CXXFLAGS=--std=c++14 -Og -g  -fsanitize=undefined
+        HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
+        OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
+        TESTLIBS = -lgtest -lpthread -lgtest_main 
+        
+        all: clean compile
+        
+        %.o: %.cpp $(HEADERS)
+            $(CXX) $(CXXFLAGS) -c $<
+        
+        %Main: %Main.cpp $(OBJECTS)
+            $(CXX) $(CXXFLAGS) -o $@ $^
+        
+        # imageMain: $(OBJECTS) 
+        # 	$(CXX) -o $@ $^ $(CXXFLAGS) -lgtest -lpthread
+        
+        compile: imageMain
+        
+        %Test: %Test.o $(OBJECTS)
+            $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(TESTLIBS)
+        
+        test: complexTest polyTest imageTest $(OBJECTS)
+            ./complexTest
+            ./polyTest
+            ./imageTest
+        
+        clean:
+            rm -f complexTest polyTest *.o *Main *Test *.ppm
+        
+        format:
+            clang-format -i *.cpp     
+    </code>
+</pre>
+
+
+        Here is erfahrungen.txt:
+        <pre><code>
+        ###############################################################################
+        # University of Freiburg                                                      #
+        # Summer Semester 2023                                                        #
+        # Course: Programmieren in C++                                                #
+        # Exercise Sheet 06                                                           #
+        # Group members: af231                                                        #
+        ###############################################################################
+        
+        -------------------------------------------------------------------------------
+        ### Experiences
+        -------------------------------------------------------------------------------
+        
+        
+        Zeitbedarf: ca 11.0 h
+        
+        (Aufgabe 2)
+        
+        Bglz. Speicherverbrauch: 
+        Vergessenes Freigeben von Speicherressourcen führt zu Speicherlecks. 
+        Dies könnte Probleme verursachen. Anhand valgrind z.B. lassen sich Speicherlecks überprüfen.
+        
+        
+        (Aufgabe 3)
+        
+        Laufzeit:
+        
+        direct size `Image img(1000, 1000);`
+            Measures: 
+            1) 30492 ms
+            2) 0.03s user 0.01s system 9% cpu 0.357 total
+        
+        repeated resize `Image img;`
+            Measures: 
+            1) 14268344 ms
+            2) 11.98s user 0.87s system 94% cpu 13.548 total</code></pre>
+        Here is feedback.txt:
+        <pre><code>
+        # Feedback Blatt-06
+        
+        ## Aufgabe 1 (5/5)
+        
+        Perfekt!
+        
+        ## Aufgabe 2 (10/10)
+        
+        ### Copy (2/2)
+        
+        Korrekt
+        
+        ### resize (8/8)
+        
+        Sieht gut aus!
+        
+        ## Aufgabe 3 (5/5)
+        
+        Prima.
+        
+        Danke für die Rückmeldung!
+        
+        -----------------
+        ## Gesamt (20/20)
+        
+        Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+        lukaskleinert@gmx.net</code></pre>
 
     </main>
     <footer>
-        
+
     </footer>
 
     <script type="text/javascript">
