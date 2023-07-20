@@ -30,13 +30,498 @@
             <a href="blatt09.html">blatt09</a>
             <a href="blatt10.html">blatt10</a>
         </nav>
-        <h1><i class="fa fa-brain"></i> Home </h1>
+        <h1><i class="fa fa-brain"></i> Blatt-04 </h1>
     </header>
     <main>
+        Here is poly.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #include "poly.hpp"
+        
+        #include <cmath>
+        #include <cstdio>
+        
+        bool equal(Complex a, Complex b) { return (a.re == b.re) && (a.im == b.im); }
+        
+        Complex mult(Complex a, Complex b) {
+          Complex result;
+          result.re = a.re * b.re - a.im * b.im;
+          result.im = a.re * b.im + a.im * b.re;
+          if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;
+          }
+          return result;
+        }
+        
+        Complex div(Complex a, Complex b) {
+          double div = b.re * b.re + b.im * b.im;
+          Complex result;
+          result.re = (a.re * b.re + a.im * b.im) / div;
+          result.im = (a.im * b.re - a.re * b.im) / div;
+          if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;
+          }
+          return result;
+        }
+        
+        Complex add(Complex a, Complex b) {
+          Complex result;
+          result.re = a.re + b.re;
+          result.im = a.im + b.im;
+          if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;
+          }
+          return result;
+        }
+        
+        Complex inverse(Complex z) {
+          double div = z.re * z.re + z.im * z.im;
+          Complex result;
+          result.re = z.re / div;
+          result.im = -z.im / div;
+          if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;
+          }
+          return result;
+        }
+        
+        Complex sub(Complex a, Complex b) {
+          Complex result;
+          result.re = a.re - b.re;
+          result.im = a.im - b.im;
+          if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;
+          }
+          return result;
+        }
+        
+        void print(Complex z) { printf("(%g + %gi)", z.re, z.im); }
+        
+        Complex poly(Complex z) {
+          Complex minus_one = {-1, 0};
+          Complex result = mult(z, mult(z, z));
+          result = add(result, minus_one);
+          if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;
+          }
+          return result;
+        }
+        
+        Complex derived_poly(Complex z) {
+          Complex three = {3, 0};
+          Complex result = mult(three, mult(z, z)); // 3*z^2
+          if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;
+          }
+          return result;
+        }
+        
+        Complex newtonMethod(Complex z) {
+          Complex x = z;
+          Complex fx = poly(x);
+          Complex fxPrime = derived_poly(x);
+          Complex fraction = div(fx, fxPrime);
+          x = sub(x, fraction);
+          return x;
+        }
+        int nearRoot(Complex x, double precision) {
+          Complex roots[] = {{1, 0}, {-0.5, sqrt(3) / 2}, {-0.5, -sqrt(3) / 2}};
+          double distance = precision * 2;
+          for (int i = 0; i < 3; i++) {
+            distance = sqrt((x.re - roots[i].re) * (x.re - roots[i].re) +
+                            (x.im - roots[i].im) * (x.im - roots[i].im));
+            if (distance <= precision) {
+              return i + 1;
+            }
+          }
+          return 0;
+        }
+        
+        int classify_root(Complex z, double precision) {
+          Complex x = z;
+          Complex roots[] = {{1, 0}, {0.5, sqrt(3) / 2}, {-0.5, -sqrt(3) / 2}};
+          int calc = 0;
+          int steps = 0;
+          const int max_steps = 20;
+        
+          while (steps < max_steps) {
+            x = newtonMethod(x);
+            calc = nearRoot(x, precision);
+            if (calc > 0) {
+              return calc;
+            }
+            steps++;
+          }
+          return 0;
+        }
+        
+        void default_factal(const char *filename) {
+          FILE *fp = fopen(filename, "w");
+          if (!fp) {
+            fprintf(stderr, "could not open file %s", filename);
+            exit(1);
+          }
+          const int x_max = 250;
+          const int y_max = 250;
+          const double precision = 0.000001;
+          const char *comment = "# file created by AFL";
+          fprintf(fp, "P3\n %s\n %d\n %d\n 255\n", comment, x_max, y_max);
+          for (int y = y_max - 1; y >= 0; y--) {
+            for (int x = 0; x < x_max; x++) {
+              Complex z = {x * 4.0 / x_max - 2.0, y * 4.0 / y_max - 2.0};
+              int root = classify_root(z, precision);
+              if (root == 1) {
+                fprintf(fp, "0 255 0 ");
+              } else if (root == 2) {
+                fprintf(fp, "0 0 255 ");
+              } else if (root == 3) {
+                fprintf(fp, "255 0 0 ");
+              } else {
+                fprintf(fp, "0 0 0 ");
+              }
+            }
+            fprintf(fp, "\n");
+          }
+        }
+        
+        int *newton_fractal(double x_start, double x_step, double x_end, double y_start,
+                            double y_step, double y_end, int max_iterations,
+                            double precision) {
+          int size_x = (x_end - x_start) / x_step;
+          int size_y = (y_end - y_start) / y_step;
+          int *image = new int[size_x * size_y * 3];
+        
+          for (int y = 0; y < size_y; y++) {
+            for (int x = 0; x < size_x; x++) {
+              Complex z = {x_start + x * x_step, y_start + y * y_step};
+              int root = classify_root(z, precision);
+              if (root == 1) {
+                image[(y * size_x + x) * 3] = 0;
+                image[(y * size_x + x) * 3 + 1] = 255;
+                image[(y * size_x + x) * 3 + 2] = 0;
+              } else if (root == 2) {
+                image[(y * size_x + x) * 3] = 0;
+                image[(y * size_x + x) * 3 + 1] = 0;
+                image[(y * size_x + x) * 3 + 2] = 255;
+              } else if (root == 3) {
+                image[(y * size_x + x) * 3] = 255;
+                image[(y * size_x + x) * 3 + 1] = 0;
+                image[(y * size_x + x) * 3 + 2] = 0;
+              } else {
+                image[(y * size_x + x) * 3] = 0;
+                image[(y * size_x + x) * 3 + 1] = 0;
+                image[(y * size_x + x) * 3 + 2] = 0;
+              }
+            }
+          }
+        
+          return image;
+        }
+        
+        void drawing_ppm(const char *filename, int *image, int size_x, int size_y) {
+          FILE *fp = fopen(filename, "w");
+          if (!fp) {
+            fprintf(stderr, "could not open file %s", filename);
+            exit(1);
+          }
+          const char *comment = "# file created by AFL";
+          fprintf(fp, "P3\n %s\n %d\n %d\n 255\n", comment, size_x, size_y);
+        
+          for (int y = size_y - 1; y >= 0; y--) {
+            for (int x = 0; x < size_x; x++) {
+              fprintf(fp, "%d %d %d ", image[(y * size_x + x) * 3],
+                      image[(y * size_x + x) * 3 + 1], image[(y * size_x + x) * 3 + 2]);
+            }
+            fprintf(fp, "\n");
+          }
+        
+          fclose(fp);
+        }
+        </code></pre>
+        Here is polyMain.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #include <cmath>
+        #include <cstdio>
+        
+        #include "poly.hpp"
+        
+        int main() {
+          //   // Printing some computations
+          //   Complex a_prime = {1, 0};
+          //   printf("%i", classify_root(a_prime, 1e-3));
+          //   printf("\n");
+          //   Complex a_prime1 = {-0.5, sqrt(3) / 2};
+          //   printf("%i", classify_root(a_prime1, 1e-3));
+          //   printf("\n");
+          //   Complex a_prime2 = {0.5, sqrt(3) / 2};
+          //   printf("%i", classify_root(a_prime2, 1e-3));
+          //   printf("\n");
+          //   Complex a_prime3 = {.9, 0};
+          //   printf("%i", classify_root(a_prime3, 1e-3));
+          //   printf("\n");
+          //   Complex a_prime4 = {500, 500};
+          //   printf("%i", classify_root(a_prime4, 1e-3));
+        
+          //   default_factal("fractal.ppm");
+        
+          double x_start = -3.0;
+          double x_step = 0.01;
+          double x_end = 3.0;
+          double y_start = -3.0;
+          double y_step = 0.01;
+          double y_end = 3.0;
+          int max_iterations = 100;
+          double precision = 1e-3;
+        
+          int *image = newton_fractal(x_start, x_step, x_end, y_start, y_step, y_end,
+                                      max_iterations, precision);
+        
+          int size_x = (x_end - x_start) / x_step;
+          int size_y = (y_end - y_start) / y_step;
+        
+          drawing_ppm("newton_fractal.ppm", image, size_x, size_y);
+        }
+        </code></pre>
+        Here is polyTest.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #include <gtest/gtest.h>
+        
+        #include "poly.hpp"
+        
+        TEST(PolyTest, OnComplex2_0) {
+          Complex a = {2, 0};
+          Complex expected_result{7, 0};
+          EXPECT_TRUE(equal(poly(a), expected_result));
+        }
+        
+        TEST(PolyTest, OnComplex2_3) {
+          Complex b = {2, 3};
+          Complex expected_result{-47, 9};
+          EXPECT_TRUE(equal(poly(b), expected_result));
+        }
+        
+        TEST(PolyTest, OnComplex2_4) {
+          Complex c = {2, 4};
+          Complex expected_result{-89, -16};
+          EXPECT_TRUE(equal(poly(c), expected_result));
+        }
+        
+        TEST(PolyTest, OnComplex3_2) {
+          Complex d = {3, 2};
+          Complex expected_result{-10, 46};
+          EXPECT_TRUE(equal(poly(d), expected_result));
+        }
+        
+        TEST(PolyTest, OnComplex6_5) {
+          Complex e = {6, 5};
+          Complex expected_result{-235, 415};
+          EXPECT_TRUE(equal(poly(e), expected_result));
+        }
+        
+        TEST(derived_PolyTest, OnComplex2_0) {
+          Complex a = {2, 0};
+          Complex expected_result{12, 0};
+          EXPECT_TRUE(equal(derived_poly(a), expected_result));
+        }
+        
+        TEST(derived_PolyTest, OnComplex2_3) {
+          Complex b = {2, 3};
+          Complex expected_result{-15, 36};
+          EXPECT_TRUE(equal(derived_poly(b), expected_result));
+        }
+        
+        TEST(derived_PolyTest, OnComplex2_4) {
+          Complex c = {2, 4};
+          Complex expected_result{-36, 48};
+          EXPECT_TRUE(equal(derived_poly(c), expected_result));
+        }
+        
+        TEST(derived_PolyTest, OnComplex3_2) {
+          Complex d = {3, 2};
+          Complex expected_result{15, 36};
+          EXPECT_TRUE(equal(derived_poly(d), expected_result));
+        }
+        
+        TEST(derived_PolyTest, OnComplex6_5) {
+          Complex e = {6, 5};
+          Complex expected_result{33, 180};
+          EXPECT_TRUE(equal(derived_poly(e), expected_result));
+        }
+        </code></pre>
+        Here is poly.hpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #ifndef POLY_HPP
+        #define POLY_HPP
+        
+        struct Complex {
+          double re;
+          double im;
+        };
+        
+        bool equal(Complex, Complex);
+        
+        Complex mult(Complex, Complex);
+        
+        Complex div(Complex, Complex);
+        
+        Complex add(Complex, Complex);
+        
+        Complex inverse(Complex);
+        
+        Complex sub(Complex a, Complex b);
+        
+        void print(Complex);
+        
+        Complex poly(Complex);
+        
+        Complex derived_poly(Complex);
+        
+        Complex newtonMethod(Complex z);
+        
+        int nearRoot(Complex x, double precision);
+        
+        int classify_root(Complex z, double precision);
+        
+        void default_factal(const char *filename);
+        
+        int *newton_fractal(double x_start, double x_step, double x_end, double y_start,
+                            double y_step, double y_end, int max_iterations,
+                            double precision);
+        
+        void drawing_ppm(const char *filename, int *image, int size_x, int size_y);
+        
+        #endif // POLY_HPP
+        </code></pre>
+
+
+        Here is Makefile:
+        <pre>
+    <code>
+        CXX = g++
+        #CXX = clang++ # tends to give better error messages
+        CXXFLAGS=--std=c++14 
+        HEADERS = $(wildcard *.hpp)
+        OBJECTS = $(addsuffix .o, $(basename $(filter-out polyTest.cpp polyText.cpp, $(wildcard *.cpp))))
+        
+        all: clean compile test run format
+        
+        %.o: %.cpp $(HEADERS)
+            $(CXX) -c $< $(CXXFLAGS)
+        
+        %Main: %Main.o %.o
+            $(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+        
+        compile: polyMain
+        
+        polyMain: polyMain.o poly.o
+            $(CXX) -o $@ $^ $(CXXFLAGS) -lgtest -lpthread
+        
+        polyTest: polyTest.o poly.o
+            $(CXX) -o $@ $^ $(CXXFLAGS) -lgtest -lpthread -lgtest_main
+            ./polyTest
+        
+        test: polyTest
+            ./$<
+        
+        run: polyMain
+            ./$<
+        
+        clean:
+            rm -f polyMain polyTest *.o *Main *.ppm 
+        
+        format:
+            clang-format -i *.cpp *.hpp
+                
+    </code>
+</pre>
+
+        Here is erfahrungen.txt:
+        <pre><code>
+        ###############################################################################
+        # University of Freiburg                                                      #
+        # Summer Semester 2023                                                        #
+        # Course: Programmieren in C++                                                #
+        # Exercise Sheet 04                                                           #
+        # Group members: af231                                                        #
+        ###############################################################################
+        
+        -------------------------------------------------------------------------------
+        ### Experiences
+        -------------------------------------------------------------------------------
+        
+        Generell: 
+        
+        Ein großer Teil meiner Schwierigkeit in der Bearbeitung dieses Blatts lag 
+        in meinem Verständnis der Aufgaben anhand der Wortlaute der jeweiligen Aufgabestellung. 
+        
+        Vermutung: ungeteilte Aufmerksamkeit bei der Verfassung der neuen oder Korrektur 
+        der bereit erstellten Aufgabestellungen, könnte zum reibungslosen 
+        Aufgabenverständnis führen.
+        
+        Zeitbedarf: ca 17.0 h
+        
+        (Aufgabe 2)
+            Behandlung von `nan`: 
+            `if (std::isnan(result.re) && std::isnan(result.im)) {
+            result.re = 0;
+            result.im = 0;}`
+        </code></pre>
+        Here is feedback.txt:
+        <pre><code>
+        # Feedback Blatt-04
+        
+        ## Aufgabe 1 (4/4)
+        
+        Gut!
+        
+        ## Aufgabe 2 (8/8)
+        
+        Ok. classify_root sollte eigentlich nur sowas tun wie dein nearRoot, aber insgesamt
+        kommt am Ende das richtige raus!
+        
+        Allgemein fände ich es gut, wenn du noch ein paar Kommentare an die Deklarationen in den .hpp Dateien schreibst.
+        
+        ## Aufgabe 3 (4/4)
+        
+        Korrekterweise müsstest du in der polyMain.cpp (main Funktion) noch `delete[] image;` ganz am Schluss schreiben,
+        damit der Pointer, der in der newton_fractal Funktion mit new[] erstellt wurde, wieder gefreed wird.
+        
+        wenn du valgrind installiert hast, kannst du solche Dinge mit dem Befehl
+            valgrind --leak-check=full ./polyMain
+        herausfinden. (um polyMain auf Memory leaks zu prüfen)
+        
+        ## Aufgabe 4 (4/4)
+        
+        Sehr gut! Das Bild sieht sinnvoll aus!
+        
+        ## Aufgabe 5 (0/0)
+        
+        Danke für die Rückmeldung!
+        
+        "Behandlung von `nan`" hättest du ignorieren können. 
+        Du hättest davon ausgehen dürfen, dass nie durch 0 geteilt wird o.ä.
+        Das muss dann natürlich vor jedem Aufruf abgefangen werden.
+        
+        -----------------
+        ## Gesamt (20/20)
+        
+        Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+        lukaskleinert@gmx.net
+    </code></pre>
 
     </main>
     <footer>
-        
+
     </footer>
 
     <script type="text/javascript">
