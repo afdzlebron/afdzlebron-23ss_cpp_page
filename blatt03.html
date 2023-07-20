@@ -30,13 +30,339 @@
             <a href="blatt09.html">blatt09</a>
             <a href="blatt10.html">blatt10</a>
         </nav>
-        <h1><i class="fa fa-brain"></i> Home </h1>
+        <h1><i class="fa fa-brain"></i> Blatt-03 </h1>
     </header>
     <main>
+        Here is complex.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #include "complex.hpp"
+        #include <cstdio>
+        
+        bool equal(Complex z1, Complex z2) {
+            return (z1.re == z2.re) && (z1.im == z2.im);
+        }
+        
+        Complex mult(Complex z1, Complex z2) {
+            Complex result;
+            result.re = z1.re * z2.re - z1.im * z2.im;
+            result.im = z1.re * z2.im + z1.im * z2.re;
+            return result;
+        }
+        
+        Complex div(Complex z1, Complex z2) {
+            double div = z2.re * z2.re + z2.im * z2.im;
+            Complex result;
+            result.re = (z1.re * z2.re + z1.im * z2.im) / div;
+            result.im = (z1.im * z2.re - z1.re * z2.im) / div;
+            return result;
+        }
+        
+        Complex add(Complex z1, Complex z2) {
+            Complex result;
+            result.re = z1.re + z2.re;
+            result.im = z1.im + z2.im;
+            return result;
+        }
+        
+        Complex inverse(Complex z) {
+            double div = z.re * z.re + z.im * z.im;
+            Complex result;
+            result.re = z.re / div;
+            result.im = -z.im / div;
+            return result;
+        }
+        
+        void print(Complex z) {
+            printf("(%g + %gi)", z.re, z.im);
+        }
+        
+        // int main() {}
+        </code></pre>
+        Here is complexMain.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #include "complex.hpp"
+        
+        int main() {}
+        </code></pre>
+        Here is complexTest.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #include <gtest/gtest.h>
+        
+        #include "complex.hpp"
+        
+        TEST(ComplexTest, TestEqual) {
+          Complex a = {1.0, 2.0};
+          Complex b = {1.0, 2.0};
+          Complex c = {2.0, 1.0};
+        
+          ASSERT_EQ(equal(a, b), true);
+          ASSERT_EQ(equal(a, c), false);
+        }
+        
+        TEST(ComplexTest, TestAdd) {
+          Complex a = {1.0, 2.0};
+          Complex b = {3.0, 4.0};
+          Complex estm = {4.0, 6.0};
+        
+          Complex result = add(a, b);
+        
+          ASSERT_EQ(result.re, estm.re);
+          ASSERT_EQ(result.im, estm.im);
+        }
+        
+        TEST(ComplexTest, TestMult) {
+          Complex a = {1.0, 2.0};
+          Complex b = {3.0, 4.0};
+          Complex estm = {-5.0, 10.0};
+        
+          Complex result = mult(a, b);
+        
+          ASSERT_EQ(result.re, estm.re);
+          ASSERT_EQ(result.im, estm.im);
+        }
+        
+        TEST(ComplexTest, TestDiv) {
+          Complex a = {1.0, 2.0};
+          Complex b = {3.0, 4.0};
+          Complex estm = {0.44, 0.08};
+        
+          Complex result = div(a, b);
+        
+          ASSERT_NEAR(result.re, estm.re, 0.01);
+          ASSERT_NEAR(result.im, estm.im, 0.01);
+        }
+        
+        TEST(ComplexTest, TestInverse) {
+          Complex a = {1.0, 2.0};
+          Complex estm = {0.2, -0.4};
+        
+          Complex result = inverse(a);
+        
+          ASSERT_NEAR(result.re, estm.re, 0.01);
+          ASSERT_NEAR(result.im, estm.im, 0.01);
+        }
+        
+        // int main(int argc, char **argv) {
+        //   ::testing::InitGoogleTest(&argc, argv);
+        //   return RUN_ALL_TESTS();
+        // }
+        </code></pre>
+        Here is image.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #include "image.hpp"
+        
+        #include <stdlib.h>
+        
+        void print_default_image(const char *filename) {
+          int max_x = 255;
+          int max_y = 255;
+        
+          FILE *fp = fopen(filename, "w");
+          if (!fp) {
+            printf("Can not open to write file\n");
+            exit(1);
+          }
+          fprintf(fp, "P3\n");
+          fprintf(fp, "%d %d\n", max_x + 1, max_y + 1);
+          fprintf(fp, "255\n");
+        
+          //   fprintf(fp, "%g %g\n", coo.x, coo.y);
+        
+          for (int y = 0; y <= max_y; ++y) {
+            for (int x = 0; x <= max_x; ++x) {
+              int r = 0, g = 0, b = 0;
+              if (y > max_y / 2) {
+                r = 0;
+                g = 255 * (y - max_y / 2) / (max_y / 2);
+                b = 0;
+              } else {
+                r = 255 * y / (max_y / 2);
+                g = 255 * y / (max_y / 2);
+                b = 255 * y / (max_y / 2);
+              }
+              fprintf(fp, "%d %d %d ", r, g, b);
+            }
+            fprintf(fp, "\n");
+          }
+        
+          fclose(fp);
+        }
+        </code></pre>
+        Here is imageMain.cpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        
+        #include "image.hpp"
+        
+        int main() {
+          print_default_image("test1.ppm");
+          return 0;
+        }
+        </code></pre>
+        Here is complex.hpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        #ifndef COMPLEX_HPP
+        #define COMPLEX_HPP
+        
+        #include <cmath>
+        #include <iostream>
+        
+        struct Complex {
+          double re;
+          double im;
+        };
+        
+        bool equal(Complex a, Complex b);
+        Complex mult(Complex a, Complex b);
+        Complex div(Complex a, Complex b);
+        Complex add(Complex a, Complex b);
+        Complex inverse(Complex z);
+        void print(Complex z);
+        
+        #endif  // COMPLEX_HPP</code></pre>
+        Here is image.hpp:
+        <pre><code>
+        // Copyright 2023, AFL
+        // This header file defines a function for creating a default image output.
+        
+        #ifndef IMAGE_HPP
+        #define IMAGE_HPP
+        
+        // Library for file access
+        #include <cstdio>
+        
+        // Declaration of the function
+        void print_default_image(const char *filename);
+        
+        #endif  // IMAGE_HPP</code></pre>
+
+
+
+        Here is Makefile:
+        <pre>
+    <code>
+        CXX = g++
+        CXXFLAGS = -std=c++14
+        
+        SRC := $(wildcard *.cpp)
+        
+        OBJ := $(SRC:.cpp=.o)
+        
+        .PHONY: all clean compile test checkstyle
+        
+        all: clean compile image test checkstyle
+        
+        compile: imageMain complex complexTest
+        
+        imageMain: imageMain.o image.o
+            $(CXX) $(CXXFLAGS) -o $@ $^ -lgtest -lpthread
+        
+        complex: complexMain.o complex.o
+            $(CXX) $(CXXFLAGS) -o $@ $^ -lgtest -lpthread
+        
+        complexTest: complexTest.o complex.o
+            $(CXX) $(CXXFLAGS) -o $@ $^ -lgtest -lpthread -lgtest_main
+        
+        image: imageMain
+            ./$<
+        
+        test: complexTest
+            ./$<
+        
+        format:
+            clang-format -i $(SRC)
+        
+        checkstyle:
+            python3 ../cpplint.py $(SRC)
+        
+        clean:
+            rm -f imageMain complex complexMain complexTest $(OBJ) *.s *.ppm
+        
+                
+    </code>
+</pre>
+
+        Here is erfahrungen.txt:
+        <pre><code>
+        ###############################################################################
+        # University of Freiburg                                                      #
+        # Summer Semester 2023                                                        #
+        # Course: Programmieren in C++                                                #
+        # Exercise Sheet 03                                                           #
+        # Group members: af231                                                        #
+        ###############################################################################
+        
+        -------------------------------------------------------------------------------
+        ### Experiences
+        -------------------------------------------------------------------------------
+        
+        
+        (Aufgabe 1)
+        
+        Die Aufgabestellung könnte verbessert werden. 
+        
+        (Aufgabe 2)
+        
+        Erübrigte sich `complexMain.cpp`? 
+        Wenn ja oder wenn vielleicht nicht unbedignt: 
+        wie lässt sich dann complex.cpp und complexTest.cpp ohne complexMain.cpp kompilieren?
+        
+        
+        (Aufgabe 3)
+        Hier muss ich noch nachholen, selbst wenn in der Vorl. nicht so tief in Sache Makefile besprochen wurde. 
+        
+        Disclaimer: 
+        "Copyright" in Dateien steht wg. des cpplints
+        
+        
+            
+        </code></pre>
+        Here is feedback.txt:
+        <pre><code>
+        # Feedback Blatt-03
+        
+        ## Aufgabe 1 (3/4)
+        
+        Sieht prinzipiell sinnvoll aus. Jedoch berechnest du auch rgb Werte größer als 255.
+        Beispielsweise `0 257 0`. [-0.5]  
+        Der Kommentar `# file created by <author name>` fehlt. [-0.5]
+        
+        ## Aufgabe 2 (11/12)
+        
+        Sehr schön!
+        Leider sind jedoch die Tests nicht ganz so ausführlich wie gefordert! [-1]
+        Zitat: "Schreiben Sie für jede Funktion mindestens 3 Tests und einen Test über Multiplikation, Division und Inverse"  
+        Verwende in Zukunft aber bei jedem double/float-equality Test das ASSERT_DOUBLE_EQ/ASSERT_FLOAT_EQ!
+        
+        ## Aufgabe 3 (4/4)
+        
+        Grundsätzlich alles korrekt. Diesmal sind auch die .o Targets da :)
+        Du solltest jedoch auch die Targets abstrahieren.
+        Also statt `image.o` u.a. solltest du z.B. Patterns wie folgt schreiben:
+        
+        %.o: %.cpp $(HEADERS)
+            $(CXX) -c $<
+        
+        "Erübrigte sich `complexMain.cpp`? " Ja. Die war nicht notwendig.
+        
+        "wie lässt sich dann complex.cpp und complexTest.cpp ohne complexMain.cpp kompilieren?"
+        Wenn du bei dir das `complex`-Target überall in der Makefile löscht, dann funktioniert das genau so wie du es willst.
+        Alternativ kannst du einen Blick in die Musterlösung werfen :)
+        
+        -----------------
+        ## Gesamt (18/20)
+        
+        Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
+        lukaskleinert@gmx.net</code></pre>
 
     </main>
     <footer>
-        
+
     </footer>
 
     <script type="text/javascript">
