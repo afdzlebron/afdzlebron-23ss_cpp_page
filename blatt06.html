@@ -1,40 +1,43 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Programmieren C++ (Blatt-06)</title>
-    <!-- icon -->
-    <!-- <link rel="icon" href="./img/attent.ico" /> -->
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- Webfont -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="./fontawesome/css/all.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <title>Programmieren C++ (Blatt-06)</title>
+  <!-- icon -->
+  <!-- <link rel="icon" href="./img/attent.ico" /> -->
+  <!-- css -->
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <!-- Webfont -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="./fontawesome/css/all.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header id="top">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="blatt01.html">blatt01</a>
-            <a href="blatt02.html">blatt02</a>
-            <a href="blatt03.html">blatt03</a>
-            <a href="blatt04.html">blatt04</a>
-            <a href="blatt05.html">blatt05</a>
-            <a href="#">blatt06</a>
-            <a href="blatt07.html">blatt07</a>
-            <a href="blatt08.html">blatt08</a>
-            <a href="blatt09.html">blatt09</a>
-            <a href="blatt10.html">blatt10</a>
-        </nav>
-        <h1><i class="fa fa-brain"></i> Blatt-06</h1>
-    </header>
-    <main>
-        Aufgabestellung für Blatt-06:
-        <pre>
+  <header id="top">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="blatt01.html">blatt01</a>
+      <a href="blatt02.html">blatt02</a>
+      <a href="blatt03.html">blatt03</a>
+      <a href="blatt04.html">blatt04</a>
+      <a href="blatt05.html">blatt05</a>
+      <a href="#">blatt06</a>
+      <a href="blatt07.html">blatt07</a>
+      <a href="blatt08.html">blatt08</a>
+      <a href="blatt09.html">blatt09</a>
+      <a href="blatt10.html">blatt10</a> 
+      <a href="open.html">Open</a>
+      <a href="cml.html">CML</a>
+    </nav>
+    <h1><i class="fa fa-brain"></i> Blatt-06</h1>
+  </header>
+  <main>
+    Aufgabestellung für Blatt-06:
+    <pre>
 
             Aufgabe 1 (5 Punkte, complex.[ch]pp, newton.[ch]pp)
         
@@ -138,19 +141,19 @@
             Implementieren etas für diesen Vergleich. 
         
         </pre>
-        Here is complex.cpp:
-        <pre><code>
+    Here is complex.cpp:
+    <pre><code>
         #include "complex.hpp"
         
         #include <cassert>
         #include <cstdio>
         
         // x+iy + (x'+iy') = (x+x') + i (y+y')
-        Complex Complex::operator+(const Complex& other) const {
+        Complex Complex::operator+(const Complex&amp; other) const {
           return Complex(re + other.re, im + other.im);
         }
         // (x+iy) * (x'+iy') = xx' - yy' + i (xy' +x'y)
-        Complex Complex::operator*(const Complex& other) const {
+        Complex Complex::operator*(const Complex&amp; other) const {
           return Complex(re * other.re - im * other.im, re * other.im + im * other.re);
         }
         // -(x+iy) = -x + i*(-y)
@@ -161,12 +164,12 @@
           return c;
         }
         
-        bool Complex::operator==(const Complex& b) const {
-          return re == b.re && im == b.im;
+        bool Complex::operator==(const Complex&amp; b) const {
+          return re == b.re &amp;&amp; im == b.im;
         }
         // (x+iy) / (x'+iy') = (x+iy) * (x'-iy') / (x'^2 - y'^2)
         // = (xx' + yy') / (x'^2 - y'^2) + i * (-xy' + x'y) / (x'^2 - y'^2)
-        Complex Complex::operator/(const Complex& b) const {
+        Complex Complex::operator/(const Complex&amp; b) const {
           double denominator = b.re * b.re + b.im * b.im;
           return Complex((re * b.re + im * b.im) / denominator,
                          (im * b.re - re * b.im) / denominator);
@@ -183,17 +186,17 @@
         
         void print(Complex a) { printf("%f +i * %f\n", a.re, a.im); }
         
-        double Complex::norm2() { return (this->re * this->re + this->im * this->im); }
+        double Complex::norm2() { return (this-&gt;re * this-&gt;re + this-&gt;im * this-&gt;im); }
         
-        Complex Complex::operator-(const Complex& b) const {
+        Complex Complex::operator-(const Complex&amp; b) const {
           return Complex(re - b.re, im - b.im);
         }
         
         // namespace Complex
-        </code></pre>
-        Here is complexTest.cpp:
-        <pre><code>
-        #include <gtest/gtest.h>
+        </cstdio></cassert></code></pre>
+    Here is complexTest.cpp:
+    <pre><code>
+        #include <gtest gtest.h="">
         
         #include "complex.hpp"
         
@@ -270,9 +273,9 @@
         //   testing::InitGoogleTest();
         //   return RUN_ALL_TESTS();
         // }
-        </code></pre>
-        Here is image.cpp:
-        <pre><code>
+        </gtest></code></pre>
+    Here is image.cpp:
+    <pre><code>
         #include "image.hpp"
         
         #include <stdio.h>
@@ -287,8 +290,8 @@
         
         unsigned Image::find_max() const {
           int curr_max = 0;
-          for (int y = 0; y < y_size; ++y) {
-            for (int x = 0; x < x_size; ++x) {
+          for (int y = 0; y &lt; y_size; ++y) {
+            for (int x = 0; x &lt; x_size; ++x) {
               curr_max = std::max(curr_max, image[y * x_size * 3 + x * 3 + 0]);
               curr_max = std::max(curr_max, image[y * x_size * 3 + x * 3 + 1]);
               curr_max = std::max(curr_max, image[y * x_size * 3 + x * 3 + 2]);
@@ -309,8 +312,8 @@
           fprintf(fp, "%s\n %s\n %d %d\n %d\n", format, comment, x_size, y_size,
                   max_bound);
         
-          for (int y = 0; y < y_size; ++y) {
-            for (int x = 0; x < x_size; ++x) {
+          for (int y = 0; y &lt; y_size; ++y) {
+            for (int x = 0; x &lt; x_size; ++x) {
               const int r = image[y * x_size * 3 + x * 3 + 0] * max_bound / curr_max;
               const int g = image[y * x_size * 3 + x * 3 + 1] * max_bound / curr_max;
               const int b = image[y * x_size * 3 + x * 3 + 2] * max_bound / curr_max;
@@ -326,20 +329,20 @@
         // delete the old one.
         
         void Image::resize(int x, int y) {
-          if (x >= x_size || y >= y_size) {
+          if (x &gt;= x_size || y &gt;= y_size) {
             int new_x_size = std::max(x + 1, x_size);
             int new_y_size = std::max(y + 1, y_size);
         
-            while (new_x_size > x_capacity) {
+            while (new_x_size &gt; x_capacity) {
               x_capacity *= 2;
             }
-            while (new_y_size > y_capacity) {
+            while (new_y_size &gt; y_capacity) {
               y_capacity *= 2;
             }
             int *new_image = (int *)malloc(x_capacity * y_capacity * 3 * sizeof(int));
-            for (int i = 0; i < y_size; ++i) {
-              for (int j = 0; j < x_size; ++j) {
-                for (int k = 0; k < 3; ++k) {
+            for (int i = 0; i &lt; y_size; ++i) {
+              for (int j = 0; j &lt; x_size; ++j) {
+                for (int k = 0; k &lt; 3; ++k) {
                   new_image[(i * x_capacity + j) * 3 + k] =
                       image[(i * x_size + j) * 3 + k];
                 }
@@ -369,14 +372,14 @@
         // assume that we have at least one cell (e.g., if the given point (x,y) is
         // outside of the picture.
         unsigned Image::average(int x, int y, int offset) const {
-          assert(offset < 3);
+          assert(offset &lt; 3);
           int cells = 0;
           int number_of_cells = 0;
           const int size_per_side = 10;
-          for (int i = x - size_per_side; i <= x + size_per_side; ++i) {
-            if (i < 0 || i >= x_size) continue;
-            for (int j = y - size_per_side; j <= y + size_per_side; ++j) {
-              if (j < 0 || j >= y_size) continue;
+          for (int i = x - size_per_side; i &lt;= x + size_per_side; ++i) {
+            if (i &lt; 0 || i &gt;= x_size) continue;
+            for (int j = y - size_per_side; j &lt;= y + size_per_side; ++j) {
+              if (j &lt; 0 || j &gt;= y_size) continue;
               ++number_of_cells;
               cells += image[j * x_size * 3 + i * 3 + offset];
             }
@@ -389,18 +392,18 @@
         void Image::smoothing() {
           int *new_image = (int *)malloc(x_size * y_size * 3 * sizeof(int));
         
-          for (int i = 0; i < x_size; ++i) {
-            for (int j = 0; j < y_size; ++j) {
-              for (int col = 0; col < 3; ++col)
+          for (int i = 0; i &lt; x_size; ++i) {
+            for (int j = 0; j &lt; y_size; ++j) {
+              for (int col = 0; col &lt; 3; ++col)
                 new_image[j * x_size * 3 + i * 3 + col] = average(i, j, col);
             }
           }
         
           free(image);
           image = new_image;
-        }</code></pre>
-        Here is imageMain.cpp:
-        <pre><code>
+        }</fstream></cstdlib></cstdio></cassert></algorithm></stdio.h></code></pre>
+    Here is imageMain.cpp:
+    <pre><code>
         #include <complex>
         #include <iostream>
         
@@ -434,10 +437,10 @@
           img.print_image("newton.ppm");
         
           return 0;
-        }</code></pre>
-        Here is imageTest.cpp:
-        <pre><code>
-        #include <gtest/gtest.h>
+        }</iostream></complex></code></pre>
+    Here is imageTest.cpp:
+    <pre><code>
+        #include <gtest gtest.h="">
         #include <math.h>
         
         #include "image.hpp"
@@ -483,9 +486,9 @@
         //   testing::InitGoogleTest();
         //   return RUN_ALL_TESTS();
         // }
-        </code></pre>
-        Here is newton.cpp:
-        <pre><code>
+        </math.h></gtest></code></pre>
+    Here is newton.cpp:
+    <pre><code>
         #include "newton.hpp"
         
         #include <cstdio>
@@ -501,16 +504,16 @@
           bool finished = (z == 0);
           int root = 0, i;
         
-          for (i = 0; i < max_iterations && !finished; ++i, z = next_value(z)) {
+          for (i = 0; i &lt; max_iterations &amp;&amp; !finished; ++i, z = next_value(z)) {
             root = Polynom::classify_root(z, precision);
             finished = (root != 0);
           }
         
           return {.sol_number = root, .number_of_iterations = i};
         }
-        </code></pre>
-        Here is newton_fractal.cpp:
-        <pre><code>
+        </cstdio></code></pre>
+    Here is newton_fractal.cpp:
+    <pre><code>
         #include "newton_fractal.hpp"
         
         #include <cstdio>
@@ -526,8 +529,8 @@
         
           Image img(x_size, y_size);
         
-          for (int i = 0; i < y_size; ++i) {
-            for (int j = 0; j < x_size; ++j) {
+          for (int i = 0; i &lt; y_size; ++i) {
+            for (int j = 0; j &lt; x_size; ++j) {
               const Complex starting_point(x_start + j * x_step, y_start + i * y_step);
         
               Solution sol = converges_to(starting_point, precision, max_iterations);
@@ -557,9 +560,9 @@
           }
         
           return img;
-        }</code></pre>
-        Here is poly.cpp:
-        <pre><code>
+        }</int></cstdlib></cstdio></code></pre>
+    Here is poly.cpp:
+    <pre><code>
         #include "poly.hpp"
         
         #include <math.h>
@@ -576,15 +579,15 @@
           const Complex z2(-.5, sqrt(3) / 2.);
           const Complex z3(-.5, -sqrt(3) / 2.);
         
-          if ((a - z1).norm2() < precision * precision) return 1;
-          if ((a - z2).norm2() < precision * precision) return 2;
-          if ((a - z3).norm2() < precision * precision) return 3;
+          if ((a - z1).norm2() &lt; precision * precision) return 1;
+          if ((a - z2).norm2() &lt; precision * precision) return 2;
+          if ((a - z3).norm2() &lt; precision * precision) return 3;
           return 0;
         }
-        </code></pre>
-        Here is polyTest.cpp:
-        <pre><code>
-        #include <gtest/gtest.h>
+        </cstdio></math.h></code></pre>
+    Here is polyTest.cpp:
+    <pre><code>
+        #include <gtest gtest.h="">
         #include <math.h>
         
         #include "poly.hpp"
@@ -603,8 +606,8 @@
           const Complex z2(-.5, sqrt(3) / 2.);
           const Complex z3(-.5, -sqrt(3) / 2.);
           ASSERT_COMPLEX_EQ(Polynom::poly(z1), zero);
-          ASSERT_TRUE(Polynom::poly(z2).norm2() < 0.00000000001);
-          ASSERT_TRUE(Polynom::poly(z3).norm2() < 0.00000000001);
+          ASSERT_TRUE(Polynom::poly(z2).norm2() &lt; 0.00000000001);
+          ASSERT_TRUE(Polynom::poly(z3).norm2() &lt; 0.00000000001);
         }
         
         TEST(PolyTest, derived_poly) {
@@ -631,9 +634,9 @@
         //   testing::InitGoogleTest();
         //   return RUN_ALL_TESTS();
         // }
-        </code></pre>
-        Here is complex.hpp:
-        <pre><code>
+        </math.h></gtest></code></pre>
+    Here is complex.hpp:
+    <pre><code>
         #ifndef BLATT_06_COMPLEX_HPP
         #define BLATT_06_COMPLEX_HPP
         
@@ -649,11 +652,11 @@
           double im;
           double norm2();
         
-          Complex operator*(const Complex&) const;
-          Complex operator+(const Complex&) const;
-          Complex operator-(const Complex&) const;
-          bool operator==(const Complex&) const;
-          Complex operator/(const Complex&) const;
+          Complex operator*(const Complex&amp;) const;
+          Complex operator+(const Complex&amp;) const;
+          Complex operator-(const Complex&amp;) const;
+          bool operator==(const Complex&amp;) const;
+          Complex operator/(const Complex&amp;) const;
         };
         
         Complex unary_minus(Complex);
@@ -663,12 +666,12 @@
         
         #endif
         </code></pre>
-        Here is image.hpp:
-        <pre><code>
+    Here is image.hpp:
+    <pre><code>
         #ifndef IMAGE_HPP
         #define IMAGE_HPP
         
-        #include <gtest/gtest.h>
+        #include <gtest gtest.h="">
         
         #include <cstdlib>
         
@@ -693,7 +696,7 @@
           }
         
           // Copy-Konstruktor
-          Image(const Image &img) {
+          Image(const Image &amp;img) {
             x_size = img.x_size;
             x_capacity = img.x_capacity;
             y_size = img.y_size;
@@ -731,21 +734,21 @@
           unsigned average(int x, int y, int offset) const;
         
           // resize the internal image to the new size and sets the size large enough
-          // according to the policy (Aufgabe 2 -> tight fit; Aufgabe 3 -> doubling the
+          // according to the policy (Aufgabe 2 -&gt; tight fit; Aufgabe 3 -&gt; doubling the
           // capacity)
           void resize(int, int);
         
           // reserve enough memory
           void reserve(int new_x_capacity, int new_y_capacity) {
-            if (new_x_capacity > x_capacity || new_y_capacity > y_capacity) {
+            if (new_x_capacity &gt; x_capacity || new_y_capacity &gt; y_capacity) {
               x_capacity = new_x_capacity;
               y_capacity = new_y_capacity;
         
               int *new_image = (int *)malloc(x_capacity * y_capacity * 3 * sizeof(int));
         
-              for (int i = 0; i < y_size; ++i) {
-                for (int j = 0; j < x_size; ++j) {
-                  for (int k = 0; k < 3; ++k) {
+              for (int i = 0; i &lt; y_size; ++i) {
+                for (int j = 0; j &lt; x_size; ++j) {
+                  for (int k = 0; k &lt; 3; ++k) {
                     new_image[(i * x_capacity + j) * 3 + k] =
                         image[(i * x_capacity + j) * 3 + k];
                   }
@@ -761,9 +764,9 @@
           FRIEND_TEST(ImageTest, sizeTest);
         };
         
-        #endif</code></pre>
-        Here is newton.hpp:
-        <pre><code>
+        #endif</cstdlib></gtest></code></pre>
+    Here is newton.hpp:
+    <pre><code>
         #ifndef BLATT_06_NEWTON
         #define BLATT_06_NEWTON
         
@@ -783,8 +786,8 @@
         
         #endif
         </code></pre>
-        Here is newton_fractal.hpp:
-        <pre><code>
+    Here is newton_fractal.hpp:
+    <pre><code>
         #ifndef BLATT_06_NEWTON_FRACTAL
         #define BLATT_06_NEWTON_FRACTAL
         
@@ -815,12 +818,12 @@
         
         #endif
         </code></pre>
-        Here is poly.hpp:
-        <pre><code>
+    Here is poly.hpp:
+    <pre><code>
         #ifndef BLATT_06_POLY
         #define BLATT_06_POLY
         
-        #include <gtest/gtest.h>
+        #include <gtest gtest.h="">
         
         #include "complex.hpp"
         
@@ -829,9 +832,9 @@
         // creating the object would work too.
         class Polynom {
          public:
-          // p: z -> z^3 - 1
+          // p: z -&gt; z^3 - 1
           static Complex poly(Complex);
-          // p: z -> 3*z^2
+          // p: z -&gt; 3*z^2
           static Complex derived_poly(Complex);
         
           // returns the number of the root
@@ -843,10 +846,10 @@
         };
         
         #endif
-        </code></pre>
+        </gtest></code></pre>
 
-        Here is Makefile:
-        <pre>
+    Here is Makefile:
+    <pre>
     <code>
         CXX = g++
         CXXFLAGS=--std=c++14 -Og -g  -fsanitize=undefined
@@ -857,7 +860,7 @@
         all: clean compile
         
         %.o: %.cpp $(HEADERS)
-            $(CXX) $(CXXFLAGS) -c $<
+            $(CXX) $(CXXFLAGS) -c $&lt;
         
         %Main: %Main.cpp $(OBJECTS)
             $(CXX) $(CXXFLAGS) -o $@ $^
@@ -884,8 +887,8 @@
 </pre>
 
 
-        Here is erfahrungen.txt:
-        <pre><code>
+    Here is erfahrungen.txt:
+    <pre><code>
         ###############################################################################
         # University of Freiburg                                                      #
         # Summer Semester 2023                                                        #
@@ -921,8 +924,8 @@
             Measures: 
             1) 14268344 ms
             2) 11.98s user 0.87s system 94% cpu 13.548 total</code></pre>
-        Here is feedback.txt:
-        <pre><code>
+    Here is feedback.txt:
+    <pre><code>
         # Feedback Blatt-06
         
         ## Aufgabe 1 (5/5)
@@ -950,19 +953,16 @@
         
         Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
         lukaskleinert@gmx.net</code></pre>
-
-    </main>
-    <footer>
-
-    </footer>
-
-    <script type="text/javascript">
-        $(function () {
-            $('header a.icon').click(function () {
-                $('nav').toggleClass('responsive');
-            });
-        });
-    </script>
+  </main>
+  <footer>
+  </footer>
+  <script type="text/javascript">
+    $(function () {
+      $('header a.icon').click(function () {
+        $('nav').toggleClass('responsive');
+      });
+    });
+  </script>
 </body>
 
 </html>

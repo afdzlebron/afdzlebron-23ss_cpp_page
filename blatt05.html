@@ -1,40 +1,43 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Programmieren C++ (Blatt-05)</title>
-    <!-- icon -->
-    <!-- <link rel="icon" href="./img/attent.ico" /> -->
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- Webfont -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="./fontawesome/css/all.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <title>Programmieren C++ (Blatt-05)</title>
+  <!-- icon -->
+  <!-- <link rel="icon" href="./img/attent.ico" /> -->
+  <!-- css -->
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <!-- Webfont -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="./fontawesome/css/all.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header id="top">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="blatt01.html">blatt01</a>
-            <a href="blatt02.html">blatt02</a>
-            <a href="blatt03.html">blatt03</a>
-            <a href="blatt04.html">blatt04</a>
-            <a href="#">blatt05</a>
-            <a href="blatt06.html">blatt06</a>
-            <a href="blatt07.html">blatt07</a>
-            <a href="blatt08.html">blatt08</a>
-            <a href="blatt09.html">blatt09</a>
-            <a href="blatt10.html">blatt10</a>
-        </nav>
-        <h1><i class="fa fa-brain"></i> Blatt-05 </h1>
-    </header>
-    <main>
-        Here is complex.cpp:
-        <pre><code>
+  <header id="top">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="blatt01.html">blatt01</a>
+      <a href="blatt02.html">blatt02</a>
+      <a href="blatt03.html">blatt03</a>
+      <a href="blatt04.html">blatt04</a>
+      <a href="#">blatt05</a>
+      <a href="blatt06.html">blatt06</a>
+      <a href="blatt07.html">blatt07</a>
+      <a href="blatt08.html">blatt08</a>
+      <a href="blatt09.html">blatt09</a>
+      <a href="blatt10.html">blatt10</a> 
+      <a href="open.html">Open</a>
+      <a href="cml.html">CML</a>
+    </nav>
+    <h1><i class="fa fa-brain"></i> Blatt-05 </h1>
+  </header>
+  <main>
+    Here is complex.cpp:
+    <pre><code>
         #include "complex.hpp"
         
         #include <cstdio>
@@ -63,7 +66,7 @@
           return c;
         }
         
-        bool equal(Complex a, Complex b) { return (a.re == b.re) && (a.im == b.im); }
+        bool equal(Complex a, Complex b) { return (a.re == b.re) &amp;&amp; (a.im == b.im); }
         
         // (x+iy) / (x'+iy') = (x+iy) * (x'-iy') / (x'^2 - y'^2)
         // = (xx' + yy') / (x'^2 - y'^2) + i * (-xy' + x'y) / (x'^2 - y'^2)
@@ -89,9 +92,9 @@
         double norm2(Complex a) { return (a.re * a.re + a.im * a.im); }
         
         Complex minus(Complex a, Complex b) { return add(a, unary_minus(b)); }
-        </code></pre>
-        Here is image.cpp:
-        <pre><code>
+        </cstdio></code></pre>
+    Here is image.cpp:
+    <pre><code>
         #include "image.hpp"
         
         #include <cmath>
@@ -122,8 +125,8 @@
         
           fprintf(fp, "P3\n %s\n %d\n %d\n 255\n", comment, width, height);
         
-          for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
+          for (int y = 0; y &lt; height; ++y) {
+            for (int x = 0; x &lt; width; ++x) {
               int offset = y * width * 3 + x * 3;
               fprintf(fp, "%d %d %d ", data[offset + 0], data[offset + 1],
                       data[offset + 2]);
@@ -140,19 +143,19 @@
         
           int *smoothed_data = (int *)malloc(width * height * 3 * sizeof(int));
         
-          for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
+          for (int y = 0; y &lt; height; ++y) {
+            for (int x = 0; x &lt; width; ++x) {
               int sum_r = 0;
               int sum_g = 0;
               int sum_b = 0;
               int count = 0;
         
-              for (int i = (y - half_field_size >= 0 ? y - half_field_size : 0);
-                   i <= (y + half_field_size <= height - 1 ? y + half_field_size
+              for (int i = (y - half_field_size &gt;= 0 ? y - half_field_size : 0);
+                   i &lt;= (y + half_field_size &lt;= height - 1 ? y + half_field_size
                                                            : height - 1);
                    ++i) {
-                for (int j = (x - half_field_size >= 0 ? x - half_field_size : 0);
-                     j <= (x + half_field_size <= width - 1 ? x + half_field_size
+                for (int j = (x - half_field_size &gt;= 0 ? x - half_field_size : 0);
+                     j &lt;= (x + half_field_size &lt;= width - 1 ? x + half_field_size
                                                             : width - 1);
                      ++j) {
                   int offset = i * width * 3 + j * 3;
@@ -173,9 +176,9 @@
           free(data);
           data = smoothed_data;
         }
-        </code></pre>
-        Here is imageMain.cpp:
-        <pre><code>
+        </cstdio></cmath></code></pre>
+    Here is imageMain.cpp:
+    <pre><code>
         // Copyright 2023, AFL
         
         #include "complex.hpp"
@@ -207,8 +210,8 @@
           return 0;
         }
         </code></pre>
-        Here is imageTest.cpp:
-        <pre><code>
+    Here is imageTest.cpp:
+    <pre><code>
         #include "image.hpp"
         #include "gtest/gtest.h"
         
@@ -250,8 +253,8 @@
           EXPECT_EQ(image.data[offset + 2], -10);
         }
         </code></pre>
-        Here is newton.cpp:
-        <pre><code>
+    Here is newton.cpp:
+    <pre><code>
         #include "newton.hpp"
         #include <cmath>
         #include <cstdio>
@@ -271,11 +274,11 @@
           const Complex z2 = {-.5, sqrt(3) / 2.};
           const Complex z3 = {-.5, -sqrt(3) / 2.};
         
-          if (norm2(minus(a, z1)) < precision * precision)
+          if (norm2(minus(a, z1)) &lt; precision * precision)
             return 1;
-          if (norm2(minus(a, z2)) < precision * precision)
+          if (norm2(minus(a, z2)) &lt; precision * precision)
             return 2;
-          if (norm2(minus(a, z3)) < precision * precision)
+          if (norm2(minus(a, z3)) &lt; precision * precision)
             return 3;
           return 0;
         }
@@ -284,16 +287,16 @@
           bool finished = false;
           int root = 0, i;
         
-          for (i = 0; i < max_iterations && !finished; ++i, z = next_value(z)) {
+          for (i = 0; i &lt; max_iterations &amp;&amp; !finished; ++i, z = next_value(z)) {
             root = classify_root(z, precision);
             finished = (root != 0);
           }
         
           return {root, i};
         }
-        </code></pre>
-        Here is newton_fractal.cpp:
-        <pre><code>
+        </cstdio></cmath></code></pre>
+    Here is newton_fractal.cpp:
+    <pre><code>
         #include "newton_fractal.hpp"
         
         #include "complex.hpp"
@@ -314,8 +317,8 @@
         
           Image image(x_size, y_size);
         
-          for (int i = 0; i < y_size; ++i) {
-            for (int j = 0; j < x_size; ++j) {
+          for (int i = 0; i &lt; y_size; ++i) {
+            for (int j = 0; j &lt; x_size; ++j) {
               const Complex starting_point = {
                   x_start + j * x_step,
                   y_start + i * y_step,
@@ -348,9 +351,9 @@
         
           return image;
         }
-        </code></pre>
-        Here is poly.cpp:
-        <pre><code>
+        </int></code></pre>
+    Here is poly.cpp:
+    <pre><code>
         #include "poly.hpp"
         
         #include "complex.hpp"
@@ -368,8 +371,8 @@
           return z3;
         }
         </code></pre>
-        Here is complex.hpp:
-        <pre><code>
+    Here is complex.hpp:
+    <pre><code>
         #ifndef COMPLEX_HPP
         #define COMPLEX_HPP
         
@@ -407,8 +410,8 @@
         Complex minus(Complex, Complex);
         
         #endif // COMPLEX_HPP</code></pre>
-        Here is image.hpp:
-        <pre><code>
+    Here is image.hpp:
+    <pre><code>
         #ifndef IMAGE_HPP
         #define IMAGE_HPP
         
@@ -437,8 +440,8 @@
         
         #endif // IMAGE_HPP
         </code></pre>
-        Here is newton.hpp:
-        <pre><code>
+    Here is newton.hpp:
+    <pre><code>
         #ifndef NEWTON_HPP
         #define NEWTON_HPP
         
@@ -459,8 +462,8 @@
         Solution converges_to(Complex z, double precision, int max_iterations);
         
         #endif // NEWTON_HPP</code></pre>
-        Here is newton_fractal.hpp:
-        <pre><code>
+    Here is newton_fractal.hpp:
+    <pre><code>
         #ifndef NEWTONFRACTAL_HPP
         #define NEWTONFRACTAL_HPP
         
@@ -493,8 +496,8 @@
         
         #endif // NEWTONFRACTAL_HPP
         </code></pre>
-        Here is poly.hpp:
-        <pre><code>
+    Here is poly.hpp:
+    <pre><code>
         #ifndef POLYNOM_HPP
         #define POLYNOM_HPP
         
@@ -515,8 +518,8 @@
 
 
 
-        Here is Makefile:
-        <pre>
+    Here is Makefile:
+    <pre>
     <code>
         CXX = g++
         CXXFLAGS=--std=c++14 
@@ -526,7 +529,7 @@
         all: clean compile test run format
         
         %.o: %.cpp $(HEADERS)
-            $(CXX) -c $< $(CXXFLAGS)
+            $(CXX) -c $&lt; $(CXXFLAGS)
         
         compile: imageMain
         
@@ -537,10 +540,10 @@
             $(CXX) -o $@ $^ $(CXXFLAGS) -lgtest -lpthread -lgtest_main
         
         test: imageTest
-            ./$<
+            ./$&lt;
         
         run: imageMain
-            ./$<
+            ./$&lt;
         
         clean:
             rm -f imageMain imageTest *.o *Main *.ppm 
@@ -553,8 +556,8 @@
 </pre>
 
 
-        Here is erfahrungen.txt:
-        <pre><code>
+    Here is erfahrungen.txt:
+    <pre><code>
         ###############################################################################
         # University of Freiburg                                                      #
         # Summer Semester 2023                                                        #
@@ -577,8 +580,8 @@
         (Aufgabe 1):
           Die Implementierung der [ch].pp-Dateien habe ich auf Basis der Musterlösung vorgenommen. 
           </code></pre>
-        Here is feedback.txt:
-        <pre><code>
+    Here is feedback.txt:
+    <pre><code>
         # Feedback Blatt-05
         
         ## Aufgabe 1 (14/15)
@@ -606,19 +609,16 @@
         
         Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
         lukaskleinert@gmx.net</code></pre>
-
-    </main>
-    <footer>
-
-    </footer>
-
-    <script type="text/javascript">
-        $(function () {
-            $('header a.icon').click(function () {
-                $('nav').toggleClass('responsive');
-            });
-        });
-    </script>
+  </main>
+  <footer>
+  </footer>
+  <script type="text/javascript">
+    $(function () {
+      $('header a.icon').click(function () {
+        $('nav').toggleClass('responsive');
+      });
+    });
+  </script>
 </body>
 
 </html>

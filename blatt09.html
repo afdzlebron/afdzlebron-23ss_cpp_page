@@ -1,42 +1,44 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Programmieren C++ (Blatt-09)</title>
-    <!-- icon -->
-    <!-- <link rel="icon" href="./img/attent.ico" /> -->
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- Webfont -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="./fontawesome/css/all.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <title>Programmieren C++ (Blatt-09)</title>
+  <!-- icon -->
+  <!-- <link rel="icon" href="./img/attent.ico" /> -->
+  <!-- css -->
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <!-- Webfont -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="./fontawesome/css/all.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header id="top">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="blatt01.html">blatt01</a>
-            <a href="blatt02.html">blatt02</a>
-            <a href="blatt03.html">blatt03</a>
-            <a href="blatt04.html">blatt04</a>
-            <a href="blatt05.html">blatt05</a>
-            <a href="blatt06.html">blatt06</a>
-            <a href="blatt07.html">blatt07</a>
-            <a href="blatt08.html">blatt08</a>
-            <a href="#">blatt09</a>
-            <a href="blatt10.html">blatt10</a>
-        </nav>
-        <h1><i class="fa fa-brain"></i> Blatt-09 </h1>
-    </header>
+  <header id="top">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="blatt01.html">blatt01</a>
+      <a href="blatt02.html">blatt02</a>
+      <a href="blatt03.html">blatt03</a>
+      <a href="blatt04.html">blatt04</a>
+      <a href="blatt05.html">blatt05</a>
+      <a href="blatt06.html">blatt06</a>
+      <a href="blatt07.html">blatt07</a>
+      <a href="blatt08.html">blatt08</a>
+      <a href="#">blatt09</a>
+      <a href="blatt10.html">blatt10</a> 
+      <a href="open.html">Open</a>
+      <a href="cml.html">CML</a>
+    </nav>
+    <h1><i class="fa fa-brain"></i> Blatt-09 </h1>
+  </header>
+  <main>
+    Aufgabestellung für Blatt-09:
 
-    <main>
-        Aufgabestellung für Blatt-09:
-
-        <pre>
+    <pre>
             Aufgabe 0:
         
         Im Laufe der nächsten Übungen werden wir uns fÜr das Damenproblem interessieren. 
@@ -84,7 +86,7 @@
         Aufgabe 6 (v.a. zu bearbeiten ist: nqueensMain.cpp)
         Bitte implementieren Sie den Algorithmus von Aufgabe 0, um den BDD für unser Problem zu erstellen.
         Eine hilfreiche Funktion in der Implementierung könnte:
-        `NQueens::check_and_add_child(Node*parent, bool direction, std::stack<Node*> &stack` sein. 
+        `NQueens::check_and_add_child(Node*parent, bool direction, std::stack<node*> &amp;stack` sein. 
         Diese Funktion prüft, ob der Knoten `parent` einen Nachfolger in der Richtung `direction` hat und fügt den neuen Knoten gegebenenfalls dem Stapel hinzu. 
         Die Verwendung dieser Funktion ist optional
         
@@ -120,23 +122,23 @@
         
         
         
-        </pre>
-        Here is bdd.cpp:
-        <pre><code>
+        </node*></pre>
+    Here is bdd.cpp:
+    <pre><code>
         #include "bdd.hpp"
         
         #include <vector>
         
         #include "stack.hpp"
         
-        Node *BDD::import_node(const Board &b) {
+        Node *BDD::import_node(const Board &amp;b) {
           Board a = b;
         
           Node *n = new Node(++fresh_id, b);
         
           nodes.push_back(n);
-          n->if_false = nullptr;
-          n->if_true = nullptr;
+          n-&gt;if_false = nullptr;
+          n-&gt;if_true = nullptr;
         
           if (!root) root = n;
           return n;
@@ -144,23 +146,23 @@
         
         void BDD::connect(Node *parent, Node *children, bool if_true) {
           if (if_true)
-            parent->if_true = children;
+            parent-&gt;if_true = children;
           else
-            parent->if_false = children;
+            parent-&gt;if_false = children;
         }
         
         void BDD::connect_true(Node *parent, bool if_true) {
           if (if_true)
-            parent->if_true = true_node;
+            parent-&gt;if_true = true_node;
           else
-            parent->if_false = true_node;
+            parent-&gt;if_false = true_node;
         }
         
         void BDD::connect_false(Node *parent, bool if_true) {
           if (if_true)
-            parent->if_true = false_node;
+            parent-&gt;if_true = false_node;
           else
-            parent->if_false = false_node;
+            parent-&gt;if_false = false_node;
         }
         
         int BDD::count_true_path() const {
@@ -168,7 +170,7 @@
         
           if (root == nullptr) return count;
         
-          std::vector<Node *> stack;
+          std::vector<node *=""> stack;
           stack.push_back(root);
         
           while (!stack.empty()) {
@@ -178,58 +180,58 @@
             if (current == true_node) {
               count++;
             } else if (current != false_node) {
-              stack.push_back(current->if_true);
-              stack.push_back(current->if_false);
+              stack.push_back(current-&gt;if_true);
+              stack.push_back(current-&gt;if_false);
             }
           }
         
           return count;
         }
         
-        std::ostream &operator<<(std::ostream &stream, const BDD &bdd) {
-          std::vector<Node *> queue;
+        std::ostream &amp;operator&lt;&lt;(std::ostream &amp;stream, const BDD &amp;bdd) {
+          std::vector<node *=""> queue;
           if (bdd.root) queue.push_back(bdd.root);
           const std::string true_name("true");
           const std::string false_name("false");
         
-          stream << "digraph BDD\n {";
+          stream &lt;&lt; "digraph BDD\n {";
         
-          for (const auto &node : bdd.nodes) {
-            stream << node->id << "[fontname=\"Comic Mono\",label= \"" << *node
-                   << "\"]\n";
+          for (const auto &amp;node : bdd.nodes) {
+            stream &lt;&lt; node-&gt;id &lt;&lt; "[fontname=\"Comic Mono\",label= \"" &lt;&lt; *node
+                   &lt;&lt; "\"]\n";
           }
         
-          for (const auto &b : bdd.nodes) {
+          for (const auto &amp;b : bdd.nodes) {
             // connect the current node to its true descendant
-            stream << b->id << " -> ";
-            if (b->if_true != bdd.true_node && b->if_true != bdd.false_node)
-              stream << b->if_true->id << ";\n";
+            stream &lt;&lt; b-&gt;id &lt;&lt; " -&gt; ";
+            if (b-&gt;if_true != bdd.true_node &amp;&amp; b-&gt;if_true != bdd.false_node)
+              stream &lt;&lt; b-&gt;if_true-&gt;id &lt;&lt; ";\n";
             else
-              stream << (b->if_true == bdd.true_node ? true_name : false_name) << ";\n";
+              stream &lt;&lt; (b-&gt;if_true == bdd.true_node ? true_name : false_name) &lt;&lt; ";\n";
         
             // connect the current node to its false descendant
-            stream << b->id << " -> ";
-            if (b->if_false != bdd.true_node && b->if_false != bdd.false_node)
-              stream << b->if_false->id;
+            stream &lt;&lt; b-&gt;id &lt;&lt; " -&gt; ";
+            if (b-&gt;if_false != bdd.true_node &amp;&amp; b-&gt;if_false != bdd.false_node)
+              stream &lt;&lt; b-&gt;if_false-&gt;id;
             else
-              stream << (b->if_false == bdd.true_node ? true_name : false_name);
-            stream << "[style=dotted]"
-                   << ";\n";
+              stream &lt;&lt; (b-&gt;if_false == bdd.true_node ? true_name : false_name);
+            stream &lt;&lt; "[style=dotted]"
+                   &lt;&lt; ";\n";
           }
         
-          stream << "}";
+          stream &lt;&lt; "}";
         
           return stream;
         }
-        </code></pre>
-        Here is bddMain.cpp:
-        <pre><code>
+        </node></node></vector></code></pre>
+    Here is bddMain.cpp:
+    <pre><code>
         #include "bdd.hpp"
         
         int main() { BDD bdd; }</code></pre>
-        Here is bddTest.cpp:
-        <pre><code>
-        #include <gtest/gtest.h>
+    Here is bddTest.cpp:
+    <pre><code>
+        #include <gtest gtest.h="">
         
         #include <fstream>
         #include <iostream>
@@ -255,8 +257,8 @@
           Node *b2 = bdd.import_node(b);
           bdd.connect(a1, a2, true);
           bdd.connect(a1, b2, false);
-          ASSERT_EQ(a1->if_true, a2);
-          ASSERT_EQ(a1->if_false, b2);
+          ASSERT_EQ(a1-&gt;if_true, a2);
+          ASSERT_EQ(a1-&gt;if_false, b2);
           ASSERT_EQ(bdd.root, a1);
         
           bdd.connect_true(a2, true);
@@ -270,7 +272,7 @@
           std::ofstream myfile;
           myfile.open("small_test_bdd.txt");
           if (myfile.is_open()) {
-            myfile << bdd;
+            myfile &lt;&lt; bdd;
             myfile.close();
           }
         }
@@ -279,9 +281,9 @@
           testing::InitGoogleTest();
           return RUN_ALL_TESTS();
         }
-        </code></pre>
-        Here is board.cpp:
-        <pre><code>
+        </iostream></fstream></gtest></code></pre>
+    Here is board.cpp:
+    <pre><code>
         #include "board.hpp"
         
         #include <assert.h>
@@ -290,8 +292,8 @@
         
         bool Board::has_next(bool taken) const {
           int position_to_change = -1;
-          for (int i = 0; i < size; ++i) {
-            if (board[i] <= 0) {
+          for (int i = 0; i &lt; size; ++i) {
+            if (board[i] &lt;= 0) {
               position_to_change = i;
               break;
             }
@@ -301,15 +303,15 @@
         
           const int value = board[position_to_change];
         
-          if (!taken && size == -value + 1) return false;
+          if (!taken &amp;&amp; size == -value + 1) return false;
         
           return true;
         }
         
         void Board::next(bool taken) {
           int position_to_change = -1;
-          for (int i = 0; i < size; ++i) {
-            if (board[i] <= 0) {
+          for (int i = 0; i &lt; size; ++i) {
+            if (board[i] &lt;= 0) {
               position_to_change = i;
               break;
             }
@@ -327,19 +329,19 @@
             board[position_to_change] -= 1;
         }
         
-        std::ostream &operator<<(std::ostream &stream, const Board &board) {
-          for (int line = 0; line < board.size; ++line) {
-            stream << "|";
-            for (int row = 0; row < board.size; ++row) {
+        std::ostream &amp;operator&lt;&lt;(std::ostream &amp;stream, const Board &amp;board) {
+          for (int line = 0; line &lt; board.size; ++line) {
+            stream &lt;&lt; "|";
+            for (int row = 0; row &lt; board.size; ++row) {
               if (board.board[row] - 1 == line)
-                stream << "d";
-              else if (board.board[row] < 0 && line <= -board.board[row] - 1)
-                stream << ".";
+                stream &lt;&lt; "d";
+              else if (board.board[row] &lt; 0 &amp;&amp; line &lt;= -board.board[row] - 1)
+                stream &lt;&lt; ".";
               else
-                stream << " ";
-              stream << "|";
+                stream &lt;&lt; " ";
+              stream &lt;&lt; "|";
             }
-            stream << "\n";
+            stream &lt;&lt; "\n";
           }
           return stream;
         }
@@ -348,11 +350,11 @@
         // have the position and (ii) are on the same diagonal if the distance is the
         // same as the row distance.
         bool Board::is_valid() const {
-          for (int i = 0; i < size; ++i) {
-            if (board[i] < 0) continue;
-            if (board[i] > 0) {
-              for (int j = 0; j < size; ++j) {
-                if (i == j || board[j] <= 0) continue;
+          for (int i = 0; i &lt; size; ++i) {
+            if (board[i] &lt; 0) continue;
+            if (board[i] &gt; 0) {
+              for (int j = 0; j &lt; size; ++j) {
+                if (i == j || board[j] &lt;= 0) continue;
                 if (board[i] == board[j]) {
                   return false;
                 }
@@ -365,15 +367,15 @@
         }
         
         bool Board::is_full() const {
-          for (int i = 0; i < size; ++i) {
-            if (board[i] <= 0) return false;
+          for (int i = 0; i &lt; size; ++i) {
+            if (board[i] &lt;= 0) return false;
           }
         
           return true;
-        }</code></pre>
-        Here is boardTest.cpp:
-        <pre><code>
-        #include <gtest/gtest.h>
+        }</string></assert.h></code></pre>
+    Here is boardTest.cpp:
+    <pre><code>
+        #include <gtest gtest.h="">
         
         #include "board.hpp"
         
@@ -419,7 +421,7 @@
           b.board[2] = 2;
         
           std::stringstream b_position;
-          b_position << b;
+          b_position &lt;&lt; b;
           ASSERT_EQ(b_position.str(),
                     "| |d| |\n"
                     "| | |d|\n"
@@ -429,7 +431,7 @@
           b.board[2] = 2;
         
           std::stringstream c_position;
-          c_position << b;
+          c_position &lt;&lt; b;
           ASSERT_EQ(c_position.str(),
                     "|.|d| |\n"
                     "|.| |d|\n"
@@ -473,18 +475,18 @@
           testing::InitGoogleTest();
           return RUN_ALL_TESTS();
         }
-        </code></pre>
-        Here is node.cpp:
-        <pre><code>
+        </gtest></code></pre>
+    Here is node.cpp:
+    <pre><code>
         #include "node.hpp"
         
-        std::ostream &operator<<(std::ostream &stream, const Node &node) {
-          stream << node.configuration;
+        std::ostream &amp;operator&lt;&lt;(std::ostream &amp;stream, const Node &amp;node) {
+          stream &lt;&lt; node.configuration;
           return stream;
         }
         </code></pre>
-        Here is nqueens.cpp:
-        <pre><code>
+    Here is nqueens.cpp:
+    <pre><code>
         #include "nqueens.hpp"
         
         #include <fstream>
@@ -493,8 +495,8 @@
         // connect Node parent to its child (direction true or false) and pushing the
         // node to the stack if needed
         void NQueens::check_and_add_child(Node *parent, bool direction,
-                                          std::stack<Node *> &stack) {
-          Board b = parent->get_configuration();
+                                          std::stack<node *=""> &amp;stack) {
+          Board b = parent-&gt;get_configuration();
           if (!b.has_next(direction)) {
             if (direction) {
               bdd.connect_true(parent, true);
@@ -518,7 +520,7 @@
         }
         void NQueens::construct_bdd() {
           Board b(size);
-          std::stack<Node *> stack;
+          std::stack<node *=""> stack;
           Node *root = bdd.import_node(b);
           stack.push(root);
         
@@ -528,18 +530,18 @@
             check_and_add_child(parent, true, stack);
             check_and_add_child(parent, false, stack);
           }
-        }</code></pre>
-        Here is nqueensMain.cpp:
-        <pre><code>
+        }</node></node></stack></fstream></code></pre>
+    Here is nqueensMain.cpp:
+    <pre><code>
         #include "nqueens.hpp"
         
         int main() {
           NQueens queens(11);
-          std::cout << queens.count_solutions();
+          std::cout &lt;&lt; queens.count_solutions();
         }</code></pre>
-        Here is nqueensTest.cpp:
-        <pre><code>
-        #include <gtest/gtest.h>
+    Here is nqueensTest.cpp:
+    <pre><code>
+        #include <gtest gtest.h="">
         
         #include "nqueens.hpp"
         
@@ -559,58 +561,58 @@
           testing::InitGoogleTest();
           return RUN_ALL_TESTS();
         }
-        </code></pre>
-        Here is stack.cpp:
-        <pre><code>
+        </gtest></code></pre>
+    Here is stack.cpp:
+    <pre><code>
         #include "stack.hpp"
         
         #include "board.hpp"
         #include "node.hpp"
         
-        template <typename T>
-        void Stack<T>::reserve(int n) {
-          if (n < capacity) return;
+        template <typename t="">
+        void Stack<t>::reserve(int n) {
+          if (n &lt; capacity) return;
         
           capacity = n;
           T *nb = new T[n];
-          for (int i = 0; i < size; ++i) nb[i] = stack[i];
+          for (int i = 0; i &lt; size; ++i) nb[i] = stack[i];
         
           delete[] stack;
           stack = nb;
         }
         
-        template <typename T>
-        void Stack<T>::push(const T &board) {
-          if (size + 1 >= capacity) reserve(2 * capacity);
+        template <typename t="">
+        void Stack<t>::push(const T &amp;board) {
+          if (size + 1 &gt;= capacity) reserve(2 * capacity);
         
-          assert(size < capacity);
+          assert(size &lt; capacity);
           stack[size] = std::move(board);
           ++size;
         }
         
-        template <typename T>
-        void Stack<T>::pop() {
+        template <typename t="">
+        void Stack<t>::pop() {
           if (!size) return;
           --size;
         }
         
-        template <typename T>
-        T Stack<T>::top() const {
+        template <typename t="">
+        T Stack<t>::top() const {
           return stack[size - 1];
         }
         
-        template <typename T>
-        bool Stack<T>::empty() const {
+        template <typename t="">
+        bool Stack<t>::empty() const {
           return size == 0;
         }
         
         // instantiation
-        template class Stack<Node *>;
-        template class Stack<Board *>;
-        template class Stack<Board>;</code></pre>
-        Here is stackTest.cpp:
-        <pre><code>
-        #include <gtest/gtest.h>
+        template class Stack<node *="">;
+        template class Stack<board *="">;
+        template class Stack<board>;</board></board></node></t></typename></t></typename></t></typename></t></typename></t></typename></code></pre>
+    Here is stackTest.cpp:
+    <pre><code>
+        #include <gtest gtest.h="">
         
         #include "board.hpp"
         #include "stack.hpp"
@@ -618,7 +620,7 @@
         TEST(StackTest, pushTest) {
           const Board a(4);
           const Board b(5);
-          Stack<Board> s;
+          Stack<board> s;
         
           ASSERT_TRUE(s.empty());
           s.push(a);
@@ -648,13 +650,13 @@
           testing::InitGoogleTest();
           return RUN_ALL_TESTS();
         }
-        </code></pre>
-        Here is bdd.hpp:
-        <pre><code>
+        </board></gtest></code></pre>
+    Here is bdd.hpp:
+    <pre><code>
         #ifndef BLATT_BDD_BDD
         #define BLATT_BDD_BDD
         
-        #include <gtest/gtest.h>
+        #include <gtest gtest.h="">
         
         #include <ostream>
         #include <vector>
@@ -682,16 +684,16 @@
          public:
           BDD() : fresh_id(0), root(nullptr) {}
         
-          BDD(const BDD &) = delete;
-          BDD(BDD &&) = delete;
+          BDD(const BDD &amp;) = delete;
+          BDD(BDD &amp;&amp;) = delete;
         
           // This function imports a Board and returns a node. The successors of the
           // nodes are set to the false node automatically.
-          Node *import_node(const Board &b);
+          Node *import_node(const Board &amp;b);
         
           // destructor
           ~BDD() {
-            for (std::vector<Node *>::size_type i = 0; i < nodes.size(); ++i) {
+            for (std::vector<node *="">::size_type i = 0; i &lt; nodes.size(); ++i) {
               delete nodes[i];
             }
           }
@@ -711,7 +713,7 @@
           int count_true_path() const;
         
           // Write the graph as a dot (graphviz) file.
-          friend std::ostream &operator<<(std::ostream &stream, const BDD &bdd);
+          friend std::ostream &amp;operator&lt;&lt;(std::ostream &amp;stream, const BDD &amp;bdd);
         
          private:
           // we number of nodes starting from 0 upwards.
@@ -726,19 +728,19 @@
           Node *const false_node = (Node *)2;
         
           // A list of all nodes within the class.
-          std::vector<Node *> nodes;
+          std::vector<node *=""> nodes;
         
           FRIEND_TEST(BDDTest, basicTest);
         };
         
         #endif
-        </code></pre>
-        Here is board.hpp:
-        <pre><code>
+        </node></node></vector></ostream></gtest></code></pre>
+    Here is board.hpp:
+    <pre><code>
         #ifndef BLATT_BDD_BOARD
         #define BLATT_BDD_BOARD
         
-        #include <gtest/gtest.h>
+        #include <gtest gtest.h="">
         
         #include <cstdio>
         #include <string>
@@ -749,46 +751,46 @@
         // Our class internally uses an array of int of a given size, where each int
         // means:
         //   - == 0 no queens in this column
-        //   - <0 no queen up to that position
-        //   - >0 the only queen is at that position.
+        //   - &lt;0 no queen up to that position
+        //   - &gt;0 the only queen is at that position.
         //
         // The board is already tailored toward our needs by disallowing 2 queens in
         // this column. We also are using a fixed size.
         //
         // For each board, there are at most two successors: either the queen is at the
-        // next empty position (the column value was <= 0 and has now value > 0) or it
-        // is not (the column value was <=0 and is now decreased by 1).
+        // next empty position (the column value was &lt;= 0 and has now value &gt; 0) or it
+        // is not (the column value was &lt;=0 and is now decreased by 1).
         class Board {
          public:
           Board() : size(0), board(nullptr) {}
         
           Board(int n) : size(n) {
             board = new int[size];
-            for (int i = 0; i < size; ++i) board[i] = 0;
+            for (int i = 0; i &lt; size; ++i) board[i] = 0;
           }
         
-          Board(const Board &pos) {
+          Board(const Board &amp;pos) {
             size = pos.size;
             board = new int[size];
-            for (int i = 0; i < size; ++i) board[i] = pos.board[i];
+            for (int i = 0; i &lt; size; ++i) board[i] = pos.board[i];
           }
         
-          Board(Board &&pos) {
+          Board(Board &amp;&amp;pos) {
             size = pos.size;
             board = pos.board;
             pos.size = 0;
             pos.board = nullptr;
           }
         
-          Board operator=(const Board &pos) {
+          Board operator=(const Board &amp;pos) {
             delete[] board;
             size = pos.size;
             board = new int[size];
-            for (int i = 0; i < size; ++i) board[i] = pos.board[i];
+            for (int i = 0; i &lt; size; ++i) board[i] = pos.board[i];
             return *this;
           }
         
-          Board operator=(Board &&pos) {
+          Board operator=(Board &amp;&amp;pos) {
             size = pos.size;
             board = pos.board;
             pos.size = 0;
@@ -798,9 +800,9 @@
         
           ~Board() { delete[] board; }
         
-          bool operator==(const Board &b) const {
+          bool operator==(const Board &amp;b) const {
             if (size != b.size) return false;
-            for (int i = 0; i < size; ++i) {
+            for (int i = 0; i &lt; size; ++i) {
               if (board[i] != b.board[i]) return false;
             }
             return true;
@@ -819,7 +821,7 @@
           // |_|.|_|
           // |_| |_|
           // here the queen in the second column can only be at the very bottomx.
-          friend std::ostream &operator<<(std::ostream &stream, const Board &board);
+          friend std::ostream &amp;operator&lt;&lt;(std::ostream &amp;stream, const Board &amp;board);
         
           // checks if the current board is compatible with the rules
           bool is_valid() const;
@@ -836,9 +838,9 @@
         };
         
         #endif
-        </code></pre>
-        Here is node.hpp:
-        <pre><code>
+        </string></cstdio></gtest></code></pre>
+    Here is node.hpp:
+    <pre><code>
         #ifndef BLATT_BDD_NODE
         #define BLATT_BDD_NODE
         
@@ -850,9 +852,9 @@
         // We initialize the successor to be the null pointer.
         class Node {
          public:
-          Node(int fresh_id, const Board &config)
+          Node(int fresh_id, const Board &amp;config)
               : id(fresh_id), configuration(config), if_true(nullptr) {}
-          Node(int fresh_id, Board &&config)
+          Node(int fresh_id, Board &amp;&amp;config)
               : id(fresh_id), configuration(config), if_true(nullptr) {}
         
          public:
@@ -861,7 +863,7 @@
           const int id;
         
           // brind the content of
-          friend std::ostream &operator<<(std::ostream &stream, const Node &bdd);
+          friend std::ostream &amp;operator&lt;&lt;(std::ostream &amp;stream, const Node &amp;bdd);
         
           // returns a copy of the configuration
           Board get_configuration() const { return configuration; };
@@ -877,14 +879,14 @@
           // flag indicating whether we should delete the node
           bool to_delete = false;
         
-          bool operator==(const Node &n) const {
+          bool operator==(const Node &amp;n) const {
             return configuration == n.configuration;
           }
         };
         
         #endif</code></pre>
-        Here is nqueens.hpp:
-        <pre><code>
+    Here is nqueens.hpp:
+    <pre><code>
         #ifndef BLATT_BDD_NQUEENS
         #define BLATT_BDD_NQUEENS
         
@@ -907,21 +909,21 @@
           // connect parent to its child (true or false depending on direction) and
           // pushing the node to the stack
           void check_and_add_child(Node *parent, bool direction,
-                                   std::stack<Node *> &stack);
+                                   std::stack<node *=""> &amp;stack);
           int size;
           BDD bdd;
         };
-        #endif</code></pre>
-        Here is stack.hpp:
-        <pre><code>
+        #endif</node></stack></code></pre>
+    Here is stack.hpp:
+    <pre><code>
         #ifndef BLATT_BDD_STACK
         #define BLATT_BDD_STACK
         
-        #include <gtest/gtest.h>
+        #include <gtest gtest.h="">
         
         #include "board.hpp"
         
-        template <typename T>
+        template <typename t="">
         class Stack {
          public:
           Stack() : size(0), capacity(1), stack(nullptr) {}
@@ -929,7 +931,7 @@
           ~Stack() { delete[] stack; }
         
           // push the element to the stack
-          void push(const T &pos);
+          void push(const T &amp;pos);
         
           // last element added
           T top() const;
@@ -956,9 +958,9 @@
         };
         
         #endif
-        </code></pre>
-        Here is Makefile:
-        <pre>
+        </typename></gtest></code></pre>
+    Here is Makefile:
+    <pre>
             <code>
                 CXX = g++
                 CXXFLAGS=  --std=c++14 #-Wextra -Wall -pedantic
@@ -971,7 +973,7 @@
                 all: clean compile
                 
                 %.o: %.cpp $(HEADERS)
-                    $(CXX) $(CXXFLAGS) -c $<
+                    $(CXX) $(CXXFLAGS) -c $&lt;
                 
                 %Main: %Main.cpp $(OBJECTS)
                     $(CXX) $(CXXFLAGS) -o $@ $^
@@ -985,7 +987,7 @@
                     echo "$(TESTS)"
                     for test in `ls *Test` ; \
                     do \
-                    ./$$test || (echo "failed test $$test" && exit 255) \
+                    ./$$test || (echo "failed test $$test" &amp;&amp; exit 255) \
                     done
                 
                 clean:
@@ -996,8 +998,8 @@
             </code>
         </pre>
 
-        Here is erfahrungen.txt:
-        <pre><code>
+    Here is erfahrungen.txt:
+    <pre><code>
         ###############################################################################
         # University of Freiburg                                                      #
         # Summer Semester 2023                                                        #
@@ -1017,10 +1019,10 @@
         (Aufgabe 7)
          
         Im bdd.cpp des `skeleton`s wird `#include <vector>` vorgegeben, sodass bei der Implementierung
-        `std::vector<Node *> stack;`
-        Man könnte dennoch dasselbe mit #include <stack>` machen, oder nicht? </code></pre>
-        Here is feedback.txt:
-        <pre><code>
+        `std::vector<node *=""> stack;`
+        Man könnte dennoch dasselbe mit #include <stack>` machen, oder nicht? </stack></node></vector></code></pre>
+    Here is feedback.txt:
+    <pre><code>
         # Feedback Blatt-09
         
         ## Aufgabe 6 (15/15)
@@ -1043,20 +1045,16 @@
         Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
         lukaskleinert@gmx.net
         Wenn du noch keine Mail bzgl. Tutorentreffen von mir bekommen hast, melde dich bitte!</code></pre>
-
-    </main>
-
-    <footer>
-
-    </footer>
-
-    <script type="text/javascript">
-        $(function () {
-            $('header a.icon').click(function () {
-                $('nav').toggleClass('responsive');
-            });
-        });
-    </script>
+  </main>
+  <footer>
+  </footer>
+  <script type="text/javascript">
+    $(function () {
+      $('header a.icon').click(function () {
+        $('nav').toggleClass('responsive');
+      });
+    });
+  </script>
 </body>
 
 </html>

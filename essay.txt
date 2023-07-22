@@ -1,0 +1,28 @@
+
+
+INSTRUCTIONS
+
+The purpose of this task is to give you the opportunity to apply the concepts avaiable in the current website (specially all the modules, i.e. module 01, module 02, etc.) and to discuss some of the key ideas in your own words. Follow the instructions provided and answer each question. T
+
+Future Open Science Practitioner Scenario:
+
+Imagine that you are planning a research project (be it your term paper, Bachelor, Master, or PhD project) and you want to apply for a research grant within the Open Science Framework.
+
+The funder demands that you prepare a Data Management Plan (DMP). As you’ve learned in this course, data are more than just numeric measurements and results that emerge from experiments. Data can refer to a wide range of information that you might produce during research.
+
+First, write a simple DMP that describes the collection, processing, storage, archiving, and prospective publication of research data. Bullet points are sufficient!
+
+
+Context: current website. 
+The purpose of this task is to give you the opportunity to apply the concepts avaiable in the current website (specially all the modules, i.e. module 01, module 02, etc.) and to discuss some of the key ideas in your own words.
+
+Write a short essay about the challenges and benefits of sharing the research data of your project by integrating the answers to the following questions into your essay:
+
+    If you think of your research, what kinds of data do you produce and what are some challenges and opportunities with this kind of data?
+    What is the Open Science Policy at your university? Take a quick search of the Open-Access-Policy, and Policy of Research Data Management at the University of Freiburg.
+    What ethical issues might such data arise?
+    How could other students and researchers benefit from it if the data were accessible?
+
+Please note:
+Use academic writing style inspired by the vocabulary of the current website, be objective, use formal wording.
+Your essay should not exceed 1500 words (ca. 3 pages). Format: Arial, 12 pt, single-spaced.

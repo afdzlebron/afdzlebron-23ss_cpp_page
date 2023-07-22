@@ -1,53 +1,56 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Programmieren C++ (Blatt-04)</title>
-    <!-- icon -->
-    <!-- <link rel="icon" href="./img/attent.ico" /> -->
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- Webfont -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="./fontawesome/css/all.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <title>Programmieren C++ (Blatt-04)</title>
+  <!-- icon -->
+  <!-- <link rel="icon" href="./img/attent.ico" /> -->
+  <!-- css -->
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <!-- Webfont -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="./fontawesome/css/all.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header id="top">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="blatt01.html">blatt01</a>
-            <a href="blatt02.html">blatt02</a>
-            <a href="blatt03.html">blatt03</a>
-            <a href="#">blatt04</a>
-            <a href="blatt05.html">blatt05</a>
-            <a href="blatt06.html">blatt06</a>
-            <a href="blatt07.html">blatt07</a>
-            <a href="blatt08.html">blatt08</a>
-            <a href="blatt09.html">blatt09</a>
-            <a href="blatt10.html">blatt10</a>
-        </nav>
-        <h1><i class="fa fa-brain"></i> Blatt-04 </h1>
-    </header>
-    <main>
-        Here is poly.cpp:
-        <pre><code>
+  <header id="top">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="blatt01.html">blatt01</a>
+      <a href="blatt02.html">blatt02</a>
+      <a href="blatt03.html">blatt03</a>
+      <a href="#">blatt04</a>
+      <a href="blatt05.html">blatt05</a>
+      <a href="blatt06.html">blatt06</a>
+      <a href="blatt07.html">blatt07</a>
+      <a href="blatt08.html">blatt08</a>
+      <a href="blatt09.html">blatt09</a>
+      <a href="blatt10.html">blatt10</a> 
+      <a href="open.html">Open</a>
+      <a href="cml.html">CML</a>
+    </nav>
+    <h1><i class="fa fa-brain"></i> Blatt-04 </h1>
+  </header>
+  <main>
+    Here is poly.cpp:
+    <pre><code>
         // Copyright 2023, AFL
         #include "poly.hpp"
         
         #include <cmath>
         #include <cstdio>
         
-        bool equal(Complex a, Complex b) { return (a.re == b.re) && (a.im == b.im); }
+        bool equal(Complex a, Complex b) { return (a.re == b.re) &amp;&amp; (a.im == b.im); }
         
         Complex mult(Complex a, Complex b) {
           Complex result;
           result.re = a.re * b.re - a.im * b.im;
           result.im = a.re * b.im + a.im * b.re;
-          if (std::isnan(result.re) && std::isnan(result.im)) {
+          if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;
           }
@@ -59,7 +62,7 @@
           Complex result;
           result.re = (a.re * b.re + a.im * b.im) / div;
           result.im = (a.im * b.re - a.re * b.im) / div;
-          if (std::isnan(result.re) && std::isnan(result.im)) {
+          if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;
           }
@@ -70,7 +73,7 @@
           Complex result;
           result.re = a.re + b.re;
           result.im = a.im + b.im;
-          if (std::isnan(result.re) && std::isnan(result.im)) {
+          if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;
           }
@@ -82,7 +85,7 @@
           Complex result;
           result.re = z.re / div;
           result.im = -z.im / div;
-          if (std::isnan(result.re) && std::isnan(result.im)) {
+          if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;
           }
@@ -93,7 +96,7 @@
           Complex result;
           result.re = a.re - b.re;
           result.im = a.im - b.im;
-          if (std::isnan(result.re) && std::isnan(result.im)) {
+          if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;
           }
@@ -106,7 +109,7 @@
           Complex minus_one = {-1, 0};
           Complex result = mult(z, mult(z, z));
           result = add(result, minus_one);
-          if (std::isnan(result.re) && std::isnan(result.im)) {
+          if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;
           }
@@ -116,7 +119,7 @@
         Complex derived_poly(Complex z) {
           Complex three = {3, 0};
           Complex result = mult(three, mult(z, z)); // 3*z^2
-          if (std::isnan(result.re) && std::isnan(result.im)) {
+          if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;
           }
@@ -134,10 +137,10 @@
         int nearRoot(Complex x, double precision) {
           Complex roots[] = {{1, 0}, {-0.5, sqrt(3) / 2}, {-0.5, -sqrt(3) / 2}};
           double distance = precision * 2;
-          for (int i = 0; i < 3; i++) {
+          for (int i = 0; i &lt; 3; i++) {
             distance = sqrt((x.re - roots[i].re) * (x.re - roots[i].re) +
                             (x.im - roots[i].im) * (x.im - roots[i].im));
-            if (distance <= precision) {
+            if (distance &lt;= precision) {
               return i + 1;
             }
           }
@@ -151,10 +154,10 @@
           int steps = 0;
           const int max_steps = 20;
         
-          while (steps < max_steps) {
+          while (steps &lt; max_steps) {
             x = newtonMethod(x);
             calc = nearRoot(x, precision);
-            if (calc > 0) {
+            if (calc &gt; 0) {
               return calc;
             }
             steps++;
@@ -173,8 +176,8 @@
           const double precision = 0.000001;
           const char *comment = "# file created by AFL";
           fprintf(fp, "P3\n %s\n %d\n %d\n 255\n", comment, x_max, y_max);
-          for (int y = y_max - 1; y >= 0; y--) {
-            for (int x = 0; x < x_max; x++) {
+          for (int y = y_max - 1; y &gt;= 0; y--) {
+            for (int x = 0; x &lt; x_max; x++) {
               Complex z = {x * 4.0 / x_max - 2.0, y * 4.0 / y_max - 2.0};
               int root = classify_root(z, precision);
               if (root == 1) {
@@ -198,8 +201,8 @@
           int size_y = (y_end - y_start) / y_step;
           int *image = new int[size_x * size_y * 3];
         
-          for (int y = 0; y < size_y; y++) {
-            for (int x = 0; x < size_x; x++) {
+          for (int y = 0; y &lt; size_y; y++) {
+            for (int x = 0; x &lt; size_x; x++) {
               Complex z = {x_start + x * x_step, y_start + y * y_step};
               int root = classify_root(z, precision);
               if (root == 1) {
@@ -234,8 +237,8 @@
           const char *comment = "# file created by AFL";
           fprintf(fp, "P3\n %s\n %d\n %d\n 255\n", comment, size_x, size_y);
         
-          for (int y = size_y - 1; y >= 0; y--) {
-            for (int x = 0; x < size_x; x++) {
+          for (int y = size_y - 1; y &gt;= 0; y--) {
+            for (int x = 0; x &lt; size_x; x++) {
               fprintf(fp, "%d %d %d ", image[(y * size_x + x) * 3],
                       image[(y * size_x + x) * 3 + 1], image[(y * size_x + x) * 3 + 2]);
             }
@@ -244,9 +247,9 @@
         
           fclose(fp);
         }
-        </code></pre>
-        Here is polyMain.cpp:
-        <pre><code>
+        </cstdio></cmath></code></pre>
+    Here is polyMain.cpp:
+    <pre><code>
         // Copyright 2023, AFL
         #include <cmath>
         #include <cstdio>
@@ -289,11 +292,11 @@
         
           drawing_ppm("newton_fractal.ppm", image, size_x, size_y);
         }
-        </code></pre>
-        Here is polyTest.cpp:
-        <pre><code>
+        </cstdio></cmath></code></pre>
+    Here is polyTest.cpp:
+    <pre><code>
         // Copyright 2023, AFL
-        #include <gtest/gtest.h>
+        #include <gtest gtest.h="">
         
         #include "poly.hpp"
         
@@ -356,9 +359,9 @@
           Complex expected_result{33, 180};
           EXPECT_TRUE(equal(derived_poly(e), expected_result));
         }
-        </code></pre>
-        Here is poly.hpp:
-        <pre><code>
+        </gtest></code></pre>
+    Here is poly.hpp:
+    <pre><code>
         // Copyright 2023, AFL
         #ifndef POLY_HPP
         #define POLY_HPP
@@ -404,8 +407,8 @@
         </code></pre>
 
 
-        Here is Makefile:
-        <pre>
+    Here is Makefile:
+    <pre>
     <code>
         CXX = g++
         #CXX = clang++ # tends to give better error messages
@@ -416,7 +419,7 @@
         all: clean compile test run format
         
         %.o: %.cpp $(HEADERS)
-            $(CXX) -c $< $(CXXFLAGS)
+            $(CXX) -c $&lt; $(CXXFLAGS)
         
         %Main: %Main.o %.o
             $(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
@@ -431,10 +434,10 @@
             ./polyTest
         
         test: polyTest
-            ./$<
+            ./$&lt;
         
         run: polyMain
-            ./$<
+            ./$&lt;
         
         clean:
             rm -f polyMain polyTest *.o *Main *.ppm 
@@ -445,8 +448,8 @@
     </code>
 </pre>
 
-        Here is erfahrungen.txt:
-        <pre><code>
+    Here is erfahrungen.txt:
+    <pre><code>
         ###############################################################################
         # University of Freiburg                                                      #
         # Summer Semester 2023                                                        #
@@ -472,12 +475,12 @@
         
         (Aufgabe 2)
             Behandlung von `nan`: 
-            `if (std::isnan(result.re) && std::isnan(result.im)) {
+            `if (std::isnan(result.re) &amp;&amp; std::isnan(result.im)) {
             result.re = 0;
             result.im = 0;}`
         </code></pre>
-        Here is feedback.txt:
-        <pre><code>
+    Here is feedback.txt:
+    <pre><code>
         # Feedback Blatt-04
         
         ## Aufgabe 1 (4/4)
@@ -518,19 +521,16 @@
         Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
         lukaskleinert@gmx.net
     </code></pre>
-
-    </main>
-    <footer>
-
-    </footer>
-
-    <script type="text/javascript">
-        $(function () {
-            $('header a.icon').click(function () {
-                $('nav').toggleClass('responsive');
-            });
-        });
-    </script>
+  </main>
+  <footer>
+  </footer>
+  <script type="text/javascript">
+    $(function () {
+      $('header a.icon').click(function () {
+        $('nav').toggleClass('responsive');
+      });
+    });
+  </script>
 </body>
 
 </html>

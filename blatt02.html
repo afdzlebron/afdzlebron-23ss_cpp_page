@@ -1,47 +1,50 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Programmieren C++ (Blatt-02)</title>
-    <!-- icon -->
-    <!-- <link rel="icon" href="./img/attent.ico" /> -->
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- Webfont -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="./fontawesome/css/all.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <title>Programmieren C++ (Blatt-02)</title>
+  <!-- icon -->
+  <!-- <link rel="icon" href="./img/attent.ico" /> -->
+  <!-- css -->
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <!-- Webfont -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="./fontawesome/css/all.css" rel="stylesheet" />ƒ
 </head>
 
 <body>
-    <header id="top">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="blatt01.html">blatt01</a>
-            <a href="#">blatt02</a>
-            <a href="blatt03.html">blatt03</a>
-            <a href="blatt04.html">blatt04</a>
-            <a href="blatt05.html">blatt05</a>
-            <a href="blatt06.html">blatt06</a>
-            <a href="blatt07.html">blatt07</a>
-            <a href="blatt08.html">blatt08</a>
-            <a href="blatt09.html">blatt09</a>
-            <a href="blatt10.html">blatt10</a>
-        </nav>
-        <h1><i class="fa fa-brain"></i> Home </h1>
-    </header>
-    <main>
-        Here is Ptn.cpp:
-        <pre><code>
+  <header id="top">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="blatt01.html">blatt01</a>
+      <a href="#">blatt02</a>
+      <a href="blatt03.html">blatt03</a>
+      <a href="blatt04.html">blatt04</a>
+      <a href="blatt05.html">blatt05</a>
+      <a href="blatt06.html">blatt06</a>
+      <a href="blatt07.html">blatt07</a>
+      <a href="blatt08.html">blatt08</a>
+      <a href="blatt09.html">blatt09</a>
+      <a href="blatt10.html">blatt10</a>
+      <a href="open.html">Open</a>
+      <a href="cml.html">CML</a>
+    </nav>
+    <h1><i class="fa fa-brain"></i> Home </h1>
+  </header>
+  <main>
+    Here is Ptn.cpp:
+    <pre><code>
         // Copyright 2023, AFL
         #include "Ptn.hpp"
         #include "PtnPrint.hpp"
         
         bool is_pythagorean_triple(int n, bool verbose) {
-          for (int a = 1; a <= n; a++) {
-            for (int b = a; b <= n; b++) {
+          for (int a = 1; a &lt;= n; a++) {
+            for (int b = a; b &lt;= n; b++) {
               int c_square = a * a + b * b;
               int c = sqrt(c_square);
               if (c * c == c_square) {
@@ -55,8 +58,8 @@
           return false;
         }
         </code></pre>
-        Here is PtnMain.cpp:
-        <pre><code>
+    Here is PtnMain.cpp:
+    <pre><code>
         // Copyright 2023, AFL
         
         #include "Ptn.hpp"
@@ -68,17 +71,17 @@
           return result;
         }
         </code></pre>
-        Here is PtnPrint.cpp:
-        <pre><code>
+    Here is PtnPrint.cpp:
+    <pre><code>
         // Copyright 2023, AFL
         #include <cstdio>
         void printTr(const char *fmt, int a, int b, int c) { printf(fmt, a, b, c); }
-        </code></pre>
-        Here is PtnTest.cpp:
-        <pre><code>
+        </cstdio></code></pre>
+    Here is PtnTest.cpp:
+    <pre><code>
         // Copyright 2023, AFL
         
-        #include <gtest/gtest.h>
+        #include <gtest gtest.h="">
         
         #include "Ptn.hpp"
         
@@ -93,23 +96,23 @@
         }
         
         int main(int argc, char **argv) {
-          ::testing::InitGoogleTest(&argc, argv);
+          ::testing::InitGoogleTest(&amp;argc, argv);
           return RUN_ALL_TESTS();
         }
         
         // g++ -std=c++0x ptntest.cpp -lgtest -lgtest_main -o ptntest
-        </code></pre>
-        Here is Ptn.hpp:
-        <pre><code>
+        </gtest></code></pre>
+    Here is Ptn.hpp:
+    <pre><code>
         #include <cmath>
         
-        bool is_pythagorean_triple(int n, bool verbose);</code></pre>
-        Here is PtnPrint.hpp:
-        <pre><code>
+        bool is_pythagorean_triple(int n, bool verbose);</cmath></code></pre>
+    Here is PtnPrint.hpp:
+    <pre><code>
         void printTr(const char *fmt, int a, int b, int c);</code></pre>
 
-        Here is Makefile:
-        <pre>
+    Here is Makefile:
+    <pre>
             <code>
                 CXXFLAGS += -std=c++14
         
@@ -138,8 +141,8 @@
             </code>
         </pre>
 
-        Here is blatt-02-erfahrungen.txt:
-        <pre><code>
+    Here is blatt-02-erfahrungen.txt:
+    <pre><code>
         ###############################################################################
         # University of Freiburg                                                      #
         # Summer Semester 2023                                                        #
@@ -165,8 +168,8 @@
         
             
         </code></pre>
-        Here is feedback.txt:
-        <pre><code>
+    Here is feedback.txt:
+    <pre><code>
         # Feedback Blatt-02
         
         ## Aufgabe 1 (8/8)
@@ -184,7 +187,7 @@
         
         Die Funktion ist immer noch nicht korrekt. [-4]
         Beispielsweise sollte ASSERT_EQ(false, is_pythagorean_triple(4, false)); oder ASSERT_EQ(false, is_pythagorean_triple(6, false)); sein.
-        Entweder ist die Bedingung falsch, oder es muss zusätzlich `c > 0` abgefragt werden.
+        Entweder ist die Bedingung falsch, oder es muss zusätzlich `c &gt; 0` abgefragt werden.
         
         ## Aufgabe 4 (0/0)
         
@@ -197,19 +200,16 @@
         
         Falls du Fragen zum Feedback hast, kannst du mir gern eine Mail schreiben
         lukaskleinert@gmx.net </code></pre>
-
-    </main>
-    <footer>
-
-    </footer>
-
-    <script type="text/javascript">
-        $(function () {
-            $('header a.icon').click(function () {
-                $('nav').toggleClass('responsive');
-            });
-        });
-    </script>
+  </main>
+  <footer>
+  </footer>
+  <script type="text/javascript">
+    $(function () {
+      $('header a.icon').click(function () {
+        $('nav').toggleClass('responsive');
+      });
+    });
+  </script>
 </body>
 
 </html>
