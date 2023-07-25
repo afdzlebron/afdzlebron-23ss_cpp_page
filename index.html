@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Open Science - Student Toolkit</title>
+    <title>programming</title>
     <!-- icon -->
     <!-- <link rel="icon" href="./img/attent.ico" /> -->
     <!-- css -->
@@ -33,10 +33,93 @@
             <a href="open.html">Open</a>
             <a href="cml.html">CML</a>
         </nav>
-        <h1><i class="fa fa-brain"></i> Open Science - Student Toolkit </h1>
+        <h1><i class="fa fa-brain"></i> programming </h1>
     </header>
     <main>
-        Nothing here right now.
+        <pre>
+
+Act as profession programmer. 
+Write a python program for managing a journal (log system) with the following requirements: 
+
+The program is presented with a GUI Framework (PyQt5, Tkinter, etc). 
+
+If there is a file name `index.html` in the current directory, it opens it; 	The file should be password protected, thus, in opening the program should ask the user to enter the password for `index.html`.
+
+If there is not file name `index.html` in the current directory, otherwise, it creates it. if the file is gonna be created for the first time, it ask the user to enter a password for protecting it. There is no character requirements for the password. 
+
+Now, after opening or creating `index.html`, It provide some options: 
+(1) Write an entry.
+(2) Search in journal
+(3) Backup journal
+
+If the user chooses  `Write an entry`, : 
+	(1) then the program will ask in which language (1.English, 2.Spanish, 3.German, 4.Latin, 5. Ancient Greek).
+
+	(2) Then it ask the user what kind of entry would he like to write: 
+		1. Free Entry, 
+		2. CBT-base entry, 
+		3. Science-oriented entry
+
+	If ` free entry` is selected, then the program will allow the user to write an entry on the `entry_place_holder`. Latex expressions, adding immages and hyperling are allowed. 
+
+ 	`entry_place_holder` has the following structure: 
+
+```
+        <div>
+			<!-- _date and _time are added automatically; while _place is added by prompting the user to provide some place -->
+            <h4>`_date`<br> `_time` <br> `_place` </h4>
+            <p>
+				 <!-- here is the entry text -->
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
+            </p>
+        </div>
+```
+
+The addition of an entry is embedded like this: 
+```    <main>
+        <h1>Journal</h1>
+        <div>
+            <h2 id="2023">2023</h2>
+            <div> <h3 id="202307">July</h3> <div> <h4>`_date`<br> `_time` <br> `_place` </h4> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, justo vel bibendumlacinia,velitvelittincidunt justo, vel aliquam velit nulla vel nunc. Nulla facilisi. Vivamus euismod, velit velbibendumlacinia </p> </div>
+            </div>
+        </div>
+    </main>````
+
+
+
+that will automatically be written by the program (i.e. the program adds this Information automatically). 
+
+If `Science-oriented entry` is selected, then the program will allow the user to write an entry on the `entry_place_holder`. Latex expressions, adding immages and hyperling are allowed. 
+
+If ` CBT-base entry,` is selected, then the program will ask the use the following question with it respective explanations (between the parenthesis):
+```
+1. What event or situation triggered any negative thoughts or emotions today? 
+	(This question helps you identify the specific event or situation that led to negative thoughts or emotions. By recognizing triggers, you can explore the underlying beliefs and assumptions associated with them.)
+2. What automatic thoughts came to mind during that situation or event? 
+	(Automatic thoughts are the immediate, often unconscious, responses to a triggering event. Identifying these thoughts allows you to examine any cognitive distortions or negative patterns of thinking.)
+3. Are there any thinking errors or cognitive distortions present in those automatic thoughts? 
+	(CBT emphasizes identifying and challenging cognitive distortions. By examining your automatic thoughts, you can look for common thinking errors such as all-or-nothing thinking, overgeneralization, or catastrophizing.)
+4. What evidence supports or contradicts the automatic thoughts? 
+	(This question encourages you to critically evaluate the evidence for and against your automatic thoughts. By examining the objective facts, you can challenge irrational or unhelpful thinking patterns.)
+5. What alternative, more balanced thoughts could replace the automatic thoughts? 
+	(CBT aims to replace negative or distorted thoughts with more balanced and rational ones. Consider alternative perspectives or reframes that align with the evidence and promote healthier thinking patterns.)
+6. How do these thoughts and beliefs impact your emotions and behaviors? 
+	(Reflect on the emotional and behavioral consequences of your thoughts and beliefs. Recognizing the connections between thoughts, emotions, and behaviors can help you understand the impact of your cognitive patterns.)
+7. What alternative behaviors or responses could you engage in to challenge or change your thoughts? 
+	(CBT often involves behavioral experiments or the practice of new coping strategies. Identify alternative behaviors or responses that can help challenge negative thoughts and promote more adaptive behaviors.)
+8. What self-compassionate or supportive statements can you offer yourself? 
+	(Self-compassion is a crucial aspect of CBT. Practice offering yourself supportive, kind, and understanding statements to counter self-criticism and foster self-acceptance.)
+```
+and will write both questions and the user's answer in the `entry_place_holder`.
+
+For any option, the programm, of course, ask the user to provide a actual place for `_place`.
+
+
+If the user chooses  `Search in journal`, the program will ask the user provide a word or phrase to be searched on the whole journal. 
+It will find all instances containing the word or phrase and will export the whole sentences containing them into a txt file. 
+
+If the user chooses  `Backup journal`, the program will create copy of the journal, naming it with the date of the backup. 
+        </pre>
     </main>
     <footer>
     </footer>
