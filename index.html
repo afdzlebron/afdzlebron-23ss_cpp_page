@@ -279,13 +279,13 @@ Aufgabe 3B (Fuzzer (Variante B)):
 
 
       In the following, some examples: 
-    Here is a.constraints:
+    Hier ist a.constraints:
     <pre><code>
       Prozessor,AMD,RAM,6
       Prozessor,AMD,RAM,7
       Prozessor,Intel,RAM,5,Bildschirm,8
     </code></pre>
-    Here is a.models:
+    Hier ist a.models:
     <pre><code>
     Prozessor,Intel,RAM,7,Bildschirm,2
     RAM,6,Prozessor,Intel,Bildschirm,1
@@ -295,13 +295,13 @@ Aufgabe 3B (Fuzzer (Variante B)):
     Prozessor,Intel,RAM,5,Bildschirm,4
     RAM,6,Prozessor,Intel,Bildschirm,8
     </code></pre>
-    Here is a.options:
+    Hier ist a.options:
     <pre><code>
     Prozessor,Intel,AMD
     RAM,5,6,7
     Bildschirm,1,2,4,8
     </code></pre>
-    Here is a2.options:
+    Hier ist a2.options:
     <pre><code>
     Prozessor,Intel,AMD
     RAM,5,6,7
@@ -310,7 +310,7 @@ Aufgabe 3B (Fuzzer (Variante B)):
     </pre>
 
 
-    Here is Makefile:
+    Hier ist Makefile:
     <pre>
             <code>
               CXX = g++
@@ -347,6 +347,92 @@ Aufgabe 3B (Fuzzer (Variante B)):
                 format:
                     clang-format -i *.cpp *.hpp         
             
+                
+            </code>
+        </pre>
+    Hier ist fuzz.sh:
+    <pre>
+            <code>
+                  #!/bin/bash
+
+            FUZZER=./crippled-fuzzer
+            SOLVER=./solverMain
+            CHECKER=./russian-roulette-checker
+
+            if [ -x $FUZZER ];
+            then
+                echo "found fuzzer"
+            else
+                echo "the fuzzer was not found"
+                exit 1
+            fi
+
+
+            if [ -x $SOLVER ];
+            then
+                echo "found solver"
+            else
+                echo "the solver was not found"
+                exit 1
+            fi
+
+
+
+            if [ -x $CHECKER ];
+            then
+                echo "found checker"
+            else
+                echo "the checker was not found"
+                exit 1
+            fi
+
+            echo "starting the tests"
+
+            i=0
+            while [ true ];
+            do
+                echo "*******************************************"
+                echo "************* TEST $i    ******************"
+                i=$((i+1))
+                $FUZZER fuzzer-test.{options,constraints}
+                status=$?
+                if [ "$status" -ne 0 ];
+                then
+              echo "the fuzzer failed on"
+              exit -1;
+                fi;
+
+                $SOLVER fuzzer-test.{options,constraints,models}
+                status=$?
+                if [ "$status" -ne 0 ];
+                then
+              echo "the solver failed on fuzzer-test.{options,constraints,models}"
+              exit -1;
+                fi;
+
+                $CHECKER fuzzer-test.{options,constraints,models}
+                status=$?
+                if [ "$status" -ne 40 -a "$status" -ne 0 ];
+                then
+              echo "the checker failed on fuzzer-test.{options,constraints,models}"
+              exit -1;
+                fi;
+            done
+                
+            </code>
+        </pre>
+    Hier ist Readme.md für `fuzz.sh`:
+    <pre>
+            <code>
+              Dieses Verzeichnis enthält den Fuzzer und das Skript der alles aufruft. Im Moment stehen nur Linux binary Datei zu verfügen.
+
+              Um alles aufzurufen, müsst ihr:
+                1. Die Pfade anpassen in `fuzz.sh`
+                2. Das Skript ausführen mit `./fuzz.sh`
+              
+              Dieses Skript läuft unendlich lange bis ein Fehler gefunden wird und
+              es überschreibt immer die Datein
+              `fuzzer-test.{options,constraints,models}`.
                 
             </code>
         </pre>
