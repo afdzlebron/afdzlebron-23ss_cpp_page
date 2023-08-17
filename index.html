@@ -39,414 +39,3698 @@
   <main>
     Programmieren in C++
 
+    <h1>Projekt: Übersicht</h1>
+
     <pre>
 
+    (1) Einführung In das Problem:
+    Wir interessieren uns für die Paarbildungsmethode. 
+    Bei dieser Methode geht es darum, ein Programm mit vielen Optionen zu testen, wobei möglichst wenige Konfigurationen verwendet werden.
+    Leider gibt es meistens zu viele Optionen, um alle testen zu können: 
+    Der SAT-Solver Lingeling von Armin Biere hat mehr Optionen als Atome im Universum (weil es Parameter gibt, die Integer oder sogar Gleitkommazahlen als Wert annehmen können).
+    Da es einfach zu viele Konfigurationen gibt, interessieren wir uns nur dafür, dass zwei Optionen (die kombiniert werden können) auch einmal gemeinsam getestet werden können - unabhängig von den anderen Optionen. 
+    Solch eine Kombination von zwei Optionen mit jeweils einem Wert ist ein Paar. 
+    Eine Kombination von 10 Optionen ermöglicht es also, `9 + 8 + 7 + ... + 1` = `55` Paare zu testen. 
+    Es reicht jedoch nicht aus, einfach alle Optionen aufzulisten, da es auch Optionen gibt, die nicht miteinander kompatibel sind.
+    Damit das alles klarer wird werden wir uns jetzt ein Beispiel ansehen (Wikipedia Beispiel mit anderen Namen). 
+    Es gibt 3 Auswahlmöglichkeiten:
 
-Projekt: Übersicht
+        Prozessor Intel oder AMD
 
+        RAM Geschwindigkeit 5000MT/s, 6000MT/s, und 7000MT/s
 
-(1) Einführung In das Problem:
-Wir interessieren uns für die Paarbildungsmethode. 
-Bei dieser Methode geht es darum, ein Programm mit vielen Optionen zu testen, wobei möglichst wenige Konfigurationen verwendet werden.
-Leider gibt es meistens zu viele Optionen, um alle testen zu können: 
-Der SAT-Solver Lingeling von Armin Biere hat mehr Optionen als Atome im Universum (weil es Parameter gibt, die Integer oder sogar Gleitkommazahlen als Wert annehmen können).
-Da es einfach zu viele Konfigurationen gibt, interessieren wir uns nur dafür, dass zwei Optionen (die kombiniert werden können) auch einmal gemeinsam getestet werden können - unabhängig von den anderen Optionen. 
-Solch eine Kombination von zwei Optionen mit jeweils einem Wert ist ein Paar. 
-Eine Kombination von 10 Optionen ermöglicht es also, `9 + 8 + 7 + ... + 1` = `55` Paare zu testen. 
-Es reicht jedoch nicht aus, einfach alle Optionen aufzulisten, da es auch Optionen gibt, die nicht miteinander kompatibel sind.
-Damit das alles klarer wird werden wir uns jetzt ein Beispiel ansehen (Wikipedia Beispiel mit anderen Namen). 
-Es gibt 3 Auswahlmöglichkeiten:
+        Bildschirm 1K, 2K, 4K, 8K
 
-   Prozessor Intel oder AMD
+    Es gibt `2 * 3 + 2 * 4 + 3 * 4` Paare (jeden Prozessor mit jeder Geschwindigkeit, jeden Prozessor mit jedem Bildschirm, und jede Geschwindigkeit mit jedem Bildschirm).
+    Mit der Paarbildungsmethode reicht es sich für folgende 12 Modelle zu interessieren, anstatt alle
+    26 Modelle:
 
-   RAM Geschwindigkeit 5000MT/s, 6000MT/s, und 7000MT/s
-
-   Bildschirm 1K, 2K, 4K, 8K
-
-Es gibt `2 * 3 + 2 * 4 + 3 * 4` Paare (jeden Prozessor mit jeder Geschwindigkeit, jeden Prozessor mit jedem Bildschirm, und jede Geschwindigkeit mit jedem Bildschirm).
-Mit der Paarbildungsmethode reicht es sich für folgende 12 Modelle zu interessieren, anstatt alle
-26 Modelle:
-
-```
-Prozessor   RAM     Bildschirm
-   Intel       7          1K
-   Intel       5          8K
-   AMD         5          4K
-   AMD         6          8K
-   Intel       6          4K
-   AMD         6          1K
-   AMD         5          1K
-   AMD         7          2K
-   Intel       6          2K
-   Intel       7          8K
-   AMD         7          4K
-   Intel       5          2K
-```
-Eigentlich ist es noch etwas komplizierter, weil es Optionen gibt, die nicht kompatibel sind. Zum
-Beispiel unterstützt AMD nur 5000MT/s und stürzt bei höheren Geschwindigkeiten ab. Es ist
-auch nicht möglich, gleichzeitig Intel mit dem langsamen Speicher und dem 8K-Bildschirm zu
-wählen.
+    ```
+    Prozessor   RAM     Bildschirm
+        Intel       7          1K
+        Intel       5          8K
+        AMD         5          4K
+        AMD         6          8K
+        Intel       6          4K
+        AMD         6          1K
+        AMD         5          1K
+        AMD         7          2K
+        Intel       6          2K
+        Intel       7          8K
+        AMD         7          4K
+        Intel       5          2K
+    ```
+    Eigentlich ist es noch etwas komplizierter, weil es Optionen gibt, die nicht kompatibel sind. Zum
+    Beispiel unterstützt AMD nur 5000MT/s und stürzt bei höheren Geschwindigkeiten ab. Es ist
+    auch nicht möglich, gleichzeitig Intel mit dem langsamen Speicher und dem 8K-Bildschirm zu
+    wählen.
 
 
-(2) Die Darstellung:
-Um unser Problem darzustellen, nutzen wir einfach CSV-Dateien. Eine CSV-Datei (comma separated value) bedeutet einfach, das der Text mit Komma separiert wird.
-Für die Optionen (der Dateiname sollte mit ``.options`` enden) schreiben wir einfach jede Option
-mit allen möglichen Werten auf:
-```
-Prozessor,Intel,AMD
-RAM,5,6,7
-Bildschirm,1,2,4,8
-```
+    (2) Die Darstellung:
+    Um unser Problem darzustellen, nutzen wir einfach CSV-Dateien. Eine CSV-Datei (comma separated value) bedeutet einfach, das der Text mit Komma separiert wird.
+    Für die Optionen (der Dateiname sollte mit ``.options`` enden) schreiben wir einfach jede Option
+    mit allen möglichen Werten auf:
+    ```
+    Prozessor,Intel,AMD
+    RAM,5,6,7
+    Bildschirm,1,2,4,8
+    ```
 
-Wir erlauben ASCII, aber kein UTF-16. 
-Das muss jedoch nicht nachgeprüft werden. 
-Sie können einfach char nutzen. Wir erlauben auch Leerzeichen in den Namen.
-Dann können wir die Optionen aufschreiben, die nicht gleichzeitig wahr sein sollen (Der Dateiname sollte mit ``.constraints`` enden).
+    Wir erlauben ASCII, aber kein UTF-16. 
+    Das muss jedoch nicht nachgeprüft werden. 
+    Sie können einfach char nutzen. Wir erlauben auch Leerzeichen in den Namen.
+    Dann können wir die Optionen aufschreiben, die nicht gleichzeitig wahr sein sollen (Der Dateiname sollte mit ``.constraints`` enden).
 
-```
-Prozessor,AMD,RAM,6
-Prozessor,AMD,RAM,7
-Prozessor,Intel,RAM,5,Bildschirm,8
-```
+    ```
+    Prozessor,AMD,RAM,6
+    Prozessor,AMD,RAM,7
+    Prozessor,Intel,RAM,5,Bildschirm,8
+    ```
 
-Jeder Zeile bedeuted also, dass mindestens eine Option anders gesetzt werden muss.
-Lösungen (Modelle) schreiben wir wieder als CSV. 
-Dabei müssen natürlich alle Optionen gesetzt werden und die Werte müssen mit den Constraints kompatibel sein. 
-Eine mögliche Datei könnte beispielsweise wie folgt aussehen (der Dateiname sollte mit `.models` enden):
+    Jeder Zeile bedeuted also, dass mindestens eine Option anders gesetzt werden muss.
+    Lösungen (Modelle) schreiben wir wieder als CSV. 
+    Dabei müssen natürlich alle Optionen gesetzt werden und die Werte müssen mit den Constraints kompatibel sein. 
+    Eine mögliche Datei könnte beispielsweise wie folgt aussehen (der Dateiname sollte mit `.models` enden):
 
-```
-Prozessor,Intel,RAM,5,Bildschirm,2
-Prozessor,Intel,RAM,6,Bildschirm,2
-RAM,7,Prozessor,Intel,Bildschirm,1
-Prozessor,Intel,RAM,7,Bildschirm,4
-Prozessor,AMD,RAM,5,Bildschirm,4
-RAM,5,Prozessor,AMD,Bildschirm,8
-RAM,5,Prozessor,AMD,Bildschirm,1
-Prozessor,Intel,RAM,6,Bildschirm,4
-Bildschirm,2,Prozessor,AMD,RAM,5
-Prozessor,Intel,RAM,6,Bildschirm,8
-```
+    ```
+    Prozessor,Intel,RAM,5,Bildschirm,2
+    Prozessor,Intel,RAM,6,Bildschirm,2
+    RAM,7,Prozessor,Intel,Bildschirm,1
+    Prozessor,Intel,RAM,7,Bildschirm,4
+    Prozessor,AMD,RAM,5,Bildschirm,4
+    RAM,5,Prozessor,AMD,Bildschirm,8
+    RAM,5,Prozessor,AMD,Bildschirm,1
+    Prozessor,Intel,RAM,6,Bildschirm,4
+    Bildschirm,2,Prozessor,AMD,RAM,5
+    Prozessor,Intel,RAM,6,Bildschirm,8
+    ```
 
-Das Ziel dieses Projekts ist es, eine Approximation aller Modelle zu produzieren (alle Modelle sollen korrekt sein, aber es könnten einige fehlen). 
-Da es sich um einen probabilistischen Ansatz handelt, könnten hier Lösungen fehlen (direkt aus dem Solver in meiner Lösung).
+    Das Ziel dieses Projekts ist es, eine Approximation aller Modelle zu produzieren (alle Modelle sollen korrekt sein, aber es könnten einige fehlen). 
+    Da es sich um einen probabilistischen Ansatz handelt, könnten hier Lösungen fehlen (direkt aus dem Solver in meiner Lösung).
 
-```
-c   there are 3 uncovered pairs
-c   RAM->6 && Prozessor->AMD
-c   Bildschirm->4 && RAM->6
-c   Bildschirm->8 && RAM->6
-```
-Die Paare 2 und 3 könnten mit dem Intel Prozessor bedeckt werden, aber das wurde nicht generiert.
-
-
-(3) Ziele:
-Sie müssen folgendes implementieren im C++:
-
-->Parser und pretty-printer (Blatt 11) die Datein ``.options`` und ``.constraints`` einlesen und wieder ausgeben.
-
-->Solver (Pflicht, Blatt 12) Die Datei .models soll mit möglichen Modellen gefüllt werden. 
-Die einfachste korrekte Implementierung produziert keine Modelle, aber das gibt auch keine Punkte.
-
-->Checker (Variante A, Blatt 12) Er liest die Dateien ``.options``, ``.constraints`` und `.models` ein und prüfe, ob alle gefundenen Modelle auch die Constraints erfüllen.
-
-->Fuzzer (Variante B, Blatt 12) Random Dateien ``.options`` und ``.constraints`` generieren. Das Ziel ist es diese Probleme zu lösen und nach Bugs zu suchen.
-
-Die Varianten bauen sehr stark auf das Lösen auf. Sie können also in beliebiger Reihenfolge implementiert werden.
-
-Sie müssen sowohl Variante A als auch B machen.
-
-Um beim Testen zu helfen, gibt es zwei binäre Dateien zur Verfügung:
-
-    • einen Fuzzer namens `crippled-fuzzer`, der jedoch nur 16 unterschiedliche Programme generieren kann. 
-      Er generiert auch nur Optionen, die einen Buchstaben lang sind, und die Werte sind entweder 0 oder 1.
-
-    • einen Checker namens `russian-roulette-checker`, der zwar überprüft, aber oft mit s UNKNOWN antwortet.
+    ```
+    c   there are 3 uncovered pairs
+    c   RAM->6 && Prozessor->AMD
+    c   Bildschirm->4 && RAM->6
+    c   Bildschirm->8 && RAM->6
+    ```
+    Die Paare 2 und 3 könnten mit dem Intel Prozessor bedeckt werden, aber das wurde nicht generiert.
 
 
-(4):
+    (3) Ziele:
+    Sie müssen folgendes implementieren im C++:
 
-(4.1)    Lösen von Problem:
+    ->Parser und pretty-printer (Blatt 11) die Datein ``.options`` und ``.constraints`` einlesen und wieder ausgeben.
 
-Um das Problem zu lösen, müssen Sie (möglichst alle) Modelle generieren. 
-Um dies zu tun, werden wir zufällig generierte Konfigurationen nutzen.
-Dafür müssen Sie zuerst alle möglichen Paare generieren.
-Wenn Sie dann eine Konfiguration produzieren wollen, fangen Sie mit der leeren Konfiguration an und erweitern sie. 
-Dafür füllen Sie die Konfiguration mit einer Option. 
-Da es notwendig sein kann, auch einen Wert zu nehmen, der bereits gesehen worden ist, setzen Sie mit geringer Wahrscheinlichkeit eine Option unabhängig von den noch verbleibenden Paaren. 
-Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar, das noch nicht abgedeckt ist.
-Wenn Sie dann eine vollständige Konfiguration generiert haben, müssen Sie testen, ob sie mit den Constraints kompatibel ist. Wenn dies der Fall ist, haben Sie ein neues Modell gefunden und können alle Paare als abgedeckt markieren.
-Nach 1000 Konfigurationen, die die Constraints nicht erfüllen, sind wir dann fertig (auch wenn
-es vielleicht noch mehr Möglichkeiten gibt).
+    ->Solver (Pflicht, Blatt 12) Die Datei .models soll mit möglichen Modellen gefüllt werden. 
+    Die einfachste korrekte Implementierung produziert keine Modelle, aber das gibt auch keine Punkte.
 
-`Tabelle 1: Return Codes`: 
-```
-Return code | Sinn
-______________________________
-    0       | Keine Fehler
-   10       | Datei konnte nicht geöffnet werden
-   20       | Keine valide Eingabedatei (z.B., nicht deklarierte Option)
-   30       | Anderer Fehler
-```
+    ->Checker (Variante A, Blatt 12) Er liest die Dateien ``.options``, ``.constraints`` und `.models` ein und prüfe, ob alle gefundenen Modelle auch die Constraints erfüllen.
+
+    ->Fuzzer (Variante B, Blatt 12) Random Dateien ``.options`` und ``.constraints`` generieren. Das Ziel ist es diese Probleme zu lösen und nach Bugs zu suchen.
+
+    Die Varianten bauen sehr stark auf das Lösen auf. Sie können also in beliebiger Reihenfolge implementiert werden.
+
+    Sie müssen sowohl Variante A als auch B machen.
+
+    Um beim Testen zu helfen, gibt es zwei binäre Dateien zur Verfügung:
+
+        • einen Fuzzer namens `crippled-fuzzer`, der jedoch nur 16 unterschiedliche Programme generieren kann. 
+          Er generiert auch nur Optionen, die einen Buchstaben lang sind, und die Werte sind entweder 0 oder 1.
+
+        • einen Checker namens `russian-roulette-checker`, der zwar überprüft, aber oft mit s UNKNOWN antwortet.
 
 
-In Tabelle 1 finden Sie die genauen Rückgabewerte, die aus dem Hauptprogramm kommen sollen, je nachdem, was passiert ist.
+    (4):
+
+    (4.1)    Lösen von Problem:
+
+    Um das Problem zu lösen, müssen Sie (möglichst alle) Modelle generieren. 
+    Um dies zu tun, werden wir zufällig generierte Konfigurationen nutzen.
+    Dafür müssen Sie zuerst alle möglichen Paare generieren.
+    Wenn Sie dann eine Konfiguration produzieren wollen, fangen Sie mit der leeren Konfiguration an und erweitern sie. 
+    Dafür füllen Sie die Konfiguration mit einer Option. 
+    Da es notwendig sein kann, auch einen Wert zu nehmen, der bereits gesehen worden ist, setzen Sie mit geringer Wahrscheinlichkeit eine Option unabhängig von den noch verbleibenden Paaren. 
+    Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar, das noch nicht abgedeckt ist.
+    Wenn Sie dann eine vollständige Konfiguration generiert haben, müssen Sie testen, ob sie mit den Constraints kompatibel ist. Wenn dies der Fall ist, haben Sie ein neues Modell gefunden und können alle Paare als abgedeckt markieren.
+    Nach 1000 Konfigurationen, die die Constraints nicht erfüllen, sind wir dann fertig (auch wenn
+    es vielleicht noch mehr Möglichkeiten gibt).
+
+    `Tabelle 1: Return Codes`: 
+    ```
+    Return code | Sinn
+    ______________________________
+        0       | Keine Fehler
+        10       | Datei konnte nicht geöffnet werden
+        20       | Keine valide Eingabedatei (z.B., nicht deklarierte Option)
+        30       | Anderer Fehler
+    ```
 
 
-(4.2)    Checker:
-
-Ein Checker ist ein Program, der die 3 Datein (Optionen, Constraints, und Modelle) nimmt und immer schaut ob:
-
-  1. in jedem Model alle Optionen genau einmal angegeben werden
-
-  2. jedes Model auch alle Constraints erfüllt
-
-  3. In den Modellen und in den Constraint gibt es nur Optionen und Werte aus der `.options`
-     Datei.
-
-  4. invalide Input Dateien (fehlende Werte zum Beispiel)
-
-Nicht zulässig sind also Konfiguration und Constraints:
-   wo Optionen erfunden wurden (Punkt 3 oben),
-   wo Werte erfunden wurden (Punkt 3 oben), 
-   wo nicht alle Option gesetzt sind (Punkt 1 oben), 
-   oder Modelle die nicht die Constraints erfüllen (Punkt 2 oben).
-
-Nicht relevant für den Checker ist die Reihenfolge der Optionen oder Modelle die doppelt auftauchen.
-In Tabelle 2 stehen erneut die unterschiedlichen Return-Codes und das Verhalten, das das Programm haben sollte.
-Um das Problem möglichst genau zu lösen, sehen Sie sich bitte die Vorlesung zum Lösen des
-SAT-Problems im nächsten Sommersemester an. Beachten Sie, dass auch fleißig implementiert wird.
-Eigentlich würden wir hier auch einen verifizierten Checker haben wollen. 
-Es ist jedoch noch offen, ob es eine Isabelle-Vorlesung im nächsten Sommersemester gibt.
-
-`Tabelle 1: Return Codes`:
-```
-             Return code |  Sinn
-             -----------------------------------------------------------------------------
-                  0      |  Keine Fehler, korrekt gecheckt. Es sollte auch `s` `VERIFIED` auf `stdout` stehen (in C++, `std::cout <<`).
-                  10     |  Nicht-mögliche `.options`.
-                  20     |  Nicht-mögliche `.constraints`.
-                  30     |  Fehler in `.models`. In diesem Fall sollte auf `stderr` (in C++, `std::cerr <<` genau stehen welches `Models` nicht valide ist und warum). Es sollte auch s `UNVERIFIED` auf `stdout`..
-                  40     |  Anderer Fehler (gibt `s` `UNKNOWN` aus: das sollte Ihr Checker nicht machen).
-
-```
-
-4.3    Fuzzer
-
-Ein Fuzzer ist ein Programm, das zufällige Optionen, Werte und Constraints generiert, um valide
-Dateien zu erzeugen:
-
-  1. Alle Optionen und Werte aus den Constraints sind auch in der `.options` Datei enthalten.
-                              
-
-Blatt 11
-
-Aufgabe 1:
-
-Als ersten Schritt zur Realisierung schreiben Sie bitte folgenden Code:
-
-  1. Schreiben Sie alle benötigten .hpp Dateien mit allen Klassen, Methoden und Membervariablen, die Ihrer Meinung nach für Ihr Programm am Ende benötigt werden. Schreiben Sie zu jeder Klasse, Methode oder Membervariablen einen (kurzen aber aussagekräftigen) erklärenden Kommentar.
-
-  2. Schreiben Sie den Parser für die `.options` und `.constraints`. Der Parser soll die Datenstrukturen füllen. Für den Parser dürfen Sie nur `get(char)` (aus `std::istream`) (oder die
-     C Version `getc`). Sie dürfen also nicht direkt strings einlesen.
-
-  3. Schreiben Sie eine Funktion, die die Optionen und die Constraints wieder ausgibt.  Das ist ein Pretty-printer. Sie soll also eine zweite `.options` Datei und eine zweite `.constraints` ausgeben, die identisch zur Originaldatei (bis auf der Reihenfolge) ist. Ein Aufruf sollte in etwa so aussehen: `mein-super-program` `a.options` `a.constraints` `a_copy.options` a_copy.constraints`.  Zum Beispiel kann `a.options` den Inhalt von Sektion 2 enthalten und `a_copy.options` die Variante:
-      ```
-      Bildschirm,8,2,1,4
-      RAM,6,5,7
-      Prozessor,Intel,AMD
-      ```
-     Die Reihenfolge kann natürlich auch die selbe bleiben. 
-     Geben Sie einfach die Optionen und Werte so aus wie es am einfachsten im Code ist (aber: die Option muss natürlich am Anfang stehen).
+    In Tabelle 1 finden Sie die genauen Rückgabewerte, die aus dem Hauptprogramm kommen sollen, je nachdem, was passiert ist.
 
 
-Projekt:
+    (4.2)    Checker:
 
+    Ein Checker ist ein Program, der die 3 Datein (Optionen, Constraints, und Modelle) nimmt und immer schaut ob:
 
-Aufgabe 2: 
-   Lösen Sie das Problem, indem Sie die `.models-Datei` ausgeben.
+      1. in jedem Model alle Optionen genau einmal angegeben werden
 
-Aufgabe 3A (Checker (Variante A)):
-   Implementieren Sie einen Checker.
+      2. jedes Model auch alle Constraints erfüllt
 
-Aufgabe 3B (Fuzzer (Variante B)):
-   Implementieren Sie einen Fuzzer.
-   Sie dürfen das Bash-Skript nutzen, das mit dem `crippled-fuzzer` mitgeliefert wird. 
-   Es ruft das Fuzzer auf und ruft dann Ihr Programm auf, bis ein Fehler gefunden wurde.
-   Bevor Sie abgeben, stellen Sie sich er, dass:
+      3. In den Modellen und in den Constraint gibt es nur Optionen und Werte aus der `.options` Datei.
+
+      4. invalide Input Dateien (fehlende Werte zum Beispiel)
+
+    Nicht zulässig sind also Konfiguration und Constraints:
+      wo Optionen erfunden wurden (Punkt 3 oben),
+      wo Werte erfunden wurden (Punkt 3 oben), 
+      wo nicht alle Option gesetzt sind (Punkt 1 oben), 
+      oder Modelle die nicht die Constraints erfüllen (Punkt 2 oben).
+
+    Nicht relevant für den Checker ist die Reihenfolge der Optionen oder Modelle die doppelt auftauchen.
+    In Tabelle 2 stehen erneut die unterschiedlichen Return-Codes und das Verhalten, das das Programm haben sollte.
+    Um das Problem möglichst genau zu lösen, sehen Sie sich bitte die Vorlesung zum Lösen des
+    SAT-Problems im nächsten Sommersemester an. Beachten Sie, dass auch fleißig implementiert wird.
+    Eigentlich würden wir hier auch einen verifizierten Checker haben wollen. 
+    Es ist jedoch noch offen, ob es eine Isabelle-Vorlesung im nächsten Sommersemester gibt.
+
+    `Tabelle 1: Return Codes`:
+    ```
+    Return code |  Sinn
+    -----------------------------------------------------------------------------
+      0      |  Keine Fehler, korrekt gecheckt. Es sollte auch `s` `VERIFIED` auf `stdout` stehen (in C++, `std::cout <<`).
+      10     |  Nicht-mögliche `.options`.
+      20     |  Nicht-mögliche `.constraints`.
+      30     |  Fehler in `.models`. In diesem Fall sollte auf `stderr` (in C++, `std::cerr <<` genau stehen welches `Models` nicht valide ist und warum). Es sollte auch s `UNVERIFIED` auf `stdout`..
+      40     |  Anderer Fehler (gibt `s` `UNKNOWN` aus: das sollte Ihr Checker nicht machen).
+    ```
+
+    4.3    Fuzzer
+
+    Ein Fuzzer ist ein Programm, das zufällige Optionen, Werte und Constraints generiert, um valide
+    Dateien zu erzeugen:
+
+      1. Alle Optionen und Werte aus den Constraints sind auch in der `.options` Datei enthalten.
+                                  
+
+    Blatt 11
+
+    Aufgabe 1:
+
+    Als ersten Schritt zur Realisierung schreiben Sie bitte folgenden Code:
+
+      1. Schreiben Sie alle benötigten .hpp Dateien mit allen Klassen, Methoden und Membervariablen, die Ihrer Meinung nach für Ihr Programm am Ende benötigt werden. Schreiben Sie zu jeder Klasse, Methode oder Membervariablen einen (kurzen aber aussagekräftigen) erklärenden Kommentar.
+
+      2. Schreiben Sie den Parser für die `.options` und `.constraints`. Der Parser soll die Datenstrukturen füllen. Für den Parser dürfen Sie nur `get(char)` (aus `std::istream`) (oder die C Version `getc`). Sie dürfen also nicht direkt strings einlesen.
+
+      3. Schreiben Sie eine Funktion, die die Optionen und die Constraints wieder ausgibt.  Das ist ein Pretty-printer. Sie soll also eine zweite `.options` Datei und eine zweite `.constraints` ausgeben, die identisch zur Originaldatei (bis auf der Reihenfolge) ist. Ein Aufruf sollte in etwa so aussehen: `mein-super-program` `a.options` `a.constraints` `a_copy.options` a_copy.constraints`.  Zum Beispiel kann `a.options` den Inhalt von Sektion 2 enthalten und `a_copy.options` die Variante:
+          ```
+          Bildschirm,8,2,1,4
+          RAM,6,5,7
+          Prozessor,Intel,AMD
+          ```
+          Die Reihenfolge kann natürlich auch die selbe bleiben. 
+          Geben Sie einfach die Optionen und Werte so aus wie es am einfachsten im Code ist (aber: die Option muss natürlich am Anfang stehen).
+
+</pre>
+    <h1>Projekt:</h1>
+    <pre>
+      Aufgabe 2:
+      Lösen Sie das Problem, indem Sie die `.models-Datei` ausgeben.
+
+      Aufgabe 3A (Checker (Variante A)):
+      Implementieren Sie einen Checker.
+
+      Aufgabe 3B (Fuzzer (Variante B)):
+      Implementieren Sie einen Fuzzer.
+      Sie dürfen das Bash-Skript nutzen, das mit dem `crippled-fuzzer` mitgeliefert wird.
+      Es ruft das Fuzzer auf und ruft dann Ihr Programm auf, bis ein Fehler gefunden wurde.
+      Bevor Sie abgeben, stellen Sie sich er, dass:
       1. es ein kurzes Readme gibt, damit Ihr Tutor auch weiß, wo er anfangen soll zu lesen,
       2. Sie auch ein Beispiel in der Readme haben, wie alles aufgerufen wird, und
       3. es in der Erfahrungsdatei (weit oben) auch genau steht, was Sie implementiert haben (also 3A oder 3B).
 
 
-      In the following, some examples: 
-    Hier ist a.constraints:
-    <pre><code>
-      Prozessor,AMD,RAM,6
-      Prozessor,AMD,RAM,7
-      Prozessor,Intel,RAM,5,Bildschirm,8
-    </code></pre>
+      In the following, some examples:
+      Hier ist a.constraints:
+    
+      <pre>
+        <code>
+        Prozessor,AMD,RAM,6
+        Prozessor,AMD,RAM,7
+        Prozessor,Intel,RAM,5,Bildschirm,8
+      </code>
+    </pre>
     Hier ist a.models:
-    <pre><code>
-    Prozessor,Intel,RAM,7,Bildschirm,2
-    RAM,6,Prozessor,Intel,Bildschirm,1
-    Prozessor,Intel,RAM,5,Bildschirm,2
-    Prozessor,AMD,RAM,5,Bildschirm,1
-    Prozessor,AMD,RAM,5,Bildschirm,8
-    Prozessor,Intel,RAM,5,Bildschirm,4
-    RAM,6,Prozessor,Intel,Bildschirm,8
-    </code></pre>
+    <pre>
+        <code>
+      Prozessor,Intel,RAM,7,Bildschirm,2
+      RAM,6,Prozessor,Intel,Bildschirm,1
+      Prozessor,Intel,RAM,5,Bildschirm,2
+      Prozessor,AMD,RAM,5,Bildschirm,1
+      Prozessor,AMD,RAM,5,Bildschirm,8
+      Prozessor,Intel,RAM,5,Bildschirm,4
+      RAM,6,Prozessor,Intel,Bildschirm,8
+      </code>
+    </pre>
     Hier ist a.options:
-    <pre><code>
-    Prozessor,Intel,AMD
-    RAM,5,6,7
-    Bildschirm,1,2,4,8
-    </code></pre>
+    <pre>
+        <code>
+      Prozessor,Intel,AMD
+      RAM,5,6,7
+      Bildschirm,1,2,4,8
+      </code
+      ></pre>
     Hier ist a2.options:
-    <pre><code>
-    Prozessor,Intel,AMD
-    RAM,5,6,7
-    Bildschirm,8,1,2,4</code></pre>
-
+    <pre>
+        <code>
+      Prozessor,Intel,AMD
+      RAM,5,6,7
+      Bildschirm,8,1,2,4</code>
     </pre>
 
 
-    Hier ist Makefile:
+    Hier ist Makefile01:
     <pre>
-            <code>
-              CXX = g++
-                CXXFLAGS=  --std=c++14 #-Wextra -Wall -pedantic
-                EXCLUDED = poly2.cpp
+              <code>
+                CXX = g++
+                  CXXFLAGS=  --std=c++14 #-Wextra -Wall -pedantic
+                  EXCLUDED = poly2.cpp
+                  HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
+                  OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
+                  TESTLIBS = -lgtest -lgtest_main -lpthread
+                  TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
+                  
+                  all: clean compile
+                  
+                  %.o: %.cpp $(HEADERS)
+                      $(CXX) $(CXXFLAGS) -c $<
+                  
+                  %Main: %Main.cpp $(OBJECTS)
+                      $(CXX) $(CXXFLAGS) -o $@ $^
+                  
+                  compile: bddMain nqueensMain
+                  
+                  %Test: %Test.o $(OBJECTS)
+                      $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
+                  
+                  test: $(TEST_BINARIES)
+                      echo "$(TESTS)"
+                      for test in `ls *Test` ; \
+                      do \
+                      ./$$test || (echo "failed test $$test" && exit 255) \
+                      done
+                  
+                  clean:
+                      rm -f *Main *Test *.o
+                  
+                  format:
+                      clang-format -i *.cpp *.hpp         
+              </code>
+          </pre>
+    Hier ist Makefile02:
+    <pre>
+              <code>
+                CXX = g++
+                CXXFLAGS = -std=c++20 -O2 
                 HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
                 OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
                 TESTLIBS = -lgtest -lgtest_main -lpthread
                 TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
                 
-                all: clean compile
+                all: compile
                 
                 %.o: %.cpp $(HEADERS)
-                    $(CXX) $(CXXFLAGS) -c $<
+                  $(CXX) $(CXXFLAGS) -c $<
                 
                 %Main: %Main.cpp $(OBJECTS)
-                    $(CXX) $(CXXFLAGS) -o $@ $^
+                  $(CXX) $(CXXFLAGS) -o $@ $^
                 
-                compile: bddMain nqueensMain
+                compile: prettyPrinterMain
                 
                 %Test: %Test.o $(OBJECTS)
-                    $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
+                  $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
                 
                 test: $(TEST_BINARIES)
-                    echo "$(TESTS)"
-                    for test in `ls *Test` ; \
+                  echo "$(TESTS)"
+                  for test in ls *Test ; \
                     do \
                     ./$$test || (echo "failed test $$test" && exit 255) \
                     done
                 
                 clean:
-                    rm -f *Main *Test *.o
+                  rm -f *Main *Test *.o
                 
                 format:
-                    clang-format -i *.cpp *.hpp         
-            
-                
-            </code>
-        </pre>
+                  clang-format -i *.cpp *.hpp
+              </code>
+          </pre>
+
     Hier ist fuzz.sh:
     <pre>
-            <code>
-                  #!/bin/bash
+              <code>
+                    #!/bin/bash
+              FUZZER=./crippled-fuzzer
+              SOLVER=./solverMain
+              CHECKER=./russian-roulette-checker
 
-            FUZZER=./crippled-fuzzer
-            SOLVER=./solverMain
-            CHECKER=./russian-roulette-checker
-
-            if [ -x $FUZZER ];
-            then
-                echo "found fuzzer"
-            else
-                echo "the fuzzer was not found"
-                exit 1
-            fi
-
-
-            if [ -x $SOLVER ];
-            then
-                echo "found solver"
-            else
-                echo "the solver was not found"
-                exit 1
-            fi
-
-
-
-            if [ -x $CHECKER ];
-            then
-                echo "found checker"
-            else
-                echo "the checker was not found"
-                exit 1
-            fi
-
-            echo "starting the tests"
-
-            i=0
-            while [ true ];
-            do
-                echo "*******************************************"
-                echo "************* TEST $i    ******************"
-                i=$((i+1))
-                $FUZZER fuzzer-test.{options,constraints}
-                status=$?
-                if [ "$status" -ne 0 ];
-                then
-              echo "the fuzzer failed on"
-              exit -1;
-                fi;
-
-                $SOLVER fuzzer-test.{options,constraints,models}
-                status=$?
-                if [ "$status" -ne 0 ];
-                then
-              echo "the solver failed on fuzzer-test.{options,constraints,models}"
-              exit -1;
-                fi;
-
-                $CHECKER fuzzer-test.{options,constraints,models}
-                status=$?
-                if [ "$status" -ne 40 -a "$status" -ne 0 ];
-                then
-              echo "the checker failed on fuzzer-test.{options,constraints,models}"
-              exit -1;
-                fi;
-            done
-                
-            </code>
-        </pre>
+              if [ -x $FUZZER ];
+              then
+                  echo "found fuzzer"
+              else
+                  echo "the fuzzer was not found"
+                  exit 1
+              fi
+              if [ -x $SOLVER ];
+              then
+                  echo "found solver"
+              else
+                  echo "the solver was not found"
+                  exit 1
+              fi
+              if [ -x $CHECKER ];
+              then
+                  echo "found checker"
+              else
+                  echo "the checker was not found"
+                  exit 1
+              fi
+              echo "starting the tests"
+              i=0
+              while [ true ];
+              do
+                  echo "*******************************************"
+                  echo "************* TEST $i    ******************"
+                  i=$((i+1))
+                  $FUZZER fuzzer-test.{options,constraints}
+                  status=$?
+                  if [ "$status" -ne 0 ];
+                  then
+                echo "the fuzzer failed on"
+                exit -1;
+                  fi;
+                  $SOLVER fuzzer-test.{options,constraints,models}
+                  status=$?
+                  if [ "$status" -ne 0 ];
+                  then
+                echo "the solver failed on fuzzer-test.{options,constraints,models}"
+                exit -1;
+                  fi;
+                  $CHECKER fuzzer-test.{options,constraints,models}
+                  status=$?
+                  if [ "$status" -ne 40 -a "$status" -ne 0 ];
+                  then
+                echo "the checker failed on fuzzer-test.{options,constraints,models}"
+                exit -1;
+                  fi;
+              done
+                  
+              </code>
+          </pre>
     Hier ist Readme.md für `fuzz.sh`:
     <pre>
-            <code>
-              Dieses Verzeichnis enthält den Fuzzer und das Skript der alles aufruft. Im Moment stehen nur Linux binary Datei zu verfügen.
+              <code>
+                Dieses Verzeichnis enthält den Fuzzer und das Skript der alles aufruft. Im Moment stehen nur Linux binary Datei zu verfügen.
+                Um alles aufzurufen, müsst ihr:
+                  1. Die Pfade anpassen in `fuzz.sh`
+                  2. Das Skript ausführen mit `./fuzz.sh`
+                Dieses Skript läuft unendlich lange bis ein Fehler gefunden wird und
+                es überschreibt immer die Datein
+                `fuzzer-test.{options,constraints,models}`.
+                  
+              </code>
+          </pre>
+    </pre>
 
-              Um alles aufzurufen, müsst ihr:
-                1. Die Pfade anpassen in `fuzz.sh`
-                2. Das Skript ausführen mit `./fuzz.sh`
-              
-              Dieses Skript läuft unendlich lange bis ein Fehler gefunden wird und
-              es überschreibt immer die Datein
-              `fuzzer-test.{options,constraints,models}`.
-                
+    <h1>Hilfe-und-Diskussion-für-Aufgaben</h1>
+    <h2>Rückgabewert Ausgaben</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8352">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8352</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Rückgabewert Ausgaben</h3>
+        <div class="date">Posted: <strong>13 Aug 2023, 09:08</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Hallo zusammen,<br>
+          ich meine ich habe die Frage schonmal gelesen aber ich finde sie leider nicht mehr...<br>
+          Kann mir vielleicht nochmal jemand schreiben, wie man den Wert, mit dem das Programm terminiert, im Terminal
+          ausgibt?<br>
+          <br>
+          Vielen Dank schonmal!<br>
+          VG,<br>
+          Leon
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Rückgabewert Ausgaben</h3>
+        <div class="date">Posted: <strong>13 Aug 2023, 09:53</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content"><span class="codecontent">return 42;</span> in der Main Funktion</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Rückgabewert Ausgaben</h3>
+        <div class="date">Posted: <strong>13 Aug 2023, 17:17</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Danke, aber ich die Frage glaub etwas blöd gestellt. Wenn ich das Programm jetzt eben mit
+          dem Wert 42 beende. Wie kann ich gegen Prüfen, ob das Programm auch mit diesem Wert terminiert?<br>
+          Ich meine wir hatten das auch mal in der Vorlesung, dass man im Terminal einen Befehl eingeben konnte, damit
+          man auslesen kann, mit welchem Wert das Programm terminiert ist.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Rückgabewert Ausgaben</h3>
+        <div class="date">Posted: <strong>13 Aug 2023, 17:43</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Ist das der Post an dem du dachtest? <a
+            href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8276&amp;p=32733&amp;hilit=Echo#p32733"
+            class="postlink"> https://daphne.informatik.uni-freiburg ... cho#p32733</a></div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Rückgabewert Ausgaben</h3>
+        <div class="date">Posted: <strong>14 Aug 2023, 09:20</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Ja genau, das ist er.<br>
+          Vielen Dank!<br>
+          VG, Leon</div>
+      </div>
+      <hr />
+    </div>
+
+
+
+    <h2>crippled-fuzzer constraints</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8350">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8350</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>crippled-fuzzer constraints</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 21:26</strong></div>
+        <div class="author">by <strong>ro46</strong></div>
+        <div class="content">Hallo zusammen, <br>
+          ist das normal das der crippled-fuzzer in einem constraint für die gleiche option mehrere Werte
+          generiert?<br>
+          Also z.B. :<br>
+          options:
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            H,r,y
+                            n,C,c
+                            7,J
+                            f,3,a
             </code>
-        </pre>
+            </pre>
+          </div> constraints:
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                        f,a
+                        f,a,n,C,7,J,H,y,n,c
+                        f,3,f,3
+                        H,y,7,J,H,r,f,3,f,a
+                        </code>
+                    </pre>
+          </div>
+          Wie soll damit umgegangen werden? In meinem Program hab ich es so umgesetzt dass für ein Constraint für jede
+          Option immer nur ein Wert gesetzt werden kann.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: crippled-fuzzer constraints</h3>
+        <div class="date">Posted: <strong>12 Aug 2023, 07:32</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Du musst es irgendwie unterstützen <a
+            href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8265&amp;p=32678&amp;hilit=option+mehrmals#p32683"
+            class="postlink">viewtopic.php?f=1278&amp;t=8265&amp;p=32678&amp;hil ... als#p32683</a>, sonst gibt es
+          Punkteabzug (werden wohl nicht sehr viele Punkte sein).</div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Erstellen einer neuen Konfiguration</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8347">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8347</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 15:24</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Hallo zusammen,<br>
+          ich bin mir noch nicht zu 100% sicher, ob ich das richtig mache.<br>
+          Mein Programm generiert momentan folgendermaßen eine Konfiguration:<br>
+          geringe Wahrscheinlichkeit:<br>
+          Man wählt eine einzelne Option, die noch nicht in der aktuellen Konfiguration enthalten ist.<br>
+          hohe Wahrscheinlichkeit:<br>
+          Man wählt ein Paar aus zwei Optionen, bei denen beide Optionen noch nicht in der aktuellen Konfiguration
+          enthalten sind. <br>
+          <br>
+          Ist das so in Ordnung, habe ich das richtig verstanden?<br>
+          <br>
+          Vielen Dank schonmal!<br>
+          VG, Leon
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 15:30</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Fast:<br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4001">lw529</a> wrote: <a
+                  href="./viewtopic.php?p=33014#p33014" data-post-id="33014"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">11 Aug 2023, 15:24</div>
+              </cite>
+              Man wählt ein Paar aus zwei Optionen, bei denen beide Optionen noch nicht in der aktuellen
+              Konfiguration
+              enthalten sind.
+            </div>
+          </blockquote>
+
+          Man wählt ein Paar aus zwei Optionen, wo
+          <ul>
+            <li> beide Optionen noch nie in einer Konfiguration enthalten worden sind</li>
+            <li> mindestens eine Option noch nicht in der aktuellen Konfiguration ist</li>
+          </ul>
+
+          Edit (nach der Antwort zu der nächsten Frage): die zweite voraussetzung ist steht nicht im Project, sie ist
+          nur logisch.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 15:39</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Ah ok, also bei der geringen Wahrscheinlichkeit, dann vermutlich, wo eine Option schon
+          abgedeckt ist und bei der hohen Wahrscheinlichkeit, wo beide noch offen sind, oder?<br>
+          Und wie mache ich dass dann mit den Werten von einer Option, die schon abgedeckt ist?<br>
+          Also wenn ich (Option1,1) schon in der Konfig habe und jetzt wieder Option 1 ziehe.<br>
+          Darf ich dann nur Paare betrachten, die mit (Option1,1),... anfangen?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 15:49</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4001">lw529</a> wrote: <a
+                  href="./viewtopic.php?p=33016#p33016" data-post-id="33016"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">11 Aug 2023, 15:39</div>
+              </cite>
+              Ah ok, also bei der geringen Wahrscheinlichkeit, dann vermutlich, wo eine Option schon abgedeckt ist
+              und
+              bei der hohen Wahrscheinlichkeit, wo beide noch offen sind, oder?
+            </div>
+          </blockquote>
+
+          Nein nein genau wie du gesagt hast: mit geringer Wahrscheinlichkeit irgendeine Option (die noch nicht
+          gesetzt
+          ist natürlicht) und mit hoher Wahrscheinlichkeit ein Paar was kompatibel ist.<br>
+          <br>
+          <span style="text-decoration:underline">Die Idee ist:</span> wenn du nur noch die Paare ((A,1),(B,1)),
+          ((B,1),(C,1)) und ((C,1), (D,1)), dann kannt du dank den hohen Wahrscheinlichkeiten (A,1), (B,1), (C,1),
+          (D,1). <br>
+          <br>
+          Da ist ein Beispiel: <a
+            href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8202&amp;p=32399&amp;hilit=beispiel#p32406"
+            class="postlink">viewtopic.php?f=1278&amp;t=8202&amp;p=32399&amp;hil ... iel#p32406</a>.<br>
+          <br>
+          <br>
+          <span style="text-decoration:underline">Aber:</span> Kompatibel wird nicht spezifiziert, also kannst du auch
+          sagen, das Paare nur kompatible sind, wenn keine Option gestezt ist. Dann kommen wir genau in dem was du
+          gefragt hast.<br>
+          <br>
+          (Ja ich lasst viel offen)
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 15:57</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Ok, das heißt bei der hohen Wahrscheinlichkeit darf ich entweder ein Paar ziehen, bei dem
+          beide Optionen noch frei sind oder eine Option schon verwendet wurde.<br>
+          Verstehe ich dass dann richtig, dass bei dem Beispiel ein Paar als abgedeckt zählt, wenn eine Option aus
+          diesem Paar in der Konfiguration enthalten ist?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 15:58</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Ein Paar ist abgedeckt wenn es schon in einem Model war (also wenn du es nicht mehr
+          brauchst: das Ziel ist ja möglichst alle Paare in einem Model zu haben)</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 16:01</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Ok, das heißt, wenn ich dein Edit so lese, kann ich quasi sagen ich lasse meine
+          Implementierung so und sage einfach, dass ein Paar nur als Kompatibel zählt, wenn beide Optionen, die darin
+          enthalten sind noch nicht in der Konfiguration stehen.<br>
+          Hab ich das so richtig verstanden. <img class="smilies" src="./images/smilies/icon_lol.gif" width="15"
+            height="17" alt=":lol:" title="Lachend"></div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 16:05</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4001">lw529</a> wrote: <a
+                  href="./viewtopic.php?p=33020#p33020" data-post-id="33020"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">11 Aug 2023, 16:01</div>
+              </cite>
+              Ok, das heißt, wenn ich dein Edit so lese, kann ich quasi sagen ich lasse meine Implementierung so
+              und
+              sage einfach, dass ein Paar nur als Kompatibel zählt, wenn beide Optionen, die darin enthalten sind
+              noch
+              nicht in der Konfiguration stehen.<br>
+              Hab ich das so richtig verstanden. <img class="smilies" src="./images/smilies/icon_lol.gif" width="15"
+                height="17" alt=":lol:" title="Lachend">
+            </div>
+          </blockquote>
+
+          Du hast es richtig verstanden.<br>
+          <br>
+          (Andere mögliche Erklärung: die Paare, wo einer schon gesetzt ist, kriegen wahrscheinlichkeit 0. Das ist
+          auch
+          erlaubt und kommt zum selben Resultat)
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 16:06</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Ok, vielen Dank fürs Erklären nochmal! <img class="smilies"
+            src="./images/smilies/icon_e_smile.gif" width="15" height="17" alt=":)" title="Lächeln"> <br>
+          VG,<br>
+          Leon</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 17:23</strong></div>
+        <div class="author">by <strong>lh713</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          Momentan fällt mir nur ein, zum Erstellen einer Konfiguration, dass ich Rando, nutze. Mein Aufbau zum Solver
+          folgt dem Pseudocode, den du geschrieben hast. Sagen wir mal, ich ziehe die Option mit niedriger
+          Wahrscheinlichkeit, und meine Konfiguration ist momentan noch leer.<br>
+          Nun, um eine Option in die Konfiguration aufzunehmen, hätte ich mir noch zwei Zufallsvariablen definiert,
+          mit
+          denen ich alle Optionen in meiner Map erreichen kann. Analoges gilt, wenn ich die Option mit hoher
+          Wahrscheinlichkeit(paar) ziehe. Ist das eine gute Implementierung?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Erstellen einer neuen Konfiguration</h3>
+        <div class="date">Posted: <strong>11 Aug 2023, 18:39</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Das hört sich nach eine Lösung an, wo sauber random gemacht wird (also alle Option+Wert
+          haben die selbe Wahrscheinlichkeit)…</div>
+      </div>
+      <hr />
+    </div>
+    <h2>Paare</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8264">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8264</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Paare</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 12:46</strong></div>
+        <div class="author">by <strong>jd326</strong></div>
+        <div class="content">Hallo,<br>
+          ich habe einige grundsätzliche Probleme mit dem Verständnis des Projekts, da die Aufgabenstellung doch sehr
+          ungenau formuliert ist. Was ist im Sinne der Aufgabenstellung ein Paar? Bezogen auf das Beispiel also:
+          Bildschirm + Prozessor, oder Bildschirm + Prozessor + RAM? Bzw. was ist hier ein Paar und was ein Modell?
+          Soll
+          die maximal mögliche Anzahl der möglichen Paare im Programm berechnet werden? Hier ist so wie ich das sehe
+          auch ein Fehler in der Aufgabenstellung: 2x3 + 2x4 +3x4 = 26 \noteq 24 (24 im Übungsblatt). Wie soll die
+          Ermittlung von neuen Modellen mit Einbeziehung von Wahrscheinlichkeiten schematisch grob aussehen?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Paare</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 13:08</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4087">jd326</a> wrote: <a
+                  href="./viewtopic.php?p=32657#p32657" data-post-id="32657"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">24 Jul 2023, 12:46</div>
+              </cite>
+              Hallo,<br>
+              ich habe einige grundsätzliche Probleme mit dem Verständnis des Projekts, da die Aufgabenstellung
+              doch
+              sehr ungenau formuliert ist. Was ist im Sinne der Aufgabenstellung ein Paar? Bezogen auf das
+              Beispiel
+              also: Bildschirm + Prozessor, oder Bildschirm + Prozessor + RAM? Bzw. was ist hier ein Paar und was
+              ein
+              Modell? Soll die maximal mögliche Anzahl der möglichen Paare im Programm berechnet werden? Hier ist
+              so wie
+              ich das sehe auch ein Fehler in der Aufgabenstellung: 2x3 + 2x4 +3x4 = 26 \noteq 24 (24 im
+              Übungsblatt).
+              Wie soll die Ermittlung von neuen Modellen mit Einbeziehung von Wahrscheinlichkeiten schematisch
+              grob
+              aussehen?
+            </div>
+          </blockquote>
+
+          <ul>
+            <li> Ein paar ist (option1,wert1),(option2,wert2)</li>
+            <li> ein modelle ist ein Konfiguration (also alle optionen haben ein Wert) was kompatibel mit den
+              constraints ist</li>
+            <li> <a href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8202"
+                class="postlink">viewtopic.php?f=1278&amp;t=8202</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Paare</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 16:01</strong></div>
+        <div class="author">by <strong>jd326</strong></div>
+        <div class="content">Danke schonmal für die Erklärung,<br>
+          nur um nochmal sicherzugehen: ein Paar wäre dann: (Prozessor, Intel). Dementsprechend ein Modell:
+          ((Prozessor,Intel),(RAM,7),(Bildschirm,2)). Und damit bestünde ein Modell/Konfiguration aus dem gegebenen
+          Beispiel aus 3 Paaren. Nochmal zu den maximalen Möglichkeiten. So wie ich das sehe, muss ich die berechnen,
+          mit der Formel, die auf dem Übungsblatt gegeben ist, komme ich allerdings auf 26 und nicht auf 24 wie
+          angegeben. Ist hier ein Denkfehler von mir oder ist das einfach nur ein Tippfehler auf dem Übungsblatt?
+        </div>
+      </div>
+      <hr />
+    </div>
+    <h2>Checken von Dopplungen in .models</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8325">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8325</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Checken von Dopplungen in .models</h3>
+        <div class="date">Posted: <strong>05 Aug 2023, 22:24</strong></div>
+        <div class="author">by <strong>nl191</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          eine Frage: Bei den Bedingungen für den checker heißt es "1. in jedem Model alle Optionen genau einmal
+          angegeben werden". Heißt das, dass wir auch überprüfen müssen, ob in .models optionen nicht mehrmals mit dem
+          gleichen Wert vorkommen oder sind Dopplungen in Modellen wiefolgt erlaubt?: option1, value1, option2,
+          value2,
+          option1, value1
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Checken von Dopplungen in .models</h3>
+        <div class="date">Posted: <strong>06 Aug 2023, 07:07</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Bei Modellen sind keine Verdoppelung erlaubt</div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>solver und checker</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8322">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8322</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>solver und checker</h3>
+        <div class="date">Posted: <strong>05 Aug 2023, 11:09</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Hallo zusammen,<br>
+          <br>
+          wir sollen bei dem solver ja bereits die Konfigurationen prüfen, ob sie stimmen.<br>
+          Dafür habe ich eine eigene Methode gemacht.<br>
+          Der Checker soll die Konfigurationen ja nochmal checken.<br>
+          Ist es da erlaubt, dass ich für den Checker die gleiche Methode dafür verwende, wie bei dem solver?<br>
+          <br>
+          VG,<br>
+          Leon
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: solver und checker</h3>
+        <div class="date">Posted: <strong>05 Aug 2023, 11:21</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Sicher.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: solver und checker</h3>
+        <div class="date">Posted: <strong>05 Aug 2023, 13:09</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Ok, danke!</div>
+      </div>
+      <hr />
+    </div>
+
+
+    <h2>Return-Codes für den Checker</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8265">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8265</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 14:43</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          ich bin in einer kleinen Verwirrung mit den Return-Codes für einen Checker.<br>
+          Ich wollte frage, ob ich den Sinn von allen richtig verstehe:<br>
+          <br>
+          10 - nicht mögliche .options &lt;=&gt; ? Verstehe nicht<br>
+          20 - nicht mögliche .constraints &lt;=&gt; in den Constraints gibt es Optionen und Werte, die in .options
+          nicht existieren<br>
+          30 - Fehler in .models :<br>
+          &lt;=&gt; in den Modellen gibt es Optionen und Werte, die in .options nicht existieren<br>
+          &lt;=&gt; ein Model erfüllt Constraints nicht<br>
+          &lt;=&gt; Optionen werden mehr als 1 Mal angegeben<br>
+          40 - invalide Input Dateien<br>
+          <br>
+          Milana
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 15:05</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Fast:<br>
+          <br>
+          10: wenn .options nicht valide ist, also parsing fehler wie: existiert nicht / eine <span
+            class="posthilit">option</span> aber keine Werte / ...<br>
+          20: das was du meintest oder parsing fehler<br>
+          30: genau was du gesagt hast<br>
+          40: sollte bei dir nicht passieren <img class="smilies" src="./images/smilies/icon_e_smile.gif" width="15"
+            height="17" alt=":-)" title="Lächeln"> ich benutze das nur im russian-roulette-fuzzer, damit ich ein
+          Wert
+          ausgeben der weder richtig noch falsch ist.<br>
+          <br>
+          Die Idee ist:
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>   
+                            parsing von .options
+                            Wenn parsing nicht geklappt hat, return 10
+                            
+                            
+                            parsing + checking von .constraints
+                            Wenn parsing + checking nicht geklappt hat, return 20
+                            
+    
+                            parsing + checking von .modelle
+                            Wenn parsing + checking nicht geklappt hat, return 30
+                            
+                            return 0;
+                        </code>
+            </pre>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 15:41</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">Könnten Sie bitte auch erklären, was genau bedeutet, dass alle Optionen in jedem Model
+          genau einmal angegeben werden?<br>
+          <br>
+          Model (OK): Prozessor, Intel, RAM, 6, Bildschirm, 1<br>
+          Model (invalid): Prozessor, Intel, Prozessor, AMD, Bildschirm, 2<br>
+          <br>
+          Welche Beispiele wären auch möglich?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 15:46</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Jede <span class="posthilit">Option</span> muss genau einmal angegeben werden, also <span
+            style="font-size:200%;line-height:116%">gehen nicht</span> (EDIT und sollte der checker auch nicht
+          annehmen!):<br>
+
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre><code>Prozessor, Intel, Prozessor, AMD, Bildschirm, 2
+    Prozessor, Intel, Bildschirm, 2
+    </code></pre>
+          </div>
+
+          Es dürfen natürlich keine erfundenen <span class="posthilit">Option</span> geben, keine neuen Werte, die
+          constraints müssen erfüllt werden, ...
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 16:32</strong></div>
+        <div class="author">by <strong>jd326</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32665#p32665" data-post-id="32665"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">24 Jul 2023, 15:46</div>
+              </cite>
+              Jede <span class="posthilit">Option</span> muss genau einmal angegeben werden, also gehen nicht:<br>
+
+              <div class="codebox">
+                <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+                <pre><code>Prozessor, Intel, Prozessor, AMD, Bildschirm, 2
+    Prozessor, Intel, Bildschirm, 2
+    </code></pre>
+              </div>
+
+              Es dürfen natürlich keine neuen <span class="posthilit">Option</span> geben, keine neuen Werte, die
+              constraints müssen erfüllt werden, ...
+            </div>
+          </blockquote>
+
+          Ich dachte, jede <span class="posthilit">Option</span> darf nur einmal in jedem Modell sein? Das was du hier
+          beschreibst, würde ja bedeuten, dass jedes Paar generell nur einmal in der Datei .models auftauchen darf?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 16:37</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Moment ich mache das *gehen nicht* vor dem Beispiel größer.<br>
+          <br>
+          EDIT: ich habe auch "neue <span class="posthilit">Option</span>" durch "erfundene <span
+            class="posthilit">Option</span>" ersetzt.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 17:07</strong></div>
+        <div class="author">by <strong>jd326</strong></div>
+        <div class="content">Alles klar, sorry, hatte ganz übersehen, dass in der letzten Zeile ja einfach nur ein Paar
+          fehlt...</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 17:13</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">Kann man also sagen, dass in dieser Model:<br>
+          Prozessor,Intel,Prozessor,5,Bildschirm,1<br>
+          (1) nicht alle Optionen<br>
+          (2) nicht valide Optionen (Prozessor value=5)<br>
+          (3) eine <span class="posthilit">Option</span> <span class="posthilit">mehrmals</span><br>
+          verwenden (-t) werden (wird)?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 17:21</strong></div>
+        <div class="author">by <strong>fg242</strong></div>
+        <div class="content">Dürfen bei der .constraints duplicate der Optionen vorkommen? z.B folgende Dateien wurden
+          mit dem fuzz.sh generiert:<br>
+          <br>
+          .options:<br>
+          7,J<br>
+          f,3,a<br>
+          <br>
+          .constraints<br>
+          7,J,f,3<br>
+          7,J,7,J,f,3,7,J<br>
+          f,3,f,a,7,J,7,J,7,J<br>
+          f,3,f,3,7,J<br>
+          <br>
+          Ich würde sagen, dass die .constraints invalid sind und beim Checken des .constraints dementsprechend:
+          return
+          20. Von daher wurden keine Modelle in diesem Fall generiert.<br>
+          <br>
+          Ist meine Denkweise korrekt?<br>
+          <br>
+          Vielen Dank!
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 18:20</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">da es keinen Unterschied macht, ob eine (<span class="posthilit">option</span>,wert) einmal
+          oder <span class="posthilit">mehrmals</span> auftauchen: sagen wir mal, dass es erlaubt ist Optionen in den
+          constraints <span class="posthilit">mehrmals</span> zu haben (aber nicht in den Modellen).</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 18:52</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">Ist es grundlegend wichtig, dass checker auf einmal models und constraints überprüft?<br>
+          Könnte ich so machen, dass man es getrennt checkt?<br>
+          Zum Beispiel:<br>
+          ./checkerMain(options, constraints) -&gt; um constraints zu prüfen<br>
+          ./checkerMain(options, constraints, models) -&gt; um models zu überprüfen</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 18:57</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Es ist notwendig, ja.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 09:01</strong></div>
+        <div class="author">by <strong>cd277</strong></div>
+        <div class="content">Dazu noch ein paar Fragen meinerseits:<br>
+          <br>
+          Soll angenommen werden, dass eine .options file nur valide ist, wenn sie auch mindestens zwei verschiedene
+          Optionen hat? Sonst würde ja das Pairwise-Testing kein Sinn ergeben. (Beispiel: Wenn man die Zwei Optionen A
+          und B hat, die jeweils die Werte 1 und 2 haben, wäre es valide, aber wenn man nur A hätte, dann nicht)<br>
+          <br>
+          Und ähnlich: Soll angenommen werden, dass ein einzelner Constraint nur valide ist, wenn man mindestens zwei
+          Optionen (und ein Wert derer) als Constraint hat? Das heißt anhand des vorherigen Beispiels:<br>
+          Der constraint A,1,B,2 wäre valide, aber der constraint A,1 nicht
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 09:30</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3959">cd277</a> wrote: <a
+                  href="./viewtopic.php?p=32687#p32687" data-post-id="32687"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 09:01</div>
+              </cite>
+              Dazu noch ein paar Fragen meinerseits:<br>
+              <br>
+              Soll angenommen werden, dass eine .options file nur valide ist, wenn sie auch mindestens zwei
+              verschiedene
+              Optionen hat? Sonst würde ja das Pairwise-Testing kein Sinn ergeben. (Beispiel: Wenn man die Zwei
+              Optionen
+              A und B hat, die jeweils die Werte 1 und 2 haben, wäre es valide, aber wenn man nur A hätte, dann
+              nicht)
+            </div>
+          </blockquote>
+          Nein, aber du darfst solche Optionen gerne anders behandeln (zum Beispiel: immer setzen bevor du Paare
+          ziehst).<br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3959">cd277</a> wrote: <a
+                  href="./viewtopic.php?p=32687#p32687" data-post-id="32687"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 09:01</div>
+              </cite>
+              Und ähnlich: Soll angenommen werden, dass ein einzelner Constraint nur valide ist, wenn man
+              mindestens
+              zwei Optionen (und ein Wert derer) als Constraint hat? Das heißt anhand des vorherigen
+              Beispiels:<br>
+              Der constraint A,1,B,2 wäre valide, aber der constraint A,1 nicht
+            </div>
+          </blockquote>
+          Nein
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 10:22</strong></div>
+        <div class="author">by <strong>cd277</strong></div>
+        <div class="content">Noch eine Frage: Ist es wichtig zu überprüfen, ob es mehrere Optionen mit dem selben Namen
+          gibt?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 10:29</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">ja, das wäre eine nicht-valide .options datei…</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 13:40</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          auf der Seite 5 in projekt.pdf gibt es ganz oben eine Tabelle mit den Return-Codes. Sind das Return-Codes
+          für
+          einen SolverMain?<br>
+          Danke im Voraus.<br>
+          <br>
+          Milana
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 13:57</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Richtig.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 14:20</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32693#p32693" data-post-id="32693"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 13:57</div>
+              </cite>Richtig.</div>
+          </blockquote>
+
+          Da gibt es einen Return Code 20 - Keine valide Eingabedatei.<br>
+          <br>
+          .constraints ist ja nicht valid, wenn es da options gibt, die nicht in .options sind.<br>
+          warum kann .constraints noch invalid sein?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 14:21</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Siehe im thread obendrüber:<br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32663#p32663" data-post-id="32663"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">24 Jul 2023, 15:05</div>
+              </cite>
+              20: das was du meintest oder parsing fehler<br>
+              <br>
+              [...]<br>
+              <br>
+              Die Idee ist:
+              <div class="codebox">
+                <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+                <pre>
+                                <code>   
+                                parsing von .options
+                                Wenn parsing nicht geklappt hat, return 10
+                                
+                                
+                                parsing + checking von .constraints
+                                Wenn parsing + checking nicht geklappt hat, return 20
+                                
+    
+                                parsing + checking von .modelle
+                                Wenn parsing + checking nicht geklappt hat, return 30
+                                
+                                return 0;
+                                </code>
+                            </pre>
+              </div>
+            </div>
+          </blockquote>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 15:41</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">Braucht man in checker std::cout &lt;&lt; "Invalid options" &lt;&lt; std::endl; ?<br>
+          Oder braucht man nur return 10; ?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 15:54</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Die Idee ist das du auf stderr mit <span class="codecontent"> std::cerr &lt;&lt; </span>
+          was genaueres ausgibst (ist auch zum debuggen praktisch).</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 16:21</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32700#p32700" data-post-id="32700"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 15:54</div>
+              </cite>
+              Die Idee ist das du auf stderr mit <span class="codecontent"> std::cerr &lt;&lt; </span> was
+              genaueres
+              ausgibst (ist auch zum debuggen praktisch).
+            </div>
+          </blockquote>
+
+          Ich frage, weil es nur für den Punkt return 30 steht, dass man auf std::cerr was schreiben soll.<br>
+          Für alle andere returns steht das nicht.<br>
+          Heißt es, ich std::cerr für alle andere returns nicht schreiben und es wird keinen Grund für den
+          Punkteabzug?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 16:45</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3932">ma497</a> wrote: <a
+                  href="./viewtopic.php?p=32701#p32701" data-post-id="32701"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 16:21</div>
+              </cite>
+              Heißt es, ich std::cerr für alle andere returns nicht schreiben und es wird keinen Grund für den
+              Punkteabzug?
+            </div>
+          </blockquote>
+          Ich kann nur raten etwas mehr info auszugeben, aber es wird kein Punkteabzug geben.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 18:36</strong></div>
+        <div class="author">by <strong>fg242</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          mir ist immer noch nicht klar, was der Unterschied zwischen den Return codes von Tabelle 1 and Tabelle 2, da
+          es zur Wiederholung kommen könnte:<br>
+          <br>
+          - Soweit ich es verstehe, bezieht sich Tabelle 2 auf CheckerMain. Für die return codes habe ich
+          dementsprechend die funktionen int check_options, int check_constraints, int check_models.<br>
+          Diese Funktionen geben die Werte laut der obengennanten Logik zurück:
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            parsing von .options
+                            Wenn parsing nicht geklappt hat, return 10
+                            
+                            
+                            parsing + checking von .constraints
+                            Wenn parsing + checking nicht geklappt hat, return 20
+                            
+    
+                            parsing + checking von .modelle
+                            Wenn parsing + checking nicht geklappt hat, return 30
+                            
+                            return 0;
+                        </code>
+                    </pre>
+          </div>
+          - Tabelle 1 bezieht sich auf SolverMain (?):<br>
+          (a) Falls Dateien nicht geöffnet werden konnten, dann Return 10<br>
+          (b) Falls es keine valide Eingabedatei gibt (z.B., nicht deklarierte <span class="posthilit">Option</span>),
+          dann return 20 -&gt; wird hier z.B: eine empty .<span class="posthilit">option</span> file gemeint oder
+          eher,
+          dass die Funktionen int check_options und int check_constraints 10 bzw. 20 zurückgeben?<br>
+          <br>
+          - Was wäre dann in Sinne von Tabelle 1: "Return 30: andere Fehler"?<br>
+          - Sollten wir diese return codes wie in der Vorlesung anzeigen wie zum Beispiel mittels: OPTIONS error code
+          =
+          0?<br>
+          <br>
+          Vielen Dank!
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return-Codes für den Checker</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 20:51</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=2730">fg242</a> wrote: <a
+                  href="./viewtopic.php?p=32703#p32703" data-post-id="32703"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 18:36</div>
+              </cite>
+              - Tabelle 1 bezieht sich auf SolverMain (?):<br>
+              (a) Falls Dateien nicht geöffnet werden konnten, dann Return 10<br>
+              (b) Falls es keine valide Eingabedatei gibt (z.B., nicht deklarierte <span
+                class="posthilit">Option</span>), dann return 20 -&gt; wird hier z.B: eine empty .<span
+                class="posthilit">option</span> file gemeint oder eher, dass die Funktionen int check_options
+              und int
+              check_constraints 10 bzw. 20 zurückgeben?
+            </div>
+          </blockquote>
+          Richtig für beides (auch mit dem check_options/check_constraints). <br>
+          <br>
+          Ganz abstrakt ist die Idee, dass der solver mehr erlauben kann, als der checker.<br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=2730">fg242</a> wrote: <a
+                  href="./viewtopic.php?p=32703#p32703" data-post-id="32703"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 18:36</div>
+              </cite>
+              - Was wäre dann in Sinne von Tabelle 1: "Return 30: andere Fehler"?
+            </div>
+          </blockquote>
+          Keine Ahnung was ich da meinte <img class="smilies" src="./images/smilies/icon_e_surprised.gif" width="15"
+            height="17" alt=":o" title="Überrascht"> wahrscheinlich kann kann das gar nicht passieren.<br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=2730">fg242</a> wrote: <a
+                  href="./viewtopic.php?p=32703#p32703" data-post-id="32703"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 18:36</div>
+              </cite>
+              - Sollten wir diese return codes wie in der Vorlesung anzeigen wie zum Beispiel mittels: OPTIONS
+              error
+              code = 0?
+            </div>
+          </blockquote>
+          Nein (mein solver hat sehr viel info gezeigt, mehr als notwendig ist… außer vielleicht zum debuggen)
+        </div>
+      </div>
+      <hr />
+    </div>
+    <h2>return code 20</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8281">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8281</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>return code 20</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 18:47</strong></div>
+        <div class="author">by <strong>ds614</strong></div>
+        <div class="content">Servus,<br>
+          <br>
+          Ich verstehe nicht, wie eine invalide Eingabedatei aussehen soll, bzw. auf was ich die Dateien genau prüfen
+          soll.<br>
+          Kann ich vielleicht ein oder zwei Beispiele haben?<br>
+          <br>
+          Ich kann ja schlecht überprüfen, ob der Options-name wirklich vor den jeweiligen Werten steht zum Beispiel.
+          Oder, dass alle Werte mit einem Komma getrennt sind.<br>
+          Vielleicht ob leer Zeilen zwischen den Optionen (bzw. Constraints) sind? Ich tue mich damit echt schwer.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: return code 20</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 19:00</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre><code>$ cat a.options # oops kein Wert
+    this is a normal option, value 1, value 2
+    another option, value 1
+    this is an option without value that you cannot parse
+    
+    $ cat b.options # oops eine option ist mehrmal angegeben
+    option1, value 1, value 2
+    option1, value 1
+    option1, hello it's me again
+    </code></pre>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: return code 20</h3>
+        <div class="date">Posted: <strong>28 Jul 2023, 19:20</strong></div>
+        <div class="author">by <strong>ds614</strong></div>
+        <div class="content">Das macht's sehr viel klarer, danke!</div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Return Codes</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8290">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8290</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Return Codes</h3>
+        <div class="date">Posted: <strong>29 Jul 2023, 10:58</strong></div>
+        <div class="author">by <strong>ku35</strong></div>
+        <div class="content">Hallo, <br>
+          <br>
+          ich habe mein errorhandling so gestaltet, das die Fehlercodes durchgereicht werden. Wenn also z.B. der
+          parser
+          eine falsche .constraints Datei einliest, die nicht geöffnet werden kann, meldet er zurück "Blabla kann
+          nicht
+          geöffnet werden." und den Fehlercode`return 10;`. Weil in der Tabelle 1 steht, das nicht geöffnete Dateien
+          den
+          Code 10 haben. <br>
+          <br>
+          Ich nutze die oben beschriebene Funktion aber jetzt sowohl im Solver als auch im Checker. Jetzt kommt das
+          Problem: In Tabelle 2 steht, das der Checker bei fehlenden .constraints den code 20 zurückgeben soll. Jetzt
+          gibt der Parser aber den code 10 zurück, weil es eine nicht offenbare Datei ist. Und bisher reiche ich die
+          Codes einfach durch. Der Code 10 würd aber dem gewünschten Code 20 widersprechen.<br>
+          <br>
+          Wie soll damit am besten umgegangen werden. Soll jeweils (also in SolverMain, und checkerMain) eigenes
+          Errorhandling betrieben werden (<a
+            href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8277#p32736"
+            class="postlink">so wie hier beschrieben</a>)? Das würde es zwar ermöglichen für die gleichen Fehler
+          verschiedene Codes auszugeben, allerdings bedeutet das auch in beiden Dateien deutlich mehr overhead fürs
+          errorhandling. <br>
+          Da, wenn ich das richtig verstehe, der "switch - case" Block nach jeder Funktion aufgerufen werden muss um
+          entsprechende errors abzufangen, bevor diese ausersehen vom nächsten Funktionsaufruf überschrieben
+          werden.<br>
+          <br>
+          Oder gibt es noch einen alternativen, besseren Vorschlag? <br>
+          <br>
+          Vielen Dank für die Hilfe schon mal.<img class="smilies" src="./images/smilies/icon_e_smile.gif" width="15"
+            height="17" alt=":)" title="Lächeln"><br>
+          <br>
+          PS.: Mit "Fehlercodes durchreichen" meine ich folgendes:<br>
+
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            # constraints.cpp
+                            int parse_csv() {
+                            // blabla 
+                            
+                            // some error occurs
+                            throw "Error opening file: " + std::string(input_filename);
+                            return 40;
+                            }
+                        </code>
+            </pre>
+          </div>
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                    <code>
+                        # checkerMain.cpp
+                        int main()
+                        { // blabla
+                        
+                        int response_code;
+                        try {
+                            // Funktion wird ausgeführt
+                            response_code = constraints.parse_csv();
+                            response_code = // weitere funktionen
+                        } catch (const char *msg) {
+                            // Wenn ein Fehler auftritt, bzw. wenn eine Nachricht zurückgegeben (throw) wird, wird diese und der Fehlercode ausgegeben und das Programm abgebrochen	
+                            std::cerr &lt;&lt; msg &lt;&lt; std::endl;
+                            return response_code;
+                        }}
+                    </code>
+            </pre>
+          </div>
+
+          Wegen diesem "durchreichen" erhalte ich dann immer den Fehlercode der Funktion, in der der Fehler
+          aufgetreten
+          ist. Der Vorteil ist, dass ich nur ein "try - catch" Block brauche, in dem ich alle Funktionen nach und nach
+          ausführen kann. Sollte eine davon einen Fehler haben, greift der "catch" Teil und gibt den korrekten Fehler
+          aus.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return Codes</h3>
+        <div class="date">Posted: <strong>29 Jul 2023, 16:27</strong></div>
+        <div class="author">by <strong>sn212</strong></div>
+        <div class="content">Ich hab das so gefixt, dass anstatt<br>
+          <br>
+          return i;<br>
+          <br>
+          auch wieder mit throw gearbeitet wird<br>
+          <br>
+          throw i;<br>
+          <br>
+          und dann außen mit try-catch gearbeitet wird. Dann steht im parser zwar throw 10 und der solver kann
+          dann<br>
+          <br>
+          try {parse(opt_file);}<br>
+          catch (int i) {return i;} <br>
+          <br>
+          schreiben, aber wenn du dann im checker bist geht auch z.B:<br>
+          <br>
+          try {parse(con_file);}<br>
+          catch (int i) {return 20;}
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Fehler bei russian-roulette-checker</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8266">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8266</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Fehler bei russian-roulette-checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 15:53</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Der von ihnen bereitgestellte checker gibt mir teils Fehler aus, welche ich so nicht
+          nachvollziehen kann. Options Constraints und Model stimmen. Werden Sie bei der Korrektur auch in die
+          jeweiligen Files reinschauen, um zu überprüfen, dass die Ausgabe stimmt oder vertrauen Sie nur auf diesen
+          Checker? Weil dann verstehe ich nicht was bei meinen Models teilweise falsch sein soll.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fehler bei russian-roulette-checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 15:55</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Kannst du mir die Dateien schicken wo das passiert?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fehler bei russian-roulette-checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 16:01</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Bsp 1:<br>
+          Options:<br>
+          q,B<br>
+          2,q<br>
+          m,W<br>
+          5,N,P<br>
+          <br>
+          Constraints:<br>
+          q,B,5,N,5,P,q,B<br>
+          2,q,q,B<br>
+          q,B,m,W<br>
+          <br>
+          Model:<br>
+          <br>
+          Bsp2:<br>
+          Options:<br>
+          N,2,q<br>
+          5,P<br>
+          <br>
+          Constraints:<br>
+          <br>
+          Model:<br>
+          5,P,N,2<br>
+          5,P,N,q<br>
+          <br>
+          Meines Erachtens beides Korrekt<br>
+          Bsp1: s UNKNOWN<br>
+          Bsp2: incompatible clause: <br>
+          invalid models UNKNOWN
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fehler bei russian-roulette-checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 16:04</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">unknown ist normal (das passiert 75% der Zeit und ist so gewollt).<br>
+          <br>
+          Bei dem zweiten, könnte sein, dass ich <span class="posthilit">leere</span> modelle nicht richtig behandele,
+          moment.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fehler bei russian-roulette-checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 16:08</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Aber wieso kommt hier dann auch invalid<br>
+          <br>
+          Options:<br>
+          N,2<br>
+          5,P<br>
+          <br>
+          Constraints:<br>
+          <br>
+          Models:<br>
+          5,P,N,2<br>
+          <br>
+          Oder liegt es vielleicht immer daran, wenn ein File leer ist?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fehler bei russian-roulette-checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 16:35</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Es war wirklich die leer Datei. Stimmt jetzt im SVN.<br>
+          <br>
+          Sorry dafür.<br>
+          <br>
+          <br>
+          Zur info: bei dir liefen gerade 4300 tests ohne Probleme.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fehler bei russian-roulette-checker</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 17:01</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Das beruhigt mich! Danke sehr</div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>12 Modelle aus Übungsblatt und Constraints</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8285">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8285</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>12 Modelle aus Übungsblatt und Constraints</h3>
+        <div class="date">Posted: <strong>28 Jul 2023, 14:15</strong></div>
+        <div class="author">by <strong>dm295</strong></div>
+        <div class="content">Hallo, <br>
+          <br>
+          nach dem Aufgabenblatt reicht es aus folgende 12 Modelle zu erstellen:<br>
+          Model Prozessor RAM Bildschirm<br>
+          1 Intel 7 1K<br>
+          2 Intel 5 8K<br>
+          3 AMD 5 4K<br>
+          4 AMD 6 8K<br>
+          5 Intel 6 4K<br>
+          6 AMD 6 1K<br>
+          7 AMD 5 1K<br>
+          8 AMD 7 2K<br>
+          9 Intel 6 2K<br>
+          10 Intel 7 8K<br>
+          11 AMD 7 4K<br>
+          12 Intel 5 2K<br>
+          <br>
+          Die Constraints besagen doch, solche Kombinationen, welche nicht erlaubt sind also <br>
+          Prozessor,AMD,RAM,6<br>
+          Prozessor,AMD,RAM,7<br>
+          Prozessor,Intel,RAM,5,Bildschirm,8<br>
+          <br>
+          Demnach sollten doch Model Nummer 2,4,6,8 und 11 nicht erlaubt sein oder sehe ich da was falsch?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: 12 Modelle aus Übungsblatt und Constraints</h3>
+        <div class="date">Posted: <strong>28 Jul 2023, 14:23</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Das oben sind die optimalen Modelle ohne constraints, da hast du recht.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: 12 Modelle aus Übungsblatt und Constraints</h3>
+        <div class="date">Posted: <strong>30 Jul 2023, 20:43</strong></div>
+        <div class="author">by <strong>je252</strong></div>
+        <div class="content">Müssen wir auf eine bestimmte Anzahl an Modelen kommen damit unser Solver als richtig gilt?
+          Oder reicht es aus die Modelle zuerstellen und die Constraints zuprüfen?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: 12 Modelle aus Übungsblatt und Constraints</h3>
+        <div class="date">Posted: <strong>30 Jul 2023, 21:27</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Einfach korrekte Modelle herstellen</div>
+      </div>
+      <hr />
+    </div>
+
+
+    <h2>Fragen zu Tests</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8295">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8295</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Fragen zu Tests</h3>
+        <div class="date">Posted: <strong>30 Jul 2023, 10:10</strong></div>
+        <div class="author">by <strong>cd277</strong></div>
+        <div class="content">Hi, nur drei kurze Fragen für die Tests, die wir erstellen sollen:<br>
+          <br>
+          1. Um die Funktionen zu Testen werden .options, .constraints und (im Fall vom Checker) .models Dateien
+          benötigt. Liege ich recht in der Annahme, dass wir die Dateien, die für die Tests benötigt werden, ebenfalls
+          mit hochladen sollen?<br>
+          <br>
+          2. Manche meiner Funktionen sind void-Funktionen (returnen also nichts). Als solches kann ich ja nur schwer
+          einen Unit-Test für sie erstellen. Soll ich sie demnach auslassen?<br>
+          <br>
+          3. Laut dem Bewertungsschema heißt es: "Es muss für jede nicht-triviale Funktion (außer Einlesen der
+          Testeingabe) einen Unit-Test geben". Was genau ist hier mit "Einlesen der Testeingabe" gemeint? Ist das nur
+          der Parser, oder zählt der pretty-printer ebenfalls dazu?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fragen zu Tests</h3>
+        <div class="date">Posted: <strong>30 Jul 2023, 16:21</strong></div>
+        <div class="author">by <strong>lk473</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          (1) wenn deine Tests separate Dateien benötigen, dann musst du die auch hochladen.<br>
+          (2) Die void Funktionen werden ja irgendwelche Seiteneffekte haben. Die sollen auch getestet werden.<br>
+          (3) ich verstehe das auch so, dass damit das Parsen gemeint ist. Demnach soll aber der Printer getestet
+          werden.
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Frage beim Erstellen einer Konfiguration</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8280">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8280</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Frage beim Erstellen einer Konfiguration</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 16:06</strong></div>
+        <div class="author">by <strong>cd277</strong></div>
+        <div class="content">Eine kurze Frage: In einem anderen Forumpost wurde von gedeckten Paaren gesprochen - also
+          die Paare, die wir bereits in einem Model/einer Konfiguration haben. Heißt dass, dass ein Paar erst als
+          gedeckt gilt (also aus den verbleibenden Paaren entfernt werden kann), wenn wir erfolgreich ein Model mit
+          dem
+          Paar erstellt haben, welches den constraints gerecht ist (demnach also in die .models Datei geschrieben
+          wird)?
+          Oder gilt ein Paar sofort als gedeckt, sobald es auch nur für eine Konfiguration verwendet wurde, selbst
+          wenn
+          diese noch nicht als constraints-gerecht verifiziert wurde (und daher nicht in die .models Datei geschrieben
+          werden würde)?<br>
+          <br>
+          Und wie ist es, wenn wir eine (der bisherigen Konfiguration gerechte) Option unabhängig der bereits
+          gedeckten
+          Paare zur Konfiguration hinzufügen, und dies einer der Paare gleicht? Sollen wir dieses Paar dann
+          streichen?<br>
+          Als Beispiel: Sagen wir, wir haben die Optionen A,B und C und die Paare (A,1),(B,2), (B,2),(C,1), (A,2),
+          (B,1). Unsere Konfiguration ist im Moment (A,1,B,2) - was einem der Paare gleicht. Wenn wir jetzt zufällig
+          (C,1) hinzufügen würden, wäre unsere Konfiguration (A,1,B,2,C,1) - aber (B,2),(C,1) entspricht einem der
+          Paare. Sollen wir dieses Paar dann als gedeckt markieren?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Frage beim Erstellen einer Konfiguration</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 16:18</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Bedeckt bedeutet dass der Solver es in der .models Datei ausgeben kann.<br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3959">cd277</a> wrote: <a
+                  href="./viewtopic.php?p=32748#p32748" data-post-id="32748"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">27 Jul 2023, 16:06</div>
+              </cite>
+              Und wie ist es, wenn wir eine (der bisherigen Konfiguration gerechte) Option unabhängig der bereits
+              gedeckten Paare zur Konfiguration hinzufügen, und dies einer der Paare gleicht? Sollen wir dieses
+              Paar
+              dann streichen?<br>
+              Als Beispiel: Sagen wir, wir haben die Optionen A,B und C und die Paare (A,1),(B,2), (B,2),(C,1),
+              (A,2),
+              (B,1). Unsere Konfiguration ist im Moment (A,1,B,2) - was einem der Paare gleicht. Wenn wir jetzt
+              zufällig
+              (C,1) hinzufügen würden, wäre unsere Konfiguration (A,1,B,2,C,1) - aber (B,2),(C,1) entspricht einem
+              der
+              Paare. Sollen wir dieses Paar dann als gedeckt markieren?
+            </div>
+          </blockquote>
+          Ich finde das dies sehr Sinnvoll klingt!
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Frage beim Erstellen einer Konfiguration</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 18:00</strong></div>
+        <div class="author">by <strong>je252</strong></div>
+        <div class="content">bedeutet das, dass wenn wir eine Konfiguration gebildet haben (A,B,C) drei Paare als
+          gedeckt markieren können? Weil eine Konfiguration würde ja immer drei Paare abdecken aber wird nur aus zwei
+          zusammengebaut.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Frage beim Erstellen einer Konfiguration</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 19:03</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Du hast es absolut richtig verstanden: (A, B), (A, C), (B, C) (und natürlich auch (B,A),
+          (C,A) und (C, B) falls du die Paare in beide richtungen hast)</div>
+      </div>
+      <hr />
+    </div>
+    <h2>Solver/Wahrscheinlichkeit</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8255">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8255</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>21 Jul 2023, 15:44</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">Hallo habe nochmal ein Frage zum Solver.<br>
+          Habe glaube in Grundsätzen verstanden was hier gemacht werden soll. Jedoch verstehe ich folgenden Satz aus
+          der
+          ANleitung noch nicht so ganz<br>
+          "Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar, das noch nicht abgedeckt ist."<br>
+          Warum sollte ich das nur mit hoher Wahrscheinlichkeit nehmen? Wäre es nicht besser <em
+            class="text-italics">immer</em> ein unabgedecktes Paar zu nehmen wenn sich die Möglichkeit bietet? Falls
+          nicht, würde ich dann erst auf eine random option zurückgreifen... Das wirkt mir deutlich zuverlässiger um
+          wirklich alle Paare abzudecken und der Wahrscheinlichkeitsaspekt nur wie eine Extra Hürde die leichter zu
+          einem falschen Ergebnis führt.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>21 Jul 2023, 16:55</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Wenn du noch 3 Paare hast, die aber zusammen nicht die constraints erfüllen, dann würde
+          deine Lösung stecken bleiben. Mit random Schaft es der Solver vielleicht noch Modelle zu finden (wo je 2
+          Paare
+          zusammen sind und der dritte durchhä<br>
+          Random ausgeschlossen)</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>21 Jul 2023, 17:07</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">Habe es leider trotzdem noch nicht verstanden.<br>
+          So wie ich die Aufgabe verstanden habe soll folgendes passieren:<br>
+          Hohe Wahrscheinlichkeit = nimm ein paar das passt<br>
+          sonst ODER niederige Wahrscheinlichkeit = nimm eine random option (also falls es kein Paar mehr gibt was die
+          constraints<br>
+          erfüllen würde oder sonst wie nicht passt)<br>
+          Aber das mit der Wahrscheinlichkeit erscheint mir noch nicht so nützlich. In deinem genannten Fall wäre doch
+          trotzdem folgendes effizienter:<br>
+          Falls es geht = Nimm ein Paar<br>
+          Falls nicht = Nimm eine random option<br>
+          Es würde dann ja trotzdem nicht stecken bleiben. So wie ich das mit der Wahrscheinlichkeit verstehe, führt
+          dass doch nur dazu, dass selbst wenn ich ein Paar nehmen könnte, stattdessen auch eine random option wählen
+          könnte. Vielleicht habe ich das aber auch falsch verstanden...</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>21 Jul 2023, 21:36</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content"><span style="text-decoration:underline">Erst mal:</span> deine Idee ist definitiv erlaubt
+          mit der Fragestellung und du darfst die gerne implementieren. Du wirst auch keine Punkte verlieren (das wäre
+          einfach ein Wahrscheinlichkeit von 100% geben solange die Paare nicht leer sind).<br>
+          <br>
+          <br>
+          <span style="text-decoration:underline">Warum ich Zweifel habe:</span><br>
+          <br>
+          Hier ist meine Intuition warum es Probleme geben sollte:<br>
+          <br>
+          Du hast 3 option A, B und C mit je 2 Werte, 1 und 2.<br>
+          <br>
+          In den Paaren die bleiben hast du <span class="codecontent">(A,1), (B,1)</span> und in den Constraint hast
+          du
+          <span class="codecontent">(A,1), (B,1)</span>. Dann würdest du nie eine Lösung finden. Aber mit random
+          würdest
+          du eine Lösung finden.<br>
+          <br>
+          <br>
+          Aber: das ist kein Gegenbeispiel zu deiner Idee, weil ich kein vollständiges Beispiel habe. Ich muss nochmal
+          drüber nachdenken.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>22 Jul 2023, 11:55</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32627#p32627" data-post-id="32627"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">21 Jul 2023, 21:36</div>
+              </cite>
+              <span style="text-decoration:underline">Erst mal:</span> deine Idee ist definitiv erlaubt mit der
+              Fragestellung und du darfst die gerne implementieren. Du wirst auch keine Punkte verlieren (das wäre
+              einfach ein Wahrscheinlichkeit von 100% geben solange die Paare nicht leer sind).<br>
+              <br>
+              <br>
+              <span style="text-decoration:underline">Warum ich Zweifel habe:</span><br>
+              <br>
+              Hier ist meine Intuition warum es Probleme geben sollte:<br>
+              <br>
+              Du hast 3 option A, B und C mit je 2 Werte, 1 und 2.<br>
+              <br>
+              In den Paaren die bleiben hast du <span class="codecontent">(A,1), (B,1)</span> und in den
+              Constraint hast
+              du <span class="codecontent">(A,1), (B,1)</span>. Dann würdest du nie eine Lösung finden. Aber mit
+              random
+              würdest du eine Lösung finden.<br>
+              <br>
+              <br>
+              Aber: das ist kein Gegenbeispiel zu deiner Idee, weil ich kein vollständiges Beispiel habe. Ich muss
+              nochmal drüber nachdenken.
+            </div>
+          </blockquote>
+
+          Hallo. Ist es wichtig, Random zu benutzen? Werden Punkte wegen der Implementierung ohne Random abgezogen?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>22 Jul 2023, 13:21</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Ich bin mir gerade nicht sicher was die Frage ist:<br>
+
+          <ul>
+            <li>musst du random benutzen? Nein du kannst auch dein eigenes Ding implementieren (<a
+                href="https://github.com/arminbiere/cadical/blob/master/src/random.hpp"
+                class="postlink">https://github.com/arminbiere/cadical/b ... random.hpp</a> um ein Beispiel von
+              Armin zu
+              nehmen)</li>
+            <li> Der Kode für das setzen von der Option unabhängig von den Paaren muss da sein (es wird ja explizit
+              in
+              der Fragestellung gefragt), aber du darfst die Wahrscheinlichkeit auf 0 setzen, dass der aufgerufen
+              wird…
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 12:27</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">Hallo, sorry für die verspätete Antwort.<br>
+          Erstmal eine Frage: Muss der Solver auf jeden Fall ein Modell zurückgeben in welchem alle Paare abgedeckt
+          werden? Denn gerade wenn ich diesen extra Wahrscheinlichkeitsaspekt einbaue, könnte es ja passieren, dass
+          der
+          Solver immer random options wählt (wenn auch unwahrscheinlich natürlich). <br>
+          Ansonten kann ich das natürlich mit einbauen, das scheint mir ertsmal nicht zu viel extra Arbeit zu sein.
+          Nur
+          verstehe ich noch nicht ganz den Vorteil. Gerade für das Beispiel in welchem ich nur noch ein Paar übrig
+          habe,
+          was die constraints allerdings nicht erfüllt bzw. zu den vorhandenen Paaren nicht passen kann. Als
+          beispiel:<br>
+          ich habe (A,1),(B,1) und übrig noch (B,1)(C,1). Dabei sind (A,1) und (C,1) aber nicht kompatibel.<br>
+          Selbst wenn ich den Wahrscheinlichkeitsaspekt habe, weiß ich ja vorher nicht welches Paar ich noch habe. Ob
+          ich also mit 100% oder mit 99% das Paar erstmal anschaue, würde ich ja am Ende trotzdem ein random Option
+          wählen müssen.<br>
+          Wären nun aber (A,1) und (C,1) komptaibel, könnte es passieren dass mein Solver trotzdem (C,2) wählt,
+          einfach
+          weil auch eine random Option gewählt werden könnte. Das ist für mich sehr kontraintuitiv...<br>
+          <br>
+          Den einzigen Vorteil den ich hierfür sehe wäre dem Solver noch mehr Freiheiten zu bieten, also noch
+          zufälligere Kombinationen zu erstellen. Die Wahrscheinlichkeit ein Modell zu finden was alle Paare abdeckt
+          wird dadurch aber geringer.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 13:04</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32655#p32655" data-post-id="32655"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">24 Jul 2023, 12:27</div>
+              </cite>
+              Hallo, sorry für die verspätete Antwort.<br>
+              Erstmal eine Frage: Muss der Solver auf jeden Fall ein Modell zurückgeben in welchem alle Paare
+              abgedeckt
+              werden? Denn gerade wenn ich diesen extra Wahrscheinlichkeitsaspekt einbaue, könnte es ja passieren,
+              dass
+              der Solver immer random options wählt (wenn auch unwahrscheinlich natürlich).
+            </div>
+          </blockquote>
+          Du meinst, dass es ein Model ausgeben kann, was kein neues Paar abdeckt? Ja das kann passieren.<br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32655#p32655" data-post-id="32655"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">24 Jul 2023, 12:27</div>
+              </cite>
+              ich habe (A,1),(B,1) und übrig noch (B,1)(C,1). Dabei sind (A,1) und (C,1) aber nicht
+              kompatibel.<br>
+              Selbst wenn ich den Wahrscheinlichkeitsaspekt habe, weiß ich ja vorher nicht welches Paar ich noch
+              habe.
+              Ob ich also mit 100% oder mit 99% das Paar erstmal anschaue, würde ich ja am Ende trotzdem ein
+              random
+              Option wählen müssen.
+            </div>
+          </blockquote>
+
+          Die Hoffnung ist das du durch zufall auf einem Model kommst: Wenn du (A,1), (B,1) setzt und zufällig (C,2)
+          setzt, dann ist das vielleicht ein Model. Wenn du nur ein Paar nehmen kannst, dann kriegst du immer die
+          unmögliche Variante (A,1)(B,1)(C,1).<br>
+          <br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32655#p32655" data-post-id="32655"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">24 Jul 2023, 12:27</div>
+              </cite>
+              Wären nun aber (A,1) und (C,1) komptaibel, könnte es passieren dass mein Solver trotzdem (C,2)
+              wählt,
+              einfach weil auch eine random Option gewählt werden könnte. Das ist für mich sehr kontraintuitiv...
+            </div>
+          </blockquote>
+          Möglich ja.<br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32655#p32655" data-post-id="32655"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">24 Jul 2023, 12:27</div>
+              </cite>
+              Den einzigen Vorteil den ich hierfür sehe wäre dem Solver noch mehr Freiheiten zu bieten, also noch
+              zufälligere Kombinationen zu erstellen. Die Wahrscheinlichkeit ein Modell zu finden was alle Paare
+              abdeckt
+              wird dadurch aber geringer.
+            </div>
+          </blockquote>
+          Meine Intuition ist mehr oder weniger, dass wenn du wenig constraints hast, dann ist immer Paare nehmer
+          besser
+          und bei vielen constraints, wird random wichtiger.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 18:06</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">Ok ich glaube ich habe es zumindest verstanden was die Idee hinter der Wahrscheinlichkeit
+          ist.<br>
+          Aber da du auch meintest ich darf die Wahrscheinlichkeit auf 100% setzen würde ich es so lassen. Finde das
+          als
+          Implementierung logischer und würde es deshalb ungern ändern.<br>
+          Aber vielen Dank!</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>24 Jul 2023, 18:36</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Nur zur info: bei mir ist die Wahrscheinlichkeit 1/uncovered_pairs.size() (ich habe nicht
+          versucht irgendwas zu optimieren). Das ist also schon fast deine 0%…<br>
+          <br>
+          (wollte ich nur mal schreiben, keine Ahnung was besser ist… man bräuchte richtige benchmarks und so. Das ist
+          aber für das Projekt nicht wichtig.)
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 12:40</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">Danke für den Hinweis, ich werde auch nochmal drüber nachdenken!<br>
+          <br>
+          Hätte aber noch eine andere Frage zum Fuel. Wann und wie wir die constraints überprüfen ist ja uns
+          überlassen,
+          beispielsweise könnte ich bei jedem Paar welches ich anhänge schauen ob es auch kompatibel ist. Das wäre ja
+          effizienter als eine ganze Konfiguration zu erstellen und die dann sprichwörtlich in den Müll zu hauen wenn
+          es
+          nicht passt. Zähle ich dann jedes mal, wenn ich ein nicht kompatibles Paar oder Option finden würde, Fuel
+          eins
+          runter? Oder muss hier zunächst eine ganze Konfiguration erstellt und dann überprüft werden? Oder gilt auch
+          hier wieder: Ihr dürft machen was ihr wollt?<br>
+          Bin mir immernoch nicht ganz sicher wie viel Freiheit wir haben bzw. wie genau wir uns an die Vorgaben
+          halten
+          müssen...
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 14:03</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32691#p32691" data-post-id="32691"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">25 Jul 2023, 12:40</div>
+              </cite>
+              Danke für den Hinweis, ich werde auch nochmal drüber nachdenken!<br>
+              <br>
+              Hätte aber noch eine andere Frage zum Fuel. Wann und wie wir die constraints überprüfen ist ja uns
+              überlassen, beispielsweise könnte ich bei jedem Paar welches ich anhänge schauen ob es auch
+              kompatibel
+              ist. Das wäre ja effizienter als eine ganze Konfiguration zu erstellen und die dann sprichwörtlich
+              in den
+              Müll zu hauen wenn es nicht passt. Zähle ich dann jedes mal, wenn ich ein nicht kompatibles Paar
+              oder
+              Option finden würde, Fuel eins runter? Oder muss hier zunächst eine ganze Konfiguration erstellt und
+              dann
+              überprüft werden? Oder gilt auch hier wieder: Ihr dürft machen was ihr wollt?<br>
+              Bin mir immernoch nicht ganz sicher wie viel Freiheit wir haben bzw. wie genau wir uns an die
+              Vorgaben
+              halten müssen...
+            </div>
+          </blockquote>
+          Die Vorgabe sagt nichts über wann du die Constraints checken sollst: Das ist ganz dir überlassen.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 15:27</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">In dem Fall: Ist 1000 auch eine fixe Vorgabe? Schon für Fuel=200 bekomme ich im beispiel
+          mit Prozessor etc. etliche Modelle raus... 1000 scheint mir hier also ein kompletter overkill zu sein zumal
+          man ja möglichst wenige Modelle möchte. Auch so wie es in der Aufgabe beschrieben wirkt es schon seltsam.
+          Angenommen es gäbe immer mehr Modelle die die constraints erfüllen, dann hätte man ja 1000+ Modelle in der
+          Regel!<br>
+          Note: Habe jedes mal fuel-- wenn etwas wegen constraints nicht gepasst hat.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 15:30</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32743#p32743" data-post-id="32743"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">27 Jul 2023, 15:27</div>
+              </cite>
+              In dem Fall: Ist 1000 auch eine fixe Vorgabe? Schon für Fuel=200 bekomme ich im beispiel mit
+              Prozessor
+              etc. etliche Modelle raus... 1000 scheint mir hier also ein kompletter overkill zu sein zumal man ja
+              möglichst wenige Modelle möchte. Auch so wie es in der Aufgabe beschrieben wirkt es schon seltsam.
+              Angenommen es gäbe immer mehr Modelle die die constraints erfüllen, dann hätte man ja 1000+ Modelle
+              in der
+              Regel!<br>
+              Note: Habe jedes mal fuel-- wenn etwas wegen constraints nicht gepasst hat.
+            </div>
+          </blockquote>
+          Du nimmst schon die bedeckten Paare aus den möglichen Paaren raus?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 15:51</strong></div>
+        <div class="author">by <strong>sn212</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32627#p32627" data-post-id="32627"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">21 Jul 2023, 21:36</div>
+              </cite>
+              <br>
+              <br>
+              Du hast 3 option A, B und C mit je 2 Werte, 1 und 2.<br>
+              <br>
+              In den Paaren die bleiben hast du <span class="codecontent">(A,1), (B,1)</span> und in den
+              Constraint hast
+              du <span class="codecontent">(A,1), (B,1)</span>. Dann würdest du nie eine Lösung finden. Aber mit
+              random
+              würdest du eine Lösung finden.<br>
+              <br>
+              <br>
+
+            </div>
+          </blockquote>
+
+          Eine Frage dazu: Bei mir ist es Momentan so, wenn ich die Paare erstelle, wird bevor ich es in die Liste
+          aller
+          Paare schiebe noch geschaut ob es ein Contsraint gibt, welches genau so aussieht (bzw. es wird auch nach
+          ((B,1),(A,1)) geschaut). Wenn es eins gibt wird es einfach nicht hinzugefügt. Ist das erlaubt?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 15:56</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Absolut.<br>
+          <br>
+          Generell: im Blatt steht was du machen musst, aber alles andere sinnvolle ist erlaubt
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 16:08</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">[/quote]<br>
+          Du nimmst schon die bedeckten Paare aus den möglichen Paaren raus?<br>
+          [/quote]<br>
+          Ja mache ich. Relativ schnell nimmt er dann auch nur noch random optionen.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 16:14</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Dann kannst du auch noch implementieren, dass der Solver aufhört, wenn alle Paare bedeckt
+          sind <img class="smilies" src="./images/smilies/icon_e_wink.gif" width="15" height="17" alt=";-)"
+            title="Zwinkern"><br>
+          <br>
+          Aber du kannst auch fuel auf einen kleineren Wert runtersetzen. Nimm irgendwas was für dich Sinn ergibt.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver/Wahrscheinlichkeit</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 16:21</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">J das er dann aufhören darf macht wohl auch Sinn <img class="smilies"
+            src="./images/smilies/icon_e_smile.gif" width="15" height="17" alt=":)" title="Lächeln"> <br>
+          Dann mach ich das so und lasse fuel als fail safe drin, dass er noch ein Weilchen suchen darf</div>
+      </div>
+      <hr />
+    </div>
+    <h2>Abgabeformat/Abgabeinhalte</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8279">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8279</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Abgabeformat/Abgabeinhalte</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 16:02</strong></div>
+        <div class="author">by <strong>sn212</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          mich würde interesieren welches Format die Abgabe bzw. die Main Datei hat, also ob die solver Main auch
+          mit<br>
+          <br>
+          ./solverMain example.options example.constraints<br>
+          <br>
+          aufgerufen werden soll, oder einfach in der Main Datei die Namen der example files stehen soll. Und soll die
+          example.models Datei dann auch mit eingegeben werden oder soll die einfach schon im solver festgelegt
+          sein?<br>
+          <br>
+          Außerdem zu den Tests. Es wird für die Tests für solver und checker ja Sinn machen, sie mithilfe von
+          Beispieldateien zu Testen. Können wir diese dann auch Hochladen? Oder sollen wir versuchen Tests ohne
+          Dateien
+          zu bauen?<br>
+          <br>
+          Und sollen wir die pretty_printerMain auch nochmal mitabgeben? Die ist ja eigentlich Teil des Projekts.<br>
+          <br>
+          lg
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Abgabeformat/Abgabeinhalte</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 16:07</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3902">sn212</a> wrote: <a
+                  href="./viewtopic.php?p=32747#p32747" data-post-id="32747"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">27 Jul 2023, 16:02</div>
+              </cite>
+              Hallo,<br>
+              <br>
+              mich würde interesieren welches Format die Abgabe bzw. die Main Datei hat, also ob die solver Main
+              auch
+              mit<br>
+              <br>
+              ./solverMain example.options example.constraints<br>
+              <br>
+              aufgerufen werden soll
+            </div>
+          </blockquote>
+
+          Genau so wird es im Fuzzer benutzt (und ich kann nur raten, den mal auch auszuprobieren), also so sollst du
+          es
+          einreichen.<br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3902">sn212</a> wrote: <a
+                  href="./viewtopic.php?p=32747#p32747" data-post-id="32747"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">27 Jul 2023, 16:02</div>
+              </cite>
+              Außerdem zu den Tests. Es wird für die Tests für solver und checker ja Sinn machen, sie mithilfe von
+              Beispieldateien zu Testen. Können wir diese dann auch Hochladen? Oder sollen wir versuchen Tests
+              ohne
+              Dateien zu bauen?
+            </div>
+          </blockquote>
+          Du kannst Dateien hochladen wenn die nicht zu groß sind (also bitte keine 100GB an logs hochladen…)<br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3902">sn212</a> wrote: <a
+                  href="./viewtopic.php?p=32747#p32747" data-post-id="32747"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">27 Jul 2023, 16:02</div>
+              </cite>
+              Und sollen wir die pretty_printerMain auch nochmal mitabgeben? Die ist ja eigentlich Teil des
+              Projekts.
+            </div>
+          </blockquote>
+          Kannst du, musst aber nicht.
+        </div>
+      </div>
+      <hr />
+    </div>
+    <h2>Frage zum Erstellen aller Paare</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8278">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8278</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Frage zum Erstellen aller Paare</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 12:14</strong></div>
+        <div class="author">by <strong>cd277</strong></div>
+        <div class="content">Mir ist gerade bei meiner Implementierung des Solvers aufgefallen, dass ich beim Erstellen
+          aller Paare im Zweifelsfall Paare erstelle, die eine Kopie eines anderen Paars sind, die allerdings eine
+          andere Reihenfolge haben (Z.b.: Ich habe das Paar (A,1),(B,2) und erstelle dann später ein Paar (B,2),
+          (A,1)).
+          <br>
+          Ich frage mich daher: Ist es notwendig für die Lösung solche Duplikate zu überprüfen und im Zweifelsfall zu
+          entfernen?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Frage zum Erstellen aller Paare</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 12:52</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Positiv verkaufen: du erhöst die Wahrscheinlichkeit solche Paare zu nehmen <img
+            class="smilies" src="./images/smilies/icon_e_wink.gif" width="15" height="17" alt=";)" title="Zwinkern">
+          <br>
+          <br>
+          Es ist nicht notwendig für das Projekt, aber vielleicht testet deine Implementierung ob es überhaupt noch
+          Paare gibt… dann musst du natürlich aufpassen.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Frage zum Erstellen aller Paare</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 13:28</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Hallo zusammen,<br>
+          ich bin mir nicht sicher, ob ich es richtig verstanden habe, wie wir Paare bilden sollen.<br>
+          Wenn ich alle Paare Bilden soll, heißt das, dass ich Nur jede Kombinationen zwischen den Optionen mit
+          jeweils
+          zufälligen Werten brauche oder dass ich jeweils auch alle Kombinationen mit allen Werten brauche?<br>
+          <br>
+          Beispiel<br>
+          Option1, Wert1-1, Wert1-2<br>
+          Option2, Wert2-1, Wert2-2<br>
+          <br>
+          Paar (Option1,Wert1-2),(Option2,Wert2-1) reicht aus, weil alle Kombinationen zwischen den Optionen habe
+          unabhängig von den Werten<br>
+          <br>
+          Alle Paare<br>
+          (Option1, Wert1-1),(Option2, Wert2-1)<br>
+          (Option1, Wert1-1),(Option2, Wert2-2)<br>
+          (Option1, Wert1-2),(Option2, Wert2-1)<br>
+          (Option1, Wert1-2),(Option2, Wert2-2)<br>
+          <br>
+          VG,<br>
+          Leon
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Frage zum Erstellen aller Paare</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 13:38</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Die Kombination mit allen Werten…</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Frage zum Erstellen aller Paare</h3>
+        <div class="date">Posted: <strong>27 Jul 2023, 14:08</strong></div>
+        <div class="author">by <strong>lw529</strong></div>
+        <div class="content">Alles klar, vielen Dank! <img class="smilies" src="./images/smilies/icon_e_smile.gif"
+            width="15" height="17" alt=":)" title="Lächeln"></div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Return Code</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8277">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8277</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Return Code</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 19:05</strong></div>
+        <div class="author">by <strong>am942</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          fast alle meine functionen haben bestimmte return value deshalb kann ich nicht jezt eine Verzweifung machen
+          wo
+          es 10 anstatt vector return solte wenn die datei könnte nicht geoffnet werden.<br>
+          <br>
+          Ich habe mir überlegt std::variant&lt;&gt; in der funtionen dekleration zu nuzten, sodass ich z.B integer
+          returnen kann wenn die Datei nicht offnet anstatt vektor. <br>
+          <br>
+          gibt es eine alternative?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return Code</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 19:13</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Du kannst auch in deinen Klassen ein feld <span class="codecontent">error</span> haben wo
+          du eine Information über den Fehler speicherst<br>
+
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            enum class ERROR {NO_ERROR, FILE_NOT_READABLE, PARSING_ERROR};
+                        ERROR error = NO_ERROR;
+                        </code>
+            </pre>
+          </div>
+
+          und dann in der main Datei übersetzt du den Fehler im Return code:<br>
+
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            switch(parser.error) {
+                            case FILE_NOT_READABLE:
+                            return 30;
+                            case PARSING_ERROR:
+                            return 10;
+                            default:
+                            // just continue
+                        }
+                        </code>
+                    </pre>
+          </div>
+          Und in der parser Klasse hörst du dann auf wenn ein Fehler passiert. Und schreibst als Doku für die Funktion
+          <span class="codecontent">get_options</span> (oder wie auch immer): »only makes sense when the error is set
+          to
+          <span class="codecontent">NO_ERROR</span>, otherwise contains garbage«.<br>
+          <br>
+          <br>
+          <br>
+          <br>
+          (alles C++ nicht getestet)
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Return Code</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 23:12</strong></div>
+        <div class="author">by <strong>am942</strong></div>
+        <div class="content">geniall ;D<br>
+          ich habe eine angepasste variante geschrieben und hat funktioniert.<br>
+          du bist der beste man.</div>
+      </div>
+      <hr />
+    </div>
+    <h2>Format Eingebe Dateien</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8275">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8275</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Format Eingebe Dateien</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 16:00</strong></div>
+        <div class="author">by <strong>jl514</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          Das Format der Eingabedateien war ja größtenteils vorgegeben, aber wie ist das mit dem Ende der Datei bzw
+          Leerzeilen?<br>
+          So kommt es bei mir, gewolltermaßen, zum Fehler, wenn in der .constraints Datei eine leere Zeile ist, da es
+          so
+          eine Option ja nicht gibt.<br>
+          Ist das ok, also können wir davon ausgehen, dass die Input Datei keine leeren Zeilen hat, bzw dann einfach
+          eine Fehlemeldung ausgeben?<br>
+          <br>
+          Vielen Dank
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Format Eingebe Dateien</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 17:04</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Das ist okay (das sollte der fuzzer auch nicht generieren…)</div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Ausgabe der modelle</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8274">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8274</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Ausgabe der modelle</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 14:58</strong></div>
+        <div class="author">by <strong>sn212</strong></div>
+        <div class="content">Hi,<br>
+          <br>
+          es wurde ja besprochen, dass es nicht entscheident ist in welcher reihenfolge die Paare aus,<br>
+          Option und Wert darstehen. Also Ram,8,Bildschirm,2 ist gleichwertig wie Bildschirm,2,Ram,8.<br>
+          <br>
+          Jetzt zur Frage: gilt das auch wenn die Reihenfolge in jedem modell anders ist? Z.b hab ich grade in der
+          .models Datei:<br>
+          <br>
+          Ram,7,Bildschirm,4,Prozessor,AMD<br>
+          Prozessor,AMD,Ram,5,Bildschirm,8<br>
+          <br>
+          Also, die Reihenfolge der Paare unterscheidet sich in jeder Zeile<br>
+          <br>
+          lg
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Ausgabe der modelle</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 15:04</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Das ist kein Problem. <br>
+          <br>
+          PS: AMD wird groß geschrieben in der Beispiel Datei, das musst du schon richtig machen
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Ausgabe der modelle</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 15:10</strong></div>
+        <div class="author">by <strong>sn212</strong></div>
+        <div class="content">hab ich korrigiert <img class="smilies" src="./images/smilies/icon_e_biggrin.gif"
+            width="15" height="17" alt=":D" title="Überglücklich"></div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Zufälligkeit der Modelle</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8273">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8273</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Zufälligkeit der Modelle</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 13:19</strong></div>
+        <div class="author">by <strong>sn212</strong></div>
+        <div class="content">Hallo,<br>
+          <br>
+          in einem anderen Forum post zu der funktionsweise vom solver, stand bei einer erklärung zum algorithmus
+          überall etwas von einem zufällig ausgewähltem (kompatiblen) Paar. Muss das Paar zufällig ausgewählt werden?
+          Oder kann man einfach die Liste/den Vector der Paare durchgehen und das erste passende nehmen? Und falls man
+          sie zufällig auswählen kann, wie wähle ich en zufälliges Element aus einem vector?<br>
+          <br>
+          lg
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Zufälligkeit der Modelle</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 13:36</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3902">sn212</a> wrote: <a
+                  href="./viewtopic.php?p=32723#p32723" data-post-id="32723"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">26 Jul 2023, 13:19</div>
+              </cite>
+              in einem anderen Forum post zu der funktionsweise vom solver, stand bei einer erklärung zum
+              algorithmus
+              überall etwas von einem zufällig ausgewähltem (kompatiblen) Paar. Muss das Paar zufällig ausgewählt
+              werden?
+            </div>
+          </blockquote>
+          Ja.<br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3902">sn212</a> wrote: <a
+                  href="./viewtopic.php?p=32723#p32723" data-post-id="32723"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">26 Jul 2023, 13:19</div>
+              </cite>
+              Und falls man sie zufällig auswählen kann, wie wähle ich en zufälliges Element aus einem vector?
+            </div>
+          </blockquote>
+
+          Das gehört zu den Sachen die du selbst rausfinden musst.
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Option, Paare, Konfigurationen, Modellen</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8271">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8271</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Option, Paare, Konfigurationen, Modellen</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 21:56</strong></div>
+        <div class="author">by <strong>dm295</strong></div>
+        <div class="content">Ich glaube ich habe noch ein Verständnisproblem, was genau mit Option, Paare,
+          Konfigurationen, Modellen gemeint ist.<br>
+          <br>
+          Ist es nach den gegeben a.options und a.constraints so:<br>
+          <br>
+          Option = (Prozessor,Intel)?<br>
+          <br>
+          Paar = (Prozessor,Intel), (Ram,5)?<br>
+          Paar != (Prozessor,Intel), (Prozessor,Intel)?<br>
+          Paar != (Prozessor,Intel), (Prozessor,AMD)?<br>
+          <br>
+          Eine Konfiguration stellt sich aus genau zwei Paaren zusammen?<br>
+          <br>
+          und ein Modell ist ein auf die Constraints überprüfte Konfiguration?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Option, Paare, Konfigurationen, Modellen</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 06:46</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Option= Prozessor<br>
+          Paar = (Prozessor,Intel), (Ram,5)<br>
+          Modelle = genau was du gesagt hast<br>
+          <br>
+          Konfiguration = option+wert (mit allen Option)<br>
+          <br>
+          Im Projekt steht ab und zu (vor allem im Paragraph »Wenn Sie dann eine Konfiguration produzieren wollen«),
+          Konfiguration selbst wenn nicht alle Optionen gesetzt sind, weil gerade eine Konfiguration aufgebaut wird.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Option, Paare, Konfigurationen, Modellen</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 11:23</strong></div>
+        <div class="author">by <strong>dm295</strong></div>
+        <div class="content">Also wäre eine Option zum Beispiel Intel oder AMD?<br>
+          <br>
+          Ist dann eine Konfiguration (Prozessor,AMD) oder (Prozessor,AMD), (Ram,5), (Bilschirm,2)? <br>
+          <br>
+          Den Satz verstehe ich leider nicht:<br>
+          Im Projekt steht ab und zu (vor allem im Paragraph »Wenn Sie dann eine Konfiguration produzieren wollen«),
+          Konfiguration selbst wenn nicht alle Optionen gesetzt sind, weil gerade eine Konfiguration aufgebaut wird.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Option, Paare, Konfigurationen, Modellen</h3>
+        <div class="date">Posted: <strong>26 Jul 2023, 11:34</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Option = Prozessor<br>
+          Wert = Intel oder AMD.<br>
+          <br>
+          <br>
+          Satz wo ich Konfiguration durch Teilkonfiguration ersetzt habe wenn eine nicht vollständige Konfiguration
+          gemeint ist:<br>
+
+          <blockquote class="uncited">
+            <div>
+              Wenn Sie dann eine Konfiguration produzieren wollen, fangen Sie mit der leeren <strong
+                class="text-strong">Teilkonfiguration</strong> an und erweitern sie. Dafür füllen Sie die
+              <strong class="text-strong">Teilkonfiguration</strong> mit einer Option. Da es notwendig sein kann,
+              auch einen
+              Wert zu nehmen, der bereits gesehen worden ist, setzen Sie mit geringer Wahrscheinlichkeit eine
+              Option
+              unabhängig von den noch verbleibenden Paaren. Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar,
+              das
+              noch nicht abgedeckt ist<br>
+              <br>
+              Wenn Sie dann eine vollständige Konfiguration generiert haben, müssen Sie testen, ob sie mit den
+              Constraints kompatibel ist. Wenn dies der Fall ist, haben Sie ein neues Modell gefunden und können
+              alle
+              Paare als abgedeckt markieren.<br>
+
+            </div>
+          </blockquote>
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Checker + Punktsystem</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8270">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8270</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Checker + Punktsystem</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 19:47</strong></div>
+        <div class="author">by <strong>am942</strong></div>
+        <div class="content">Hallo,<br>
+          Ich habe eine verständniss Frage. was ist der Sinn von checker. wenn wir schon in Solver es überprüft haben
+          ob
+          die generierte Configuration keine constraints erfüllt.<br>
+          <br>
+          2. wie werden die Punkte für das Project gegeben? <br>
+          <br>
+          Danke schön
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Checker + Punktsystem</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 20:44</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">1. Generell, ein checker erlaubt es dir kompliziertere Sachen zu machen (weil man ja durch
+          fuzzen, die aller meisten Fehler findet). Hier bringt es aber nicht ganz so viel weil du wahrscheinlich
+          nichts
+          sehr kompliziertes machen wirst (ich kann nur bei mir sagen: beim behandeln von constraint mit nur einer
+          Option, hatte ich ein Bug drin, der von dem Fuzzer+Checker sehr schnell gefunden worden ist…).<br>
+          <br>
+          2. <a href="https://cca.informatik.uni-freiburg.de/cpp/ss23/projektbewertungsschema.html"
+            class="postlink">https://cca.informatik.uni-freiburg.de/ ... chema.html</a>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Checker + Punktsystem</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 22:01</strong></div>
+        <div class="author">by <strong>am942</strong></div>
+        <div class="content">Danke ;D</div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Configuration</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8258">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8258</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Configuration</h3>
+        <div class="date">Posted: <strong>22 Jul 2023, 14:47</strong></div>
+        <div class="author">by <strong>fm364</strong></div>
+        <div class="content">ich habe eine Frage bezüglich, wie ich die Options setze für die Models. Kann ich davon
+          aussgehen, dass es nur genau 3 verschiedene arten von Optionen gibt, also dass wenn ich ein Paar gesetzt hab
+          ich einfach die letze übrigbebliebene Option random hinzufüge oder muss ich dass Programm so schreiben, dass
+          es für n bel. verschiedene Arten von Optionen funktioniert</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Configuration</h3>
+        <div class="date">Posted: <strong>22 Jul 2023, 14:48</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Es muss für n verschiedene Optionen funktionieren.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Configuration</h3>
+        <div class="date">Posted: <strong>22 Jul 2023, 15:05</strong></div>
+        <div class="author">by <strong>fm364</strong></div>
+        <div class="content">das heißt<br>
+          Prozessor<br>
+          Bildschirm<br>
+          Ram<br>
+          Touch<br>
+          z.b müsste dann auch funktionieren?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Configuration</h3>
+        <div class="date">Posted: <strong>22 Jul 2023, 17:12</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">ja.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Configuration</h3>
+        <div class="date">Posted: <strong>23 Jul 2023, 11:13</strong></div>
+        <div class="author">by <strong>fm364</strong></div>
+        <div class="content">Ich habe eine neue Frage: Wenn ich ein Config erstelle, muss ich dann währenddessen schon
+          mitzählen, dass jede Art von Option genau einmal gesetzt wird oder kann ich auch danach schauen, ob die
+          Config
+          jede Option genau einmal?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Configuration</h3>
+        <div class="date">Posted: <strong>23 Jul 2023, 15:01</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Also der Solver sollte nur valide Modelle ausgeben (sonst hat der ein Bug <img
+            class="smilies" src="./images/smilies/icon_e_smile.gif" width="15" height="17" alt=":-)" title="Lächeln">).
+          <br>
+          <br>
+          Wie du das machst ist mir aber egal. Also "danach" heißt spätestens kurz bevor du die Modelle ausgibst.
+        </div>
+      </div>
+      <hr />
+    </div>
+
+
+    <h2>Solver Funktionsweiße</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8202">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8202</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>12 Jul 2023, 17:49</strong></div>
+        <div class="author">by <strong>rd116</strong></div>
+        <div class="content">Hallo, <br>
+          wäre es möglich, einfach noch einmal kurz die Funktionsweise des Solvers zu erklären.<br>
+          Ich verstehe nicht ganz nach welchem Schema er Paare auswählen und zusammenfügen soll.<br>
+          Ich bin jetzt mehrere Male die Unterlagen durchgegangen und werde daraus einfach nicht ganz schlau.<br>
+          <br>
+          Danke <img class="smilies" src="./images/smilies/icon_e_smile.gif" width="15" height="17" alt=":)"
+            title="Lächeln">
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>12 Jul 2023, 17:58</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Das ist extra nicht spezifiert, um dir mehr freiheit zu geben <img class="smilies"
+            src="./images/smilies/icon_e_wink.gif" width="15" height="17" alt=";-)" title="Zwinkern"><br>
+          <br>
+          Eine Möglichkeit wäre zum Beispiel:<br>
+          <br>
+
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            Konfiguration = []
+                                n = #anzahl optionen zu besetzen
+                                solange n &gt; 0
+                                i := random integer von 0 bis n
+                                wenn i = n (also geringe wahrscheinlichkeit): 
+                                    opt :=  erste nicht besetzte Option mit einem Wert
+                                    Konfiguration.append(opt)
+                                    n = n-1;
+                                sonst // hohe wahrscheinlichkeit
+                                    opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
+                                    Konfiguration.append(opt)
+                                    update n
+                        </code>
+                    </pre>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>12 Jul 2023, 18:12</strong></div>
+        <div class="author">by <strong>rd116</strong></div>
+        <div class="content">Danke fürs genauer Erklären, was mir hier aber immer noch nicht einleuchtet:<br>
+          <br>
+          Im Fall der geringen Wahrscheinlichkeit setzte ich mein Paar einfach mit einem beliebigen anderen Paar
+          zusammen, vollkommen egal ob diese Kompatibel sind?<br>
+          <br>
+          Und was ist mit "erste nicht besetzte Option mit einem Wert" gemeint?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>12 Jul 2023, 18:21</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Mit Beispiel: du hast die Option A und B und C und D mit den Werten 1 und 2.<br>
+          <br>
+          Noch zu bedecken sind (A,1),(B,1) und (A,1),(C,2) und (C,2),(D,2).<br>
+
+          <ul>
+            <li>Am anfang: Konfiguration ist leer, n = 4</li>
+            <li>Du ziehst i=1</li>
+            <li>Du holst dir ein Paar was noch nicht besetzt ist aber kompatibe (irgendwie); also (A,1),(C,2) =
+              Konfiguration</li>
+            <li>n ist also 2 (B und D unbesetzt)</li>
+            <li>Du ziehst i=1</li>
+            <li>Du holst dir ein Paar was noch nicht besetzt ist aber kompatibel ist: (A,1),(B,1); also
+              Konfiguration =
+              [(A,1), (B,1), (C,2)]</li>
+            <li>n ist also 1 (D unbesetzt)</li>
+            <li>Du ziehst i=1 (schon wieder)</li>
+            <li>i=n also nimmst du dir eine Option die nicht gesetzt ist, zum Beispiel die erste (oder random einer
+              oder
+              egal), das D und setzt es mit einem random Wert, (D,1)</li>
+            <li>also Konfiguration = [(A,1), (B,1), (C,2),(D,1)]</li>
+            <li> n=0 und wir sind fertig mit Konfiguration generieren.</li>
+          </ul>
+
+          Nicht Kompatibel mit <span class="codecontent">[(A,1),(C,2)]</span> ist zum Beispiel <span
+            class="codecontent">(A,2),(B,1)</span>.<br>
+          <br>
+          Sachen die noch gemacht werden können:
+          <ul>
+            <li>Sind meine partiellen Konfiguration überhaupt kompatibel mit meinem Constraints?</li>
+            <li>sollte ich optionen zuerste nemmen von denen vielen noch da sind? (die scheinen ja schwer zu sein).
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 15:02</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Wäre es möglich, das nochmal mit den Options aus dem Blatt zu erklären? Bzw. kann sich
+          jemand vorstellen mir das nochmal zu erklären? Ich steige noch nicht ganz dahinter.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 15:40</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Das wären die Inputs von dem Beispiel:
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            $ echo a.options
+                            A,1,2
+                            B,1,2
+                            C,1,2
+                            D,1,2
+                            $ echo a.constraints #leer
+                        </code>
+                        </pre>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 15:45</strong></div>
+        <div class="author">by <strong>ma497</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32406#p32406" data-post-id="32406"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">12 Jul 2023, 18:21</div>
+              </cite>
+              Mit Beispiel: du hast die Option A und B und C und D mit den Werten 1 und 2.<br>
+              <br>
+              Noch zu bedecken sind (A,1),(B,1) und (A,1),(C,2) und (C,2),(D,2).<br>
+
+              <ul>
+                <li>Am anfang: Konfiguration ist leer, n = 4</li>
+                <li>Du ziehst i=1</li>
+                <li>Du holst dir ein Paar was noch nicht besetzt ist aber kompatibe (irgendwie); also
+                  (A,1),(C,2) =
+                  Konfiguration</li>
+                <li>n ist also 2 (B und C unbesetzt)</li>
+                <li>Du ziehst i=1</li>
+                <li>Du holst dir ein Paar was noch nicht besetzt ist aber kompatibel ist: (A,1),(B,1); also
+                  Konfiguration = [(A,1), (B,1), (C,2)]</li>
+                <li>n ist also 1 (D unbesetzt)</li>
+                <li>Du ziehst i=1 (schon wieder)</li>
+                <li>i=n also nimmst du dir eine Option die nicht gesetzt ist, zum Beispiel die erste (oder
+                  random einer
+                  oder egal), das D und setzt es mit einem random Wert, (D,1)</li>
+                <li>also Konfiguration = [(A,1), (B,1), (C,2),(D,1)]</li>
+                <li> n=0 und wir sind fertig mit Konfiguration generieren.</li>
+              </ul>
+
+              Nicht Kompatibel mit <span class="codecontent">[(A,1),(C,2)]</span> ist zum Beispiel <span
+                class="codecontent">(A,2),(B,1)</span>.<br>
+              <br>
+              Sachen die noch gemacht werden können:
+              <ul>
+                <li>Sind meine partiellen Konfiguration überhaupt kompatibel mit meinem Constraints?</li>
+                <li>sollte ich optionen zuerste nemmen von denen vielen noch da sind? (die scheinen ja schwer zu
+                  sein).
+                </li>
+              </ul>
+            </div>
+          </blockquote>
+
+          Sollte hier eigentlich:<br>
+          <br>
+          Du holst dir ein Paar was noch nicht besetzt ist aber kompatibe (irgendwie); also (A,1),(C,2) =
+          Konfiguration<br>
+          n ist also 2 (B und C unbesetzt)<br>
+          <br>
+          das stehen "n ist also 2 (B und D unbesetzt)", oder warum ist C unbesetzt ?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 15:47</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Das erste sollte D und nicht C sein…</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 16:54</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Aber bei diesem Input gibt es doch dann mehr mögliche Paare als<br>
+          (A,1),(B,1) und (A,1),(C,2) und (C,2),(D,2) oder?<br>
+          <br>
+          Bspw: (A,1),(B,2) oder (C1,D1)
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 16:57</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Ja klar. (A,1),(B,1) und (A,1),(C,2) und (C,2),(D,2) sind nur die Paare die an der Stelle
+          noch nicht bedeckt worden sind (die Anderen waren also alle schon in einem Model).<br>
+          <br>
+          Und am Ende von Beispiel bleibt nur noch das Paar (C,2),(D,2).
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 16:59</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Ok es wird langsam. Eine letzte Frage ich glaube dann habe ichs. <br>
+          Heißt das, dass wenn ein Paar betrachtet wird, es beim nächsten Lauf gar nicht mehr betrachtet wird? Deshalb
+          werden auch nicht alle Lösungen gefunden?<br>
+          <br>
+          Und wenn n=i ist kann es ja sein das eine nicht kompatible Lösung gepickt wird oder?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 17:21</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3158">jc194</a> wrote: <a
+                  href="./viewtopic.php?p=32565#p32565" data-post-id="32565"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">18 Jul 2023, 16:59</div>
+              </cite>
+              Ok es wird langsam. Eine letzte Frage ich glaube dann habe ichs. <br>
+              Heißt das, dass wenn ein Paar betrachtet wird, es beim nächsten Lauf gar nicht mehr betrachtet wird?
+              Deshalb werden auch nicht alle Lösungen gefunden?
+            </div>
+          </blockquote>
+          Fast: es gibt noch die Möglichkeit eine Option zu setzten (in dem Beispiel (D,1)) unabhängig von den Paaren.
+          Wenn du das gar nicht machst, dann findest du in der Tat nicht alle Lösungen.
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>18 Jul 2023, 17:37</strong></div>
+        <div class="author">by <strong>jc194</strong></div>
+        <div class="content">Ok vielen Dank!</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 19:01</strong></div>
+        <div class="author">by <strong>je252</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=3894">mf1146</a> wrote: <a
+                  href="./viewtopic.php?p=32399#p32399" data-post-id="32399"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">12 Jul 2023, 17:58</div>
+              </cite>
+              Das ist extra nicht spezifiert, um dir mehr freiheit zu geben <img class="smilies"
+                src="./images/smilies/icon_e_wink.gif" width="15" height="17" alt=";-)" title="Zwinkern"><br>
+              <br>
+              Eine Möglichkeit wäre zum Beispiel:<br>
+              <br>
+
+              <div class="codebox">
+                <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+                <pre>
+                                <code>
+                                    Konfiguration = []
+                                    n = #anzahl optionen zu besetzen
+                                    solange n &gt; 0
+                                    i := random integer von 0 bis n
+                                    wenn i = n (also geringe wahrscheinlichkeit): 
+                                        opt :=  erste nicht besetzte Option mit einem Wert
+                                        Konfiguration.append(opt)
+                                        n = n-1;
+                                    sonst // hohe wahrscheinlichkeit
+                                        opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
+                                        Konfiguration.append(opt)
+                                        update n
+                                    </code>
+                            </pre>
+              </div>
+            </div>
+          </blockquote>
+
+          Das heist, ich bilde alle Paare (zwei verschiedene Optionen), wenn ich A,B,C hätte und Werte 1,2 wären dass
+          dann 6 Paare. Ich nehme dann immer eine nicht gesetztes Paar wie in dem Algorithmus und wenn ich i = n habe
+          passe ich die letzte Option so an, dass es ein passendes Model gibt? Bei unseren drei Optionen würde ich
+          aber
+          doch immer nach dem setzten vom ersten Paar zu i = n kommen oder?<br>
+          Vielen Dank schon mal
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 19:35</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Nach einem Paar ist n=1, also gibt es immer noch die Möglichkeiten i=0 (neues paar) und i=1
+          (option setzen).</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 20:20</strong></div>
+        <div class="author">by <strong>je252</strong></div>
+        <div class="content">Ah ok. Noch eine Frage, wie wird verhindert, dass wir nicht doch alle Möglichkeiten bilden,
+          bzw nur die 12 von den 26 Testfälle gebildet werden, das verstehe ich noch nicht so richtig. Wenn sie das
+          bitte noch einmal genauer erklären könnnen.<br>
+          <br>
+          Vielen Dank
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 20:38</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Wir hoffen es, aber können es nicht erzwingen: Der Löser produziert einfach modelle,
+          versucht aber nicht das NP Problem zu lösen (bzw. die vielen NP Problem die das sind).</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 20:46</strong></div>
+        <div class="author">by <strong>je252</strong></div>
+        <div class="content">Danke. Kann ich benutze Paare immer löschen oder gehen mir dann möglichkeiten verloren.
+          Weil mich interresiern ja vorallem die unbedeckten.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Solver Funktionsweiße</h3>
+        <div class="date">Posted: <strong>25 Jul 2023, 20:56</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Eine ähnliche Diskussion gab es <a
+            href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8255"
+            class="postlink">viewtopic.php?f=1278&amp;t=8255</a>. <br>
+          <br>
+          Ich glaube immer noch, dass es passieren kann (darum werden auch mit geringer Wahrscheinlichkeit Optionen
+          gesetzt unabhängig von den Paaren), aber ein Beispiel habe ich immer noch nicht.
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <h2>Test cases</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8251">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8251</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Test cases</h3>
+        <div class="date">Posted: <strong>21 Jul 2023, 10:58</strong></div>
+        <div class="author">by <strong>eb360</strong></div>
+        <div class="content">Do we need to implement any specific test-cases or is the testing up to us?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Test cases</h3>
+        <div class="date">Posted: <strong>21 Jul 2023, 11:10</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">End-to-end testing: A fuzzer (to automatically generate options and constraints files) and
+          a checker are provided, so you can start with them in order to test your solver.<br>
+          <br>
+          GTest: this is up to you.
+        </div>
+      </div>
+      <hr />
+    </div>
+
+
+
+    <h2>Fragen Fuzzer/Constraints</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8229">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8229</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Fragen Fuzzer/Constraints</h3>
+        <div class="date">Posted: <strong>17 Jul 2023, 13:57</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">Hallo, ich habe nochmal ein paar allgemeinere Fragen zum Projekt:<br>
+          <br>
+          Constraints: Ich habe in einem anderen Forumeintrag gesehen, dass Constraints in Paaren auftauchen.
+          Beispielsweise wäre dann sowas wie (A,1)und(B,3) nicht kompatibel. Soweit so gut, dass wäre ja einfach zu
+          überprüfen. In dem Beispiel haben wir aber auch den constraint Prozessor,Intel,RAM,5,Bildschirm,8, also
+          nicht
+          mehr nur ein Paar sondern direkt 3 Values die nicht kompatibel sind. Das zählt dann aber nicht als 3
+          inkompatible Paare oder? Und bedeutet das<br>
+          auch, dass es nicht immer ein Value Paar sein muss? In dem Beispiel wäre es ja sinnlos zu schauen ob ich an
+          ein P,Intel einen RAM,5 anhängen darf wenn Bildschirm als noch zusätzliche Einschränkung gilt...<br>
+          <br>
+          Fuzzer: Die Funktionsweise des Fuzzers hat sich mir noch nicht ganz erschlossen. Ein Fuzzer im allgemeinen
+          soll ja ein Programm mit random Werten füttern um damit auf mögliche Buggs zu schließen. Ich vermute dann,
+          dass der Fuzzer einfach nur eine random .options und .constraints Datei generieren soll. Soll es dafür auch
+          Einschränkungen geben also dass ich aus Möglichkeiten eine Datei bauen lasse, ich mich an einem Beispiel
+          .options orientieren soll, oder soll es komplett random sein? Was danach passiert verstehe ich aber nicht
+          ganz. Soll daraus dann einfach mal ein Modell gebaut werden und ich mir dann anschauen ob das Modell damit
+          durchläuft? Das Modell auf Richtigkeit wird ja nicht so wirklich überprüft das wäre ja die Rolle vom
+          Checker.<br>
+          <br>
+          Sorry für den langen Eintrag, habe versucht alles möglichst genau zu beschreiben...
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fragen Fuzzer/Constraints</h3>
+        <div class="date">Posted: <strong>17 Jul 2023, 15:42</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32516#p32516" data-post-id="32516"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">17 Jul 2023, 13:57</div>
+              </cite>
+              Hallo, ich habe nochmal ein paar allgemeinere Fragen zum Projekt:<br>
+              <br>
+              Constraints: Ich habe in einem anderen Forumeintrag gesehen, dass Constraints in Paaren auftauchen.
+              Beispielsweise wäre dann sowas wie (A,1)und(B,3) nicht kompatibel. Soweit so gut, dass wäre ja
+              einfach zu
+              überprüfen. In dem Beispiel haben wir aber auch den constraint Prozessor,Intel,RAM,5,Bildschirm,8,
+              also
+              nicht mehr nur ein Paar sondern direkt 3 Values die nicht kompatibel sind. Das zählt dann aber nicht
+              als 3
+              inkompatible Paare oder? Und bedeutet das<br>
+              auch, dass es nicht immer ein Value Paar sein muss? In dem Beispiel wäre es ja sinnlos zu schauen ob
+              ich
+              an ein P,Intel einen RAM,5 anhängen darf wenn Bildschirm als noch zusätzliche Einschränkung gilt...
+            </div>
+          </blockquote>
+          (A,1) und (B,3) war nur ein Beispiel.<br>
+          <br>
+          Constraints bedeuten das Optionen nicht kompatibel sind, d.h. dass mindestens eine Option anders gesetzt
+          sein
+          muss. In deinem Beispiel geht also Intel/7MT/s/8K oder AMD/5MT/s/8K. Eine Option muss anders gesetzt
+          sein.<br>
+          <br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32516#p32516" data-post-id="32516"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">17 Jul 2023, 13:57</div>
+              </cite>
+              Fuzzer: Die Funktionsweise des Fuzzers hat sich mir noch nicht ganz erschlossen. Ein Fuzzer im
+              allgemeinen
+              soll ja ein Programm mit random Werten füttern um damit auf mögliche Buggs zu schließen. Ich vermute
+              dann,
+              dass der Fuzzer einfach nur eine random .options und .constraints Datei generieren soll. Soll es
+              dafür
+              auch Einschränkungen geben also dass ich aus Möglichkeiten eine Datei bauen lasse, ich mich an einem
+              Beispiel .options orientieren soll, oder soll es komplett random sein?
+            </div>
+          </blockquote>
+          Es gibt keine Einschränkung.<br>
+          <br>
+          <br>
+          Du sollst eine random .options und .constraints bauen, aber so das diese kompatibel miteinander sind. Die
+          Optionen und Werte aus den Constraints sollen also in den .options existieren. Es sollen valide CSV
+          sein.<br>
+          <br>
+          Kurz gesagt: .options + .constraints + leere .models geht durch den Checker durch.<br>
+          <br>
+          <br>
+          Es ist alles random: du entscheidest wie viele Optionen du machst (und wie die heißen). Wie viele Werte es
+          sind (aber &gt;= 1). Wie viele Constraints es sind (&gt;= 0).<br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32516#p32516" data-post-id="32516"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">17 Jul 2023, 13:57</div>
+              </cite>
+              Was danach passiert verstehe ich aber nicht ganz. Soll daraus dann einfach mal ein Modell gebaut
+              werden
+              und ich mir dann anschauen ob das Modell damit durchläuft? Das Modell auf Richtigkeit wird ja nicht
+              so
+              wirklich überprüft das wäre ja die Rolle vom Checker.
+            </div>
+          </blockquote>
+
+          Die Idee ist das der Fuzzer die Problem produziert (also nur .options und .constraints produziert), der
+          Solver
+          die löst (also nur .models produziert), und der Checker schaut ob alles okay war (und nur die Antwort
+          verified/unverified produziert). Und in einer perfekten Welt produziert das keine fehler. Sonst gibt es ein
+          Bug <img class="smilies" src="./images/smilies/icon_e_surprised.gif" width="15" height="17" alt=":o"
+            title="Überrascht"> <br>
+          <br>
+          Also in einer Welt wo ich keine Tutoren hätte würde ich so benoten:
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre>
+                        <code>
+                            failed = 0
+                            while (tests &lt; 1000)
+                            ++test
+                            ./fuzzerMain a.options a.constraints
+                            ./solverMain a.options a.constraints a.models
+                            ./checkerMain a.options a.constraints a.models
+                            if(any failure)
+                                ++fail
+                                
+                            Grade_student := maximum * ((1000 - fail) / 1000)
+                        </code>
+            </pre>
+          </div>
+
+          (das Skript zum fuzzen gibt es übrigens da: <a
+            href="https://daphne.informatik.uni-freiburg.de/ss2023/ProgrammierenCplusplus/svn/public/loesungen/project/fuzzer/fuzz.sh"
+            class="postlink">https://daphne.informatik.uni-freiburg. ... er/fuzz.sh</a> dort gibt es binär Dateien
+          --
+          muss ich noch morgen zeigen)
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fragen Fuzzer/Constraints</h3>
+        <div class="date">Posted: <strong>17 Jul 2023, 16:09</strong></div>
+        <div class="author">by <strong>le173</strong></div>
+        <div class="content">Danke für die Antwort.<br>
+          Das mit den constraints hat sich dann glaube ich schonmal geklärt.<br>
+          <br>
+          Zu den Fuzzer:<br>
+          Ich dachte Fuzzer und Checker sollen am Ende irgendwie zum ähnlichen Ergebnis führen. Das bedeutet dann
+          aber,
+          dass beide zu einem optimalen Programm dazugehören sollten. Entsprechend brauch ich den Checker ja immer und
+          den Fuzzer mehr um nach buggs in meinem Programm zu suchen (bzw mir eine Anwendung zu bauen).<br>
+          Darf ich mir für den Fuzzer dann trotzdem eine Art Datenbank bauen aus Optionen und Werten wo ich dann
+          wahllos
+          was raussuche?
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Fragen Fuzzer/Constraints</h3>
+        <div class="date">Posted: <strong>17 Jul 2023, 16:22</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32522#p32522" data-post-id="32522"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">17 Jul 2023, 16:09</div>
+              </cite>
+              Zu den Fuzzer:<br>
+              Ich dachte Fuzzer und Checker sollen am Ende irgendwie zum ähnlichen Ergebnis führen. Das bedeutet
+              dann
+              aber, dass beide zu einem optimalen Programm dazugehören sollten. Entsprechend brauch ich den
+              Checker ja
+              immer und den Fuzzer mehr um nach buggs in meinem Programm zu suchen (bzw mir eine Anwendung zu
+              bauen).
+            </div>
+          </blockquote>
+
+          Genau weil du beide brauchst gibt es schon (eine schlechte version von) beiden unter <a
+            href="https://daphne.informatik.uni-freiburg.de/ss2023/ProgrammierenCplusplus/svn/public/loesungen/project/fuzzer/"
+            class="postlink">https://daphne.informatik.uni-freiburg. ... ct/fuzzer/</a> <img class="smilies"
+            src="./images/smilies/icon_e_wink.gif" width="15" height="17" alt=";)" title="Zwinkern"> <br>
+          <br>
+
+          <blockquote>
+            <div><cite><a href="./memberlist.php?mode=viewprofile&amp;u=4056">le173</a> wrote: <a
+                  href="./viewtopic.php?p=32522#p32522" data-post-id="32522"
+                  onclick="if(document.getElementById(hash.substr(1)))href=hash">↑</a>
+                <div class="responsive-hide">17 Jul 2023, 16:09</div>
+              </cite>
+              Darf ich mir für den Fuzzer dann trotzdem eine Art Datenbank bauen aus Optionen und Werten wo ich
+              dann
+              wahllos was raussuche?
+            </div>
+          </blockquote>
+
+          Darfst du.
+        </div>
+      </div>
+      <hr />
+    </div>
+    <h2>Pretty Printer</h2>
+    <p><a
+        href="https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8223">https://daphne.informatik.uni-freiburg.de/forum/viewtopic.php?f=1278&amp;t=8223</a>
+    </p>
+    </div>
+
+    <div id="page-body" class="page-body">
+      <div class="page-number">Page <strong>1</strong> of <strong>1</strong></div>
+      <div class="post">
+        <h3>Pretty Printer</h3>
+        <div class="date">Posted: <strong>16 Jul 2023, 10:42</strong></div>
+        <div class="author">by <strong>fm364</strong></div>
+        <div class="content">Ich habe soweit es hingekriegt, dass die Datei als Object gespeichert wird, aber ich
+          schaffe es nicht dieses in eine neue CSV Datei zu schreiben und sehe nicht ganz wo das Problem ist. Würde
+          mich
+          sehr üner Hilfe freuen.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Pretty Printer</h3>
+        <div class="date">Posted: <strong>16 Jul 2023, 10:56</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Du hast kein Makefile im SVN. Aber: ist es wirklich gewollt, dass du zwei CSV hast (<span
+            class="codecontent">constrains</span> und <span class="codecontent">csv</span>).</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Pretty Printer</h3>
+        <div class="date">Posted: <strong>16 Jul 2023, 11:09</strong></div>
+        <div class="author">by <strong>fm364</strong></div>
+        <div class="content">Hab jetzt eine makefile <img class="smilies" src="./images/smilies/icon_e_smile.gif"
+            width="15" height="17" alt=":)" title="Lächeln"><br>
+          Könntest du das mit den zwei CSV etwas ausführlicher beschreiben?</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Pretty Printer</h3>
+        <div class="date">Posted: <strong>16 Jul 2023, 11:18</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">
+          <div class="codebox">
+            <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
+            <pre><code>void Constrains::parse(const std::string&amp; filename){
+    
+    
+    CSV csv;
+    // csv benutzt und befüllt
+    }
+    
+    
+    void Constrains::writeToFile(const std::string&amp; filename){
+    // constrains.reprentation benutzt   
+    }
+    </code></pre>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Pretty Printer</h3>
+        <div class="date">Posted: <strong>16 Jul 2023, 11:42</strong></div>
+        <div class="author">by <strong>fm364</strong></div>
+        <div class="content">Das constrains write to file habe ich nicht mehr groß angeschaut nachdem mir aufgefallen
+          ist, dass diese nicht als csv nochmal erstellt werden muss. Es geht mir eher darum, dass wenn ich die
+          options
+          datein compile die neue Datei einfach leer ist.</div>
+      </div>
+      <hr />
+      <div class="post">
+        <h3>Re: Pretty Printer</h3>
+        <div class="date">Posted: <strong>16 Jul 2023, 12:26</strong></div>
+        <div class="author">by <strong>mf1146</strong></div>
+        <div class="content">Es kompiliert nicht, aber ich denke dass es genau das selbe Problem ist wie bei Constrains…
+        </div>
+      </div>
+      <hr />
+    </div>
+
+    <h1>Grundsätze</h1>
+    <div>
+
+      <h2 id="kompilierung">Kompilierung:</h2>
+
+      <ul>
+        <li>
+          <p>Der Code muss fehlerfrei kompilieren.</p>
+        </li>
+      </ul>
+
+      <h2 id="tests">Tests:</h2>
+
+      <ul>
+        <li>
+          <p>Es muss für jede nicht-triviale Funktion (außer Einlesen der Testeingabe) einen Unit-Test geben.
+            Es kann OK sein, Funktionen, die eng miteinander zusammenhängen, zusammen in einem Unit-Test zu testen.
+            Ob das sinnvoll ist, merkt man in der Regel daran, wenn bei separate Tests sehr viel ähnlichen Code
+            hätten.</p>
+        </li>
+        <li>
+          <p>Jeder Unit-Test muss mindestens einen Normalfall und einen Spezialfall (falls es einen gibt) testen.</p>
+        </li>
+      </ul>
+
+      <h2 id="dokumentation-code-style-modularität-codequalitätp">Dokumentation, Code Style, Modularität, Codequalität:
+        20P</h2>
+
+      <h3 id="dokumentation-6p">Dokumentation: 6P</h3>
+
+      <ul>
+        <li>Es ist klar wo man beim lesen anfang soll und was die Main Dateien tun</li>
+        <li>Jede Funktion muss dokumentiert sein.</li>
+        <li>Zu jedem Stück Code, dessen Funktionsweise sich nicht unmittelbar durch Lesen des Codes ergibt, muss es
+          einen Kommentar geben.</li>
+      </ul>
+
+      <h3 id="style">Style</h3>
+
+      <ul>
+        <li>Der Code muss abgesehen davon auch gut lesbar sein, insbesondere korrekt eingerückt sein.</li>
+        <li>Abzug entsprechend der Menge an Fehlern: pro Fehler 1P Abzug.</li>
+      </ul>
+
+      <h3 id="modularität">Modularität</h3>
+
+      <ul>
+        <li>Wenn ein Teil des Codes für sich alleine umfangreich genug ist oder mehrfach benötigt wird, muss er in einer
+          geeigneten Funktion stehen.</li>
+        <li>Der Code für die Logik und die Grafik muss logisch voneinander getrennt sein.</li>
+      </ul>
+
+      <h3 id="code-qualität">Code-Qualität</h3>
+
+      <ul>
+        <li>Konstanten sollten vernünftige Namen haben und nicht “hard-gecoded” werden</li>
+        <li>Verwendung sinnvoller Typen</li>
+        <li>Korrekte Verwendung von Zeigern/Referenzen statt Objekten</li>
+      </ul>
+
+      <h2 id="const-publicprivateprotected-valgrind-">Const, public/private/protected, valgrind</h2>
+
+      <h3 id="const-correctness-8p">Const-correctness</h3>
+
+
+      <h3 id="sinnvolle-einteilung-in-publicprivateprotected-6p">Sinnvolle Einteilung in public/private/protected
+      </h3>
+      <ul>
+        <li>alles darf nicht public sein.</li>
+      </ul>
+
+      <h3 id="speicherlecks-valgrind-">Speicherlecks, valgrind</h3>
+
+      <ul>
+        <li>keine Speicherlecks </li>
+      </ul>
+    </div>
   </main>
 
-  <footer>
-  </footer>
-  <script type="text/javascript">
-    $(function () {
-      $('header a.icon').click(function () {
-        $('nav').toggleClass('responsive');
-      });
-    });
-  </script>
+  <footer></footer>
+  <script src="./assets/javascript/jquery.min.js?assets_version=41"></script>
+  <script src="./assets/javascript/core.js?assets_version=41"></script>
+
+
+
+  <script src="./styles/prosilver/template/forum_fn.js?assets_version=41"></script>
+  <script src="./styles/prosilver/template/ajax.js?assets_version=41"></script>
 </body>
 
 </html>
