@@ -37,7 +37,7 @@
 
 
     <main>
-        PROGRAMMIEREN In C++
+        pROGRAMMIEREn In C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -328,7 +328,35 @@
                 
                     // The constructor initializes the parser and the solver
                     Checker::Checker(const Parser& parser, const Solver& solver)
-                    : parser(parser), solver(solver) {}
+                        : parser(parser), solver(solver) {}
+                
+                    // The constructor initializes only the parser
+                    Checker::Checker(const Parser& parser) : parser(parser) {}
+                
+                    // This method checks if a model is compatible with the constraints
+                    bool Checker::checkConstraints(const Model& model) const {
+                    // Iterate over the list of constraints of the parser
+                    for (const auto& constraint : parser.getConstraints()) {
+                        // Get the list of pairs of option and value
+                        const auto& pairs = constraint.getPairs();
+                        // Check if all pairs are present in the model
+                        bool allPairsInModel = true;
+                        for (const auto& pair : pairs) {
+                        if (!model.isOptionSet(pair.first) ||
+                            model.getOptionValue(pair.first) != pair.second) {
+                            allPairsInModel = false;
+                            break;
+                        }
+                        }
+                        // If all pairs are present in the model, return false, since the
+                        // configuration is not compatible with the constraint
+                        if (allPairsInModel) {
+                        return false;
+                        }
+                    }
+                    // If no constraints are violated, return true
+                    return true;
+                    }
                 
                     void Checker::check(std::ostream& out) {}
                 
@@ -342,40 +370,40 @@
                     // Öffne die Datei mit den Modellen zum Lesen
                     std::ifstream file(modelsFile);
                     if (!file) {
-                    // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                    throw std::runtime_error("Could not open file " + modelsFile);
+                        // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
+                        throw std::runtime_error("Could not open file " + modelsFile);
                     }
                 
                     // Lese die Datei zeilenweise ein
                     std::string line;
                     int lineNumber = 0;
                     while (std::getline(file, line)) {
-                    // Erhöhe den Zeilennummer um eins
-                    lineNumber++;
+                        // Erhöhe den Zeilennummer um eins
+                        lineNumber++;
                 
-                    // Erstelle einen Stream aus der Zeile
-                    std::istringstream stream(line);
+                        // Erstelle einen Stream aus der Zeile
+                        std::istringstream stream(line);
                 
-                    // Erstelle eine leere Map von Optionen auf Werten, die das aktuelle Modell
-                    // speichert
-                    std::map<std::string, std::string> model;
+                        // Erstelle eine leere Map von Optionen auf Werten, die das aktuelle Modell
+                        // speichert
+                        std::map<std::string, std::string> model;
                 
-                    // Lese die Optionen und Werte aus dem Stream und füge sie zur Map hinzu
-                    std::string option, value;
-                    while ((option = readString(stream)) != "" &&
+                        // Lese die Optionen und Werte aus dem Stream und füge sie zur Map hinzu
+                        std::string option, value;
+                        while ((option = readString(stream)) != "" &&
                             (value = readString(stream)) != "") {
-                            model[option] = value;
-                    }
+                        model[option] = value;
+                        }
                 
-                    // Überprüfe, ob alle Optionen aus der Map von Optionen des Parsers in der
-                    // Map vorhanden sind und ob ihre Werte gültig sind
-                    for (const auto& pair : parser.getOptions()) {
-                            if (model.find(pair.first) == model.end()) {
+                        // Überprüfe, ob alle Optionen aus der Map von Optionen des Parsers in der
+                        // Map vorhanden sind und ob ihre Werte gültig sind
+                        for (const auto& pair : parser.getOptions()) {
+                        if (model.find(pair.first) == model.end()) {
                             // Wenn die Option nicht in der Map ist, füge einen Fehler zur Liste
                             // hinzu
                             errors.push_back("Missing option " + pair.first + " in line " +
                                             std::to_string(lineNumber));
-                            } else {
+                        } else {
                             // Wenn die Option in der Map ist, überprüfe, ob ihr Wert gültig ist
                             const auto& values = pair.second.getValues();
                             if (std::find(values.begin(), values.end(), model[pair.first]) ==
@@ -385,16 +413,16 @@
                                             " for option " + pair.first + " in line " +
                                             std::to_string(lineNumber));
                             }
-                            }
-                    }
+                        }
+                        }
                 
-                    // Überprüfe, ob das aktuelle Modell mit den Constraints des Parsers
-                    // kompatibel ist
-                    if (!checkConstraints(model)) {
-                            // Wenn nicht, füge einen Fehler zur Liste hinzu
-                            errors.push_back("Model in line " + std::to_string(lineNumber) +
+                        // Überprüfe, ob das aktuelle Modell mit den Constraints des Parsers
+                        // kompatibel ist
+                        if (!checkConstraints(model)) {
+                        // Wenn nicht, füge einen Fehler zur Liste hinzu
+                        errors.push_back("Model in line " + std::to_string(lineNumber) +
                                         " violates the constraints");
-                    }
+                        }
                     }
                 
                     // Schließe die Datei
@@ -407,32 +435,31 @@
                     // Diese Methode überprüft, ob eine Konfiguration mit den Constraints kompatibel
                     // ist
                     bool Checker::checkConstraints(
-                    const std::map<std::string, std::string>& config) const {
+                        const std::map<std::string, std::string>& config) const {
                     // Iteriere über die Liste von Constraints des Parsers
                     for (const auto& constraint : parser.getConstraints()) {
-                    // Hole die Liste der Paare aus Option und Wert
-                    const auto& pairs = constraint.getPairs();
+                        // Hole die Liste der Paare aus Option und Wert
+                        const auto& pairs = constraint.getPairs();
                 
-                    // Überprüfe, ob alle Paare in der Konfiguration vorkommen
-                    bool allPairsInConfig = true;
-                    for (const auto& pair : pairs) {
-                            if (config.at(pair.first) != pair.second) {
+                        // Überprüfe, ob alle Paare in der Konfiguration vorkommen
+                        bool allPairsInConfig = true;
+                        for (const auto& pair : pairs) {
+                        if (config.at(pair.first) != pair.second) {
                             allPairsInConfig = false;
                             break;
-                            }
-                    }
+                        }
+                        }
                 
-                    // Wenn alle Paare in der Konfiguration vorkommen, gib false zurück, da die
-                    // Konfiguration nicht mit den Constraints kompatibel ist
-                    if (allPairsInConfig) {
-                            return false;
-                    }
+                        // Wenn alle Paare in der Konfiguration vorkommen, gib false zurück, da die
+                        // Konfiguration nicht mit den Constraints kompatibel ist
+                        if (allPairsInConfig) {
+                        return false;
+                        }
                     }
                 
                     // Wenn keine Constraints verletzt wurden, gib true zurück
                     return true;
                     }
-                
                 
                     // This method returns a list of errors that were found by the checker
                     std::list<std::string> getErrorsList() {
@@ -440,7 +467,6 @@
                     // Implement the method here
                     return errors;
                     }
-                
                     </code></pre>
             Hier ist Constraint.cpp:
             <pre><code>
@@ -456,7 +482,7 @@
                 
                     // This method returns the list of pairs
                     const std::vector<std::pair<std::string, std::string> >& Constraint::getPairs()
-                    const {
+                        const {
                     return pairs;
                     }
                     </code></pre>
@@ -474,59 +500,59 @@
                 
                     // Generiere zufällige Optionen und Werte und füge sie zur Map hinzu
                     for (int i = 0; i < numOptions; i++) {
-                    // Wähle zufällig einen Buchstaben zwischen A und Z aus
-                    char option = 'A' + randomInt(0, 25);
+                        // Wähle zufällig einen Buchstaben zwischen A und Z aus
+                        char option = 'A' + randomInt(0, 25);
                 
-                    // Wenn die Option noch nicht in der Map ist, füge sie mit einem leeren
-                    // Vektor hinzu
-                    if (options.find(option) == options.end()) {
-                            options[option] = std::vector<int>();
-                    }
+                        // Wenn die Option noch nicht in der Map ist, füge sie mit einem leeren
+                        // Vektor hinzu
+                        if (options.find(option) == options.end()) {
+                        options[option] = std::vector<int>();
+                        }
                     }
                 
                     for (auto& pair : options) {
-                    // Wähle zufällig eine Anzahl von Werten zwischen 1 und maxValuesPerOption
-                    // aus
-                    int numValues = randomInt(1, maxValuesPerOption);
+                        // Wähle zufällig eine Anzahl von Werten zwischen 1 und maxValuesPerOption
+                        // aus
+                        int numValues = randomInt(1, maxValuesPerOption);
                 
-                    for (int i = 0; i < numValues; i++) {
-                            // Wähle zufällig eine Zahl zwischen 0 und 9 aus
-                            int value = randomInt(0, 9);
+                        for (int i = 0; i < numValues; i++) {
+                        // Wähle zufällig eine Zahl zwischen 0 und 9 aus
+                        int value = randomInt(0, 9);
                 
-                            // Wenn der Wert noch nicht im Vektor ist, füge ihn hinzu
-                            if (std::find(pair.second.begin(), pair.second.end(), value) ==
+                        // Wenn der Wert noch nicht im Vektor ist, füge ihn hinzu
+                        if (std::find(pair.second.begin(), pair.second.end(), value) ==
                             pair.second.end()) {
                             pair.second.push_back(value);
-                            }
-                    }
+                        }
+                        }
                     }
                 
                     // Generiere zufällige Constraints und füge sie zur Liste hinzu
                     int numConstraints = randomInt(0, maxConstraints);
                 
                     for (int i = 0; i < numConstraints; i++) {
-                    // Erstelle einen leeren Vektor von Paaren aus Optionen und Werten
-                    std::vector<std::pair<char, int> > constraint;
+                        // Erstelle einen leeren Vektor von Paaren aus Optionen und Werten
+                        std::vector<std::pair<char, int> > constraint;
                 
-                    // Wähle zufällig eine Anzahl von Paaren zwischen 1 und der Anzahl der
-                    // Optionen aus
-                    int numPairs = randomInt(1, options.size());
+                        // Wähle zufällig eine Anzahl von Paaren zwischen 1 und der Anzahl der
+                        // Optionen aus
+                        int numPairs = randomInt(1, options.size());
                 
-                    for (int j = 0; j < numPairs; j++) {
-                            // Wähle zufällig eine Option aus der Map aus
-                            auto it = options.begin();
-                            std::advance(it, randomInt(0, options.size() - 1));
-                            char option = it->first;
+                        for (int j = 0; j < numPairs; j++) {
+                        // Wähle zufällig eine Option aus der Map aus
+                        auto it = options.begin();
+                        std::advance(it, randomInt(0, options.size() - 1));
+                        char option = it->first;
                 
-                            // Wähle zufällig einen Wert aus dem Vektor von Werten aus
-                            int value = it->second[randomInt(0, it->second.size() - 1)];
+                        // Wähle zufällig einen Wert aus dem Vektor von Werten aus
+                        int value = it->second[randomInt(0, it->second.size() - 1)];
                 
-                            // Füge das Paar aus Option und Wert zum Vektor hinzu
-                            constraint.push_back(std::make_pair(option, value));
-                    }
+                        // Füge das Paar aus Option und Wert zum Vektor hinzu
+                        constraint.push_back(std::make_pair(option, value));
+                        }
                 
-                    // Füge den Vektor von Paaren zur Liste hinzu
-                    constraints.push_back(constraint);
+                        // Füge den Vektor von Paaren zur Liste hinzu
+                        constraints.push_back(constraint);
                     }
                     }
                 
@@ -534,17 +560,17 @@
                     // Öffne die Datei mit den Optionen zum Schreiben
                     std::ofstream file(optionsFile);
                     if (!file) {
-                    // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                    throw std::runtime_error("Could not open file " + optionsFile);
+                        // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
+                        throw std::runtime_error("Could not open file " + optionsFile);
                     }
                 
                     // Schreibe die Optionen und Werte in die Datei
                     for (const auto& pair : options) {
-                    file << pair.first << " ";
-                    for (int value : pair.second) {
-                            file << value << " ";
-                    }
-                    file << "\n";
+                        file << pair.first << " ";
+                        for (int value : pair.second) {
+                        file << value << " ";
+                        }
+                        file << "\n";
                     }
                 
                     // Schließe die Datei
@@ -555,16 +581,16 @@
                     // Öffne die Datei mit den Constraints zum Schreiben
                     std::ofstream file(constraintsFile);
                     if (!file) {
-                    // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                    throw std::runtime_error("Could not open file " + constraintsFile);
+                        // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
+                        throw std::runtime_error("Could not open file " + constraintsFile);
                     }
                 
                     // Schreibe die Constraints in die Datei
                     for (const auto& constraint : constraints) {
-                    for (const auto& pair : constraint) {
-                            file << pair.first << " " << pair.second << " ";
-                    }
-                    file << "\n";
+                        for (const auto& pair : constraint) {
+                        file << pair.first << " " << pair.second << " ";
+                        }
+                        file << "\n";
                     }
                 
                     // Schließe die Datei
@@ -597,11 +623,11 @@
                     int main(int argc, char* argv[]) {
                     // Überprüfe, ob die richtige Anzahl von Parametern gegeben ist
                     if (argc != 7) {
-                    // Wenn nicht, gib eine Fehlermeldung aus und beende das Programm
-                    std::cerr << "Usage: " << argv[0]
+                        // Wenn nicht, gib eine Fehlermeldung aus und beende das Programm
+                        std::cerr << "Usage: " << argv[0]
                                 << " input_options input_constraints output_options "
-                                "output_constraints input_models num_constraints\n";
-                    return 1;
+                                    "output_constraints input_models num_constraints\n";
+                        return 1;
                     }
                 
                     // Hole die Namen der Eingabe- und Ausgabedateien aus den Parametern
@@ -617,13 +643,13 @@
                 
                     // Versuche, die Optionen und Constraints einzulesen
                     try {
-                    parser.parseOptions();
-                    parser.parseConstraints();
+                        parser.parseOptions();
+                        parser.parseConstraints();
                     } catch (const std::exception& e) {
-                    // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                    // Programm
-                    std::cerr << "Error: " << e.what() << "\n";
-                    return 2;
+                        // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
+                        // Programm
+                        std::cerr << "Error: " << e.what() << "\n";
+                        return 2;
                     }
                 
                     // Erstelle ein PrettyPrinter-Objekt mit den Namen der Ausgabedateien
@@ -631,13 +657,13 @@
                 
                     // Versuche, die Optionen und Constraints auszugeben
                     try {
-                    printer.printOptions(parser.getOptions());
-                    printer.printConstraints(parser.getConstraints());
+                        printer.printOptions(parser.getOptions());
+                        printer.printConstraints(parser.getConstraints());
                     } catch (const std::exception& e) {
-                    // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                    // Programm
-                    std::cerr << "Error: " << e.what() << "\n";
-                    return 3;
+                        // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
+                        // Programm
+                        std::cerr << "Error: " << e.what() << "\n";
+                        return 3;
                     }
                 
                     // Erstelle ein Solver-Objekt mit dem Parser als Parameter
@@ -645,17 +671,17 @@
                 
                     // Versuche, die Modelle zu generieren und in eine Datei zu schreiben
                     try {
-                    solver.solve();
-                    // Erstelle eine Variable für den Namen der Ausgabedatei für die Modelle
-                    std::string outputModels = "output.models";
-                    // Rufe die writeModels-Methode des Solver-Objekts auf und gebe den Namen
-                    // der Ausgabedatei als Parameter an
-                    solver.writeModels(outputModels);
+                        solver.solve();
+                        // Erstelle eine Variable für den Namen der Ausgabedatei für die Modelle
+                        std::string outputModels = "output.models";
+                        // Rufe die writeModels-Methode des Solver-Objekts auf und gebe den Namen
+                        // der Ausgabedatei als Parameter an
+                        solver.writeModels(outputModels);
                     } catch (const std::exception& e) {
-                    // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                    // Programm
-                    std::cerr << "Error: " << e.what() << "\n";
-                    return 4;
+                        // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
+                        // Programm
+                        std::cerr << "Error: " << e.what() << "\n";
+                        return 4;
                     }
                 
                     // Erstelle ein Checker-Objekt mit dem Parser und dem Solver als Parameter
@@ -663,28 +689,28 @@
                 
                     // Versuche, die Modelle aus einer Datei einzulesen und zu überprüfen
                     try {
-                    // Rufe die checkModels-Methode des Checker-Objekts auf und gebe die Liste
-                    // der Modelle als Parameter an
-                    checker.checkModels(std::cout);;
-                    // Hole die Liste von Fehlern vom Checker-Objekt
-                    const auto& errors = checker.getErrorsList();
-                    // Wenn die Liste leer ist, gib eine Erfolgsmeldung aus
-                    if (errors.empty()) {
-                            std::cout << "s VERIFIED\n";
-                            return 0;
-                    } else {
-                            // Wenn die Liste nicht leer ist, gib alle Fehler aus
-                            for (const auto& error : errors) {
+                        // Rufe die checkModels-Methode des Checker-Objekts auf und gebe die Liste
+                        // der Modelle als Parameter an
+                        checker.checkModels(std::cout);;
+                        // Hole die Liste von Fehlern vom Checker-Objekt
+                        const auto& errors = checker.getErrorsList();
+                        // Wenn die Liste leer ist, gib eine Erfolgsmeldung aus
+                        if (errors.empty()) {
+                        std::cout << "s VERIFIED\n";
+                        return 0;
+                        } else {
+                        // Wenn die Liste nicht leer ist, gib alle Fehler aus
+                        for (const auto& error : errors) {
                             std::cerr << error << "\n";
-                            }
-                            std::cout << "s UNVERIFIED\n";
-                            return 4;
-                    }
+                        }
+                        std::cout << "s UNVERIFIED\n";
+                        return 4;
+                        }
                     } catch (const std::exception& e) {
-                    // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                    // Programm
-                    std::cerr << "Error: " << e.what() << "\n";
-                    return 3;
+                        // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
+                        // Programm
+                        std::cerr << "Error: " << e.what() << "\n";
+                        return 3;
                     }
                 
                     // Erstelle ein Fuzzer-Objekt mit den gewünschten Parametern
@@ -692,20 +718,20 @@
                 
                     // Versuche, die Optionen und Constraints in Dateien zu schreiben
                     try {
-                    // Rufe die writeOptions- und writeConstraints-Methoden des Fuzzer-Objekts
-                    // auf
-                    fuzzer.writeOptions(outputOptions);
-                    fuzzer.writeConstraints(outputConstraints);
+                        // Rufe die writeOptions- und writeConstraints-Methoden des Fuzzer-Objekts
+                        // auf
+                        fuzzer.writeOptions(outputOptions);
+                        fuzzer.writeConstraints(outputConstraints);
                     } catch (const std::exception& e) {
-                    // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                    // Programm
-                    std::cerr << "Error: " << e.what() << "\n";
-                    return 2;
+                        // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
+                        // Programm
+                        std::cerr << "Error: " << e.what() << "\n";
+                        return 2;
                     }
                 
                     // Gib eine Erfolgsmeldung aus und beende das Programm
                     std::cout
-                            << "Successfully generated and wrote the options and constraints.\n";
+                        << "Successfully generated and wrote the options and constraints.\n";
                     return 0;
                     }
                     </code></pre>
@@ -728,14 +754,14 @@
                                             const std::string& value) {
                     // Überprüfe, ob die Option im Option-Objekt existiert
                     if (!options.getName(optionName)) {
-                    // Wenn nicht, werfe eine Ausnahme
-                    throw std::invalid_argument("Option " + optionName + " does not exist");
+                        // Wenn nicht, werfe eine Ausnahme
+                        throw std::invalid_argument("Option " + optionName + " does not exist");
                     }
                 
                     // Überprüfe, ob der Wert in der Liste von Werten der Option enthalten ist
                     if (!options.getOption(optionName).hasValue(value)) {
-                    // Wenn nicht, werfe eine Ausnahme
-                    throw std::invalid_argument("Value " + value + " is not valid for option " +
+                        // Wenn nicht, werfe eine Ausnahme
+                        throw std::invalid_argument("Value " + value + " is not valid for option " +
                                                     optionName);
                     }
                 
@@ -753,14 +779,14 @@
                     bool Model::isCompatibleWithConstraints(Constraint& constraints) const {
                     // Iteriere über die Liste von Constraints des Constraints-Objekts
                     for (const auto& constraint : constraints.getConstraints()) {
-                    // Überprüfe, ob das Constraint erfüllt ist
-                    if (constraint.isSatisfiedByModel(*this)) {
-                            // Wenn ja, gehe zum nächsten Constraint
-                            continue;
-                    } else {
-                            // Wenn nicht, gib false zurück
-                            return false;
-                    }
+                        // Überprüfe, ob das Constraint erfüllt ist
+                        if (constraint.isSatisfiedByModel(*this)) {
+                        // Wenn ja, gehe zum nächsten Constraint
+                        continue;
+                        } else {
+                        // Wenn nicht, gib false zurück
+                        return false;
+                        }
                     }
                 
                     // Wenn alle Constraints erfüllt sind, gib true zurück
@@ -771,8 +797,8 @@
                     void Model::printToFile(std::ofstream& file) const {
                     // Iteriere über die Map von Optionen auf Werte
                     for (const auto& optionValue : optionValues) {
-                    // Schreibe das Paar in die Datei, gefolgt von einem Komma
-                    file << optionValue.first << "," << optionValue.second << ",";
+                        // Schreibe das Paar in die Datei, gefolgt von einem Komma
+                        file << optionValue.first << "," << optionValue.second << ",";
                     }
                     // Schreibe einen Zeilenumbruch in die Datei
                     file << "\n";
@@ -805,37 +831,37 @@
                     // The constructor takes the names of the input files as parameters
                     Parser::Parser(const std::string& optionsFile,
                                 const std::string& constraintsFile)
-                    : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
+                        : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
                 
                     // This method reads the .options file and fills the map of options
                     void Parser::parseOptions() {
                     // Open the file for reading
                     std::ifstream file(optionsFile);
                     if (!file) {
-                    // If the file cannot be opened, throw an exception
-                    throw std::runtime_error("Could not open file " + optionsFile);
+                        // If the file cannot be opened, throw an exception
+                        throw std::runtime_error("Could not open file " + optionsFile);
                     }
                 
                     // Read the file line by line
                     std::string line;
                     while (std::getline(file, line)) {
-                    // Create a stream from the line
-                    std::istringstream stream(line);
+                        // Create a stream from the line
+                        std::istringstream stream(line);
                 
-                    // Read the name of the option from the stream
-                    std::string name = readString(stream);
+                        // Read the name of the option from the stream
+                        std::string name = readString(stream);
                 
-                    // Create an Option object with the name
-                    Option option(name);
+                        // Create an Option object with the name
+                        Option option(name);
                 
-                    // Read the possible values from the stream and add them to the option
-                    std::string value;
-                    while ((value = readString(stream)) != "") {
-                            option.addValue(value);
-                    }
+                        // Read the possible values from the stream and add them to the option
+                        std::string value;
+                        while ((value = readString(stream)) != "") {
+                        option.addValue(value);
+                        }
                 
-                    // Add the option to the map
-                    options[name] = option;
+                        // Add the option to the map
+                        options[name] = option;
                     }
                 
                     // Close the file
@@ -847,29 +873,29 @@
                     // Open the file for reading
                     std::ifstream file(constraintsFile);
                     if (!file) {
-                    // If the file cannot be opened, throw an exception
-                    throw std::runtime_error("Could not open file " + constraintsFile);
+                        // If the file cannot be opened, throw an exception
+                        throw std::runtime_error("Could not open file " + constraintsFile);
                     }
                 
                     // Read the file line by line
                     std::string line;
                     while (std::getline(file, line)) {
-                    // Create a stream from the line
-                    std::istringstream stream(line);
+                        // Create a stream from the line
+                        std::istringstream stream(line);
                 
-                    // Create a Constraint object
-                    Constraint constraint;
+                        // Create a Constraint object
+                        Constraint constraint;
                 
-                    // Read the pairs of option and value from the stream and add them to the
-                    // constraint
-                    std::string option, value;
-                    while ((option = readString(stream)) != "" &&
+                        // Read the pairs of option and value from the stream and add them to the
+                        // constraint
+                        std::string option, value;
+                        while ((option = readString(stream)) != "" &&
                             (value = readString(stream)) != "") {
-                            constraint.addPair(option, value);
-                    }
+                        constraint.addPair(option, value);
+                        }
                 
-                    // Add the constraint to the list
-                    constraints.push_back(constraint);
+                        // Add the constraint to the list
+                        constraints.push_back(constraint);
                     }
                 
                     // Close the file
@@ -883,7 +909,7 @@
                 
                     // This method returns the list of constraints
                     const std::list<Constraint>& Parser::getConstraints() const {
-                    return constraints;
+                        return constraints;
                     }
                 
                     // This method reads a string from a stream until a comma or a newline is found
@@ -895,13 +921,13 @@
                     // Read the stream character by character
                     char c;
                     while (stream.get(c)) {
-                    // If the character is a comma or a newline, break out of the loop
-                    if (c == ',' || c == '\n') {
-                            break;
-                    }
+                        // If the character is a comma or a newline, break out of the loop
+                        if (c == ',' || c == '\n') {
+                        break;
+                        }
                 
-                    // Otherwise, append the character to the string
-                    result += c;
+                        // Otherwise, append the character to the string
+                        result += c;
                     }
                 
                     // Return the string
@@ -919,24 +945,24 @@
                 
                     // Der Konstruktor speichert die Namen der Ausgabedateien in den Membervariablen
                     PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
-                                            const std::string& constraintsFile)
-                    : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
+                                                const std::string& constraintsFile)
+                        : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
                 
                     // Diese Methode schreibt die Optionen in die .options Datei
                     void PrettyPrinter::printOptions(const std::map<std::string, Option>& options) {
                     // Öffne die Datei zum Schreiben
                     std::ofstream file(optionsFile);
                     if (!file) {
-                    // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                    throw std::runtime_error("Could not open file " + optionsFile);
+                        // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
+                        throw std::runtime_error("Could not open file " + optionsFile);
                     }
                 
                     for (const auto& pair : options) {
-                    file << pair.first << ",";
-                    for (const auto& value : pair.second.getValues()) {
-                            file << value << ",";
-                    }
-                    file << "\n";
+                        file << pair.first << ",";
+                        for (const auto& value : pair.second.getValues()) {
+                        file << value << ",";
+                        }
+                        file << "\n";
                     }
                     file.close();
                     }
@@ -946,21 +972,21 @@
                     // Öffne die Datei zum Schreiben
                     std::ofstream file(constraintsFile);
                     if (!file) {
-                    // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                    throw std::runtime_error("Could not open file " + constraintsFile);
+                        // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
+                        throw std::runtime_error("Could not open file " + constraintsFile);
                     }
                 
                     // Iteriere über die Liste von Constraints
                     for (const auto& constraint : constraints) {
-                    // Hole die Liste der Paare aus Option und Wert
-                    const auto& pairs = constraint.getPairs();
-                    // Iteriere über die Liste der Paare
-                    for (const auto& pair : pairs) {
-                            // Schreibe das Paar in die Datei, gefolgt von einem Komma
-                            file << pair.first << "," << pair.second << ",";
-                    }
-                    // Schreibe einen Zeilenumbruch in die Datei
-                    file << "\n";
+                        // Hole die Liste der Paare aus Option und Wert
+                        const auto& pairs = constraint.getPairs();
+                        // Iteriere über die Liste der Paare
+                        for (const auto& pair : pairs) {
+                        // Schreibe das Paar in die Datei, gefolgt von einem Komma
+                        file << pair.first << "," << pair.second << ",";
+                        }
+                        // Schreibe einen Zeilenumbruch in die Datei
+                        file << "\n";
                     }
                     // Schließe die Datei
                     file.close();
@@ -1005,40 +1031,40 @@
                     while (coveredPairs.size() < parser.getOptions().size() *
                                                     (parser.getOptions().size() - 1) / 2 &&
                             invalidCount < 1000) {
-                    // Setze alle Optionen auf false in der Map von Optionen auf Booleans
-                    for (const auto& pair : parser.getOptions()) {
-                            setOptions[pair.first] = false;
-                    }
+                        // Setze alle Optionen auf false in der Map von Optionen auf Booleans
+                        for (const auto& pair : parser.getOptions()) {
+                        setOptions[pair.first] = false;
+                        }
                 
-                    // Erstelle ein Model-Objekt mit dem Options-Objekt des Parsers als
-                    // Parameter
-                    Model model(parser.getOptions());
+                        // Erstelle ein Model-Objekt mit dem Options-Objekt des Parsers als
+                        // Parameter
+                        Model model(parser.getOptions());
                 
-                    // Wähle zufällig eine Option aus der Map von Optionen des Parsers aus
-                    std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
-                    auto it1 = parser.getOptions().begin();
-                    std::advance(it1, dis1(gen));
-                    std::string option1 = it1->first;
+                        // Wähle zufällig eine Option aus der Map von Optionen des Parsers aus
+                        std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
+                        auto it1 = parser.getOptions().begin();
+                        std::advance(it1, dis1(gen));
+                        std::string option1 = it1->first;
                 
-                    // Wähle zufällig einen Wert aus der Liste von Werten der Option aus
-                    const auto& values1 = it1->second.getValues();
-                    std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-                    std::string value1 = values1[dis2(gen)];
+                        // Wähle zufällig einen Wert aus der Liste von Werten der Option aus
+                        const auto& values1 = it1->second.getValues();
+                        std::uniform_int_distribution<> dis2(0, values1.size() - 1);
+                        std::string value1 = values1[dis2(gen)];
                 
-                    // Setze die Option auf true in der Map von Optionen auf Booleans
-                    setOptions[option1] = true;
+                        // Setze die Option auf true in der Map von Optionen auf Booleans
+                        setOptions[option1] = true;
                 
-                    // Füge den Wert zum Model hinzu
-                    model.addOptionValue(option1, value1);
+                        // Füge den Wert zum Model hinzu
+                        model.addOptionValue(option1, value1);
                 
-                    // Wiederhole folgende Schritte, bis alle Optionen gesetzt sind
-                    while (std::find(setOptions.begin(), setOptions.end(), false) !=
+                        // Wiederhole folgende Schritte, bis alle Optionen gesetzt sind
+                        while (std::find(setOptions.begin(), setOptions.end(), false) !=
                             setOptions.end()) {
-                            // Wähle zufällig eine Zahl zwischen 0 und 99 aus
-                            std::uniform_int_distribution<> dis3(0, 99);
-                            int r = dis3(gen);
+                        // Wähle zufällig eine Zahl zwischen 0 und 99 aus
+                        std::uniform_int_distribution<> dis3(0, 99);
+                        int r = dis3(gen);
                 
-                            if (r < 10) {
+                        if (r < 10) {
                             // Wenn die Zahl kleiner als 10 ist, wähle zufällig eine Option aus, die
                             // noch nicht gesetzt ist, und wähle zufällig einen Wert aus ihrer Liste
                             // von Werten aus. Setze die Option und den Wert wie oben beschrieben.
@@ -1067,7 +1093,7 @@
                             // Füge den Wert zum Model hinzu
                             model.addOptionValue(option2, value2);
                 
-                            } else {
+                        } else {
                             // Wenn die Zahl größer oder gleich 10 ist, wähle zufällig ein Paar aus,
                             // das noch nicht abgedeckt ist. Setze die beiden Optionen und ihre
                             // Werte wie oben beschrieben.
@@ -1076,10 +1102,10 @@
                             for (const auto& pair1 : parser.getOptions()) {
                             for (const auto& pair2 : parser.getOptions()) {
                                 if (pair1.first < pair2.first &&
-                                coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
+                                    coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
                                         coveredPairs.end()) {
                                 uncoveredPairs.push_back(
-                                        std::make_pair(pair1.first, pair2.first));
+                                    std::make_pair(pair1.first, pair2.first));
                                 }
                             }
                             }
@@ -1113,26 +1139,26 @@
                 
                             // Füge den Wert zum Model hinzu
                             model.addOptionValue(pair.second, value4);
-                            }
-                    }
+                        }
+                        }
                 
-                    // Überprüfe, ob das aktuelle Modell mit den Constraints des Parsers
-                    // kompatibel ist
-                    if (checkConstraints(model)) {
-                            // Wenn ja, füge es zur Liste von Model-Objekten hinzu und markiere alle
-                            // Paare als abgedeckt
-                            models.push_back(model);
-                            for (const auto& pair1 : model.getOptionValues()) {
+                        // Überprüfe, ob das aktuelle Modell mit den Constraints des Parsers
+                        // kompatibel ist
+                        if (checkConstraints(model)) {
+                        // Wenn ja, füge es zur Liste von Model-Objekten hinzu und markiere alle
+                        // Paare als abgedeckt
+                        models.push_back(model);
+                        for (const auto& pair1 : model.getOptionValues()) {
                             for (const auto& pair2 : model.getOptionValues()) {
                             if (pair1.first < pair2.first) {
                                 coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
                             }
                             }
-                            }
-                    } else {
-                            // Wenn nein, erhöhe einen Zähler um eins
-                            invalidCount++;
-                    }
+                        }
+                        } else {
+                        // Wenn nein, erhöhe einen Zähler um eins
+                        invalidCount++;
+                        }
                     }
                     }
                 
@@ -1145,22 +1171,22 @@
                     bool Solver::checkConstraints(const Model& model) const {
                     // Iteriere über die Liste von Constraints des Parsers
                     for (const auto& constraint : parser.getConstraints()) {
-                    // Hole die Liste der Paare aus Option und Wert
-                    const auto& pairs = constraint.getPairs();
-                    // Überprüfe, ob alle Paare im Modell vorkommen
-                    bool allPairsInModel = true;
-                    for (const auto& pair : pairs) {
-                            if (!model.isOptionSet(pair.first) ||
+                        // Hole die Liste der Paare aus Option und Wert
+                        const auto& pairs = constraint.getPairs();
+                        // Überprüfe, ob alle Paare im Modell vorkommen
+                        bool allPairsInModel = true;
+                        for (const auto& pair : pairs) {
+                        if (!model.isOptionSet(pair.first) ||
                             model.getOptionValue(pair.first) != pair.second) {
                             allPairsInModel = false;
                             break;
-                            }
-                    }
-                    // Wenn alle Paare im Modell vorkommen, gib false zurück, da die
-                    // Konfiguration nicht mit den Constraints kompatibel ist
-                    if (allPairsInModel) {
-                            return false;
-                    }
+                        }
+                        }
+                        // Wenn alle Paare im Modell vorkommen, gib false zurück, da die
+                        // Konfiguration nicht mit den Constraints kompatibel ist
+                        if (allPairsInModel) {
+                        return false;
+                        }
                     }
                     // Wenn keine Constraints verletzt wurden, gib true zurück
                     return true;
@@ -1170,19 +1196,19 @@
                     // Open the output file for writing
                     std::ofstream file(filename);
                     if (!file) {
-                    // If the file cannot be opened, throw an exception
-                    throw std::runtime_error("Could not open file " + filename);
+                        // If the file cannot be opened, throw an exception
+                        throw std::runtime_error("Could not open file " + filename);
                     }
                 
                     // Iterate over the list of models
                     for (const auto& model : models) {
-                    // Iterate over the map of options and values
-                    for (const auto& pair : model) {
-                            // Write the option name and value, followed by a comma
-                            file << pair.first << "," << pair.second << ",";
-                    }
-                    // Write a newline character
-                    file << "\n";
+                        // Iterate over the map of options and values
+                        for (const auto& pair : model) {
+                        // Write the option name and value, followed by a comma
+                        file << pair.first << "," << pair.second << ",";
+                        }
+                        // Write a newline character
+                        file << "\n";
                     }
                 
                     // Close the file
@@ -1209,6 +1235,9 @@
                     // A class that checks if all the models are valid and satisfy the constraints
                     class Checker {
                     public:
+                    // The constructor takes only the parser as a parameter
+                    Checker(const Parser& parser);
+                
                     // The constructor takes the names of the input files as parameters
                     Checker(const std::string& optionsFile, const std::string& constraintsFile,
                             const std::string& modelsFile);
@@ -1224,6 +1253,9 @@
                 
                     // This method checks all the models and outputs the results
                     void checkModels(std::ostream& out);
+                
+                    // This method checks if a model is compatible with the constraints
+                    bool checkConstraints(const Model& model) const;
                 
                     const std::list<std::string>& getErrorsList() const;
                 
@@ -1256,7 +1288,7 @@
                 
                     // This method checks if a model satisfies a constraint
                     bool satisfies(const std::vector<std::pair<std::string, std::string> >& model,
-                                const Constraint& constraint);
+                                    const Constraint& constraint);
                 
                     // This method returns a list of errors that were found by the checker
                     std::list<std::string> getErrorsList();
@@ -1308,21 +1340,21 @@
                     Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints);
                     
                 
-                            // Diese Methode schreibt die Optionen und Werte in eine Datei mit der
-                            // Endung
-                            void
-                            writeOptions(const std::string& optionsFile);
+                        // Diese Methode schreibt die Optionen und Werte in eine Datei mit der
+                        // Endung
+                        void
+                        writeOptions(const std::string& optionsFile);
                     
                 
-                            // Diese Methode schreibt die Constraints in eine Datei mit der
-                            // Endung
-                            void
-                            writeConstraints(const std::string& constraintsFile);
+                        // Diese Methode schreibt die Constraints in eine Datei mit der
+                        // Endung
+                        void
+                        writeConstraints(const std::string& constraintsFile);
                     
                 
-                            private :
-                            // Die Map von Optionen auf Vektoren von Werten
-                            std::map<char, std::vector<int>>
+                        private :
+                        // Die Map von Optionen auf Vektoren von Werten
+                        std::map<char, std::vector<int>>
                             options;
                 
                     // Die Liste von Vektoren von Paaren aus Optionen und Werten
@@ -1511,7 +1543,7 @@
                     public:
                     // Der Konstruktor nimmt die Namen der Ausgabedateien als Parameter
                     PrettyPrinter(const std::string& optionsFile,
-                                const std::string& constraintsFile);
+                                    const std::string& constraintsFile);
                 
                     // Diese Methode schreibt die Optionen in die .options Datei
                     void printOptions(const std::map<std::string, Option>& options);
