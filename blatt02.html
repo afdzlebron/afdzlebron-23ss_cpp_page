@@ -874,207 +874,205 @@
                             </code></pre>
             Hier ist Solver.cpp:
             <pre><code>
-                            #include "Solver.hpp"
-                
-                            #include <random>
-                            #include <algorithm>
-                            #include "Parser.hpp"
-                
-                            // Der Konstruktor speichert den Parser in der Membervariable
-                            Solver::Solver(const Parser& parser) : parser(parser) {}
-                
-                            // Diese Methode generiert die Modelle und speichert sie in einer Liste von Maps
-                            // von Optionen auf Werte
-                            void Solver::solve() {
-                            // Erstelle eine leere Liste von Maps von Optionen auf Werte, die die Modelle
-                            // speichern wird
-                            models.clear();
-                
-                            // Erstelle eine leere Map von
-                
-                            // Paaren auf Booleans, die speichert, welche Paare schon abgedeckt sind
-                            std::map<std::pair<std::string, std::string>, bool> coveredPairs;
-                
-                            // Erstelle eine leere Map von Optionen auf Booleans, die speichert, welche
-                            // Optionen schon gesetzt sind
-                            std::map<std::string, bool> setOptions;
-                
-                            // Erstelle eine leere Map von Optionen auf Werten, die die aktuelle
-                            // Konfiguration speichert
-                            std::map<std::string, std::string> currentConfig;
-                
-                            // Erstelle einen Zufallszahlengenerator mit einer festen Seed (z.B. 42), um
-                            // zufällige Werte zu erzeugen
-                            std::mt19937 gen(42);
-                
-                            // Wiederhole folgende Schritte, bis entweder alle Paare abgedeckt sind oder
-                            // 1000 Konfigurationen generiert wurden, die die Constraints nicht
-                            // erfüllen[^1^][1]
-                            int invalidCount = 0;
-                            while (coveredPairs.size() < parser.getOptions().size() *
-                                                            (parser.getOptions().size() - 1) / 2 &&
-                                    invalidCount < 1000) {
-                                // Setze alle Optionen auf false in der Map von Optionen auf Booleans
-                                for (const auto& pair : parser.getOptions()) {
-                                setOptions[pair.first] = false;
-                                }
-                
-                                // Setze alle Werte auf "" in der Map von Optionen auf Werten
-                                for (const auto& pair : parser.getOptions()) {
-                                currentConfig[pair.first] = "";
-                                }
-                
-                                // Wähle zufällig eine Option aus der Map von Optionen des Parsers aus
-                                std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
-                                auto it1 = parser.getOptions().begin();
-                                std::advance(it1, dis1(gen));
-                                std::string option1 = it1->first;
-                
-                                // Wähle zufällig einen Wert aus der Liste von Werten der Option aus
-                                const auto& values1 = it1->second.getValues();
-                                std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-                                std::string value1 = values1[dis2(gen)];
-                
-                                // Setze die Option auf true in der Map von Optionen auf Booleans
-                                setOptions[option1] = true;
-                
-                                // Setze den Wert in der Map von Optionen auf Werten
-                                currentConfig[option1] = value1;
-                
-                                // Wiederhole folgende Schritte, bis alle Optionen gesetzt sind
-                                while (std::find(setOptions.begin(), setOptions.end(), false) !=
-                                    setOptions.end()) {
-                                // Wähle zufällig eine Zahl zwischen 0 und 99 aus
-                                std::uniform_int_distribution<> dis3(0, 99);
-                                int r = dis3(gen);
-                
-                                if (r < 10) {
-                                    // Wenn die Zahl kleiner als 10 ist, wähle zufällig eine Option aus, die
-                                    // noch nicht gesetzt ist, und wähle zufällig einen Wert aus ihrer Liste
-                                    // von Werten aus. Setze die Option und den Wert wie oben beschrieben.
-                
-                                    // Finde alle Optionen, die noch nicht gesetzt sind
-                                    std::vector<std::string> unsetOptions;
-                                    for (const auto& pair : setOptions) {
-                                    if (!pair.second) {
-                                        unsetOptions.push_back(pair.first);
-                                    }
-                                    }
-                
-                                    // Wähle zufällig eine Option aus
-                                    std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
-                                    std::string option2 = unsetOptions[dis4(gen)];
-                
-                                    // Finde die Liste von Werten der Option
-                                    const auto& values2 = parser.getOptions().at(option2).getValues();
-                
-                                    // Wähle zufällig einen Wert aus
-                                    std::uniform_int_distribution<> dis5(0, values2.size() - 1);
-                                    std::string value2 = values2[dis5(gen)];
-                
-                                    // Setze die Option und den Wert wie oben beschrieben
-                                    setOptions[option2] = true;
-                                    currentConfig[option2] = value2;
-                                } else {
-                                    // Wenn die Zahl größer oder gleich 10 ist, wähle zufällig ein Paar aus,
-                                    // das noch nicht abgedeckt ist[^2^][2]. Setze die beiden Optionen und
-                                    // ihre Werte wie oben beschrieben.
-                
-                                    // Finde alle Paare, die noch nicht abgedeckt sind
-                                    std::vector<std::pair<std::string, std::string>> uncoveredPairs;
-                                    for (const auto& pair1 : parser.getOptions()) {
-                                    for (const auto& pair2 : parser.getOptions()) {
-                                        if (pair1.first < pair2.first &&
-                                            coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
-                                                coveredPairs.end()) {
-                                        uncoveredPairs.push_back(
-                                            std::make_pair(pair1.first, pair2.first));
-                                        }
-                                    }
-                                    }
-                
-                                    // Wähle zufällig ein Paar aus
-                                    std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
-                                    auto pair = uncoveredPairs[dis6(gen)];
-                
-                                    // Finde die Liste von Werten der ersten Option
-                                    const auto& values3 = parser.getOptions().at(pair.first).getValues();
-                
-                                    // Wähle zufällig einen Wert aus
-                                    std::uniform_int_distribution<> dis7(0, values3.size() - 1);
-                                    std::string value3 = values3[dis7(gen)];
-                
-                                    // Setze die erste Option und den Wert wie oben beschrieben
-                                    setOptions[pair.first] = true;
-                                    currentConfig[pair.first] = value3;
-                
-                                    // Finde die Liste von Werten der zweiten Option
-                                    const auto& values4 = parser.getOptions().at(pair.second).getValues();
-                
-                                    // Wähle zufällig einen Wert aus
-                                    std::uniform_int_distribution<> dis8(0, values4.size() - 1);
-                                    std::string value4 = values4[dis8(gen)];
-                
-                                    // Setze die zweite Option und den Wert wie oben beschrieben
-                                    setOptions[pair.second] = true;
-                                    currentConfig[pair.second] = value4;
-                                }
-                                }
-                
-                                // Überprüfe, ob die aktuelle Konfiguration mit den Constraints des Parsers
-                                // kompatibel ist
-                                if (checkConstraints(currentConfig)) {
-                                // Wenn ja, füge sie zur Liste von Maps hinzu und markiere alle Paare als
-                                // abgedeckt[^3^][3]
-                                models.push_back(currentConfig);
-                                for (const auto& pair1 : currentConfig) {
-                                    for (const auto& pair2 : currentConfig) {
-                                    if (pair1.first < pair2.first) {
-                                        coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
-                                    }
-                                    }
-                                }
-                                } else {
-                                // Wenn nein, erhöhe einen Zähler um eins
-                                invalidCount++;
+
+                    #include "Solver.hpp"
+                    
+                    #include <fstream>
+                    #include <random>
+                    #include <stdexcept>
+                    
+                    #include "Model.hpp"  // Include the header file for Model.hpp
+                    
+                    // Der Konstruktor speichert den Parser in der Membervariable
+                    Solver::Solver(const Parser& parser) : parser(parser) {
+                    // Declare and initialize the models variable as an empty list
+                    models = std::list<Model>();
+                    }
+                    
+                    // Diese Methode generiert die Modelle und speichert sie in einer Liste von Maps
+                    // von Optionen auf Werte
+                    void Solver::solve() {
+                    // Erstelle eine leere Map von Paaren auf Booleans, die speichert, welche
+                    // Paare schon abgedeckt sind
+                    std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                    
+                    // Erstelle eine leere Map von Optionen auf Booleans, die speichert, welche
+                    // Optionen schon gesetzt sind
+                    std::map<std::string, bool> setOptions;
+                    
+                    // Erstelle einen Zufallszahlengenerator mit einer festen Seed (z.B. 42), um
+                    // zufällige Werte zu erzeugen
+                    std::mt19937 gen(42);
+                    
+                    // Wiederhole folgende Schritte, bis entweder alle Paare abgedeckt sind oder
+                    // 1000 Konfigurationen generiert wurden, die die Constraints nicht erfüllen
+                    int invalidCount = 0;
+                    while (coveredPairs.size() < parser.getOptions().size() *
+                                                    (parser.getOptions().size() - 1) / 2 &&
+                            invalidCount < 1000) {
+                        // Setze alle Optionen auf false in der Map von Optionen auf Booleans
+                        for (const auto& pair : parser.getOptions()) {
+                        setOptions[pair.first] = false;
+                        }
+                    
+                        // Erstelle ein Model-Objekt mit dem Options-Objekt des Parsers als
+                        // Parameter
+                        Model model(parser.getOptions());
+                    
+                        // Wähle zufällig eine Option aus der Map von Optionen des Parsers aus
+                        std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
+                        auto it1 = parser.getOptions().begin();
+                        std::advance(it1, dis1(gen));
+                        std::string option1 = it1->first;
+                    
+                        // Wähle zufällig einen Wert aus der Liste von Werten der Option aus
+                        const auto& values1 = it1->second.getValues();
+                        std::uniform_int_distribution<> dis2(0, values1.size() - 1);
+                        std::string value1 = values1[dis2(gen)];
+                    
+                        // Setze die Option auf true in der Map von Optionen auf Booleans
+                        setOptions[option1] = true;
+                    
+                        // Füge den Wert zum Model hinzu
+                        model.addOptionValue(option1, value1);
+                    
+                        // Wiederhole folgende Schritte, bis alle Optionen gesetzt sind
+                        while (std::find(setOptions.begin(), setOptions.end(), false) !=
+                            setOptions.end()) {
+                        // Wähle zufällig eine Zahl zwischen 0 und 99 aus
+                        std::uniform_int_distribution<> dis3(0, 99);
+                        int r = dis3(gen);
+                    
+                        if (r < 10) {
+                            // Wenn die Zahl kleiner als 10 ist, wähle zufällig eine Option aus, die
+                            // noch nicht gesetzt ist, und wähle zufällig einen Wert aus ihrer Liste
+                            // von Werten aus. Setze die Option und den Wert wie oben beschrieben.
+                            // Finde alle Optionen, die noch nicht gesetzt sind
+                            std::vector<std::string> unsetOptions;
+                            for (const auto& pair : setOptions) {
+                            if (!pair.second) {
+                                unsetOptions.push_back(pair.first);
+                            }
+                            }
+                    
+                            // Wähle zufällig eine Option aus
+                            std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
+                            std::string option2 = unsetOptions[dis4(gen)];
+                    
+                            // Finde die Liste von Werten der Option
+                            const auto& values2 = parser.getOptions().at(option2).getValues();
+                    
+                            // Wähle zufällig einen Wert aus
+                            std::uniform_int_distribution<> dis5(0, values2.size() - 1);
+                            std::string value2 = values2[dis5(gen)];
+                    
+                            // Setze die Option auf true in der Map von Optionen auf Booleans
+                            setOptions[option2] = true;
+                    
+                            // Füge den Wert zum Model hinzu
+                            model.addOptionValue(option2, value2);
+                    
+                        } else {
+                            // Wenn die Zahl größer oder gleich 10 ist, wähle zufällig ein Paar aus,
+                            // das noch nicht abgedeckt ist. Setze die beiden Optionen und ihre
+                            // Werte wie oben beschrieben.
+                            // Finde alle Paare, die noch nicht abgedeckt sind
+                            std::vector<std::pair<std::string, std::string>> uncoveredPairs;
+                            for (const auto& pair1 : parser.getOptions()) {
+                            for (const auto& pair2 : parser.getOptions()) {
+                                if (pair1.first < pair2.first &&
+                                    coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
+                                        coveredPairs.end()) {
+                                uncoveredPairs.push_back(
+                                    std::make_pair(pair1.first, pair2.first));
                                 }
                             }
                             }
-                
-                            // Diese Methode gibt die Liste von Maps zurück
-                            const std::list<std::map<std::string, std::string>>& Solver::getModels() const {
-                            return models;
+                    
+                            // Wähle zufällig ein Paar aus
+                            std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
+                            auto pair = uncoveredPairs[dis6(gen)];
+                    
+                            // Finde die Liste von Werten der ersten Option
+                            const auto& values3 = parser.getOptions().at(pair.first).getValues();
+                    
+                            // Wähle zufällig einen Wert aus
+                            std::uniform_int_distribution<> dis7(0, values3.size() - 1);
+                            std::string value3 = values3[dis7(gen)];
+                    
+                            // Setze die erste Option auf true in der Map von Optionen auf Booleans
+                            setOptions[pair.first] = true;
+                    
+                            // Füge den Wert zum Model hinzu
+                            model.addOptionValue(pair.first, value3);
+                    
+                            // Finde die Liste von Werten der zweiten Option
+                            const auto& values4 = parser.getOptions().at(pair.second).getValues();
+                    
+                            // Wähle zufällig einen Wert aus
+                            std::uniform_int_distribution<> dis8(0, values4.size() - 1);
+                            std::string value4 = values4[dis8(gen)];
+                    
+                            // Setze die zweite Option auf true in der Map von Optionen auf Booleans
+                            setOptions[pair.second] = true;
+                    
+                            // Füge den Wert zum Model hinzu
+                            model.addOptionValue(pair.second, value4);
+                        }
+                        }
+                    
+                        // Überprüfe, ob das aktuelle Modell mit den Constraints des Parsers
+                        // kompatibel ist
+                        if (checkConstraints(model)) {
+                        // Wenn ja, füge es zur Liste von Model-Objekten hinzu und markiere alle
+                        // Paare als abgedeckt
+                        models.push_back(model);
+                        for (const auto& pair1 : model.getOptionValues()) {
+                            for (const auto& pair2 : model.getOptionValues()) {
+                            if (pair1.first < pair2.first) {
+                                coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
                             }
-                
-                            // Diese Methode überprüft, ob eine Konfiguration mit den Constraints kompatibel
-                            // ist[^4^][4]
-                            bool Solver::checkConstraints(
-                                const std::map<std::string, std::string>& config) const {
-                            // Iteriere über die Liste von Constraints des Parsers
-                            for (const auto& constraint : parser.getConstraints()) {
-                                // Hole die Liste der Paare aus Option und Wert
-                                const auto& pairs = constraint.getPairs();
-                
-                                // Überprüfe, ob alle Paare in der Konfiguration vorkommen
-                                bool allPairsInConfig = true;
-                                for (const auto& pair : pairs) {
-                                if (config.at(pair.first) != pair.second) {
-                                    allPairsInConfig = false;
-                                    break;
-                                }
-                                }
-                
-                                // Wenn alle Paare in der Konfiguration vorkommen, gib false zurück, da die
-                                // Konfiguration nicht mit den Constraints kompatibel ist
-                                if (allPairsInConfig) {
-                                return false;
-                                }
                             }
-                
-                            // Wenn keine Constraints verletzt wurden, gib true zurück
-                            return true;
-                            }
-                            </code></pre>
+                        }
+                        } else {
+                        // Wenn nein, erhöhe einen Zähler um eins
+                        invalidCount++;
+                        }
+                    }
+                    }
+                    
+                    // Diese Methode gibt die Liste von Model-Objekten zurück
+                    
+                    const std::list<Model>& Solver::getModels() const { return models; }
+                    
+                    // Diese Methode überprüft, ob ein Modell mit den Constraints kompatibel ist
+                    
+                    bool Solver::checkConstraints(const Model& model) const {
+                    // Iteriere über die Liste von Constraints des Parsers
+                    for (const auto& constraint : parser.getConstraints()) {
+                        // Hole die Liste der Paare aus Option und Wert
+                        const auto& pairs = constraint.getPairs();
+                        // Überprüfe, ob alle Paare im Modell vorkommen
+                        bool allPairsInModel = true;
+                        for (const auto& pair : pairs) {
+                        if (!model.isOptionSet(pair.first) ||
+                            model.getOptionValue(pair.first) != pair.second) {
+                            allPairsInModel = false;
+                            break;
+                        }
+                        }
+                        // Wenn alle Paare im Modell vorkommen, gib false zurück, da die
+                        // Konfiguration nicht mit den Constraints kompatibel ist
+                        if (allPairsInModel) {
+                        return false;
+                        }
+                    }
+                    // Wenn keine Constraints verletzt wurden, gib true zurück
+                    return true;
+                    }
+                    
+                        
+                </code></pre>
             Hier ist Checker.hpp:
             <pre><code>
                             #include "Parser.hpp"
