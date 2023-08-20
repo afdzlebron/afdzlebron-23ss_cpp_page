@@ -43,216 +43,216 @@
       <h1>Projekt: Übersicht</h1>
       <pre>
 
-              (1) Einführung in das Problem:
-              Wir interessieren uns für die Paarbildungsmethode. 
-              Bei dieser Methode geht es darum, ein Programm mit vielen Optionen zu testen, wobei möglichst wenige Konfigurationen verwendet werden.
-              Leider gibt es meistens zu viele Optionen, um alle testen zu können: 
-              Der SAT-Solver Lingeling von Armin Biere hat mehr Optionen als Atome im Universum (weil es Parameter gibt, die Integer oder sogar Gleitkommazahlen als Wert annehmen können).
-              Da es einfach zu viele Konfigurationen gibt, interessieren wir uns nur dafür, dass zwei Optionen (die kombiniert werden können) auch einmal gemeinsam getestet werden können - unabhängig von den anderen Optionen. 
-              Solch eine Kombination von zwei Optionen mit jeweils einem Wert ist ein Paar. 
-              Eine Kombination von 10 Optionen ermöglicht es also, `9 + 8 + 7 + ... + 1` = `55` Paare zu testen. 
-              Es reicht jedoch nicht aus, einfach alle Optionen aufzulisten, da es auch Optionen gibt, die nicht miteinander kompatibel sind.
-              Damit das alles klarer wird werden wir uns jetzt ein Beispiel ansehen (Wikipedia Beispiel mit anderen Namen). 
-              Es gibt 3 Auswahlmöglichkeiten:
-          
-                  Prozessor Intel oder AMD
-          
-                  RAM Geschwindigkeit 5000MT/s, 6000MT/s, und 7000MT/s
-          
-                  Bildschirm 1K, 2K, 4K, 8K
-          
-              Es gibt `2 * 3 + 2 * 4 + 3 * 4` Paare (jeden Prozessor mit jeder Geschwindigkeit, jeden Prozessor mit jedem Bildschirm, und jede Geschwindigkeit mit jedem Bildschirm).
-              Mit der Paarbildungsmethode reicht es sich für folgende 12 Modelle zu interessieren, anstatt alle
-              26 Modelle:
-          
-              ```
-              Prozessor   RAM     Bildschirm
-                  Intel       7          1K
-                  Intel       5          8K
-                  AMD         5          4K
-                  AMD         6          8K
-                  Intel       6          4K
-                  AMD         6          1K
-                  AMD         5          1K
-                  AMD         7          2K
-                  Intel       6          2K
-                  Intel       7          8K
-                  AMD         7          4K
-                  Intel       5          2K
-              ```
-              Eigentlich ist es noch etwas komplizierter, weil es Optionen gibt, die nicht kompatibel sind. Zum
-              Beispiel unterstützt AMD nur 5000MT/s und stürzt bei höheren Geschwindigkeiten ab. Es ist
-              auch nicht möglich, gleichzeitig Intel mit dem langsamen Speicher und dem 8K-Bildschirm zu
-              wählen.
-          
-          
-              (2) Die Darstellung:
-              Um unser Problem darzustellen, nutzen wir einfach CSV-Dateien. Eine CSV-Datei (comma separated value) bedeutet einfach, das der Text mit Komma separiert wird.
-              Für die Optionen (der Dateiname sollte mit ``.options`` enden) schreiben wir einfach jede Option
-              mit allen möglichen Werten auf:
-              ```
-              Prozessor,Intel,AMD
-              RAM,5,6,7
-              Bildschirm,1,2,4,8
-              ```
-          
-              Wir erlauben ASCII, aber kein UTF-16. 
-              Das muss jedoch nicht nachgeprüft werden. 
-              Sie können einfach char nutzen. Wir erlauben auch Leerzeichen in den Namen.
-              Dann können wir die Optionen aufschreiben, die nicht gleichzeitig wahr sein sollen (Der Dateiname sollte mit ``.constraints`` enden).
-          
-              ```
-              Prozessor,AMD,RAM,6
-              Prozessor,AMD,RAM,7
-              Prozessor,Intel,RAM,5,Bildschirm,8
-              ```
-          
-              Jeder Zeile bedeuted also, dass mindestens eine Option anders gesetzt werden muss.
-              Lösungen (Modelle) schreiben wir wieder als CSV. 
-              Dabei müssen natürlich alle Optionen gesetzt werden und die Werte müssen mit den Constraints kompatibel sein. 
-              Eine mögliche Datei könnte beispielsweise wie folgt aussehen (der Dateiname sollte mit `.models` enden):
-          
-              ```
-              Prozessor,Intel,RAM,5,Bildschirm,2
-              Prozessor,Intel,RAM,6,Bildschirm,2
-              RAM,7,Prozessor,Intel,Bildschirm,1
-              Prozessor,Intel,RAM,7,Bildschirm,4
-              Prozessor,AMD,RAM,5,Bildschirm,4
-              RAM,5,Prozessor,AMD,Bildschirm,8
-              RAM,5,Prozessor,AMD,Bildschirm,1
-              Prozessor,Intel,RAM,6,Bildschirm,4
-              Bildschirm,2,Prozessor,AMD,RAM,5
-              Prozessor,Intel,RAM,6,Bildschirm,8
-              ```
-          
-              Das Ziel dieses Projekts ist es, eine Approximation aller Modelle zu produzieren (alle Modelle sollen korrekt sein, aber es könnten einige fehlen). 
-              Da es sich um einen probabilistischen Ansatz handelt, könnten hier Lösungen fehlen (direkt aus dem Solver in meiner Lösung).
-          
-              ```
-              c   there are 3 uncovered pairs
-              c   RAM->6 && Prozessor->AMD
-              c   Bildschirm->4 && RAM->6
-              c   Bildschirm->8 && RAM->6
-              ```
-              Die Paare 2 und 3 könnten mit dem Intel Prozessor bedeckt werden, aber das wurde nicht generiert.
-          
-          
-              (3) Ziele:
-              Sie müssen folgendes implementieren im C++:
-          
-              ->Parser und pretty-printer (Blatt 11) die Datein ``.options`` und ``.constraints`` einlesen und wieder ausgeben.
-          
-              ->Solver (Pflicht, Blatt 12) Die Datei .models soll mit möglichen Modellen gefüllt werden. 
-              Die einfachste korrekte Implementierung produziert keine Modelle, aber das gibt auch keine Punkte.
-          
-              ->Checker (Variante A, Blatt 12) Er liest die Dateien ``.options``, ``.constraints`` und `.models` ein und prüfe, ob alle gefundenen Modelle auch die Constraints erfüllen.
-          
-              ->Fuzzer (Variante B, Blatt 12) Random Dateien ``.options`` und ``.constraints`` generieren. Das Ziel ist es diese Probleme zu lösen und nach Bugs zu suchen.
-          
-              Die Varianten bauen sehr stark auf das Lösen auf. Sie können also in beliebiger Reihenfolge implementiert werden.
-          
-              Sie müssen sowohl Variante A als auch B machen.
-          
-              Um beim Testen zu helfen, gibt es zwei binäre Dateien zur Verfügung:
-          
-                  • einen Fuzzer namens `crippled-fuzzer`, der jedoch nur 16 unterschiedliche Programme generieren kann. 
-                      Er generiert auch nur Optionen, die einen Buchstaben lang sind, und die Werte sind entweder 0 oder 1.
-          
-                  • einen Checker namens `russian-roulette-checker`, der zwar überprüft, aber oft mit s UNKNOWN antwortet.
-          
-          
-              (4):
-          
-              (4.1)    Lösen von Problem:
-          
-              Um das Problem zu lösen, müssen Sie (möglichst alle) Modelle generieren. 
-              Um dies zu tun, werden wir zufällig generierte Konfigurationen nutzen.
-              Dafür müssen Sie zuerst alle möglichen Paare generieren.
-              Wenn Sie dann eine Konfiguration produzieren wollen, fangen Sie mit der leeren Konfiguration an und erweitern sie. 
-              Dafür füllen Sie die Konfiguration mit einer Option. 
-              Da es notwendig sein kann, auch einen Wert zu nehmen, der bereits gesehen worden ist, setzen Sie mit geringer Wahrscheinlichkeit eine Option unabhängig von den noch verbleibenden Paaren. 
-              Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar, das noch nicht abgedeckt ist.
-              Wenn Sie dann eine vollständige Konfiguration generiert haben, müssen Sie testen, ob sie mit den Constraints kompatibel ist. Wenn dies der Fall ist, haben Sie ein neues Modell gefunden und können alle Paare als abgedeckt markieren.
-              Nach 1000 Konfigurationen, die die Constraints nicht erfüllen, sind wir dann fertig (auch wenn
-              es vielleicht noch mehr Möglichkeiten gibt).
-          
-              `Tabelle 1: Return Codes`: 
-              ```
-              Return code | Sinn
-              ______________________________
-                  0       | Keine Fehler
-                  10       | Datei konnte nicht geöffnet werden
-                  20       | Keine valide Eingabedatei (z.B., nicht deklarierte Option)
-                  30       | Anderer Fehler
-              ```
-          
-          
-              In Tabelle 1 finden Sie die genauen Rückgabewerte, die aus dem Hauptprogramm kommen sollen, je nachdem, was passiert ist.
-          
-          
-              (4.2)    Checker:
-          
-              Ein Checker ist ein Program, der die 3 Datein (Optionen, Constraints, und Modelle) nimmt und immer schaut ob:
-          
-                  1. in jedem Model alle Optionen genau einmal angegeben werden
-          
-                  2. jedes Model auch alle Constraints erfüllt
-          
-                  3. In den Modellen und in den Constraint gibt es nur Optionen und Werte aus der `.options` Datei.
-          
-                  4. invalide Input Dateien (fehlende Werte zum Beispiel)
-          
-              Nicht zulässig sind also Konfiguration und Constraints:
-                  wo Optionen erfunden wurden (Punkt 3 oben),
-                  wo Werte erfunden wurden (Punkt 3 oben), 
-                  wo nicht alle Option gesetzt sind (Punkt 1 oben), 
-                  oder Modelle die nicht die Constraints erfüllen (Punkt 2 oben).
-          
-              Nicht relevant für den Checker ist die Reihenfolge der Optionen oder Modelle die doppelt auftauchen.
-              In Tabelle 2 stehen erneut die unterschiedlichen Return-Codes und das Verhalten, das das Programm haben sollte.
-              Um das Problem möglichst genau zu lösen, sehen Sie sich bitte die Vorlesung zum Lösen des
-              SAT-Problems im nächsten Sommersemester an. Beachten Sie, dass auch fleißig implementiert wird.
-              Eigentlich würden wir hier auch einen verifizierten Checker haben wollen. 
-              Es ist jedoch noch offen, ob es eine Isabelle-Vorlesung im nächsten Sommersemester gibt.
-          
-              `Tabelle 1: Return Codes`:
-              ```
-              Return code |  Sinn
-              -----------------------------------------------------------------------------
-                  0      |  Keine Fehler, korrekt gecheckt. Es sollte auch `s` `VERIFIED` auf `stdout` stehen (in C++, `std::cout <<`).
-                  10     |  Nicht-mögliche `.options`.
-                  20     |  Nicht-mögliche `.constraints`.
-                  30     |  Fehler in `.models`. In diesem Fall sollte auf `stderr` (in C++, `std::cerr <<` genau stehen welches `Models` nicht valide ist und warum). Es sollte auch s `UNVERIFIED` auf `stdout`..
-                  40     |  Anderer Fehler (gibt `s` `UNKNOWN` aus: das sollte Ihr Checker nicht machen).
-              ```
-          
-              4.3    Fuzzer:
-          
-              Ein Fuzzer ist ein Programm, das zufällige Optionen, Werte und Constraints generiert, um valide
-              Dateien zu erzeugen:
-          
-                  1. Alle Optionen und Werte aus den Constraints sind auch in der `.options` Datei enthalten.
-          
-              Blatt 11:
-          
-              Aufgabe 1:
-          
-              Als ersten Schritt zur Realisierung schreiben Sie bitte folgenden Code:
-          
-                  1. Schreiben Sie alle benötigten .hpp Dateien mit allen Klassen, Methoden und Membervariablen, die Ihrer Meinung nach für Ihr Programm am Ende benötigt werden. Schreiben Sie zu jeder Klasse, Methode oder Membervariablen einen (kurzen aber aussagekräftigen) erklärenden Kommentar.
+                (1) Einführung in das Problem:
+                Wir interessieren uns für die Paarbildungsmethode. 
+                Bei dieser Methode geht es darum, ein Programm mit vielen Optionen zu testen, wobei möglichst wenige Konfigurationen verwendet werden.
+                Leider gibt es meistens zu viele Optionen, um alle testen zu können: 
+                Der SAT-Solver Lingeling von Armin Biere hat mehr Optionen als Atome im Universum (weil es Parameter gibt, die Integer oder sogar Gleitkommazahlen als Wert annehmen können).
+                Da es einfach zu viele Konfigurationen gibt, interessieren wir uns nur dafür, dass zwei Optionen (die kombiniert werden können) auch einmal gemeinsam getestet werden können - unabhängig von den anderen Optionen. 
+                Solch eine Kombination von zwei Optionen mit jeweils einem Wert ist ein Paar. 
+                Eine Kombination von 10 Optionen ermöglicht es also, `9 + 8 + 7 + ... + 1` = `55` Paare zu testen. 
+                Es reicht jedoch nicht aus, einfach alle Optionen aufzulisten, da es auch Optionen gibt, die nicht miteinander kompatibel sind.
+                Damit das alles klarer wird werden wir uns jetzt ein Beispiel ansehen (Wikipedia Beispiel mit anderen Namen). 
+                Es gibt 3 Auswahlmöglichkeiten:
+            
+                    Prozessor Intel oder AMD
+            
+                    RAM Geschwindigkeit 5000MT/s, 6000MT/s, und 7000MT/s
+            
+                    Bildschirm 1K, 2K, 4K, 8K
+            
+                Es gibt `2 * 3 + 2 * 4 + 3 * 4` Paare (jeden Prozessor mit jeder Geschwindigkeit, jeden Prozessor mit jedem Bildschirm, und jede Geschwindigkeit mit jedem Bildschirm).
+                Mit der Paarbildungsmethode reicht es sich für folgende 12 Modelle zu interessieren, anstatt alle
+                26 Modelle:
+            
+                ```
+                Prozessor   RAM     Bildschirm
+                    Intel       7          1K
+                    Intel       5          8K
+                    AMD         5          4K
+                    AMD         6          8K
+                    Intel       6          4K
+                    AMD         6          1K
+                    AMD         5          1K
+                    AMD         7          2K
+                    Intel       6          2K
+                    Intel       7          8K
+                    AMD         7          4K
+                    Intel       5          2K
+                ```
+                Eigentlich ist es noch etwas komplizierter, weil es Optionen gibt, die nicht kompatibel sind. Zum
+                Beispiel unterstützt AMD nur 5000MT/s und stürzt bei höheren Geschwindigkeiten ab. Es ist
+                auch nicht möglich, gleichzeitig Intel mit dem langsamen Speicher und dem 8K-Bildschirm zu
+                wählen.
+            
+            
+                (2) Die Darstellung:
+                Um unser Problem darzustellen, nutzen wir einfach CSV-Dateien. Eine CSV-Datei (comma separated value) bedeutet einfach, das der Text mit Komma separiert wird.
+                Für die Optionen (der Dateiname sollte mit ``.options`` enden) schreiben wir einfach jede Option
+                mit allen möglichen Werten auf:
+                ```
+                Prozessor,Intel,AMD
+                RAM,5,6,7
+                Bildschirm,1,2,4,8
+                ```
+            
+                Wir erlauben ASCII, aber kein UTF-16. 
+                Das muss jedoch nicht nachgeprüft werden. 
+                Sie können einfach char nutzen. Wir erlauben auch Leerzeichen in den Namen.
+                Dann können wir die Optionen aufschreiben, die nicht gleichzeitig wahr sein sollen (Der Dateiname sollte mit ``.constraints`` enden).
+            
+                ```
+                Prozessor,AMD,RAM,6
+                Prozessor,AMD,RAM,7
+                Prozessor,Intel,RAM,5,Bildschirm,8
+                ```
+            
+                Jeder Zeile bedeuted also, dass mindestens eine Option anders gesetzt werden muss.
+                Lösungen (Modelle) schreiben wir wieder als CSV. 
+                Dabei müssen natürlich alle Optionen gesetzt werden und die Werte müssen mit den Constraints kompatibel sein. 
+                Eine mögliche Datei könnte beispielsweise wie folgt aussehen (der Dateiname sollte mit `.models` enden):
+            
+                ```
+                Prozessor,Intel,RAM,5,Bildschirm,2
+                Prozessor,Intel,RAM,6,Bildschirm,2
+                RAM,7,Prozessor,Intel,Bildschirm,1
+                Prozessor,Intel,RAM,7,Bildschirm,4
+                Prozessor,AMD,RAM,5,Bildschirm,4
+                RAM,5,Prozessor,AMD,Bildschirm,8
+                RAM,5,Prozessor,AMD,Bildschirm,1
+                Prozessor,Intel,RAM,6,Bildschirm,4
+                Bildschirm,2,Prozessor,AMD,RAM,5
+                Prozessor,Intel,RAM,6,Bildschirm,8
+                ```
+            
+                Das Ziel dieses Projekts ist es, eine Approximation aller Modelle zu produzieren (alle Modelle sollen korrekt sein, aber es könnten einige fehlen). 
+                Da es sich um einen probabilistischen Ansatz handelt, könnten hier Lösungen fehlen (direkt aus dem Solver in meiner Lösung).
+            
+                ```
+                c   there are 3 uncovered pairs
+                c   RAM->6 && Prozessor->AMD
+                c   Bildschirm->4 && RAM->6
+                c   Bildschirm->8 && RAM->6
+                ```
+                Die Paare 2 und 3 könnten mit dem Intel Prozessor bedeckt werden, aber das wurde nicht generiert.
+            
+            
+                (3) Ziele:
+                Sie müssen folgendes implementieren im C++:
+            
+                ->Parser und pretty-printer (Blatt 11) die Datein ``.options`` und ``.constraints`` einlesen und wieder ausgeben.
+            
+                ->Solver (Pflicht, Blatt 12) Die Datei .models soll mit möglichen Modellen gefüllt werden. 
+                Die einfachste korrekte Implementierung produziert keine Modelle, aber das gibt auch keine Punkte.
+            
+                ->Checker (Variante A, Blatt 12) Er liest die Dateien ``.options``, ``.constraints`` und `.models` ein und prüfe, ob alle gefundenen Modelle auch die Constraints erfüllen.
+            
+                ->Fuzzer (Variante B, Blatt 12) Random Dateien ``.options`` und ``.constraints`` generieren. Das Ziel ist es diese Probleme zu lösen und nach Bugs zu suchen.
+            
+                Die Varianten bauen sehr stark auf das Lösen auf. Sie können also in beliebiger Reihenfolge implementiert werden.
+            
+                Sie müssen sowohl Variante A als auch B machen.
+            
+                Um beim Testen zu helfen, gibt es zwei binäre Dateien zur Verfügung:
+            
+                    • einen Fuzzer namens `crippled-fuzzer`, der jedoch nur 16 unterschiedliche Programme generieren kann. 
+                        Er generiert auch nur Optionen, die einen Buchstaben lang sind, und die Werte sind entweder 0 oder 1.
+            
+                    • einen Checker namens `russian-roulette-checker`, der zwar überprüft, aber oft mit s UNKNOWN antwortet.
+            
+            
+                (4):
+            
+                (4.1)    Lösen von Problem:
+            
+                Um das Problem zu lösen, müssen Sie (möglichst alle) Modelle generieren. 
+                Um dies zu tun, werden wir zufällig generierte Konfigurationen nutzen.
+                Dafür müssen Sie zuerst alle möglichen Paare generieren.
+                Wenn Sie dann eine Konfiguration produzieren wollen, fangen Sie mit der leeren Konfiguration an und erweitern sie. 
+                Dafür füllen Sie die Konfiguration mit einer Option. 
+                Da es notwendig sein kann, auch einen Wert zu nehmen, der bereits gesehen worden ist, setzen Sie mit geringer Wahrscheinlichkeit eine Option unabhängig von den noch verbleibenden Paaren. 
+                Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar, das noch nicht abgedeckt ist.
+                Wenn Sie dann eine vollständige Konfiguration generiert haben, müssen Sie testen, ob sie mit den Constraints kompatibel ist. Wenn dies der Fall ist, haben Sie ein neues Modell gefunden und können alle Paare als abgedeckt markieren.
+                Nach 1000 Konfigurationen, die die Constraints nicht erfüllen, sind wir dann fertig (auch wenn
+                es vielleicht noch mehr Möglichkeiten gibt).
+            
+                `Tabelle 1: Return Codes`: 
+                ```
+                Return code | Sinn
+                ______________________________
+                    0       | Keine Fehler
+                    10       | Datei konnte nicht geöffnet werden
+                    20       | Keine valide Eingabedatei (z.B., nicht deklarierte Option)
+                    30       | Anderer Fehler
+                ```
+            
+            
+                In Tabelle 1 finden Sie die genauen Rückgabewerte, die aus dem Hauptprogramm kommen sollen, je nachdem, was passiert ist.
+            
+            
+                (4.2)    Checker:
+            
+                Ein Checker ist ein Program, der die 3 Datein (Optionen, Constraints, und Modelle) nimmt und immer schaut ob:
+            
+                    1. in jedem Model alle Optionen genau einmal angegeben werden
+            
+                    2. jedes Model auch alle Constraints erfüllt
+            
+                    3. In den Modellen und in den Constraint gibt es nur Optionen und Werte aus der `.options` Datei.
+            
+                    4. invalide Input Dateien (fehlende Werte zum Beispiel)
+            
+                Nicht zulässig sind also Konfiguration und Constraints:
+                    wo Optionen erfunden wurden (Punkt 3 oben),
+                    wo Werte erfunden wurden (Punkt 3 oben), 
+                    wo nicht alle Option gesetzt sind (Punkt 1 oben), 
+                    oder Modelle die nicht die Constraints erfüllen (Punkt 2 oben).
+            
+                Nicht relevant für den Checker ist die Reihenfolge der Optionen oder Modelle die doppelt auftauchen.
+                In Tabelle 2 stehen erneut die unterschiedlichen Return-Codes und das Verhalten, das das Programm haben sollte.
+                Um das Problem möglichst genau zu lösen, sehen Sie sich bitte die Vorlesung zum Lösen des
+                SAT-Problems im nächsten Sommersemester an. Beachten Sie, dass auch fleißig implementiert wird.
+                Eigentlich würden wir hier auch einen verifizierten Checker haben wollen. 
+                Es ist jedoch noch offen, ob es eine Isabelle-Vorlesung im nächsten Sommersemester gibt.
+            
+                `Tabelle 1: Return Codes`:
+                ```
+                Return code |  Sinn
+                -----------------------------------------------------------------------------
+                    0      |  Keine Fehler, korrekt gecheckt. Es sollte auch `s` `VERIFIED` auf `stdout` stehen (in C++, `std::cout <<`).
+                    10     |  Nicht-mögliche `.options`.
+                    20     |  Nicht-mögliche `.constraints`.
+                    30     |  Fehler in `.models`. In diesem Fall sollte auf `stderr` (in C++, `std::cerr <<` genau stehen welches `Models` nicht valide ist und warum). Es sollte auch s `UNVERIFIED` auf `stdout`..
+                    40     |  Anderer Fehler (gibt `s` `UNKNOWN` aus: das sollte Ihr Checker nicht machen).
+                ```
+            
+                4.3    Fuzzer:
+            
+                Ein Fuzzer ist ein Programm, das zufällige Optionen, Werte und Constraints generiert, um valide
+                Dateien zu erzeugen:
+            
+                    1. Alle Optionen und Werte aus den Constraints sind auch in der `.options` Datei enthalten.
+            
+                Blatt 11:
+            
+                Aufgabe 1:
+            
+                Als ersten Schritt zur Realisierung schreiben Sie bitte folgenden Code:
+            
+                    1. Schreiben Sie alle benötigten .hpp Dateien mit allen Klassen, Methoden und Membervariablen, die Ihrer Meinung nach für Ihr Programm am Ende benötigt werden. Schreiben Sie zu jeder Klasse, Methode oder Membervariablen einen (kurzen aber aussagekräftigen) erklärenden Kommentar.
 
-                  2. Schreiben Sie den Parser für die `.options` und `.constraints`. Der Parser soll die Datenstrukturen füllen. Für den Parser dürfen Sie nur `get(char)` (aus `std::istream`) (oder die C Version `getc`). Sie dürfen also nicht direkt strings einlesen.
+                    2. Schreiben Sie den Parser für die `.options` und `.constraints`. Der Parser soll die Datenstrukturen füllen. Für den Parser dürfen Sie nur `get(char)` (aus `std::istream`) (oder die C Version `getc`). Sie dürfen also nicht direkt strings einlesen.
 
-                  3. Schreiben Sie eine Funktion, die die Optionen und die Constraints wieder ausgibt.  Das ist ein Pretty-printer. Sie soll also eine zweite `.options` Datei und eine zweite `.constraints` ausgeben, die identisch zur Originaldatei (bis auf der Reihenfolge) ist. Ein Aufruf sollte in etwa so aussehen: `mein-super-program` `a.options` `a.constraints` `a_copy.options` a_copy.constraints`.  Zum Beispiel kann `a.options` den Inhalt von Sektion 2 enthalten und `a_copy.options` die Variante:
-                      ```
-                      Bildschirm,8,2,1,4
-                      RAM,6,5,7
-                      Prozessor,Intel,AMD
-                      ```
-                      Die Reihenfolge kann natürlich auch die selbe bleiben. 
-                      Geben Sie einfach die Optionen und Werte so aus wie es am einfachsten im Code ist (aber: die Option muss natürlich am Anfang stehen).
-          
-          </pre>
+                    3. Schreiben Sie eine Funktion, die die Optionen und die Constraints wieder ausgibt.  Das ist ein Pretty-printer. Sie soll also eine zweite `.options` Datei und eine zweite `.constraints` ausgeben, die identisch zur Originaldatei (bis auf der Reihenfolge) ist. Ein Aufruf sollte in etwa so aussehen: `mein-super-program` `a.options` `a.constraints` `a_copy.options` a_copy.constraints`.  Zum Beispiel kann `a.options` den Inhalt von Sektion 2 enthalten und `a_copy.options` die Variante:
+                        ```
+                        Bildschirm,8,2,1,4
+                        RAM,6,5,7
+                        Prozessor,Intel,AMD
+                        ```
+                        Die Reihenfolge kann natürlich auch die selbe bleiben. 
+                        Geben Sie einfach die Optionen und Werte so aus wie es am einfachsten im Code ist (aber: die Option muss natürlich am Anfang stehen).
+            
+            </pre>
       <h1>Projekt:</h1>
 
       Aufgabe 2:
@@ -272,199 +272,212 @@
 
 
       In the following, some examples:
-      Hier ist a.constraints:
-
-      <pre>
-                      <code>
-                      Prozessor,AMD,RAM,6
-                      Prozessor,AMD,RAM,7
-                      Prozessor,Intel,RAM,5,Bildschirm,8
-                  </code>
-                  </pre>
-      Hier ist a.models:
-      <pre>
-                      <code>
-                  Prozessor,Intel,RAM,7,Bildschirm,2
-                  RAM,6,Prozessor,Intel,Bildschirm,1
-                  Prozessor,Intel,RAM,5,Bildschirm,2
-                  Prozessor,AMD,RAM,5,Bildschirm,1
-                  Prozessor,AMD,RAM,5,Bildschirm,8
-                  Prozessor,Intel,RAM,5,Bildschirm,4
-                  RAM,6,Prozessor,Intel,Bildschirm,8
-                  </code>
-                  </pre>
-      Hier ist a.options:
-      <pre>
-                      <code>
-                  Prozessor,Intel,AMD
-                  RAM,5,6,7
-                  Bildschirm,1,2,4,8
-                  </code
-                  ></pre>
-      Hier ist a2.options:
-      <pre>
-                      <code>
-                  Prozessor,Intel,AMD
-                  RAM,5,6,7
-                  Bildschirm,8,1,2,4</code>
-                  </pre>
-
+      <div>
+        Hier ist Laptop.constraints:
+        <pre><code>
+        Marke,Dell,RAM,4GB
+        Marke,Dell,Bildschirmgröße,15 Zoll
+        Marke,Dell,Speicherplatz,128GB SSD
+        Marke,Dell,Speicherplatz,256GB SSD
+        Marke,Dell,Speicherplatz,512GB SSD
+        Marke,Dell,RAM,16GB,Bildschirmgröße,13 Zoll
+        Marke,Dell,RAM,16GB,Speicherplatz,128GB SSD
+        Marke,Dell,RAM,16GB,Speicherplatz,256GB SSD
+        Marke,Dell,RAM,16GB,Speicherplatz,512GB SSD
+        Marke,Dell,RAM,i7,Bildschirmgröße 13 Zoll
+        Marke,Dell,RAM,i7,Speicherplatz 128 GB SSD
+        Marke,Dell,RAM,i7,Speicherplatz 256 GB SSD
+        Marke,Dell,RAM,i7,Speicherplatz 512 GB SSD
+        Marke,Dell,RAM,i3,Bildschirmgröße 15 Zoll
+        Marke,Dell,RAM,i3,Speicherplatz 128 GB SSD
+        Marke,Dell,RAM,i3,Speicherplatz 256 GB SSD
+        Marke,Dell,RAM,i3,Speicherplatz 512 GB SSD</code></pre>
+        Hier ist Smartphone.constraints:
+        <pre><code>
+        Hersteller,Huawei,Betriebssystem,iOS
+        Hersteller,Xiaomi,Betriebssystem,iOS
+        Speicherkapazität ,64GB ,Kameraauflösung ,20MP 
+        Speicherkapazität ,64GB ,Akku ,5000mAh 
+        Speicherkapazität ,256GB ,Kameraauflösung ,12MP 
+        Speicherkapazität ,256GB ,Akku ,3000mAh </code></pre>
+        Hier ist Kaffeemaschine.options:
+        <pre><code>
+        Modell,A,B,C
+        Wassertank,0.5L,1L,1.5L
+        Milchaufschäumer,ja,nein
+        Farbe,schwarz,silber,rot</code></pre>
+        Hier ist Laptop.options:
+        <pre><code>
+        Marke,Dell,HP,Lenovo
+        Prozessor,i3,i5,i7
+        RAM,4GB,8GB,16GB
+        Speicherplatz,128GB SSD,256GB SSD,512GB SSD
+        Bildschirmgröße,13 Zoll,15 Zoll</code></pre>
+        Hier ist Smartphone.options:
+        <pre><code>
+        Hersteller,Samsung,Huawei,Xiaomi
+        Betriebssystem,Android,iOS
+        Speicherkapazität ,64GB ,128GB ,256GB 
+        Kameraauflösung ,12MP ,16MP ,20MP 
+        Akku ,3000mAh ,4000mAh ,5000mAh </code></pre>
+      </div>
     </div>
+
     <h1>Implementierte Code für Aufgabe 1, Aufgabe 2, Aufgabe3A und Aufgabe3B</h1>
 
 
     </code></pre>
     Hier ist Makefile01:
     <pre>
-                          <code>
-                              CXX = g++
-                              CXXFLAGS=  --std=c++14 #-Wextra -Wall -pedantic
-                              EXCLUDED = poly2.cpp
-                              HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
-                              OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
-                              TESTLIBS = -lgtest -lgtest_main -lpthread
-                              TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
-                              
-                              all: clean compile
-                              
-                              %.o: %.cpp $(HEADERS)
-                                  $(CXX) $(CXXFLAGS) -c $<
-                              
-                              %Main: %Main.cpp $(OBJECTS)
-                                  $(CXX) $(CXXFLAGS) -o $@ $^
-                              
-                              compile: bddMain nqueensMain
-                              
-                              %Test: %Test.o $(OBJECTS)
-                                  $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
-                              
-                              test: $(TEST_BINARIES)
-                                  echo "$(TESTS)"
-                                  for test in `ls *Test` ; \
-                                  do \
-                                  ./$$test || (echo "failed test $$test" && exit 255) \
-                                  done
-                              
-                              clean:
-                                  rm -f *Main *Test *.o
-                              
-                              format:
-                                  clang-format -i *.cpp *.hpp         
-                          </code>
-                      </pre>
+                              <code>
+                                  CXX = g++
+                                  CXXFLAGS=  --std=c++14 #-Wextra -Wall -pedantic
+                                  EXCLUDED = poly2.cpp
+                                  HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
+                                  OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
+                                  TESTLIBS = -lgtest -lgtest_main -lpthread
+                                  TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
+                                  
+                                  all: clean compile
+                                  
+                                  %.o: %.cpp $(HEADERS)
+                                      $(CXX) $(CXXFLAGS) -c $<
+                                  
+                                  %Main: %Main.cpp $(OBJECTS)
+                                      $(CXX) $(CXXFLAGS) -o $@ $^
+                                  
+                                  compile: bddMain nqueensMain
+                                  
+                                  %Test: %Test.o $(OBJECTS)
+                                      $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
+                                  
+                                  test: $(TEST_BINARIES)
+                                      echo "$(TESTS)"
+                                      for test in `ls *Test` ; \
+                                      do \
+                                      ./$$test || (echo "failed test $$test" && exit 255) \
+                                      done
+                                  
+                                  clean:
+                                      rm -f *Main *Test *.o
+                                  
+                                  format:
+                                      clang-format -i *.cpp *.hpp         
+                              </code>
+                          </pre>
     Hier ist Makefile02:
     <pre>
-                          <code
-                          >
-                              CXX = g++
-                              CXXFLAGS = -std=c++20 -O2 
-                              HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
-                              OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
-                              TESTLIBS = -lgtest -lgtest_main -lpthread
-                              TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
-                              
-                              all: compile
-                              
-                              %.o: %.cpp $(HEADERS)
-                              $(CXX) $(CXXFLAGS) -c $<
-                              
-                              %Main: %Main.cpp $(OBJECTS)
-                              $(CXX) $(CXXFLAGS) -o $@ $^
-                              
-                              compile: prettyPrinterMain
-                              
-                              %Test: %Test.o $(OBJECTS)
-                              $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
-                              
-                              test: $(TEST_BINARIES)
-                              echo "$(TESTS)"
-                              for test in ls *Test ; \
-                                  do \
-                                  ./$$test || (echo "failed test $$test" && exit 255) \
-                                  done
-                              
-                              clean:
-                              rm -f *Main *Test *.o
-                              
-                              format:
-                              clang-format -i *.cpp *.hpp
-                          </code>
-                      </pre>
+                              <code
+                              >
+                                  CXX = g++
+                                  CXXFLAGS = -std=c++20 -O2 
+                                  HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
+                                  OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
+                                  TESTLIBS = -lgtest -lgtest_main -lpthread
+                                  TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
+                                  
+                                  all: compile
+                                  
+                                  %.o: %.cpp $(HEADERS)
+                                  $(CXX) $(CXXFLAGS) -c $<
+                                  
+                                  %Main: %Main.cpp $(OBJECTS)
+                                  $(CXX) $(CXXFLAGS) -o $@ $^
+                                  
+                                  compile: prettyPrinterMain
+                                  
+                                  %Test: %Test.o $(OBJECTS)
+                                  $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
+                                  
+                                  test: $(TEST_BINARIES)
+                                  echo "$(TESTS)"
+                                  for test in ls *Test ; \
+                                      do \
+                                      ./$$test || (echo "failed test $$test" && exit 255) \
+                                      done
+                                  
+                                  clean:
+                                  rm -f *Main *Test *.o
+                                  
+                                  format:
+                                  clang-format -i *.cpp *.hpp
+                              </code>
+                          </pre>
     Hier ist fuzz.sh:
     <pre>
-                                  <code
-                                  >
-                                      #!/bin/bash
-                                  FUZZER=./crippled-fuzzer
-                                  SOLVER=./solverMain
-                                  CHECKER=./russian-roulette-checker
-                  
-                                  if [ -x $FUZZER ];
-                                  then
-                                      echo "found fuzzer"
-                                  else
-                                      echo "the fuzzer was not found"
-                                      exit 1
-                                  fi
-                                  if [ -x $SOLVER ];
-                                  then
-                                      echo "found solver"
-                                  else
-                                      echo "the solver was not found"
-                                      exit 1
-                                  fi
-                                  if [ -x $CHECKER ];
-                                  then
-                                      echo "found checker"
-                                  else
-                                      echo "the checker was not found"
-                                      exit 1
-                                  fi
-                                  echo "starting the tests"
-                                  i=0
-                                  while [ true ];
-                                  do
-                                      echo "*******************************************"
-                                      echo "************* TEST $i    ******************"
-                                      i=$((i+1))
-                                      $FUZZER fuzzer-test.{options,constraints}
-                                      status=$?
-                                      if [ "$status" -ne 0 ];
+                                      <code
+                                      >
+                                          #!/bin/bash
+                                      FUZZER=./crippled-fuzzer
+                                      SOLVER=./solverMain
+                                      CHECKER=./russian-roulette-checker
+                      
+                                      if [ -x $FUZZER ];
                                       then
-                                  echo "the fuzzer failed on"
-                                  exit -1;
-                                      fi;
-                                      $SOLVER fuzzer-test.{options,constraints,models}
-                                      status=$?
-                                      if [ "$status" -ne 0 ];
+                                          echo "found fuzzer"
+                                      else
+                                          echo "the fuzzer was not found"
+                                          exit 1
+                                      fi
+                                      if [ -x $SOLVER ];
                                       then
-                                  echo "the solver failed on fuzzer-test.{options,constraints,models}"
-                                  exit -1;
-                                      fi;
-                                      $CHECKER fuzzer-test.{options,constraints,models}
-                                      status=$?
-                                      if [ "$status" -ne 40 -a "$status" -ne 0 ];
+                                          echo "found solver"
+                                      else
+                                          echo "the solver was not found"
+                                          exit 1
+                                      fi
+                                      if [ -x $CHECKER ];
                                       then
-                                  echo "the checker failed on fuzzer-test.{options,constraints,models}"
-                                  exit -1;
-                                      fi;
-                                  done
-                                      
-                                  </code>
-                              </pre>
+                                          echo "found checker"
+                                      else
+                                          echo "the checker was not found"
+                                          exit 1
+                                      fi
+                                      echo "starting the tests"
+                                      i=0
+                                      while [ true ];
+                                      do
+                                          echo "*******************************************"
+                                          echo "************* TEST $i    ******************"
+                                          i=$((i+1))
+                                          $FUZZER fuzzer-test.{options,constraints}
+                                          status=$?
+                                          if [ "$status" -ne 0 ];
+                                          then
+                                      echo "the fuzzer failed on"
+                                      exit -1;
+                                          fi;
+                                          $SOLVER fuzzer-test.{options,constraints,models}
+                                          status=$?
+                                          if [ "$status" -ne 0 ];
+                                          then
+                                      echo "the solver failed on fuzzer-test.{options,constraints,models}"
+                                      exit -1;
+                                          fi;
+                                          $CHECKER fuzzer-test.{options,constraints,models}
+                                          status=$?
+                                          if [ "$status" -ne 40 -a "$status" -ne 0 ];
+                                          then
+                                      echo "the checker failed on fuzzer-test.{options,constraints,models}"
+                                      exit -1;
+                                          fi;
+                                      done
+                                          
+                                      </code>
+                                  </pre>
     Hier ist Readme.md für `fuzz.sh`:
     <pre>
-                                  <code>
-                                  Dieses Verzeichnis enthält den Fuzzer und das Skript der alles aufruft. Im Moment stehen nur Linux binary Datei zu verfügen.
-                                  Um alles aufzurufen, müsst ihr:
-                                      1. Die Pfade anpassen in `fuzz.sh`
-                                      2. Das Skript ausführen mit `./fuzz.sh`
-                                  Dieses Skript läuft unendlich lange bis ein Fehler gefunden wird und
-                                  es überschreibt immer die Datein
-                                  `fuzzer-test.{options,constraints,models}`.
-                                      
-                                  </code>
-                              </pre>
+                                      <code>
+                                      Dieses Verzeichnis enthält den Fuzzer und das Skript der alles aufruft. Im Moment stehen nur Linux binary Datei zu verfügen.
+                                      Um alles aufzurufen, müsst ihr:
+                                          1. Die Pfade anpassen in `fuzz.sh`
+                                          2. Das Skript ausführen mit `./fuzz.sh`
+                                      Dieses Skript läuft unendlich lange bis ein Fehler gefunden wird und
+                                      es überschreibt immer die Datein
+                                      `fuzzer-test.{options,constraints,models}`.
+                                          
+                                      </code>
+                                  </pre>
     </pre>
 
     <h1>Hilfe-und-Diskussion-für-Aufgaben</h1>
@@ -553,24 +566,24 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      H,r,y
-                                      n,C,c
-                                      7,J
-                                      f,3,a
-                      </code>
-                      </pre>
+                                      <code>
+                                          H,r,y
+                                          n,C,c
+                                          7,J
+                                          f,3,a
+                          </code>
+                          </pre>
           </div> constraints:
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                  f,a
-                                  f,a,n,C,7,J,H,y,n,c
-                                  f,3,f,3
-                                  H,y,7,J,H,r,f,3,f,a
-                                  </code>
-                              </pre>
+                                      <code>
+                                      f,a
+                                      f,a,n,C,7,J,H,y,n,c
+                                      f,3,f,3
+                                      H,y,7,J,H,r,f,3,f,a
+                                      </code>
+                                  </pre>
           </div>
           Wie soll damit umgegangen werden? In meinem Program hab ich es so umgesetzt dass für ein Constraint
           für jede
@@ -1024,21 +1037,21 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>   
-                                      parsing von .options
-                                      Wenn parsing nicht geklappt hat, return 10
-                                      
-                                      
-                                      parsing + checking von .constraints
-                                      Wenn parsing + checking nicht geklappt hat, return 20
-                                      
-              
-                                      parsing + checking von .modelle
-                                      Wenn parsing + checking nicht geklappt hat, return 30
-                                      
-                                      return 0;
-                                  </code>
-                      </pre>
+                                      <code>   
+                                          parsing von .options
+                                          Wenn parsing nicht geklappt hat, return 10
+                                          
+                                          
+                                          parsing + checking von .constraints
+                                          Wenn parsing + checking nicht geklappt hat, return 20
+                                          
+                  
+                                          parsing + checking von .modelle
+                                          Wenn parsing + checking nicht geklappt hat, return 30
+                                          
+                                          return 0;
+                                      </code>
+                          </pre>
           </div>
         </div>
       </div>
@@ -1070,8 +1083,8 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre><code>Prozessor, Intel, Prozessor, AMD, Bildschirm, 2
-              Prozessor, Intel, Bildschirm, 2
-              </code></pre>
+                  Prozessor, Intel, Bildschirm, 2
+                  </code></pre>
           </div>
 
           Es dürfen natürlich keine erfundenen <span class="posthilit">Option</span> geben, keine neuen Werte,
@@ -1097,8 +1110,8 @@
               <div class="codebox">
                 <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                 <pre><code>Prozessor, Intel, Prozessor, AMD, Bildschirm, 2
-              Prozessor, Intel, Bildschirm, 2
-              </code></pre>
+                  Prozessor, Intel, Bildschirm, 2
+                  </code></pre>
               </div>
 
               Es dürfen natürlich keine neuen <span class="posthilit">Option</span> geben, keine neuen
@@ -1348,21 +1361,21 @@
               <div class="codebox">
                 <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                 <pre>
-                                          <code>   
-                                          parsing von .options
-                                          Wenn parsing nicht geklappt hat, return 10
-                                          
-                                          
-                                          parsing + checking von .constraints
-                                          Wenn parsing + checking nicht geklappt hat, return 20
-                                          
-              
-                                          parsing + checking von .modelle
-                                          Wenn parsing + checking nicht geklappt hat, return 30
-                                          
-                                          return 0;
-                                          </code>
-                                      </pre>
+                                              <code>   
+                                              parsing von .options
+                                              Wenn parsing nicht geklappt hat, return 10
+                                              
+                                              
+                                              parsing + checking von .constraints
+                                              Wenn parsing + checking nicht geklappt hat, return 20
+                                              
+                  
+                                              parsing + checking von .modelle
+                                              Wenn parsing + checking nicht geklappt hat, return 30
+                                              
+                                              return 0;
+                                              </code>
+                                          </pre>
               </div>
             </div>
           </blockquote>
@@ -1447,21 +1460,21 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      parsing von .options
-                                      Wenn parsing nicht geklappt hat, return 10
-                                      
-                                      
-                                      parsing + checking von .constraints
-                                      Wenn parsing + checking nicht geklappt hat, return 20
-                                      
-              
-                                      parsing + checking von .modelle
-                                      Wenn parsing + checking nicht geklappt hat, return 30
-                                      
-                                      return 0;
-                                  </code>
-                              </pre>
+                                      <code>
+                                          parsing von .options
+                                          Wenn parsing nicht geklappt hat, return 10
+                                          
+                                          
+                                          parsing + checking von .constraints
+                                          Wenn parsing + checking nicht geklappt hat, return 20
+                                          
+                  
+                                          parsing + checking von .modelle
+                                          Wenn parsing + checking nicht geklappt hat, return 30
+                                          
+                                          return 0;
+                                      </code>
+                                  </pre>
           </div>
           - Tabelle 1 bezieht sich auf SolverMain (?):<br>
           (a) Falls Dateien nicht geöffnet werden konnten, dann Return 10<br>
@@ -1572,15 +1585,15 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre><code>$ cat a.options # oops kein Wert
-              this is a normal option, value 1, value 2
-              another option, value 1
-              this is an option without value that you cannot parse
-              
-              $ cat b.options # oops eine option ist mehrmal angegeben
-              option1, value 1, value 2
-              option1, value 1
-              option1, hello it's me again
-              </code></pre>
+                  this is a normal option, value 1, value 2
+                  another option, value 1
+                  this is an option without value that you cannot parse
+                  
+                  $ cat b.options # oops eine option ist mehrmal angegeben
+                  option1, value 1, value 2
+                  option1, value 1
+                  option1, hello it's me again
+                  </code></pre>
           </div>
         </div>
       </div>
@@ -1651,38 +1664,38 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      # constraints.cpp
-                                      int parse_csv() {
-                                      // blabla 
-                                      
-                                      // some error occurs
-                                      throw "Error opening file: " + std::string(input_filename);
-                                      return 40;
-                                      }
-                                  </code>
-                      </pre>
+                                      <code>
+                                          # constraints.cpp
+                                          int parse_csv() {
+                                          // blabla 
+                                          
+                                          // some error occurs
+                                          throw "Error opening file: " + std::string(input_filename);
+                                          return 40;
+                                          }
+                                      </code>
+                          </pre>
           </div>
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                              <code>
-                                  # checkerMain.cpp
-                                  int main()
-                                  { // blabla
-                                  
-                                  int response_code;
-                                  try {
-                                      // Funktion wird ausgeführt
-                                      response_code = constraints.parse_csv();
-                                      response_code = // weitere funktionen
-                                  } catch (const char *msg) {
-                                      // Wenn ein Fehler auftritt, bzw. wenn eine Nachricht zurückgegeben (throw) wird, wird diese und der Fehlercode ausgegeben und das Programm abgebrochen	
-                                      std::cerr &lt;&lt; msg &lt;&lt; std::endl;
-                                      return response_code;
-                                  }}
-                              </code>
-                      </pre>
+                                  <code>
+                                      # checkerMain.cpp
+                                      int main()
+                                      { // blabla
+                                      
+                                      int response_code;
+                                      try {
+                                          // Funktion wird ausgeführt
+                                          response_code = constraints.parse_csv();
+                                          response_code = // weitere funktionen
+                                      } catch (const char *msg) {
+                                          // Wenn ein Fehler auftritt, bzw. wenn eine Nachricht zurückgegeben (throw) wird, wird diese und der Fehlercode ausgegeben und das Programm abgebrochen	
+                                          std::cerr &lt;&lt; msg &lt;&lt; std::endl;
+                                          return response_code;
+                                      }}
+                                  </code>
+                          </pre>
           </div>
 
           Wegen diesem "durchreichen" erhalte ich dann immer den Fehlercode der Funktion, in der der Fehler
@@ -2779,11 +2792,11 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      enum class ERROR {NO_ERROR, FILE_NOT_READABLE, PARSING_ERROR};
-                                  ERROR error = NO_ERROR;
-                                  </code>
-                      </pre>
+                                      <code>
+                                          enum class ERROR {NO_ERROR, FILE_NOT_READABLE, PARSING_ERROR};
+                                      ERROR error = NO_ERROR;
+                                      </code>
+                          </pre>
           </div>
 
           und dann in der main Datei übersetzt du den Fehler im Return code:<br>
@@ -2791,17 +2804,17 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      switch(parser.error) {
-                                      case FILE_NOT_READABLE:
-                                      return 30;
-                                      case PARSING_ERROR:
-                                      return 10;
-                                      default:
-                                      // just continue
-                                  }
-                                  </code>
-                              </pre>
+                                      <code>
+                                          switch(parser.error) {
+                                          case FILE_NOT_READABLE:
+                                          return 30;
+                                          case PARSING_ERROR:
+                                          return 10;
+                                          default:
+                                          // just continue
+                                      }
+                                      </code>
+                                  </pre>
           </div>
           Und in der parser Klasse hörst du dann auf wenn ein Fehler passiert. Und schreibst als Doku für die
           Funktion
@@ -3245,21 +3258,21 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      Konfiguration = []
-                                          n = #anzahl optionen zu besetzen
-                                          solange n &gt; 0
-                                          i := random integer von 0 bis n
-                                          wenn i = n (also geringe wahrscheinlichkeit): 
-                                              opt :=  erste nicht besetzte Option mit einem Wert
-                                              Konfiguration.append(opt)
-                                              n = n-1;
-                                          sonst // hohe wahrscheinlichkeit
-                                              opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
-                                              Konfiguration.append(opt)
-                                              update n
-                                  </code>
-                              </pre>
+                                      <code>
+                                          Konfiguration = []
+                                              n = #anzahl optionen zu besetzen
+                                              solange n &gt; 0
+                                              i := random integer von 0 bis n
+                                              wenn i = n (also geringe wahrscheinlichkeit): 
+                                                  opt :=  erste nicht besetzte Option mit einem Wert
+                                                  Konfiguration.append(opt)
+                                                  n = n-1;
+                                              sonst // hohe wahrscheinlichkeit
+                                                  opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
+                                                  Konfiguration.append(opt)
+                                                  update n
+                                      </code>
+                                  </pre>
           </div>
         </div>
       </div>
@@ -3337,15 +3350,15 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      $ echo a.options
-                                      A,1,2
-                                      B,1,2
-                                      C,1,2
-                                      D,1,2
-                                      $ echo a.constraints #leer
-                                  </code>
-                                  </pre>
+                                      <code>
+                                          $ echo a.options
+                                          A,1,2
+                                          B,1,2
+                                          C,1,2
+                                          D,1,2
+                                          $ echo a.constraints #leer
+                                      </code>
+                                      </pre>
           </div>
         </div>
       </div>
@@ -3504,21 +3517,21 @@
               <div class="codebox">
                 <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                 <pre>
-                                          <code>
-                                              Konfiguration = []
-                                              n = #anzahl optionen zu besetzen
-                                              solange n &gt; 0
-                                              i := random integer von 0 bis n
-                                              wenn i = n (also geringe wahrscheinlichkeit): 
-                                                  opt :=  erste nicht besetzte Option mit einem Wert
-                                                  Konfiguration.append(opt)
-                                                  n = n-1;
-                                              sonst // hohe wahrscheinlichkeit
-                                                  opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
-                                                  Konfiguration.append(opt)
-                                                  update n
-                                              </code>
-                                      </pre>
+                                              <code>
+                                                  Konfiguration = []
+                                                  n = #anzahl optionen zu besetzen
+                                                  solange n &gt; 0
+                                                  i := random integer von 0 bis n
+                                                  wenn i = n (also geringe wahrscheinlichkeit): 
+                                                      opt :=  erste nicht besetzte Option mit einem Wert
+                                                      Konfiguration.append(opt)
+                                                      n = n-1;
+                                                  sonst // hohe wahrscheinlichkeit
+                                                      opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
+                                                      Konfiguration.append(opt)
+                                                      update n
+                                                  </code>
+                                          </pre>
               </div>
             </div>
           </blockquote>
@@ -3776,19 +3789,19 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre>
-                                  <code>
-                                      failed = 0
-                                      while (tests &lt; 1000)
-                                      ++test
-                                      ./fuzzerMain a.options a.constraints
-                                      ./solverMain a.options a.constraints a.models
-                                      ./checkerMain a.options a.constraints a.models
-                                      if(any failure)
-                                          ++fail
-                                          
-                                      Grade_student := maximum * ((1000 - fail) / 1000)
-                                  </code>
-                      </pre>
+                                      <code>
+                                          failed = 0
+                                          while (tests &lt; 1000)
+                                          ++test
+                                          ./fuzzerMain a.options a.constraints
+                                          ./solverMain a.options a.constraints a.models
+                                          ./checkerMain a.options a.constraints a.models
+                                          if(any failure)
+                                              ++fail
+                                              
+                                          Grade_student := maximum * ((1000 - fail) / 1000)
+                                      </code>
+                          </pre>
           </div>
 
           (das Skript zum fuzzen gibt es übrigens da: <a
@@ -3914,17 +3927,17 @@
           <div class="codebox">
             <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
             <pre><code>void Constrains::parse(const std::string&amp; filename){
-              
-              
-              CSV csv;
-              // csv benutzt und befüllt
-              }
-              
-              
-              void Constrains::writeToFile(const std::string&amp; filename){
-              // constrains.reprentation benutzt   
-              }
-              </code></pre>
+                  
+                  
+                  CSV csv;
+                  // csv benutzt und befüllt
+                  }
+                  
+                  
+                  void Constrains::writeToFile(const std::string&amp; filename){
+                  // constrains.reprentation benutzt   
+                  }
+                  </code></pre>
           </div>
         </div>
       </div>
