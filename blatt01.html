@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren Wir iN c++
+        Programmieren WIR IN C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -507,11 +507,11 @@
                 Parser(const std::string& optionsFile, const std::string& constraintsFile);
                 
                 // A method that parses the .options file and returns a vector of options
-                std::vector<Option> Parser::parseOptions(std::istream& stream);
+                std::vector<Option> parseOptions(std::istream& stream);
                 
                 // A method that parses the .constraints file and returns a vector of
                 // constraints
-                std::vector<Constraint> Parser::parseConstraints(std::istream& stream);
+                std::vector<Constraint> parseConstraints(std::istream& stream);
                 
                 // A method that returns the map of options
                 std::map<std::string, Option> getOptions() const;
@@ -677,6 +677,7 @@
             <pre><code>
                 #include <fstream>
                 #include <iostream>
+                
                 
                 #include "Parser.hpp"
                 #include "Solver.hpp"
