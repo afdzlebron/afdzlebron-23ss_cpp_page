@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren WIR IN C++
+        Programmiert in C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -511,7 +511,7 @@
                 
                 // A method that parses the .constraints file and returns a vector of
                 // constraints
-                std::vector<Constraint> parseConstraints(std::istream& stream);
+                std::vector<std::vector<std::pair<std::string, std::string>>> parseConstraints();
                 
                 // A method that returns the map of options
                 std::map<std::string, Option> getOptions() const;
