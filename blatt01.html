@@ -325,6 +325,7 @@
 
         <h1>Implementierte Code für Aufgabe 1, Aufgabe 2, Aufgabe3A und Aufgabe3B</h1>
 
+
         <div>
             Hier ist Constraint.hpp:
             <pre><code>
@@ -339,16 +340,16 @@
                 // values
                 class Constraint {
                 public:
-                // A constructor that takes a vector of pairs as a parameter
-                Constraint(const std::vector<std::pair<std::string, std::string> >& pairs);
+                    // A constructor that takes a vector of pairs as a parameter
+                    Constraint(const std::vector<std::pair<std::string, std::string> >& pairs);
                 
-                // A getter method that returns the vector of pairs of the constraint
-                std::vector<std::pair<std::string, std::string> > getPairs() const;
+                    // A getter method that returns the vector of pairs of the constraint
+                    std::vector<std::pair<std::string, std::string> > getPairs() const;
                 
                 private:
-                // A vector of pairs of strings that stores the options and values of the
-                // constraint
-                std::vector<std::pair<std::string, std::string> > pairs;
+                    // A vector of pairs of strings that stores the options and values of the
+                    // constraint
+                    std::vector<std::pair<std::string, std::string> > pairs;
                 };
                 
                 #endif
@@ -366,29 +367,32 @@
                 // A class that generates random options, values and constraints
                 class Fuzzer {
                 public:
-                // A constructor that takes the number of options, the maximum number of
-                // values per option and the maximum number of constraints as parameters
-                Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints);
+                    // A constructor that takes the number of options, the maximum number of
+                    // values per option and the maximum number of constraints as parameters
+                    Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints);
                 
-                Fuzzer(std::map<std::string, std::vector<std::string> > options)
-                    : options(options) {};
-                // A method that writes the options and values to a file with the extension
-                // .options
-                void writeOptions(const std::string& optionsFile);
+                    Fuzzer(std::map<std::string, std::vector<std::string>> options);
                 
-                // A method that writes the constraints to a file with the extension
-                // .constraints
-                void writeConstraints(const std::string& constraintsFile);
+                    std::string fuzz();
+                    // A method that writes the options and values to a file with the extension
+                    // .options
+                    void writeOptions(const std::string& optionsFile);
+                
+                    // A method that writes the constraints to a file with the extension
+                    // .constraints
+                    void writeConstraints(const std::string& constraintsFile);
+                
+                    // std::string Fuzzer::fuzz();
                 
                 private:
-                // A map of options to vectors of values
-                std::map<std::string, std::vector<std::string> > options;
+                    // A map of options to vectors of values
+                    std::map<std::string, std::vector<std::string> > options;
                 
-                // A list of vectors of pairs of options and values
-                std::list<std::vector<std::pair<std::string, std::string> > > constraints;
+                    // A list of vectors of pairs of options and values
+                    std::list<std::vector<std::pair<std::string, std::string> > > constraints;
                 
-                // A helper method that generates a random number between min and max
-                int randomInt(int min, int max);
+                    // A helper method that generates a random number between min and max
+                    int randomInt(int min, int max);
                 };
                 
                 #endif
@@ -405,15 +409,15 @@
                 // A class that represents a model with a map of options and values
                 class Model {
                 public:
-                // A constructor that takes a map as a parameter
-                Model(const std::map<std::string, std::string>& map);
+                    // A constructor that takes a map as a parameter
+                    Model(const std::map<std::string, std::string>& map);
                 
-                // A getter method that returns the map of the model
-                std::map<std::string, std::string> getMap() const;
+                    // A getter method that returns the map of the model
+                    std::map<std::string, std::string> getMap() const;
                 
                 private:
-                // A map of strings that stores the options and values of the model
-                std::map<std::string, std::string> map;
+                    // A map of strings that stores the options and values of the model
+                    std::map<std::string, std::string> map;
                 };
                 
                 #endif</code></pre>
@@ -431,24 +435,24 @@
                 
                 class ModelGenerator {
                 public:
-                // A constructor that takes a vector of options and a vector of constraints as
-                // parameters
-                ModelGenerator(
-                    const std::vector<std::pair<std::string, std::vector<std::string> > >&
-                        options,
-                    const std::vector<std::vector<std::pair<std::string, std::string> > >&
-                        constraints);
+                    // A constructor that takes a vector of options and a vector of constraints as
+                    // parameters
+                    ModelGenerator(
+                        const std::vector<std::pair<std::string, std::vector<std::string> > >&
+                            options,
+                        const std::vector<std::vector<std::pair<std::string, std::string> > >&
+                            constraints);
                 
-                // A method that generates models and returns them as a list of maps of
-                // options to values
-                std::list<std::map<std::string, std::string> > generateModels() const;
+                    // A method that generates models and returns them as a list of maps of
+                    // options to values
+                    std::list<std::map<std::string, std::string> > generateModels() const;
                 
                 private:
-                // A vector of pairs of strings and vectors of strings that stores the options
-                std::vector<std::pair<std::string, std::vector<std::string> > > options;
+                    // A vector of pairs of strings and vectors of strings that stores the options
+                    std::vector<std::pair<std::string, std::vector<std::string> > > options;
                 
-                // A vector of vectors of pairs of strings that stores the constraints
-                std::vector<std::vector<std::pair<std::string, std::string> > > constraints;
+                    // A vector of vectors of pairs of strings that stores the constraints
+                    std::vector<std::vector<std::pair<std::string, std::string> > > constraints;
                 };
                 
                 #endif
@@ -464,21 +468,21 @@
                 // A class that represents an option with a name and a vector of possible values
                 class Option {
                 public:
-                // A constructor that takes a name and a vector of values as parameters
-                Option(const std::string& name, const std::vector<std::string>& values);
+                    // A constructor that takes a name and a vector of values as parameters
+                    Option(const std::string& name, const std::vector<std::string>& values);
                 
-                // A getter method that returns the name of the option
-                std::string getName() const;
+                    // A getter method that returns the name of the option
+                    std::string getName() const;
                 
-                // A getter method that returns the vector of values of the option
-                std::vector<std::string> getValues() const;
+                    // A getter method that returns the vector of values of the option
+                    std::vector<std::string> getValues() const;
                 
                 private:
-                // A string that stores the name of the option
-                std::string name;
+                    // A string that stores the name of the option
+                    std::string name;
                 
-                // A vector of strings that stores the possible values of the option
-                std::vector<std::string> values;
+                    // A vector of strings that stores the possible values of the option
+                    std::vector<std::string> values;
                 };
                 
                 #endif
@@ -500,20 +504,20 @@
                 // structures
                 class Parser {
                 public:
-                // A constructor that takes two file names as parameters
-                Parser(const std::string& optionsFile, const std::string& constraintsFile);
+                    // A constructor that takes two file names as parameters
+                    Parser(const std::string& optionsFile, const std::string& constraintsFile);
                 
-                // A method that parses the .options file and returns a vector of options
-                std::vector<Option> parseOptions();
+                    // A method that parses the .options file and returns a vector of options
+                    std::vector<Option> parseOptions();
                 
-                // A method that parses the .constraints file and returns a vector of
-                // constraints
-                std::vector<Constraint> parseConstraints();
+                    // A method that parses the .constraints file and returns a vector of
+                    // constraints
+                    std::vector<Constraint> parseConstraints();
                 
                 private:
-                // Two strings that store the file names
-                std::string optionsFile;
-                std::string constraintsFile;
+                    // Two strings that store the file names
+                    std::string optionsFile;
+                    std::string constraintsFile;
                 };
                 
                 #endif
@@ -533,20 +537,20 @@
                 // A class that prints the options and constraints in a readable format
                 class PrettyPrinter {
                 public:
-                // A constructor that takes two file names as parameters
-                PrettyPrinter(const std::string& optionsFile,
+                    // A constructor that takes two file names as parameters
+                    PrettyPrinter(const std::string& optionsFile,
                                 const std::string& constraintsFile);
                 
-                // A method that prints the options to the .options file
-                void printOptions(const std::vector<Option>& options);
+                    // A method that prints the options to the .options file
+                    void printOptions(const std::vector<Option>& options);
                 
-                // A method that prints the constraints to the .constraints file
-                void printConstraints(const std::vector<Constraint>& constraints);
+                    // A method that prints the constraints to the .constraints file
+                    void printConstraints(const std::vector<Constraint>& constraints);
                 
                 private:
-                // Two strings that store the file names
-                std::string optionsFile;
-                std::string constraintsFile;
+                    // Two strings that store the file names
+                    std::string optionsFile;
+                    std::string constraintsFile;
                 };
                 
                 #endif
@@ -564,92 +568,75 @@
                 #include <string>
                 #include <vector>
                 
-                // The constructor generates random options, values and constraints
-                Fuzzer::Fuzzer(std::map<std::string, std::vector<std::string> > options)
-                    : options(options) {}
-                
                 std::string Fuzzer::fuzz() {
-                std::string result = "";
-                for (auto pair : options) {
+                    std::string result = "";
+                    for (auto pair : options) {
                     std::string option = pair.first;
                     std::vector<std::string> values = pair.second;
                     std::string value = values[randomInt(0, values.size() - 1)];
                     result += option + "=" + value + " ";
-                }
-                return result;
-                }
-                
-                int Fuzzer::randomInt(int min, int max) {
-                static std::random_device rd;
-                static std::mt19937 gen(rd());
-                std::uniform_int_distribution<> dis(min, max);
-                return dis(gen);
-                }
-                
-                int Fuzzer::randomInt(int min, int max) {
-                static std::random_device rd;
-                static std::mt19937 gen(rd());
-                std::uniform_int_distribution<> dis(min, max);
-                return dis(gen);
-                }
-                
-                // This method writes the options and values to a file with the extension
-                // .options
-                void Fuzzer::writeOptions(const std::string& optionsFile) {
-                // Open the file for writing
-                std::ofstream file(optionsFile);
-                
-                if (!file) {
-                    // If the file cannot be opened, throw an exception
-                    throw std::runtime_error("Could not open file " + optionsFile);
-                }
-                
-                // Write each option and its values to the file separated by commas
-                for (const auto& pair : options) {
-                    file << pair.first << ",";
-                    for (const auto& value : pair.second) {
-                    file << value << ",";
                     }
-                    file << "\n";
-                }
-                
-                // Close the file
-                file.close();
-                }
-                
-                // This method writes the constraints to a file with the extension .constraints
-                void Fuzzer::writeConstraints(const std::string& constraintsFile) {
-                // Open the file for writing
-                std::ofstream file(constraintsFile);
-                
-                if (!file) {
-                    // If the file cannot be opened, throw an exception
-                    throw std::runtime_error("Could not open file " + constraintsFile);
-                }
-                
-                // Write each constraint to the file as a line of pairs of options and values
-                // separated by commas
-                for (const auto& constraint : constraints) {
-                    for (const auto& pair : constraint) {
-                    file << pair.first << "," << pair.second << ",";
-                    }
-                    file << "\n";
-                }
-                
-                // Close the file
-                file.close();
+                    return result;
                 }
                 
                 // This method generates a random number between min and max
                 int Fuzzer::randomInt(int min, int max) {
-                // Create a uniform distribution with the given range
-                std::uniform_int_distribution<> dis(min, max);
+                    // Create a uniform distribution with the given range
+                    std::uniform_int_distribution<> dis(min, max);
                 
-                // Create a random number generator with a fixed seed (e.g. 42)
-                std::mt19937 gen(42);
+                    // Create a random number generator with a fixed seed (e.g. 42)
+                    std::mt19937 gen(42);
                 
-                // Return a random number from the distribution
-                return dis(gen);
+                    // Return a random number from the distribution
+                    return dis(gen);
+                
+                    // This method writes the options and values to a file with the extension
+                    // .options
+                    void Fuzzer::writeOptions(const std::string& optionsFile) {
+                    // Open the file for writing
+                    std::ofstream file(optionsFile);
+                
+                    if (!file) {
+                        // If the file cannot be opened, throw an exception
+                        throw std::runtime_error("Could not open file " + optionsFile);
+                    }
+                
+                    // Write each option and its values to the file separated by commas
+                    for (const auto& pair : options) {
+                        file << pair.first << ",";
+                        for (const auto& value : pair.second) {
+                        file << value << ",";
+                        }
+                        file << "\n";
+                    }
+                
+                    // Close the file
+                    file.close();
+                    }
+                
+                    // This method writes the constraints to a file with the extension
+                    // .constraints
+                    void Fuzzer::writeConstraints(const std::string& constraintsFile) {
+                    // Open the file for writing
+                    std::ofstream file(constraintsFile);
+                
+                    if (!file) {
+                        // If the file cannot be opened, throw an exception
+                        throw std::runtime_error("Could not open file " + constraintsFile);
+                    }
+                
+                    // Write each constraint to the file as a line of pairs of options and
+                    // values separated by commas
+                    for (const auto& constraint : constraints) {
+                        for (const auto& pair : constraint) {
+                        file << pair.first << "," << pair.second << ",";
+                        }
+                        file << "\n";
+                    }
+                
+                    // Close the file
+                    file.close();
+                    }
                 }
                 </code></pre>
             Hier ist Main.cpp:
@@ -662,56 +649,56 @@
                 
                 // The main function that starts the program
                 int main(int argc, char* argv[]) {
-                // Check if the correct number of parameters is given
-                if (argc != 5) {
+                    // Check if the correct number of parameters is given
+                    if (argc != 5) {
                     // If not, print an error message and exit the program
                     std::cerr << "Usage: " << argv[0]
-                            << " input_options input_constraints output_models num_models\n";
+                                << " input_options input_constraints output_models num_models\n";
                     return 1;
-                }
+                    }
                 
-                // Get the names of the input and output files from the parameters
-                std::string inputOptions = argv[1];
-                std::string inputConstraints = argv[2];
-                std::string outputModels = argv[3];
-                int numModels = std::stoi(argv[4]);
+                    // Get the names of the input and output files from the parameters
+                    std::string inputOptions = argv[1];
+                    std::string inputConstraints = argv[2];
+                    std::string outputModels = argv[3];
+                    int numModels = std::stoi(argv[4]);
                 
-                // Create a Parser object with the names of the input files
-                Parser parser(inputOptions, inputConstraints);
+                    // Create a Parser object with the names of the input files
+                    Parser parser(inputOptions, inputConstraints);
                 
-                // Create a Solver object with the Parser object
-                Solver solver(parser);
+                    // Create a Solver object with the Parser object
+                    Solver solver(parser);
                 
-                // Generate the models using the solve method of the Solver object
-                solver.solve();
+                    // Generate the models using the solve method of the Solver object
+                    solver.solve();
                 
-                // Open the output file for writing
-                std::ofstream out(outputModels);
+                    // Open the output file for writing
+                    std::ofstream out(outputModels);
                 
-                // Check if the file is opened successfully
-                if (!out) {
+                    // Check if the file is opened successfully
+                    if (!out) {
                     // If not, print an error message and exit the program
                     std::cerr << "Cannot open " << outputModels << '\n';
                     return 1;
-                }
+                    }
                 
-                // Write the models to the output file
-                int count = 0;
-                for (const auto& model : solver.getModels()) {
+                    // Write the models to the output file
+                    int count = 0;
+                    for (const auto& model : solver.getModels()) {
                     if (count >= numModels) {
-                    break;
+                        break;
                     }
                     for (const auto& pair : model) {
-                    out << pair.first << ',' << pair.second << '\n';
+                        out << pair.first << ',' << pair.second << '\n';
                     }
                     out << '\n';
                     count++;
-                }
+                    }
                 
-                // Close the output file
-                out.close();
+                    // Close the output file
+                    out.close();
                 
-                return 0;
+                    return 0;
                 }
                 </code></pre>
             Hier ist ModelGenerator.cpp:
@@ -734,35 +721,35 @@
                 // to values
                 std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
                     const {
-                // Create an empty list of maps that will store the models
-                std::list<std::map<std::string, std::string> > models;
+                    // Create an empty list of maps that will store the models
+                    std::list<std::map<std::string, std::string> > models;
                 
-                // Create an empty map that will store which pairs are already covered
-                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                    // Create an empty map that will store which pairs are already covered
+                    std::map<std::pair<std::string, std::string>, bool> coveredPairs;
                 
-                // Create an empty map that will store which options are already set
-                std::map<std::string, bool> setOptions;
+                    // Create an empty map that will store which options are already set
+                    std::map<std::string, bool> setOptions;
                 
-                // Create an empty map that will store the current configuration
-                std::map<std::string, std::string> currentConfig;
+                    // Create an empty map that will store the current configuration
+                    std::map<std::string, std::string> currentConfig;
                 
-                // Create a random number generator with a fixed seed (e.g. 42) to generate
-                // random values
-                std::mt19937 gen(42);
+                    // Create a random number generator with a fixed seed (e.g. 42) to generate
+                    // random values
+                    std::mt19937 gen(42);
                 
-                // Repeat the following steps until either all pairs are covered or 1000
-                // configurations are generated that do not satisfy the constraints
-                int invalidCount = 0;
-                while (coveredPairs.size() < options.size() * (options.size() - 1) / 2 &&
+                    // Repeat the following steps until either all pairs are covered or 1000
+                    // configurations are generated that do not satisfy the constraints
+                    int invalidCount = 0;
+                    while (coveredPairs.size() < options.size() * (options.size() - 1) / 2 &&
                         invalidCount < 1000) {
                     // Set all options to false in the map of options to booleans
                     for (const auto& pair : options) {
-                    setOptions[pair.first] = false;
+                        setOptions[pair.first] = false;
                     }
                 
                     // Set all values to "" in the map of options to values
                     for (const auto& pair : options) {
-                    currentConfig[pair.first] = "";
+                        currentConfig[pair.first] = "";
                     }
                 
                     // Choose a random option from the vector of options
@@ -772,7 +759,7 @@
                     // Choose a random value from the list of values of the option
                     const auto& values1 =
                         std::find_if(options.begin(), options.end(), [&](const auto& pair) {
-                        return pair.first == option1;
+                            return pair.first == option1;
                         })->second;
                     std::uniform_int_distribution<> dis2(0, values1.size() - 1);
                     std::string value1 = values1[dis2(gen)];
@@ -786,21 +773,21 @@
                     // Repeat the following steps until all options are set
                     while (std::find_if(setOptions.begin(), setOptions.end(),
                                         [](const auto& pair) { return !pair.second; }) !=
-                        setOptions.end()) {
-                    // Choose a random number between 0 and 99
-                    std::uniform_int_distribution<> dis3(0, 99);
-                    int r = dis3(gen);
+                            setOptions.end()) {
+                        // Choose a random number between 0 and 99
+                        std::uniform_int_distribution<> dis3(0, 99);
+                        int r = dis3(gen);
                 
-                    if (r < 10) {
+                        if (r < 10) {
                         // If the number is less than 10, choose a random option that is not yet
                         // set and choose a random value from its list of values. Set the option
                         // and value as described above.
                         // Find all options that are not yet set
                         std::vector<std::string> unsetOptions;
                         for (const auto& pair : setOptions) {
-                        if (!pair.second) {
+                            if (!pair.second) {
                             unsetOptions.push_back(pair.first);
-                        }
+                            }
                         }
                 
                         // Choose a random option from them
@@ -810,7 +797,7 @@
                         // Find the list of values of the option
                         const auto& values2 =
                             std::find_if(options.begin(), options.end(), [&](const auto& pair) {
-                            return pair.first == option2;
+                                return pair.first == option2;
                             })->second;
                 
                         // Choose a random value from them
@@ -820,21 +807,21 @@
                         // Set the option and value as described above
                         setOptions[option2] = true;
                         currentConfig[option2] = value2;
-                    } else {
+                        } else {
                         // If the number is greater or equal to 10, choose a random pair that is
                         // not yet covered. Set the two options and their values as described
                         // above.
                         // Find all pairs that are not yet covered
                         std::vector<std::pair<std::string, std::string> > uncoveredPairs;
                         for (const auto& pair1 : options) {
-                        for (const auto& pair2 : options) {
+                            for (const auto& pair2 : options) {
                             if (pair1.first < pair2.first &&
                                 coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
                                     coveredPairs.end()) {
-                            uncoveredPairs.push_back(
-                                std::make_pair(pair1.first, pair2.first));
+                                uncoveredPairs.push_back(
+                                    std::make_pair(pair1.first, pair2.first));
                             }
-                        }
+                            }
                         }
                 
                         // Choose a random pair from them
@@ -844,7 +831,7 @@
                         // Find the list of values of the first option
                         const auto& values3 =
                             std::find_if(options.begin(), options.end(), [&](const auto& p) {
-                            return p.first == pair.first;
+                                return p.first == pair.first;
                             })->second;
                 
                         // Choose a random value from them
@@ -858,7 +845,7 @@
                         // Find the list of values of the second option
                         const auto& values4 =
                             std::find_if(options.begin(), options.end(), [&](const auto& p) {
-                            return p.first == pair.second;
+                                return p.first == pair.second;
                             })->second;
                 
                         // Choose a random value from them
@@ -868,35 +855,35 @@
                         // Set the second option and value as described above
                         setOptions[pair.second] = true;
                         currentConfig[pair.second] = value4;
-                    }
+                        }
                     }
                 
                     // Check if the current configuration satisfies all constraints
                     if (std::all_of(constraints.begin(), constraints.end(),
                                     [&](const auto& constraint) {
-                                    return std::none_of(constraint.begin(), constraint.end(),
-                                                        [&](const auto& pair) {
+                                        return std::none_of(constraint.begin(), constraint.end(),
+                                                            [&](const auto& pair) {
                                                             return currentConfig[pair.first] ==
-                                                                pair.second;
-                                                        });
+                                                                    pair.second;
+                                                            });
                                     })) {
-                    // If yes, add it to the list of maps and mark all pairs as covered
-                    models.push_back(currentConfig);
-                    for (const auto& pair1 : currentConfig) {
+                        // If yes, add it to the list of maps and mark all pairs as covered
+                        models.push_back(currentConfig);
+                        for (const auto& pair1 : currentConfig) {
                         for (const auto& pair2 : currentConfig) {
-                        if (pair1.first < pair2.first) {
+                            if (pair1.first < pair2.first) {
                             coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
+                            }
                         }
                         }
-                    }
                     } else {
-                    // If no, increase a counter by one
-                    invalidCount++;
+                        // If no, increase a counter by one
+                        invalidCount++;
                     }
-                }
+                    }
                 
-                // Return the list of maps
-                return models;
+                    // Return the list of maps
+                    return models;
                 }
                 </code></pre>
             Hier ist Option.cpp:
@@ -915,21 +902,21 @@
                 
                 // The constructor stores the names of the files in the member variables
                 Parser::Parser(const std::string& optionsFile,
-                            const std::string& constraintsFile)
+                                const std::string& constraintsFile)
                     : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
                 
                 // This method reads the .options file and fills the map of options
                 void Parser::parseOptions() {
-                // Open the file for reading
-                std::ifstream file(optionsFile);
-                if (!file) {
+                    // Open the file for reading
+                    std::ifstream file(optionsFile);
+                    if (!file) {
                     // If the file cannot be opened, throw an exception
                     throw std::runtime_error("Could not open file " + optionsFile);
-                }
+                    }
                 
-                // Read the file line by line
-                std::string line;
-                while (std::getline(file, line)) {
+                    // Read the file line by line
+                    std::string line;
+                    while (std::getline(file, line)) {
                     // Create a stream from the line
                     std::istringstream stream(line);
                 
@@ -942,29 +929,29 @@
                     // Read the possible values from the stream and add them to the option
                     std::string value;
                     while ((value = readString(stream)) != "") {
-                    option.addValue(value);
+                        option.addValue(value);
                     }
                 
                     // Add the option to the map
                     options[name] = option;
-                }
+                    }
                 
-                // Close the file
-                file.close();
+                    // Close the file
+                    file.close();
                 }
                 
                 // This method reads the .constraints file and fills the list of constraints
                 void Parser::parseConstraints() {
-                // Open the file for reading
-                std::ifstream file(constraintsFile);
-                if (!file) {
+                    // Open the file for reading
+                    std::ifstream file(constraintsFile);
+                    if (!file) {
                     // If the file cannot be opened, throw an exception
                     throw std::runtime_error("Could not open file " + constraintsFile);
-                }
+                    }
                 
-                // Read the file line by line
-                std::string line;
-                while (std::getline(file, line)) {
+                    // Read the file line by line
+                    std::string line;
+                    while (std::getline(file, line)) {
                     // Create a stream from the line
                     std::istringstream stream(line);
                 
@@ -975,48 +962,48 @@
                     // constraint
                     std::string option, value;
                     while ((option = readString(stream)) != "" &&
-                        (value = readString(stream)) != "") {
-                    constraint.addPair(option, value);
+                            (value = readString(stream)) != "") {
+                        constraint.addPair(option, value);
                     }
                 
                     // Add the constraint to the list
                     constraints.push_back(constraint);
-                }
+                    }
                 
-                // Close the file
-                file.close();
+                    // Close the file
+                    file.close();
                 }
                 
                 // This method returns the map of options
                 const std::map<std::string, Option>& Parser::getOptions() const {
-                return options;
+                    return options;
                 }
                 
                 // This method returns the list of constraints
                 const std::list<Constraint>& Parser::getConstraints() const {
-                return constraints;
+                    return constraints;
                 }
                 
                 // This method reads a string from a stream until a comma or a newline is found
                 // or until the end of the stream is reached
                 std::string Parser::readString(std::istream& stream) {
-                // Create an empty string
-                std::string result;
+                    // Create an empty string
+                    std::string result;
                 
-                // Read from the stream character by character
-                char c;
-                while (stream.get(c)) {
+                    // Read from the stream character by character
+                    char c;
+                    while (stream.get(c)) {
                     // If the character is a comma or a newline, break out of the loop
                     if (c == ',' || c == '\n') {
-                    break;
+                        break;
                     }
                 
                     // Otherwise, add it to the string
                     result += c;
-                }
+                    }
                 
-                // Return the string
-                return result;
+                    // Return the string
+                    return result;
                 }
                 </code></pre>
             Hier ist PrettyPrinter.cpp:
@@ -1029,54 +1016,54 @@
                 // A constructor that takes two file names as parameters
                 PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
                                             const std::string& constraintsFile) {
-                this->optionsFile = optionsFile;
-                this->constraintsFile = constraintsFile;
+                    this->optionsFile = optionsFile;
+                    this->constraintsFile = constraintsFile;
                 }
                 
                 // A method that prints the options to the .options file
                 void PrettyPrinter::printOptions(const std::vector<Option>& options) {
-                // Open the .options file for writing
-                std::ofstream out(optionsFile);
+                    // Open the .options file for writing
+                    std::ofstream out(optionsFile);
                 
-                // Check if the file is opened successfully
-                if (!out) {
+                    // Check if the file is opened successfully
+                    if (!out) {
                     // Throw an exception if the file cannot be opened
                     throw std::runtime_error("Cannot open " + optionsFile);
-                }
+                    }
                 
-                // Iterate over the vector of options
-                for (const Option& option : options) {
+                    // Iterate over the vector of options
+                    for (const Option& option : options) {
                     // Write the name of the option to the file
                     out << option.getName();
                 
                     // Iterate over the vector of values of the option
                     for (const std::string& value : option.getValues()) {
-                    // Write a comma and the value to the file
-                    out << ',' << value;
+                        // Write a comma and the value to the file
+                        out << ',' << value;
                     }
                 
                     // Write a newline character to the file
                     out << '\n';
-                }
+                    }
                 
-                // Close the file
-                out.close();
+                    // Close the file
+                    out.close();
                 }
                 
                 // A method that prints the constraints to the .constraints file
                 void PrettyPrinter::printConstraints(
                     const std::vector<Constraint>& constraints) {
-                // Open the .constraints file for writing
-                std::ofstream out(constraintsFile);
+                    // Open the .constraints file for writing
+                    std::ofstream out(constraintsFile);
                 
-                // Check if the file is opened successfully
-                if (!out) {
+                    // Check if the file is opened successfully
+                    if (!out) {
                     // Throw an exception if the file cannot be opened
                     throw std::runtime_error("Cannot open " + constraintsFile);
-                }
+                    }
                 
-                // Iterate over the vector of constraints
-                for (const Constraint& constraint : constraints) {
+                    // Iterate over the vector of constraints
+                    for (const Constraint& constraint : constraints) {
                     // Create a flag that indicates whether this is the first pair in the
                     // constraint
                     bool first = true;
@@ -1084,25 +1071,25 @@
                     // Iterate over the vector of pairs of the constraint
                     for (const std::pair<std::string, std::string>& pair :
                         constraint.getPairs()) {
-                    // Check if this is not the first pair in the constraint
-                    if (!first) {
+                        // Check if this is not the first pair in the constraint
+                        if (!first) {
                         // Write a comma to the file
                         out << ',';
-                    } else {
+                        } else {
                         // Set the flag to false
                         first = false;
-                    }
+                        }
                 
-                    // Write the option and value of the pair to the file separated by a comma
-                    out << pair.first << ',' << pair.second;
+                        // Write the option and value of the pair to the file separated by a comma
+                        out << pair.first << ',' << pair.second;
                     }
                 
                     // Write a newline character to the file
                     out << '\n';
-                }
+                    }
                 
-                // Close the file
-                out.close();
+                    // Close the file
+                    out.close();
                 }
                 </code></pre>
             Hier ist Solver.cpp:
@@ -1121,40 +1108,40 @@
                 // This method generates the models and stores them in a list of maps of options
                 // to values
                 void Solver::solve() {
-                // Create an empty list of maps of options to values that will store the
-                // models
-                models.clear();
+                    // Create an empty list of maps of options to values that will store the
+                    // models
+                    models.clear();
                 
-                // Create an empty map of pairs to booleans that will store which pairs are
-                // already covered
-                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                    // Create an empty map of pairs to booleans that will store which pairs are
+                    // already covered
+                    std::map<std::pair<std::string, std::string>, bool> coveredPairs;
                 
-                // Create an empty map of options to booleans that will store which options
-                // are already set
-                std::map<std::string, bool> setOptions;
+                    // Create an empty map of options to booleans that will store which options
+                    // are already set
+                    std::map<std::string, bool> setOptions;
                 
-                // Create an empty map of options to values that will store the current
-                // configuration
-                std::map<std::string, std::string> currentConfig;
+                    // Create an empty map of options to values that will store the current
+                    // configuration
+                    std::map<std::string, std::string> currentConfig;
                 
-                // Create a random number generator with a fixed seed (e.g. 42) to generate
-                // random values
-                std::mt19937 gen(42);
+                    // Create a random number generator with a fixed seed (e.g. 42) to generate
+                    // random values
+                    std::mt19937 gen(42);
                 
-                // Repeat the following steps until either all pairs are covered or 1000
-                // configurations are generated that do not satisfy the constraints
-                int invalidCount = 0;
-                while (coveredPairs.size() < parser.getOptions().size() *
-                                                (parser.getOptions().size() - 1) / 2 &&
+                    // Repeat the following steps until either all pairs are covered or 1000
+                    // configurations are generated that do not satisfy the constraints
+                    int invalidCount = 0;
+                    while (coveredPairs.size() < parser.getOptions().size() *
+                                                    (parser.getOptions().size() - 1) / 2 &&
                         invalidCount < 1000) {
                     // Set all options to false in the map of options to booleans
                     for (const auto& pair : parser.getOptions()) {
-                    setOptions[pair.first] = false;
+                        setOptions[pair.first] = false;
                     }
                 
                     // Set all values to "" in the map of options to values
                     for (const auto& pair : parser.getOptions()) {
-                    currentConfig[pair.first] = "";
+                        currentConfig[pair.first] = "";
                     }
                 
                     // Choose a random option from the map of options of the parser
@@ -1176,20 +1163,20 @@
                 
                     // Repeat the following steps until all options are set
                     while (std::find(setOptions.begin(), setOptions.end(), false) !=
-                        setOptions.end()) {
-                    // Choose a random number between 0 and 99
-                    std::uniform_int_distribution<> dis3(0, 99);
-                    int r = dis3(gen);
-                    if (r < 10) {
+                            setOptions.end()) {
+                        // Choose a random number between 0 and 99
+                        std::uniform_int_distribution<> dis3(0, 99);
+                        int r = dis3(gen);
+                        if (r < 10) {
                         // If the number is less than 10, choose a random option that is not yet
                         // set and choose a random value from its list of values. Set the option
                         // and value as described above.
                         // Find all options that are not yet set
                         std::vector<std::string> unsetOptions;
                         for (const auto& pair : setOptions) {
-                        if (!pair.second) {
+                            if (!pair.second) {
                             unsetOptions.push_back(pair.first);
-                        }
+                            }
                         }
                 
                         // Choose a random option from them
@@ -1207,21 +1194,21 @@
                         setOptions[option2] = true;
                         currentConfig[option2] = value2;
                 
-                    } else {
+                        } else {
                         // If the number is greater or equal to 10, choose a random pair that is
                         // not yet covered. Set the two options and their values as described
                         // above.
                         // Find all pairs that are not yet covered
                         std::vector<std::pair<std::string, std::string>> uncoveredPairs;
                         for (const auto& pair1 : parser.getOptions()) {
-                        for (const auto& pair2 : parser.getOptions()) {
+                            for (const auto& pair2 : parser.getOptions()) {
                             if (pair1.first < pair2.first &&
                                 coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
                                     coveredPairs.end()) {
-                            uncoveredPairs.push_back(
-                                std::make_pair(pair1.first, pair2.first));
+                                uncoveredPairs.push_back(
+                                    std::make_pair(pair1.first, pair2.first));
                             }
-                        }
+                            }
                         }
                 
                         // Choose a random pair from them
@@ -1249,62 +1236,61 @@
                         // Set the second option and value as described above
                         setOptions[pair.second] = true;
                         currentConfig[pair.second] = value4;
-                    }
+                        }
                     }
                 
                     // Check if the current configuration is compatible with the constraints of
                     // the parser
                     if (checkConstraints(currentConfig)) {
-                    // If yes, add it to the list of maps and mark all pairs as covered
-                    models.push_back(currentConfig);
-                    for (const auto& pair1 : currentConfig) {
+                        // If yes, add it to the list of maps and mark all pairs as covered
+                        models.push_back(currentConfig);
+                        for (const auto& pair1 : currentConfig) {
                         for (const auto& pair2 : currentConfig) {
-                        if (pair1.first < pair2.first) {
+                            if (pair1.first < pair2.first) {
                             coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
+                            }
                         }
                         }
-                    }
                     } else {
-                    // If no, increase a counter by one
-                    invalidCount++;
+                        // If no, increase a counter by one
+                        invalidCount++;
                     }
-                }
+                    }
                 }
                 
                 // This method returns the list of maps
                 const std::list<std::map<std::string, std::string>>& Solver::getModels() const {
-                return models;
+                    return models;
                 }
                 
                 // This method checks if a configuration is compatible with the constraints
                 bool Solver::checkConstraints(
                     const std::map<std::string, std::string>& config) const {
-                // Iterate over the list of constraints of the parser
-                for (const auto& constraint : parser.getConstraints()) {
+                    // Iterate over the list of constraints of the parser
+                    for (const auto& constraint : parser.getConstraints()) {
                     // Get the list of pairs of option and value
                     const auto& pairs = constraint.getPairs();
                 
                     // Check if all pairs occur in the configuration
                     bool allPairsInConfig = true;
                     for (const auto& pair : pairs) {
-                    if (config.at(pair.first) != pair.second) {
+                        if (config.at(pair.first) != pair.second) {
                         allPairsInConfig = false;
                         break;
-                    }
+                        }
                     }
                 
                     // If all pairs occur in the configuration, return false, as the
                     // configuration is not compatible with the constraints
                     if (allPairsInConfig) {
-                    return false;
+                        return false;
                     }
-                }
+                    }
                 
-                // If no constraints are violated, return true
-                return true;
+                    // If no constraints are violated, return true
+                    return true;
                 }
                 </code></pre>
-
         </div>
 
         </code></pre>
