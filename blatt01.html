@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmiert in C++
+        PROGRAMMIEREN IN c++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -511,7 +511,7 @@
                 
                 // A method that parses the .constraints file and returns a vector of
                 // constraints
-                std::vector<std::vector<std::pair<std::string, std::string>>> parseConstraints();
+                std::vector<Constraint> parseConstraints(std::istream& stream);
                 
                 // A method that returns the map of options
                 std::map<std::string, Option> getOptions() const;
@@ -967,29 +967,6 @@
                 input.close();
                 }
                 
-                // Diese Methode liest die .constraints-Datei und füllt den Vektor von
-                // Constraints
-                std::vector<Constraint> Parser::parseConstraints() {
-                std::vector<Constraint> constraints;
-                std::ifstream file(
-                    constraintsFile);  // Öffne die .constraints-Datei zum Lesen
-                if (!file) {
-                    throw std::runtime_error("Could not open file " + constraintsFile);
-                }
-                std::string line;
-                while (std::getline(file, line)) {  // Lese jede Zeile der Datei
-                    std::istringstream stream(line);  // Erstelle einen Stream aus der Zeile
-                    std::string option, value;
-                    stream >> option >>
-                        value;  // Lese das Paar von Option und Wert aus dem Stream
-                    std::vector<std::pair<std::string, std::string>> pairs;
-                    pairs.emplace_back(option, value);  // Füge das Paar zum Vektor hinzu
-                    constraints.emplace_back(
-                        pairs);  // Füge den Vektor zum Vektor von Constraints hinzu
-                }
-                return constraints;
-                }
-                
                 // This method returns the map of options
                 // A method that parses the .options file and returns a vector of options
                 std::vector<Option> Parser::parseOptions(std::istream& stream) {
@@ -1013,7 +990,7 @@
                 std::string option, value;
                 while ((option = readString(stream)) != "" &&
                         (value = readString(stream)) != "") {
-                    std::vector<std::pair<std::string, std::string> > pairs;
+                    std::vector<std::pair<std::string, std::string>> pairs;
                     pairs.emplace_back(option, value);
                     constraints.emplace_back(pairs);
                 }
