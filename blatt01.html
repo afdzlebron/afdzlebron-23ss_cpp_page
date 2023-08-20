@@ -37,7 +37,7 @@
 
 
     <main>
-        PROGRAMMIEREN IN c++
+        ProgrRmmiere iN C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -580,6 +580,10 @@
                 Solver(const Parser& parser);
                 std::vector<std::vector<std::string> > solve();
                 std::vector<std::vector<std::string> > getModels() const;
+                // A Parser object that stores the options and constraints
+                Parser parser;
+                // A method that checks if a configuration is compatible with the constraints
+                bool checkConstraints(const std::map<std::string, std::string>& config) const;
                 
                 private:
                 std::vector<Option> options;
@@ -1105,7 +1109,7 @@
                 
                 // This method generates the models and stores them in a list of maps of options
                 // to values
-                void Solver::solve() {
+                std::vector<std::vector<std::string>> Solver::solve() {
                 // Create an empty list of maps of options to values that will store the
                 // models
                 models.clear();
@@ -1264,6 +1268,29 @@
                 // This method checks if a configuration is compatible with the constraints
                 bool Solver::checkConstraints(
                     const std::map<std::string, std::string>& config) const {
+                // Iterate over the list of constraints of the parser
+                for (const auto& constraint : parser.getConstraints()) {
+                    // Get the list of pairs of option and value
+                    const auto& pairs = constraint.getPairs();
+                    // Check if all pairs occur in the configuration
+                    bool allPairsInConfig = true;
+                    for (const auto& pair : pairs) {
+                    if (config.at(pair.first) != pair.second) {
+                        allPairsInConfig = false;
+                        break;
+                    }
+                    }
+                    // If all pairs occur in the configuration, return false, as the
+                    // configuration is not compatible with the constraints
+                    if (allPairsInConfig) {
+                    return false;
+                    }
+                }
+                // If no constraints are violated, return true
+                return true;
+                }
+                
+                const std::map<std::string, std::string>& config) const {
                 // Iterate over the list of constraints of the parser
                 for (const auto& constraint : parser.getConstraints()) {
                     // Get the list of pairs of option and value
