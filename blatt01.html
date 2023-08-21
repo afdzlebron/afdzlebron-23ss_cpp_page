@@ -1143,182 +1143,183 @@
                 </code></pre>
             Hier ist Solver.cpp:
             <pre><code>
-                #include "Solver.hpp"
-                
-                #include <algorithm>
-                #include <fstream>
-                #include <iostream>
-                #include <map>
-                #include <random>
-                #include <string>
-                
-                #include "Parser.hpp"
-                
-                Solver::Solver(const Parser& parser) : parser(parser) {
-                options = parser.getOptions();
-                constraints = parser.getConstraints();
-                }
-                
-                std::list<std::map<std::string, std::string>> Solver::solve() {
-                // Create an empty list of maps that will store the models
-                std::list<std::map<std::string, std::string>> models;
-                
-                // Create an empty map that will store which pairs are already covered
-                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
-                
-                // Create an empty map that will store which options are already set
-                std::map<std::string, bool> setOptions;
-                
-                // Create an empty map that will store the current configuration
-                std::map<std::string, std::string> currentConfig;
-                
-                // Create a random number generator with a fixed seed (e.g. 42) to generate
-                // random values
-                std::mt19937 gen(42);
-                
-                // Repeat the following steps until either all pairs are covered or 1000
-                // configurations are generated that do not satisfy the constraints
-                int invalidCount = 0;
-                while (std::find(coveredPairs.begin(), coveredPairs.end(), false) !=
-                            coveredPairs.end() &&
-                        invalidCount < 1000) {
-                    // Start with an empty configuration
-                    currentConfig.clear();
-                
-                    // For each option in the options vector
-                    for (auto it1 = options.begin(); it1 != options.end(); ++it1) {
-                    // Get the option name and the possible values
-                    std::string option = it1->first;
-                    std::vector<std::string> values = it1->second;
-                
-                    // If the option is already set in the current configuration, skip it
-                    if (setOptions[option]) {
-                        continue;
+                    #include "Solver.hpp"
+
+                    #include <algorithm>
+                    #include <fstream>
+                    #include <iostream>
+                    #include <map>
+                    #include <random>
+                    #include <string>
+                    
+                    #include "Parser.hpp"
+                    
+                    Solver::Solver(const Parser& parser) : parser(parser) {
+                    options = parser.getOptions();
+                    constraints = parser.getConstraints();
                     }
-                
-                    // Choose a random value from the possible values
-                    int index = gen() % values.size();
-                    std::string value = values[index];
-                
-                    // Add the option and the value to the current configuration
-                    currentConfig[option] = value;
-                
-                    // Mark the option as set
-                    setOptions[option] = true;
-                
-                    // For each other option in the options vector
-                    for (auto it2 = it1 + 1; it2 != options.end(); ++it2) {
-                        // Get the other option name and the possible values
-                        std::string otherOption = it2->first;
-                        std::vector<std::string> otherValues = it2->second;
-                
-                        // If the other option is already set in the current configuration,
-                        // skip it
-                        if (setOptions[otherOption]) {
-                        continue;
+                    
+                    std::list<std::map<std::string, std::string>> Solver::solve() {
+                    // Create an empty list of maps that will store the models
+                    std::list<std::map<std::string, std::string>> models;
+                    
+                    // Create an empty map that will store which pairs are already covered
+                    std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                    
+                    // Create an empty map that will store which options are already set
+                    std::map<std::string, bool> setOptions;
+                    
+                    // Create an empty map that will store the current configuration
+                    std::map<std::string, std::string> currentConfig;
+                    
+                    // Create a random number generator with a fixed seed (e.g. 42) to generate
+                    // random values
+                    std::mt19937 gen(42);
+                    
+                    // Repeat the following steps until either all pairs are covered or 1000
+                    // configurations are generated that do not satisfy the constraints
+                    int invalidCount = 0;
+                    while (std::find(coveredPairs.begin(), coveredPairs.end(), false) !=
+                                coveredPairs.end() &&
+                            invalidCount < 1000) {
+                        // Start with an empty configuration
+                        currentConfig.clear();
+                    
+                        // For each option in the options vector
+                        for (auto it1 = options.begin(); it1 != options.end(); ++it1) {
+                        // Get the option name and the possible values
+                        std::string option = it1->first;
+                        std::vector<std::string> values = it1->second;
+                    
+                        // If the option is already set in the current configuration, skip it
+                        if (setOptions[option]) {
+                            continue;
                         }
-                
+                    
                         // Choose a random value from the possible values
-                        int otherIndex = gen() % otherValues.size();
-                        std::string otherValue = otherValues[otherIndex];
-                
-                        // Add the other option and the value to the current configuration
-                        currentConfig[otherOption] = otherValue;
-                
-                        // Mark the other option as set
-                        setOptions[otherOption] = true;
-                
-                        // Create a pair of options and values
-                        std::pair<std::pair<std::string, std::string>,
-                                std::pair<std::string, std::string>>
-                            pair({{option, value}, {otherOption, otherValue}});
-                
-                        // Mark the pair as covered
-                        coveredPairs[pair] = true;
+                        int index = gen() % values.size();
+                        std::string value = values[index];
+                    
+                        // Add the option and the value to the current configuration
+                        currentConfig[option] = value;
+                    
+                        // Mark the option as set
+                        setOptions[option] = true;
+                    
+                        // For each other option in the options vector
+                        for (auto it2 = it1 + 1; it2 != options.end(); ++it2) {
+                            // Get the other option name and the possible values
+                            std::string otherOption = it2->first;
+                            std::vector<std::string> otherValues = it2->second;
+                    
+                            // If the other option is already set in the current configuration,
+                            // skip it
+                            if (setOptions[otherOption]) {
+                            continue;
+                            }
+                    
+                            // Choose a random value from the possible values
+                            int otherIndex = gen() % otherValues.size();
+                            std::string otherValue = otherValues[otherIndex];
+                    
+                            // Add the other option and the value to the current configuration
+                            currentConfig[otherOption] = otherValue;
+                    
+                            // Mark the other option as set
+                            setOptions[otherOption] = true;
+                    
+                            // Create a pair of options and values
+                            std::pair<std::pair<std::string, std::string>,
+                                    std::pair<std::string, std::string>>
+                                pair({{option, value}, {otherOption, otherValue}});
+                    
+                            // Mark the pair as covered
+                            coveredPairs[pair] = true;
+                        }
+                        }
+                    
+                        // Check if the current configuration is compatible with the constraints
+                        if (checkConstraints(currentConfig)) {
+                        // If yes, add the current configuration to the list of models
+                        models.push_back(currentConfig);
+                        } else {
+                        // If no, increment the invalid count
+                        invalidCount++;
+                        }
+                    
+                        // Reset the set options map
+                        for (auto& pair : setOptions) {
+                        pair.second = false;
+                        }
                     }
+                    
+                    // Return the list of models
+                    return models;
                     }
-                
-                    // Check if the current configuration is compatible with the constraints
-                    if (checkConstraints(currentConfig)) {
-                    // If yes, add the current configuration to the list of models
-                    models.push_back(currentConfig);
-                    } else {
-                    // If no, increment the invalid count
-                    invalidCount++;
+                    
+                    // A method that returns the list of maps of options to values
+                    std::list<std::map<std::string, std::string>> Solver::getModels() const {
+                    return models;
                     }
-                
-                    // Reset the set options map
-                    for (auto& pair : setOptions) {
-                    pair.second = false;
+                    
+                    // A method that chooses a random pair of options and values
+                    std::pair<std::pair<std::string, std::string>,
+                            std::pair<std::string, std::string>>
+                    Solver::choosePair() const {
+                    // Create a random number generator with a fixed seed (e.g. 42)
+                    std::mt19937 gen(42);
+                    
+                    // Choose two random options from the options vector
+                    int index1 = gen() % options.size();
+                    int index2 = gen() % options.size();
+                    while (index2 == index1) {
+                        index2 = gen() % options.size();
                     }
-                }
-                
-                // Return the list of models
-                return models;
-                }
-                
-                // A method that returns the list of maps of options to values
-                std::list<std::map<std::string, std::string>> Solver::getModels() const {
-                return models;
-                }
-                
-                // A method that chooses a random pair of options and values
-                std::pair<std::pair<std::string, std::string>,
-                        std::pair<std::string, std::string>>
-                Solver::choosePair() const {
-                // Create a random number generator with a fixed seed (e.g. 42)
-                std::mt19937 gen(42);
-                
-                // Choose two random options from the options vector
-                int index1 = gen() % options.size();
-                int index2 = gen() % options.size();
-                while (index2 == index1) {
-                    index2 = gen() % options.size();
-                }
-                std::pair<std::string, std::vector<std::string>> option1 = options[index1];
-                std::pair<std::string, std::vector<std::string>> option2 = options[index2];
-                
-                // Choose two random values from the possible values of each option
-                int valueIndex1 = gen() % option1.second.size();
-                int valueIndex2 = gen() % option2.second.size();
-                std::string value1 = option1.second[valueIndex1];
-                std::string value2 = option2.second[valueIndex2];
-                
-                // Return the pair of options and values
-                return {{option1.first, value1}, {option2.first, value2}};
-                }
-                
-                // A method that checks if a configuration is compatible with the constraints
-                bool Solver::checkConstraints(
-                    const std::map<std::string, std::string>& config) const {
-                // For each constraint in the constraints vector
-                for (const auto& constraint : constraints) {
-                    // For each pair of options and values in the constraint
-                    for (const auto& pair : constraint) {
-                    // Get the option name and the value
-                    std::string option = pair.first;
-                    std::string value = pair.second;
-                
-                    // Check if the configuration has the same option and value
-                    if (config.count(option) > 0 && config.at(option) == value) {
-                        // If yes, continue to check the next pair in the constraint
-                        continue;
-                    } else {
-                        // If no, break out of the loop and check the next constraint
-                        break;
+                    std::pair<std::string, std::vector<std::string>> option1 = options[index1];
+                    std::pair<std::string, std::vector<std::string>> option2 = options[index2];
+                    
+                    // Choose two random values from the possible values of each option
+                    int valueIndex1 = gen() % option1.second.size();
+                    int valueIndex2 = gen() % option2.second.size();
+                    std::string value1 = option1.second[valueIndex1];
+                    std::string value2 = option2.second[valueIndex2];
+                    
+                    // Return the pair of options and values
+                    return {{option1.first, value1}, {option2.first, value2}};
                     }
+                    
+                    // A method that checks if a configuration is compatible with the constraints
+                    bool Solver::checkConstraints(
+                        const std::map<std::string, std::string>& config) const {
+                    // For each constraint in the constraints vector
+                    for (const auto& constraint : constraints) {
+                        // For each pair of options and values in the constraint
+                        for (const auto& pair : constraint) {
+                        // Get the option name and the value
+                        std::string option = pair.first;
+                        std::string value = pair.second;
+                    
+                        // Check if the configuration has the same option and value
+                        if (config.count(option) > 0 && config.at(option) == value) {
+                            // If yes, continue to check the next pair in the constraint
+                            continue;
+                        } else {
+                            // If no, break out of the loop and check the next constraint
+                            break;
+                        }
+                        }
+                    
+                        // If all pairs in the constraint are satisfied by the configuration,
+                        // return false as the configuration is incompatible with the constraint
+                        return false;
                     }
-                
-                    // If all pairs in the constraint are satisfied by the configuration,
-                    // return false as the configuration is incompatible with the constraint
-                    return false;
-                }
-                
-                // If none of the constraints are violated by the configuration,
-                // return true as the configuration is compatible with all constraints
-                return true;
-                }
-                </code></pre>
+                    
+                    // If none of the constraints are violated by the configuration,
+                    // return true as the configuration is compatible with all constraints
+                    return true;
+                    }
+                    
+                    </code></pre>
 
         </div>
 
