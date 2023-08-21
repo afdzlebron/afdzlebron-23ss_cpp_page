@@ -37,7 +37,7 @@
 
 
     <main>
-        pRpGrAmMiErEn In C++
+        Programmieren Wir In C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -313,1285 +313,316 @@
         <h1>Implementierte Code für Aufgabe 1, Aufgabe 2, Aufgabe3A und Aufgabe3B</h1>
 
         <div>
-            Hier ist Checker.cpp:
+            Hier ist project.py:
             <pre><code>
-                        #include "Checker.hpp"
-                    
-                        #include <fstream>
-                        #include <iostream>
-                        #include <sstream>
-                    
-                        #include "Solver.hpp"
-                    
-                        // Der Konstruktor speichert den Parser in der Membervariable
-                        // Checker::Checker(const Parser& parser) : parser(parser) {}
-                    
-                        // The constructor initializes only the parser
-                        Checker::Checker(const Parser& parser) : parser(parser) {}
-                    
-                        // This method checks if a model is compatible with the constraints
-                        bool Checker::checkConstraints(const Model& model) const {
-                        // Iterate over the list of constraints of the parser
-                        for (const auto& constraint : parser.getConstraints()) {
-                            // Get the list of pairs of option and value
-                            const auto& pairs = constraint.getPairs();
-                            // Check if all pairs are present in the model
-                            bool allPairsInModel = true;
-                            for (const auto& pair : pairs) {
-                            if (model.getOptionValue(pair.first) != pair.second) {
-                                allPairsInModel = false;
-                                break;
-                            }
-                            }
-                            // If all pairs are present in the model, return false, since the
-                            // configuration is not compatible with the constraint
-                            if (allPairsInModel) {
-                            return false;
-                            }
-                        }
-                        // If no constraints are violated, return true
-                        return true;
-                        }
-                    
-                        void Checker::check(std::ostream& out) {}
-                    
-                        // Diese Methode liest die Modelle aus einer Datei ein und überprüft, ob sie
-                        // korrekt sind
-                        void Checker::check(const std::string& modelsFile) {
-                        std::list<std::string> errors;
-                        // Erstelle eine leere Liste von Strings, die die Fehler speichern wird
-                        errors.clear();
-                    
-                        // Öffne die Datei mit den Modellen zum Lesen
-                        std::ifstream file(modelsFile);
-                        if (!file) {
-                            // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                            throw std::runtime_error("Could not open file " + modelsFile);
-                        }
-                    
-                        // Lese die Datei zeilenweise ein
-                        std::string line;
-                        int lineNumber = 0;
-                        while (std::getline(file, line)) {
-                            // Erhöhe den Zeilennummer um eins
-                            lineNumber++;
-                    
-                            // Erstelle einen Stream aus der Zeile
-                            std::istringstream stream(line);
-                    
-                            // Erstelle eine leere Map von Optionen auf Werten, die das aktuelle Modell
-                            // speichert
-                            std::map<std::string, std::string> model;
-                    
-                            // Lese die Optionen und Werte aus dem Stream und füge sie zur Map hinzu
-                            std::string option, value;
-                            while ((option = readString(stream)) != "" &&
-                                (value = readString(stream)) != "") {
-                            model[option] = value;
-                            }
-                    
-                            // Überprüfe, ob alle Optionen aus der Map von Optionen des Parsers in der
-                            // Map vorhanden sind und ob ihre Werte gültig sind
-                            for (const auto& pair : parser.getOptions()) {
-                            if (model.find(pair.first) == model.end()) {
-                                // Wenn die Option nicht in der Map ist, füge einen Fehler zur Liste
-                                // hinzu
-                                errors.push_back("Missing option " + pair.first + " in line " +
-                                                std::to_string(lineNumber));
-                            } else {
-                                // Wenn die Option in der Map ist, überprüfe, ob ihr Wert gültig ist
-                                const auto& values = pair.second.getValues();
-                                if (std::find(values.begin(), values.end(), model[pair.first]) ==
-                                    values.end()) {
-                                // Wenn der Wert nicht gültig ist, füge einen Fehler zur Liste hinzu
-                                errors.push_back("Invalid value " + model[pair.first] +
-                                                " for option " + pair.first + " in line " +
-                                                std::to_string(lineNumber));
-                                }
-                            }
-                            }
-                    
-                            // Überprüfe, ob das aktuelle Modell mit den Constraints des Parsers
-                            // kompatibel ist
-                            if (!checkConstraints(model)) {
-                            // Wenn nicht, füge einen Fehler zur Liste hinzu
-                            errors.push_back("Model in line " + std::to_string(lineNumber) +
-                                            " violates the constraints");
-                            }
-                        }
-                    
-                        // Schließe die Datei
-                        file.close();
-                        }
-                    
-                        // Diese Methode gibt eine Liste von Fehlern zurück, die gefunden wurden
-                        const std::list<std::string>& Checker::getErrors() const { return errors; }
-                    
-                        // Diese Methode überprüft, ob eine Konfiguration mit den Constraints kompatibel
-                        // ist
-                        bool Checker::checkConstraints(
-                            const std::map<std::string, std::string>& config) const {
-                        // Iteriere über die Liste von Constraints des Parsers
-                        for (const auto& constraint : parser.getConstraints()) {
-                            // Hole die Liste der Paare aus Option und Wert
-                            const auto& pairs = constraint.getPairs();
-                    
-                            // Überprüfe, ob alle Paare in der Konfiguration vorkommen
-                            bool allPairsInConfig = true;
-                            for (const auto& pair : pairs) {
-                            if (config.at(pair.first) != pair.second) {
-                                allPairsInConfig = false;
-                                break;
-                            }
-                            }
-                    
-                            // Wenn alle Paare in der Konfiguration vorkommen, gib false zurück, da die
-                            // Konfiguration nicht mit den Constraints kompatibel ist
-                            if (allPairsInConfig) {
-                            return false;
-                            }
-                        }
-                    
-                        // Wenn keine Constraints verletzt wurden, gib true zurück
-                        return true;
-                        }
-                    
-                        // This method returns a list of errors that were found by the checker
-                        std::list<std::string> getErrorsList() {
-                        std::list<std::string> errors;
-                        // Implement the method here
-                        return errors;
-                        }
-                        </code></pre>
-            Hier ist Constraint.cpp:
-            <pre><code>
-                        #include "Constraint.hpp"
-                    
-                        // The constructor takes nothing as parameters
-                        Constraint::Constraint() {}
-                    
-                        // This method adds a pair of option and value to the list
-                        void Constraint::addPair(const std::string& option, const std::string& value) {
-                        pairs.push_back(std::make_pair(option, value));
-                        }
-                    
-                        // This method returns the list of pairs
-                        const std::vector<std::pair<std::string, std::string> >& Constraint::getPairs()
-                            const {
-                        return pairs;
-                        }
-                        </code></pre>
-            Hier ist Fuzzer.cpp:
-            <pre><code>
-                        #include "Fuzzer.hpp"
-                    
-                        #include <fstream>
-                        #include <iostream>
-                    
-                        Fuzzer::Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints) {
-                        // Erstelle einen Zufallszahlengenerator mit einer festen Seed (z.B. 42), um
-                        // zufällige Werte zu erzeugen
-                        std::mt19937 gen(42);
-                    
-                        // Generiere zufällige Optionen und Werte und füge sie zur Map hinzu
-                        for (int i = 0; i < numOptions; i++) {
-                            // Wähle zufällig einen Buchstaben zwischen A und Z aus
-                            char option = 'A' + randomInt(0, 25);
-                    
-                            // Wenn die Option noch nicht in der Map ist, füge sie mit einem leeren
-                            // Vektor hinzu
-                            if (options.find(option) == options.end()) {
-                            options[option] = std::vector<int>();
-                            }
-                        }
-                    
-                        for (auto& pair : options) {
-                            // Wähle zufällig eine Anzahl von Werten zwischen 1 und maxValuesPerOption
-                            // aus
-                            int numValues = randomInt(1, maxValuesPerOption);
-                    
-                            for (int i = 0; i < numValues; i++) {
-                            // Wähle zufällig eine Zahl zwischen 0 und 9 aus
-                            int value = randomInt(0, 9);
-                    
-                            // Wenn der Wert noch nicht im Vektor ist, füge ihn hinzu
-                            if (std::find(pair.second.begin(), pair.second.end(), value) ==
-                                pair.second.end()) {
-                                pair.second.push_back(value);
-                            }
-                            }
-                        }
-                    
-                        // Generiere zufällige Constraints und füge sie zur Liste hinzu
-                        int numConstraints = randomInt(0, maxConstraints);
-                    
-                        for (int i = 0; i < numConstraints; i++) {
-                            // Erstelle einen leeren Vektor von Paaren aus Optionen und Werten
-                            std::vector<std::pair<char, int> > constraint;
-                    
-                            // Wähle zufällig eine Anzahl von Paaren zwischen 1 und der Anzahl der
-                            // Optionen aus
-                            int numPairs = randomInt(1, options.size());
-                    
-                            for (int j = 0; j < numPairs; j++) {
-                            // Wähle zufällig eine Option aus der Map aus
-                            auto it = options.begin();
-                            std::advance(it, randomInt(0, options.size() - 1));
-                            char option = it->first;
-                    
-                            // Wähle zufällig einen Wert aus dem Vektor von Werten aus
-                            int value = it->second[randomInt(0, it->second.size() - 1)];
-                    
-                            // Füge das Paar aus Option und Wert zum Vektor hinzu
-                            constraint.push_back(std::make_pair(option, value));
-                            }
-                    
-                            // Füge den Vektor von Paaren zur Liste hinzu
-                            constraints.push_back(constraint);
-                        }
-                        }
-                    
-                        void Fuzzer::writeOptions(const std::string& optionsFile) {
-                        // Öffne die Datei mit den Optionen zum Schreiben
-                        std::ofstream file(optionsFile);
-                        if (!file) {
-                            // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                            throw std::runtime_error("Could not open file " + optionsFile);
-                        }
-                    
-                        // Schreibe die Optionen und Werte in die Datei
-                        for (const auto& pair : options) {
-                            file << pair.first << " ";
-                            for (int value : pair.second) {
-                            file << value << " ";
-                            }
-                            file << "\n";
-                        }
-                    
-                        // Schließe die Datei
-                        file.close();
-                        }
-                    
-                        void Fuzzer::writeConstraints(const std::string& constraintsFile) {
-                        // Öffne die Datei mit den Constraints zum Schreiben
-                        std::ofstream file(constraintsFile);
-                        if (!file) {
-                            // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                            throw std::runtime_error("Could not open file " + constraintsFile);
-                        }
-                    
-                        // Schreibe die Constraints in die Datei
-                        for (const auto& constraint : constraints) {
-                            for (const auto& pair : constraint) {
-                            file << pair.first << " " << pair.second << " ";
-                            }
-                            file << "\n";
-                        }
-                    
-                        // Schließe die Datei
-                        file.close();
-                        }
-                    
-                        int Fuzzer::randomInt(int min, int max) {
-                        // Erstelle einen Zufallszahlengenerator mit einer festen Seed (z.B. 42), um
-                        // zufällige Werte zu erzeugen
-                        static std::mt19937 gen(42);
-                    
-                        // Erstelle eine Gleichverteilung zwischen min und max (beide inklusive)
-                        std::uniform_int_distribution<> dis(min, max);
-                    
-                        // Gib eine zufällige Zahl zurück
-                        return dis(gen);
-                        }
-                        </code></pre>
-            Hier ist Main.cpp:
-            <pre><code>
-                        #include <iostream>
-                    
-                        #include "Checker.hpp"
-                        #include "Fuzzer.hpp"
-                        #include "Parser.hpp"
-                        #include "PrettyPrinter.hpp"
-                        #include "Solver.hpp"
-                    
-                        // Die Hauptfunktion, die das Programm startet
-                        int main(int argc, char* argv[]) {
-                        // Überprüfe, ob die richtige Anzahl von Parametern gegeben ist
-                        if (argc != 7) {
-                            // Wenn nicht, gib eine Fehlermeldung aus und beende das Programm
-                            std::cerr << "Usage: " << argv[0]
-                                    << " input_options input_constraints output_options "
-                                        "output_constraints input_models num_constraints\n";
-                            return 1;
-                        }
-                    
-                        // Hole die Namen der Eingabe- und Ausgabedateien aus den Parametern
-                        std::string inputOptions = argv[1];
-                        std::string inputConstraints = argv[2];
-                        std::string outputOptions = argv[3];
-                        std::string outputConstraints = argv[4];
-                        std::string inputModels = argv[5];
-                        int numConstraints = std::stoi(argv[6]);
-                    
-                        // Erstelle ein Parser-Objekt mit den Namen der Eingabedateien
-                        Parser parser(inputOptions, inputConstraints);
-                    
-                        // Versuche, die Optionen und Constraints einzulesen
-                        try {
-                            parser.parseOptions();
-                            parser.parseConstraints();
-                        } catch (const std::exception& e) {
-                            // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                            // Programm
-                            std::cerr << "Error: " << e.what() << "\n";
-                            return 2;
-                        }
-                    
-                        // Erstelle ein PrettyPrinter-Objekt mit den Namen der Ausgabedateien
-                        PrettyPrinter printer(outputOptions, outputConstraints);
-                    
-                        // Versuche, die Optionen und Constraints auszugeben
-                        try {
-                            printer.printOptions(parser.getOptions());
-                            printer.printConstraints(parser.getConstraints());
-                        } catch (const std::exception& e) {
-                            // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                            // Programm
-                            std::cerr << "Error: " << e.what() << "\n";
-                            return 3;
-                        }
-                    
-                        // Erstelle ein Solver-Objekt mit dem Parser als Parameter
-                        Solver solver(parser);
-                    
-                        // Versuche, die Modelle zu generieren und in eine Datei zu schreiben
-                        try {
-                            solver.solve();
-                            // Erstelle eine Variable für den Namen der Ausgabedatei für die Modelle
-                            std::string outputModels = "output.models";
-                            // Rufe die writeModels-Methode des Solver-Objekts auf und gebe den Namen
-                            // der Ausgabedatei als Parameter an
-                            solver.writeModels(outputModels);
-                        } catch (const std::exception& e) {
-                            // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                            // Programm
-                            std::cerr << "Error: " << e.what() << "\n";
-                            return 4;
-                        }
-                    
-                        // Erstelle ein Checker-Objekt mit dem Parser und dem Solver als Parameter
-                        Checker checker(parser, solver);
-                    
-                        // Versuche, die Modelle aus einer Datei einzulesen und zu überprüfen
-                        try {
-                            // Rufe die checkModels-Methode des Checker-Objekts auf und gebe die Liste
-                            // der Modelle als Parameter an
-                            checker.checkModels(std::cout);;
-                            // Hole die Liste von Fehlern vom Checker-Objekt
-                            const auto& errors = checker.getErrorsList();
-                            // Wenn die Liste leer ist, gib eine Erfolgsmeldung aus
-                            if (errors.empty()) {
-                            std::cout << "s VERIFIED\n";
-                            return 0;
-                            } else {
-                            // Wenn die Liste nicht leer ist, gib alle Fehler aus
-                            for (const auto& error : errors) {
-                                std::cerr << error << "\n";
-                            }
-                            std::cout << "s UNVERIFIED\n";
-                            return 4;
-                            }
-                        } catch (const std::exception& e) {
-                            // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                            // Programm
-                            std::cerr << "Error: " << e.what() << "\n";
-                            return 3;
-                        }
-                    
-                        // Erstelle ein Fuzzer-Objekt mit den gewünschten Parametern
-                        Fuzzer fuzzer(5, 3, numConstraints);
-                    
-                        // Versuche, die Optionen und Constraints in Dateien zu schreiben
-                        try {
-                            // Rufe die writeOptions- und writeConstraints-Methoden des Fuzzer-Objekts
-                            // auf
-                            fuzzer.writeOptions(outputOptions);
-                            fuzzer.writeConstraints(outputConstraints);
-                        } catch (const std::exception& e) {
-                            // Wenn ein Fehler auftritt, gib eine Fehlermeldung aus und beende das
-                            // Programm
-                            std::cerr << "Error: " << e.what() << "\n";
-                            return 2;
-                        }
-                    
-                        // Gib eine Erfolgsmeldung aus und beende das Programm
-                        std::cout
-                            << "Successfully generated and wrote the options and constraints.\n";
-                        return 0;
-                        }
-                        </code></pre>
-            Hier ist Model.cpp:
-            <pre><code>
-                    
-                        #include "Model.hpp"
-                    
-                        #include <fstream>
-                        #include <stdexcept>
-                    
-                        #include "Constraint.hpp"
-                        #include "Option.hpp"
-                    
-                        // Der Konstruktor speichert das Option-Objekt in der Membervariable
-                        Model::Model(Option& options) : options(options) {}
-                    
-                        // Diese Methode fügt einen Optionwert zum Modell hinzu
-                        void Model::addOptionValue(const std::string& optionName,
-                                                const std::string& value) {
-                        // Überprüfe, ob die Option im Option-Objekt existiert
-                        if (!options.getName(optionName)) {
-                            // Wenn nicht, werfe eine Ausnahme
-                            throw std::invalid_argument("Option " + optionName + " does not exist");
-                        }
-                    
-                        // Überprüfe, ob der Wert in der Liste von Werten der Option enthalten ist
-                        if (!options.getOption(optionName).hasValue(value)) {
-                            // Wenn nicht, werfe eine Ausnahme
-                            throw std::invalid_argument("Value " + value + " is not valid for option " +
-                                                        optionName);
-                        }
-                    
-                        // Füge den Optionwert zur Map von Optionen auf Werte hinzu
-                        optionValues[optionName] = value;
-                        }
-                    
-                        // Diese Methode überprüft, ob eine Option im Modell gesetzt ist
-                        bool Model::isOptionSet(const std::string& optionName) const {
-                        // Überprüfe, ob die Option in der Map von Optionen auf Werte existiert
-                        return optionValues.find(optionName) != optionValues.end();
-                        }
-                    
-                        // Diese Methode überprüft, ob das Modell mit den Constraints kompatibel ist
-                        bool Model::isCompatibleWithConstraints(Constraint& constraints) const {
-                        // Iteriere über die Liste von Constraints des Constraints-Objekts
-                        for (const auto& constraint : constraints.getConstraints()) {
-                            // Überprüfe, ob das Constraint erfüllt ist
-                            if (constraint.isSatisfiedByModel(*this)) {
-                            // Wenn ja, gehe zum nächsten Constraint
-                            continue;
-                            } else {
-                            // Wenn nicht, gib false zurück
-                            return false;
-                            }
-                        }
-                    
-                        // Wenn alle Constraints erfüllt sind, gib true zurück
-                        return true;
-                        }
-                    
-                        // Diese Methode schreibt das Modell in eine Datei
-                        void Model::printToFile(std::ofstream& file) const {
-                        // Iteriere über die Map von Optionen auf Werte
-                        for (const auto& optionValue : optionValues) {
-                            // Schreibe das Paar in die Datei, gefolgt von einem Komma
-                            file << optionValue.first << "," << optionValue.second << ",";
-                        }
-                        // Schreibe einen Zeilenumbruch in die Datei
-                        file << "\n";
-                        }
-                        </code></pre>
-            Hier ist Option.cpp:
-            <pre><code>
-                        #include "Option.hpp"
-                    
-                        // The constructor takes the name of the option as a parameter
-                        Option::Option(const std::string& name) : name(name) {}
-                    
-                        // This method adds a value to the list of possible values
-                        void Option::addValue(const std::string& value) { values.push_back(value); }
-                    
-                        // This method returns the name of the option
-                        const std::string& Option::getName() const { return name; }
-                    
-                        // This method returns the list of possible values
-                        const std::vector<std::string>& Option::getValues() const { return values; }
-                        </code></pre>
-            Hier ist Parser.cpp:
-            <pre><code>
-                        #include "Parser.hpp"
-                    
-                        #include <fstream>
-                        #include <sstream>
-                        #include <stdexcept>
-                    
-                        // The constructor takes the names of the input files as parameters
-                        Parser::Parser(const std::string& optionsFile,
-                                    const std::string& constraintsFile)
-                            : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
-                    
-                        // This method reads the .options file and fills the map of options
-                        void Parser::parseOptions() {
-                        // Open the file for reading
-                        std::ifstream file(optionsFile);
-                        if (!file) {
-                            // If the file cannot be opened, throw an exception
-                            throw std::runtime_error("Could not open file " + optionsFile);
-                        }
-                    
-                        // Read the file line by line
-                        std::string line;
-                        while (std::getline(file, line)) {
-                            // Create a stream from the line
-                            std::istringstream stream(line);
-                    
-                            // Read the name of the option from the stream
-                            std::string name = readString(stream);
-                    
-                            // Create an Option object with the name
-                            Option option(name);
-                    
-                            // Read the possible values from the stream and add them to the option
-                            std::string value;
-                            while ((value = readString(stream)) != "") {
-                            option.addValue(value);
-                            }
-                    
-                            // Add the option to the map
-                            options[name] = option;
-                        }
-                    
-                        // Close the file
-                        file.close();
-                        }
-                    
-                        // This method reads the .constraints file and fills the list of constraints
-                        void Parser::parseConstraints() {
-                        // Open the file for reading
-                        std::ifstream file(constraintsFile);
-                        if (!file) {
-                            // If the file cannot be opened, throw an exception
-                            throw std::runtime_error("Could not open file " + constraintsFile);
-                        }
-                    
-                        // Read the file line by line
-                        std::string line;
-                        while (std::getline(file, line)) {
-                            // Create a stream from the line
-                            std::istringstream stream(line);
-                    
-                            // Create a Constraint object
-                            Constraint constraint;
-                    
-                            // Read the pairs of option and value from the stream and add them to the
-                            // constraint
-                            std::string option, value;
-                            while ((option = readString(stream)) != "" &&
-                                (value = readString(stream)) != "") {
-                            constraint.addPair(option, value);
-                            }
-                    
-                            // Add the constraint to the list
-                            constraints.push_back(constraint);
-                        }
-                    
-                        // Close the file
-                        file.close();
-                        }
-                    
-                        // This method returns the map of options
-                        const std::map<std::string, Option>& Parser::getOptions() const {
-                        return options;
-                        }
-                    
-                        // This method returns the list of constraints
-                        const std::list<Constraint>& Parser::getConstraints() const {
-                            return constraints;
-                        }
-                    
-                        // This method reads a string from a stream until a comma or a newline is found
-                        // or until the end of the stream is reached
-                        std::string Parser::readString(std::istream& stream) {
-                        // Create an empty string
-                        std::string result;
-                    
-                        // Read the stream character by character
-                        char c;
-                        while (stream.get(c)) {
-                            // If the character is a comma or a newline, break out of the loop
-                            if (c == ',' || c == '\n') {
-                            break;
-                            }
-                    
-                            // Otherwise, append the character to the string
-                            result += c;
-                        }
-                    
-                        // Return the string
-                        return result;
-                        }
-                        </code></pre>
-            Hier ist PrettyPrinter.cpp:
-            <pre><code>
-                        // PrettyPrinter.cpp
-                    
-                        #include "PrettyPrinter.hpp"
-                    
-                        #include <fstream>
-                        #include <stdexcept>
-                    
-                        // Der Konstruktor speichert die Namen der Ausgabedateien in den Membervariablen
-                        PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
-                                                    const std::string& constraintsFile)
-                            : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
-                    
-                        // Diese Methode schreibt die Optionen in die .options Datei
-                        void PrettyPrinter::printOptions(const std::map<std::string, Option>& options) {
-                        // Öffne die Datei zum Schreiben
-                        std::ofstream file(optionsFile);
-                        if (!file) {
-                            // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                            throw std::runtime_error("Could not open file " + optionsFile);
-                        }
-                    
-                        for (const auto& pair : options) {
-                            file << pair.first << ",";
-                            for (const auto& value : pair.second.getValues()) {
-                            file << value << ",";
-                            }
-                            file << "\n";
-                        }
-                        file.close();
-                        }
-                    
-                        // Diese Methode schreibt die Constraints in die .constraints Datei
-                        void PrettyPrinter::printConstraints(const std::list<Constraint>& constraints) {
-                        // Öffne die Datei zum Schreiben
-                        std::ofstream file(constraintsFile);
-                        if (!file) {
-                            // Wenn die Datei nicht geöffnet werden kann, werfe eine Ausnahme
-                            throw std::runtime_error("Could not open file " + constraintsFile);
-                        }
-                    
-                        // Iteriere über die Liste von Constraints
-                        for (const auto& constraint : constraints) {
-                            // Hole die Liste der Paare aus Option und Wert
-                            const auto& pairs = constraint.getPairs();
-                            // Iteriere über die Liste der Paare
-                            for (const auto& pair : pairs) {
-                            // Schreibe das Paar in die Datei, gefolgt von einem Komma
-                            file << pair.first << "," << pair.second << ",";
-                            }
-                            // Schreibe einen Zeilenumbruch in die Datei
-                            file << "\n";
-                        }
-                        // Schließe die Datei
-                        file.close();
-                        }
-                        </code></pre>
-            Hier ist Solver.cpp:
-            <pre><code>
-                        // Solver.cpp
-                    
-                        #include "Solver.hpp"
-                    
-                        #include <fstream>
-                        #include <random>
-                        #include <stdexcept>
-                    
-                        #include "Model.hpp"  // Include the header file for Model.hpp
-                    
-                        // Der Konstruktor speichert den Parser in der Membervariable
-                        Solver::Solver(const Parser& parser) : parser(parser) {
-                        // Declare and initialize the models variable as an empty list
-                        models = std::list<Model>();
-                        }
-                    
-                        // Diese Methode generiert die Modelle und speichert sie in einer Liste von Maps
-                        // von Optionen auf Werte
-                        void Solver::solve() {
-                        // Erstelle eine leere Map von Paaren auf Booleans, die speichert, welche
-                        // Paare schon abgedeckt sind
-                        std::map<std::pair<std::string, std::string>, bool> coveredPairs;
-                    
-                        // Erstelle eine leere Map von Optionen auf Booleans, die speichert, welche
-                        // Optionen schon gesetzt sind
-                        std::map<std::string, bool> setOptions;
-                    
-                        // Erstelle einen Zufallszahlengenerator mit einer festen Seed (z.B. 42), um
-                        // zufällige Werte zu erzeugen
-                        std::mt19937 gen(42);
-                    
-                        // Wiederhole folgende Schritte, bis entweder alle Paare abgedeckt sind oder
-                        // 1000 Konfigurationen generiert wurden, die die Constraints nicht erfüllen
-                        int invalidCount = 0;
-                        while (coveredPairs.size() < parser.getOptions().size() *
-                                                        (parser.getOptions().size() - 1) / 2 &&
-                                invalidCount < 1000) {
-                            // Setze alle Optionen auf false in der Map von Optionen auf Booleans
-                            for (const auto& pair : parser.getOptions()) {
-                            setOptions[pair.first] = false;
-                            }
-                    
-                            // Erstelle ein Model-Objekt mit dem Options-Objekt des Parsers als
-                            // Parameter
-                            Model model(parser.getOptions());
-                    
-                            // Wähle zufällig eine Option aus der Map von Optionen des Parsers aus
-                            std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
-                            auto it1 = parser.getOptions().begin();
-                            std::advance(it1, dis1(gen));
-                            std::string option1 = it1->first;
-                    
-                            // Wähle zufällig einen Wert aus der Liste von Werten der Option aus
-                            const auto& values1 = it1->second.getValues();
-                            std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-                            std::string value1 = values1[dis2(gen)];
-                    
-                            // Setze die Option auf true in der Map von Optionen auf Booleans
-                            setOptions[option1] = true;
-                    
-                            // Füge den Wert zum Model hinzu
-                            model.addOptionValue(option1, value1);
-                    
-                            // Wiederhole folgende Schritte, bis alle Optionen gesetzt sind
-                            while (std::find(setOptions.begin(), setOptions.end(), false) !=
-                                setOptions.end()) {
-                            // Wähle zufällig eine Zahl zwischen 0 und 99 aus
-                            std::uniform_int_distribution<> dis3(0, 99);
-                            int r = dis3(gen);
-                    
-                            if (r < 10) {
-                                // Wenn die Zahl kleiner als 10 ist, wähle zufällig eine Option aus, die
-                                // noch nicht gesetzt ist, und wähle zufällig einen Wert aus ihrer Liste
-                                // von Werten aus. Setze die Option und den Wert wie oben beschrieben.
-                                // Finde alle Optionen, die noch nicht gesetzt sind
-                                std::vector<std::string> unsetOptions;
-                                for (const auto& pair : setOptions) {
-                                if (!pair.second) {
-                                    unsetOptions.push_back(pair.first);
-                                }
-                                }
-                    
-                                // Wähle zufällig eine Option aus
-                                std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
-                                std::string option2 = unsetOptions[dis4(gen)];
-                    
-                                // Finde die Liste von Werten der Option
-                                const auto& values2 = parser.getOptions().at(option2).getValues();
-                    
-                                // Wähle zufällig einen Wert aus
-                                std::uniform_int_distribution<> dis5(0, values2.size() - 1);
-                                std::string value2 = values2[dis5(gen)];
-                    
-                                // Setze die Option auf true in der Map von Optionen auf Booleans
-                                setOptions[option2] = true;
-                    
-                                // Füge den Wert zum Model hinzu
-                                model.addOptionValue(option2, value2);
-                    
-                            } else {
-                                // Wenn die Zahl größer oder gleich 10 ist, wähle zufällig ein Paar aus,
-                                // das noch nicht abgedeckt ist. Setze die beiden Optionen und ihre
-                                // Werte wie oben beschrieben.
-                                // Finde alle Paare, die noch nicht abgedeckt sind
-                                std::vector<std::pair<std::string, std::string> > uncoveredPairs;
-                                for (const auto& pair1 : parser.getOptions()) {
-                                for (const auto& pair2 : parser.getOptions()) {
-                                    if (pair1.first < pair2.first &&
-                                        coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
-                                            coveredPairs.end()) {
-                                    uncoveredPairs.push_back(
-                                        std::make_pair(pair1.first, pair2.first));
-                                    }
-                                }
-                                }
-                    
-                                // Wähle zufällig ein Paar aus
-                                std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
-                                auto pair = uncoveredPairs[dis6(gen)];
-                    
-                                // Finde die Liste von Werten der ersten Option
-                                const auto& values3 = parser.getOptions().at(pair.first).getValues();
-                    
-                                // Wähle zufällig einen Wert aus
-                                std::uniform_int_distribution<> dis7(0, values3.size() - 1);
-                                std::string value3 = values3[dis7(gen)];
-                    
-                                // Setze die erste Option auf true in der Map von Optionen auf Booleans
-                                setOptions[pair.first] = true;
-                    
-                                // Füge den Wert zum Model hinzu
-                                model.addOptionValue(pair.first, value3);
-                    
-                                // Finde die Liste von Werten der zweiten Option
-                                const auto& values4 = parser.getOptions().at(pair.second).getValues();
-                    
-                                // Wähle zufällig einen Wert aus
-                                std::uniform_int_distribution<> dis8(0, values4.size() - 1);
-                                std::string value4 = values4[dis8(gen)];
-                    
-                                // Setze die zweite Option auf true in der Map von Optionen auf Booleans
-                                setOptions[pair.second] = true;
-                    
-                                // Füge den Wert zum Model hinzu
-                                model.addOptionValue(pair.second, value4);
-                            }
-                            }
-                    
-                            // Überprüfe, ob das aktuelle Modell mit den Constraints des Parsers
-                            // kompatibel ist
-                            if (model.isCompatibleWithConstraints(parser.getConstraints())) {
-                            // Wenn ja, füge es zur Liste von Model-Objekten hinzu und markiere alle
-                            // Paare als abgedeckt
-                            models.push_back(model);
-                            for (const auto& pair1 : model.getOptionValues()) {
-                                for (const auto& pair2 : model.getOptionValues()) {
-                                if (pair1.first < pair2.first) {
-                                    coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
-                                }
-                                }
-                            }
-                            } else {
-                            // Wenn nein, erhöhe einen Zähler um eins
-                            invalidCount++;
-                            }
-                        }
-                        }
-                    
-                        // Diese Methode gibt die Liste von Model-Objekten zurück
-                    
-                        const std::list<Model>& Solver::getModels() const { return models; }
-                    
-                        // Diese Methode überprüft, ob ein Modell mit den Constraints kompatibel ist
-                    
-                        bool Solver::checkConstraints(const Model& model) const {
-                        // Iteriere über die Liste von Constraints des Parsers
-                        for (const auto& constraint : parser.getConstraints()) {
-                            // Hole die Liste der Paare aus Option und Wert
-                            const auto& pairs = constraint.getPairs();
-                            // Überprüfe, ob alle Paare im Modell vorkommen
-                            bool allPairsInModel = true;
-                            for (const auto& pair : pairs) {
-                            if (model.getOptionValue(pair.first) != pair.second) {
-                                allPairsInModel = false;
-                                break;
-                            }
-                            }
-                            // Wenn alle Paare im Modell vorkommen, gib false zurück, da die
-                            // Konfiguration nicht mit den Constraints kompatibel ist
-                            if (allPairsInModel) {
-                            return false;
-                            }
-                        }
-                        // Wenn keine Constraints verletzt wurden, gib true zurück
-                        return true;
-                        }
-                    
-                        void Solver::writeModels(const std::string& filename) {
-                        // Open the output file for writing
-                        std::ofstream file(filename);
-                        if (!file) {
-                            // If the file cannot be opened, throw an exception
-                            throw std::runtime_error("Could not open file " + filename);
-                        }
-                    
-                        // Iterate over the list of models
-                        for (const auto& model : models) {
-                            // Iterate over the map of options and values
-                            for (const auto& pair : model) {
-                            // Write the option name and value, followed by a comma
-                            file << pair.first << "," << pair.second << ",";
-                            }
-                            // Write a newline character
-                            file << "\n";
-                        }
-                    
-                        // Close the file
-                        file.close();
-                        }
-                        </code></pre>
-            Hier ist Checker.hpp:
-            <pre><code>
-                        #ifndef CHECKER_HPP
-                        #define CHECKER_HPP
-                    
-                        #include <list>
-                        #include <map>
-                        #include <ostream>
-                        #include <string>
-                        #include <utility>
-                        #include <vector>
-                    
-                        #include "Constraint.hpp"
-                        #include "Option.hpp"
-                        #include "Parser.hpp"
-                        #include "Solver.hpp"
-                    
-                        // A class that checks if all the models are valid and satisfy the constraints
-                        class Checker {
-                        public:
-                        // The constructor takes only the parser as a parameter
-                        Checker(const Parser& parser);
-                    
-                        // The constructor takes the names of the input files as parameters
-                        Checker(const std::string& optionsFile, const std::string& constraintsFile,
-                                const std::string& modelsFile);
-                    
-                        // The constructor takes the parser and the solver as parameters
-                        Checker(const Parser& parser, const Solver& solver);
-                    
-                        void check(const std::string& modelsFile);
-                    
-                        void check(std::ostream& out);
-                        // This method reads the input files and fills the data structures
-                        void readFiles();
-                    
-                        // This method checks all the models and outputs the results
-                        void checkModels(std::ostream& out);
-                    
-                        // This method checks if a model is compatible with the constraints
-                        bool checkConstraints(const Model& model) const;
-                    
-                        const std::list<std::string>& getErrorsList() const;
-                    
-                        // This method returns a list of errors that were found by the checker
-                        std::list<std::string> getErrorsList();
-                    
-                        private:
-                        const Parser& parser;
-                        // The name of the .options file
-                        std::string optionsFile;
-                    
-                        // The name of the .constraints file
-                        std::string constraintsFile;
-                    
-                        // The name of the .models file
-                        std::string modelsFile;
-                    
-                        // The map of options
-                        std::map<std::string, Option> options;
-                    
-                        // The list of constraints
-                        std::list<Constraint> constraints;
-                    
-                        // The list of models
-                        std::list<std::vector<std::pair<std::string, std::string> > > models;
-                    
-                        // This method reads a string from a stream until a comma or a newline is
-                        // found or until the end of the stream is reached
-                        std::string readString(std::istream& stream);
-                    
-                        // This method checks if a model is valid
-                        bool isValid(const std::vector<std::pair<std::string, std::string> >& model);
-                    
-                        // This method checks if a model satisfies a constraint
-                        bool satisfies(const std::vector<std::pair<std::string, std::string> >& model,
-                                        const Constraint& constraint);
-                        };
-                    
-                        #endif
-                        </code></pre>
-            Hier ist Constraint.hpp:
-            <pre><code>
-                        #ifndef CONSTRAINT_HPP
-                        #define CONSTRAINT_HPP
-                    
-                        #include <string>
-                        #include <utility>
-                        #include <vector>
-                    
-                        // A class that represents a constraint with a list of pairs of option and value
-                        class Constraint {
-                        public:
-                        // The constructor takes nothing as parameters
-                        Constraint();
-                    
-                        // This method adds a pair of option and value to the list
-                        void addPair(const std::string& option, const std::string& value);
-                    
-                        // This method returns the list of pairs
-                        const std::vector<std::pair<std::string, std::string> >& getPairs() const;
-                    
-                        private:
-                        // The list of pairs of option and value
-                        std::vector<std::pair<std::string, std::string> > pairs;
-                        };
-                    
-                        #endif
-                        </code></pre>
-            Hier ist Fuzzer.hpp:
-            <pre><code>
-                        #include <map>
-                        #include <random>
-                        #include <string>
-                        #include <vector>
-                    
-                        // Diese Klasse ist verantwortlich für das Generieren von zufälligen
-                        // Optionen,
-                        class Fuzzer {
-                        public:
-                        // Der Konstruktor nimmt die Anzahl der Optionen, die maximale Anzahl der
-                        // Werte pro Option und die maximale Anzahl der Constraints als Parameter
-                        Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints);
-                        
-                    
-                            // Diese Methode schreibt die Optionen und Werte in eine Datei mit der
-                            // Endung
-                            void
-                            writeOptions(const std::string& optionsFile);
-                        
-                    
-                            // Diese Methode schreibt die Constraints in eine Datei mit der
-                            // Endung
-                            void
-                            writeConstraints(const std::string& constraintsFile);
-                        
-                    
-                            private :
-                            // Die Map von Optionen auf Vektoren von Werten
-                            std::map<char, std::vector<int>>
-                                options;
-                    
-                        // Die Liste von Vektoren von Paaren aus Optionen und Werten
-                        std::list<std::vector<std::pair<char, int>>> constraints;
-                    
-                        // Eine Hilfsmethode, die eine zufällige Zahl zwischen min und max
-                        // erzeugt
-                        int randomInt(int min, int max);
-                        
-                        };
-                        </code></pre>
-            Hier ist Main.hpp:
-            <pre><code>
-                        #ifndef MAIN_HPP
-                        #define MAIN_HPP
-                    
-                        #include <iostream>
-                        #include <string>
-                    
-                        #include "Checker.hpp"
-                        #include "Fuzzer.hpp"
-                        #include "Parser.hpp"
-                        #include "PrettyPrinter.hpp"
-                    
-                        // The main function that starts the program
-                        int main(int argc, char* argv[]);
-                    
-                        // A helper function that generates a random integer between min and max
-                        int randomInt(int min, int max);
-                    
-                        // A helper function that reads a string from a stream until a comma or a
-                        // newline
-                        std::string readString(std::istream& stream);
-                    
-                        #endif
-                        </code></pre>
-            Hier ist Model.hpp:
-            <pre><code>
-                        #ifndef MODEL_HPP
-                        #define MODEL_HPP
-                    
-                        #include <map>
-                        #include <string>
-                    
-                        #include "Constraint.hpp"
-                        #include "Option.hpp"
-                    
-                        // Diese Klasse ist verantwortlich für das Speichern der Optionwerte für ein
-                        // Modell
-                    
-                        class Model {
-                        public:
-                        // Der Konstruktor nimmt nichts als Parameter und erstellt eine leere Map
-                        Model();
-                    
-                        // Diese Methode setzt eine Option und ihren Wert in der Map
-                        void setOptionValue(const std::string& option, const std::string& value);
-                    
-                        // Diese Methode gibt den Wert einer Option zurück
-                        std::string getOptionValue(const std::string& option) const;
-                    
-                        // Der Konstruktor nimmt ein Options-Objekt als Parameter
-                        Model(Option& options);
-                    
-                        // Diese Methode fügt einen Optionwert zum Modell hinzu
-                        void addOptionValue(const std::string& optionName, const std::string& value);
-                    
-                        // Diese Methode überprüft, ob eine Option im Modell gesetzt ist
-                        bool isOptionSet(const std::string& optionName) const;
-                    
-                        // Diese Methode überprüft, ob das Modell mit den Constraints kompatibel ist
-                        bool isCompatibleWithConstraints(Constraint& constraints) const;
-                    
-                        // Diese Methode schreibt das Modell in eine Datei
-                        void printToFile(std::ofstream& file) const;
-                    
-                        private:
-                        // Das Options-Objekt, das die Optionen enthält
-                        Option& options;
-                    
-                        // Die Map von Optionen auf Werte, die das Modell speichert
-                        std::map<std::string, std::string> optionValues;
-                        };
-                    
-                        #endif</code></pre>
-            Hier ist Option.hpp:
-            <pre><code>
-                        #ifndef OPTION_HPP
-                        #define OPTION_HPP
-                    
-                        #include <string>
-                        #include <vector>
-                    
-                        // A class that represents an option with a name and a list of possible values
-                        class Option {
-                        public:
-                        // The constructor takes the name of the option as a parameter
-                        Option(const std::string& name);
-                    
-                        // This method adds a value to the list of possible values
-                        void addValue(const std::string& value);
-                    
-                        // This method returns the name of the option
-                        const std::string& getName() const;
-                    
-                        // This method returns the list of possible values
-                        const std::vector<std::string>& getValues() const;
-                    
-                        private:
-                        // The name of the option
-                        std::string name;
-                    
-                        // The list of possible values
-                        std::vector<std::string> values;
-                        };
-                    
-                        #endif
-                        </code></pre>
-            Hier ist Parser.hpp:
-            <pre><code>
-                        #ifndef PARSER_HPP
-                        #define PARSER_HPP
-                    
-                        #include <istream>
-                        #include <list>
-                        #include <map>
-                        #include <string>
-                    
-                        #include "Constraint.hpp"
-                        #include "Option.hpp"
-                    
-                        // A class that parses the .options and .constraints files and fills the data
-                        // structures
-                        class Parser {
-                        public:
-                        // The constructor takes the names of the input files as parameters
-                        Parser(const std::string& optionsFile, const std::string& constraintsFile);
-                    
-                        // This method reads the .options file and fills the map of options
-                        void parseOptions();
-                    
-                        // This method reads the .constraints file and fills the list of constraints
-                        void parseConstraints();
-                    
-                        // This method returns the map of options
-                        const std::map<std::string, Option>& getOptions() const;
-                    
-                        // This method returns the list of constraints
-                        const std::list<Constraint>& getConstraints() const;
-                    
-                        private:
-                        // The name of the .options file
-                        std::string optionsFile;
-                    
-                        // The name of the .constraints file
-                        std::string constraintsFile;
-                    
-                        // The map of options
-                        std::map<std::string, Option> options;
-                    
-                        // The list of constraints
-                        std::list<Constraint> constraints;
-                    
-                        // This method reads a string from a stream until a comma or a newline is
-                        // found or until the end of the stream is reached
-                        std::string readString(std::istream& stream);
-                        };
-                    
-                        #endif
-                        </code></pre>
-            Hier ist PrettyPrinter.hpp:
-            <pre><code>
-                        // PrettyPrinter.hpp
-                    
-                        #include <list>
-                        #include <map>
-                        #include <string>
-                    
-                        #include "Constraint.hpp"
-                        #include "Option.hpp"
-                    
-                        // Diese Klasse ist verantwortlich für das Ausgeben der Optionen und Constraints
-                        // in einer CSV-Format
-                    
-                        class PrettyPrinter {
-                        public:
-                        // Der Konstruktor nimmt die Namen der Ausgabedateien als Parameter
-                        PrettyPrinter(const std::string& optionsFile,
-                                        const std::string& constraintsFile);
-                    
-                        // Diese Methode schreibt die Optionen in die .options Datei
-                        void printOptions(const std::map<std::string, Option>& options);
-                    
-                        // Diese Methode schreibt die Constraints in die .constraints Datei
-                        void printConstraints(const std::list<Constraint>& constraints);
-                    
-                        private:
-                        // Die Namen der Ausgabedateien
-                        std::string optionsFile;
-                        std::string constraintsFile;
-                        };
-                        </code></pre>
-            Hier ist Solver.hpp:
-            <pre><code>
-                        #ifndef SOLVER_HPP
-                        #define SOLVER_HPP
-                    
-                        #include <list>
-                        #include <map>
-                        #include <string>
-                    
-                        #include "Model.hpp"
-                        #include "Parser.hpp"
-                    
-                        // Diese Klasse ist verantwortlich für das Generieren der Modelle
-                        class Solver {
-                        public:
-                        // Der Konstruktor nimmt einen Parser als Parameter
-                        Solver(const Parser& parser);
-                    
-                        // Diese Methode generiert die Modelle und speichert sie in einer Liste von
-                        // Model-Objekten
-                        void solve();
-                    
-                        void writeModels(const std::string& filename);
-                    
-                        // Diese Methode gibt die Liste von Model-Objekten zurück
-                        const std::list<Model>& getModels() const;
-                    
-                        private:
-                        // Der Parser, der die Optionen und Constraints enthält
-                        const Parser& parser;
-                    
-                        // Die Liste von Model-Objekten, die die Modelle speichert
-                        std::list<Model> models;
-                    
-                        // Eine Hilfsmethode, die überprüft, ob ein Modell mit den Constraints
-                        // kompatibel ist
-                        bool checkConstraints(const Model& model) const;
-                        };
-                    
-                        #endif
-                        </code></pre>
+                
+                import os
+                import random
+                import csv
+                
+                class Options:
+                    # Initialize an empty dictionary to store the options and their values
+                    def __init__(self):
+                        self.options = {}
+                
+                    # Parse a .options file and fill the dictionary
+                    def parse(self, filename):
+                        # Open the file in read mode
+                        with open(filename, "r") as file:
+                            # Create a csv reader object
+                            reader = csv.reader(file)
+                            # Loop through each row in the file
+                            for row in reader:
+                                # Check if the row is not empty
+                                if row:
+                                    # Get the option name and its values from the row
+                                    option = row[0]
+                                    values = row[1:]
+                                    # Check if the option name is not empty and has at least one value
+                                    if option and values:
+                                        # Store the option and its values in the dictionary
+                                        self.options[option] = values
+                                    else:
+                                        # Raise an exception if the option name or values are empty
+                                        raise ValueError(f"Invalid option or values in {filename}")
+                                else:
+                                    # Raise an exception if the row is empty
+                                    raise ValueError(f"Empty row in {filename}")
+                
+                    # Print the options and their values in a .options file format
+                    def print(self, filename):
+                        # Open the file in write mode
+                        with open(filename, "w") as file:
+                            # Create a csv writer object
+                            writer = csv.writer(file)
+                            # Loop through each option and its values in the dictionary
+                            for option, values in self.options.items():
+                                # Write a row with the option name and its values
+                                writer.writerow([option] + values)
+                
+                
+                class Constraints:
+                    # Initialize an empty list to store the constraints
+                    def __init__(self):
+                        self.constraints = []
+                
+                    # Parse a .constraints file and fill the list
+                    def parse(self, filename):
+                        # Open the file in read mode
+                        with open(filename, "r") as file:
+                            # Create a csv reader object
+                            reader = csv.reader(file)
+                            # Loop through each row in the file
+                            for row in reader:
+                                # Check if the row is not empty
+                                if row:
+                                    # Get the constraint as a list of pairs of option and value
+                                    constraint = [(row[i], row[i+1]) for i in range(0, len(row), 2)]
+                                    # Check if the constraint has at least two pairs of option and value
+                                    if len(constraint) >= 2:
+                                        # Store the constraint in the list
+                                        self.constraints.append(constraint)
+                                    else:
+                                        # Raise an exception if the constraint has less than two pairs of option and value
+                                        raise ValueError(f"Invalid constraint in {filename}")
+                                else:
+                                    # Raise an exception if the row is empty
+                                    raise ValueError(f"Empty row in {filename}")
+                
+                    # Print the constraints and their options and values in a .constraints file format
+                    def print(self, filename):
+                        # Open the file in write mode
+                        with open(filename, "w") as file:
+                            # Create a csv writer object
+                            writer = csv.writer(file)
+                            # Loop through each constraint in the list
+                            for constraint in self.constraints:
+                                # Write a row with the pairs of option and value flattened into a single list
+                                writer.writerow([item for pair in constraint for item in pair])
+                
+                
+                class Models:
+                
+                    # Initialize an empty list to store the models and a counter for failed attempts
+                    def __init__(self):
+                        self.models = []
+                        self.failures = 0
+                
+                    # Generate possible models by randomly creating configurations that satisfy the options and constraints
+                    def generate(self, options, constraints):
+                        # Define some constants for probabilities and limits
+                        LOW_PROB = 0.1  # The probability of choosing a single option instead of a pair of options to extend a configuration 
+                        HIGH_PROB = 0.9  # The probability of choosing a pair of options that is not covered yet instead of any pair of options to extend a configuration
+                        MAX_FAILURES = 1000  # The maximum number of failed attempts to create a valid configuration before stopping the generation
+                        MAX_MODELS = 100  # The maximum number of models to generate
+                
+                        # Create a set of all possible pairs of options and values from the options
+                        all_pairs = set()
+                        for option, values in options.options.items():
+                            for value in values:
+                                all_pairs.add((option, value))
+                
+                        # Create a set of covered pairs of options and values that have been used in the models
+                        covered_pairs = set()
+                
+                        # Loop until the maximum number of failures or models is reached
+                        while self.failures < MAX_FAILURES and len(self.models) < MAX_MODELS:
+                            # Create an empty configuration as a dictionary of option and value
+                            config = {}
+                
+                            # Loop until the configuration is complete or invalid
+                            while True:
+                                # Check if the configuration is complete, i.e. it has all the options
+                                if len(config) == len(options.options):
+                                    # Check if the configuration is valid, i.e. it satisfies all the constraints
+                                    if self.is_valid(config, constraints):
+                                        # Add the configuration as a model to the list
+                                        self.models.append(config)
+                                        # Update the covered pairs with the pairs in the model
+                                        covered_pairs.update(config.items())
+                                        # Reset the failures counter
+                                        self.failures = 0
+                                    else:
+                                        # Increment the failures counter
+                                        self.failures += 1
+                                    # Break the loop
+                                    break
+                
+                                # Choose a random number between 0 and 1
+                                r = random.random()
+                
+                                # If the random number is less than the low probability, choose a single option to extend the configuration
+                                if r < LOW_PROB:
+                                    # Choose a random option that is not in the configuration yet
+                                    option = random.choice(list(options.options.keys() - config.keys()))
+                                    # Choose a random value for that option
+                                    value = random.choice(options.options[option])
+                                    # Add the option and value to the configuration
+                                    config[option] = value
+                
+                                # Otherwise, choose a pair of options to extend the configuration
+                                else:
+                                    # Choose a random number between 0 and 1
+                                    r = random.random()
+                
+                                    # If the random number is less than the high probability, choose a pair of options that is not covered yet
+                                    if r < HIGH_PROB:
+                                        # Choose a random pair that is not in the covered pairs and is compatible with the configuration
+                                        pair = random.choice(list((all_pairs - covered_pairs) & self.get_compatible_pairs(config)))
+                                        # Add the pair to the configuration
+                                        config[pair[0]] = pair[1]
+                
+                                    # Otherwise, choose any pair of options that is compatible with the configuration
+                                    else:
+                                        # Choose a random pair that is compatible with the configuration
+                                        pair = random.choice(list(self.get_compatible_pairs(config)))
+                                        # Add the pair to the configuration
+                                        config[pair[0]] = pair[1]
+                
+                    # Check if a configuration is valid, i.e. it satisfies all the constraints
+                    def is_valid(self, config, constraints):
+                        # Loop through each constraint in the constraints list
+                        for constraint in constraints.constraints:
+                            # Loop through each pair of option and value in the constraint
+                            for pair in constraint:
+                                # Check if the option is in the configuration and its value matches the constraint value
+                                if pair[0] in config and config[pair[0]] == pair[1]:
+                                    # If so, continue to check the next pair in the constraint
+                                    continue
+                                else:
+                                    # If not, break the loop and move on to check the next constraint
+                                    break
+                
+                            else:
+                                # If all pairs in the constraint match the configuration, return False as the configuration violates the constraint
+                                return False
+                
+                        # If none of the constraints are violated by the configuration, return True as the configuration is valid
+                        return True
+                
+                    # Get all possible pairs of options and values that are compatible with a partial configuration, i.e. they do not conflict with any existing option or value in the configuration 
+                    def get_compatible_pairs(self, config):
+                        # Create an empty set to store the compatible pairs
+                        compatible_pairs = set()
+                        # Loop through each option and value in the config dictionary 
+                        for option, value in config.items():
+                            # Loop through each other option and value in the config dictionary 
+                            for other_option, other_value in config.items():
+                                # Check if they are different options 
+                                if option != other_option:
+                                    # Add both pairs to the compatible pairs set 
+                                    compatible_pairs.add((option, value))
+                                    compatible_pairs.add((other_option, other_value))
+                        # Return the compatible pairs set 
+                        return compatible_pairs
+                
+                    # Print the models in a .models file format 
+                    def print(self, filename):
+                        # Open the file in write mode
+                        with open(filename, "w") as file:
+                            # Create a csv writer object
+                            writer = csv.writer(file)
+                            # Write a header row with the option names
+                            writer.writerow(list(options.options.keys()))
+                            # Loop through each model in the list
+                            for model in self.models:
+                                # Write a row with the values of the options in the model
+                                writer.writerow([model[option] for option in options.options.keys()])
+                
+                        # Example usage of the classes
+                
+                        # Create an Options object and parse a .options file
+                        options = Options()
+                        options.parse("example.options")
+                
+                        # Create a Constraints object and parse a .constraints file
+                        constraints = Constraints()
+                        constraints.parse("example.constraints")
+                
+                        # Create a Models object and generate possible models that satisfy the options and constraints
+                        models = Models()
+                        models.generate(options, constraints)
+                
+                        # Print the options, constraints, and models to .options, .constraints, and .models files
+                        options.print("example.options")
+                        constraints.print("example.constraints")
+                        models.print("example.models")
+                
+                
+                # Task 3A: Write a function that takes a model and a .constraints file and checks if the model satisfies the constraints
+                
+                # Define a function that takes a model and a .constraints file and checks if the model satisfies the constraints
+                def check_model(model, constraints_file):
+                    # Create a Constraints object and parse the .constraints file
+                    constraints = Constraints()
+                    constraints.parse(constraints_file)
+                
+                    # Loop through each constraint in the constraints list
+                    for constraint in constraints.constraints:
+                        # Loop through each pair of option and value in the constraint
+                        for pair in constraint:
+                            # Check if the option is in the model and its value matches the constraint value
+                            if pair[0] in model and model[pair[0]] == pair[1]:
+                                # If so, continue to check the next pair in the constraint
+                                continue
+                            else:
+                                # If not, break the loop and move on to check the next constraint
+                                break
+                
+                        else:
+                            # If all pairs in the constraint match the model, return False as the model violates the constraint
+                            return False
+                
+                    # If none of the constraints are violated by the model, return True as the model is valid
+                    return True
+                
+                # Example usage of the function
+                
+                # Create a sample model as a dictionary of option and value
+                model = {"option1": "value1", "option2": "value2", "option3": "value3"}
+                
+                # Check if the model satisfies the constraints in a .constraints file
+                result = check_model(model, "example.constraints")
+                
+                # Print the result
+                print(f"The model {'satisfies' if result else 'violates'} the constraints.")
+                
+                
+                def main():
+                    # Get a list of all .options files in the current directory
+                    options_files = [f for f in os.listdir() if f.endswith(".options")]
+                
+                    # Loop through each .options file
+                    for options_file in options_files:
+                        # Create an Options object and parse the .options file
+                        options = Options()
+                        options.parse(options_file)
+                
+                        # Create a corresponding .constraints file name by replacing the .options extension with .constraints
+                        constraints_file = options_file.replace(".options", ".constraints")
+                
+                        # Check if the .constraints file exists
+                        if os.path.exists(constraints_file):
+                            # Create a Constraints object and parse the .constraints file
+                            constraints = Constraints()
+                            constraints.parse(constraints_file)
+                
+                            # Create a Models object and generate possible models that satisfy the options and constraints
+                            models = Models()
+                            models.generate(options, constraints)
+                
+                            # Create a corresponding .models file name by replacing the .options extension with .models
+                            models_file = options_file.replace(".options", ".models")
+                
+                            # Print the options, constraints, and models to .options, .constraints, and .models files
+                            options.print(options_file)
+                            constraints.print(constraints_file)
+                            models.print(models_file)
+                
+                if __name__ == "__main__":
+                    main()
+                </code></pre>
+
         </div>
 
         </code></pre>
