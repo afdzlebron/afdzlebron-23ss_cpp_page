@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren alle in C++
+        Programm IN C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -338,35 +338,15 @@
                     g++ -std=c++17 -c Parser.cpp
                     g++ -std=c++17 -c PrettyPrinter.cpp
                     g++ -std=c++17 -c Solver.cpp
-                    Solver.cpp:95:16: warning: object backing the pointer will be destroyed at the end of the full-expression [-Wdangling-gsl]
+                    Solver.cpp:96:16: warning: object backing the pointer will be destroyed at the end of the full-expression [-Wdangling-gsl]
                         auto it1 = parser.getOptions().begin();
                                 ^~~~~~~~~~~~~~~~~~~
-                    Solver.cpp:192:14: error: no matching member function for call to 'push_back'
-                        models.push_back(currentConfig);
-                        ~~~~~~~^~~~~~~~~
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:711:36: note: candidate function not viable: no known conversion from
-                        'std::map<std::string, std::string>' (aka 'map<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char>
-                        > >') to 'const std::__1::__vector_base<std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >,
-                        std::__1::allocator<std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > >::value_type' (aka 'const
-                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >') for 1st argument
-                        _LIBCPP_INLINE_VISIBILITY void push_back(const_reference __x);
-                                                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:714:36: note: candidate function not viable: no known conversion from
-                        'std::map<std::string, std::string>' (aka 'map<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char>
-                        > >') to 'std::__1::vector<std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >,
-                        std::__1::allocator<std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > >::value_type' (aka
-                        'std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >') for 1st argument
-                        _LIBCPP_INLINE_VISIBILITY void push_back(value_type&& __x);
-                                                    ^
-                    Solver.cpp:208:63: error: return type of out-of-line definition of 'Solver::getModels' differs from that in the declaration
-                    const std::list<std::map<std::string, std::string> >& Solver::getModels()
-                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~         ^
-                    ./Solver.hpp:16:49: note: previous declaration is here
-                    std::list<std::map<std::string, std::string>> getModels() const;
-                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^
-                    Solver.cpp:210:10: error: no viable conversion from returned value of type 'const std::vector<std::vector<std::string> >' (aka 'const
-                        vector<vector<basic_string<char, char_traits<char>, allocator<char> > > >') to function return type 'const std::list<std::map<std::string, std::string> >'
-                        (aka 'const list<map<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > >')
+                    Solver.cpp:194:32: error: use of undeclared identifier 'mapModels'
+                        for (const auto& model : mapModels) {
+                                                ^
+                    Solver.cpp:213:10: error: no viable conversion from returned value of type 'const std::vector<std::vector<std::string> >' (aka 'const
+                        vector<vector<basic_string<char, char_traits<char>, allocator<char> > > >') to function return type 'std::list<std::map<std::string, std::string> >' (aka
+                        'list<map<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > >')
                     return models;
                             ^~~~~~
                     /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:895:5: note: candidate constructor not viable: no known conversion from
@@ -405,7 +385,7 @@
                         'pair<const std::__1::basic_string<char>, bool>') and 'const bool')
                             if (*__first == __value_)
                                 ~~~~~~~~ ^  ~~~~~~~~
-                    Solver.cpp:111:17: note: in instantiation of function template specialization
+                    Solver.cpp:112:17: note: in instantiation of function template specialization
                         'std::__1::find<std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>, bool>,
                         std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long> >, bool>' requested here
                         while (std::find(setOptions.begin(), setOptions.end(), false) !=
@@ -570,7 +550,7 @@
                     /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:3418:1: note: candidate template ignored: could not match 'shuffle_order_engine' against 'pair'
                     operator==(
                     ^
-                    1 warning and 4 errors generated.
+                    1 warning and 3 errors generated.
                     make: *** [Solver.o] Error 1
                 </pre>
         </div>
@@ -578,1018 +558,1021 @@
         <div id="codesInCPlusPlus">
             Hier ist Constraint.hpp:
             <pre><code>
-    #ifndef CONSTRAINT_HPP
-    #define CONSTRAINT_HPP
-
-    #include <string>
-    #include <utility>
-    #include <vector>
-
-    // A class that represents a constraint with a vector of pairs of options and
-    // values
-    class Constraint {
-    public:
-        // A constructor that takes a vector of pairs as a parameter
-        explicit Constraint(const std::vector<std::pair<std::string, std::string> >& pairs);
-
-        // A getter method that returns the vector of pairs of the constraint
-        std::vector<std::pair<std::string, std::string> > getPairs() const;
-
-    private:
-        // A vector of pairs of strings that stores the options and values of the
-        // constraint
-        std::vector<std::pair<std::string, std::string> > pairs;
-    };
-
-    #endif
-    </code></pre>
+                #ifndef CONSTRAINT_HPP
+                #define CONSTRAINT_HPP
+                
+                #include <string>
+                #include <utility>
+                #include <vector>
+                
+                // A class that represents a constraint with a vector of pairs of options and
+                // values
+                class Constraint {
+                public:
+                // A constructor that takes a vector of pairs as a parameter
+                explicit Constraint(const std::vector<std::pair<std::string, std::string> >& pairs);
+                
+                // A getter method that returns the vector of pairs of the constraint
+                std::vector<std::pair<std::string, std::string> > getPairs() const;
+                
+                private:
+                // A vector of pairs of strings that stores the options and values of the
+                // constraint
+                std::vector<std::pair<std::string, std::string> > pairs;
+                };
+                
+                #endif
+                </code></pre>
             Hier ist Fuzzer.hpp:
             <pre><code>
-    #ifndef FUZZER_HPP
-    #define FUZZER_HPP
-
-    #include <list>
-    #include <map>
-    #include <string>
-    #include <vector>
-
-    // A class that generates random options, values and constraints
-    class Fuzzer {
-    public:
-        // A constructor that takes the number of options, the maximum number of
-        // values per option and the maximum number of constraints as parameters
-        Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints);
-
-        explicit Fuzzer(std::map<std::string, std::vector<std::string>> options);
-
-        std::string fuzz();
-        // A method that writes the options and values to a file with the extension
-        // .options
-        void writeOptions(const std::string& optionsFile);
-
-        // A method that writes the constraints to a file with the extension
-        // .constraints
-        void writeConstraints(const std::string& constraintsFile);
-
-        // std::string Fuzzer::fuzz();
-
-    private:
-        // A map of options to vectors of values
-        std::map<std::string, std::vector<std::string> > options;
-
-        // A list of vectors of pairs of options and values
-        std::list<std::vector<std::pair<std::string, std::string> > > constraints;
-
-        // A helper method that generates a random number between min and max
-        int randomInt(int min, int max);
-    };
-
-    #endif
-    </code></pre>
+                #ifndef FUZZER_HPP
+                #define FUZZER_HPP
+                
+                #include <list>
+                #include <map>
+                #include <string>
+                #include <vector>
+                
+                // A class that generates random options, values and constraints
+                class Fuzzer {
+                public:
+                // A constructor that takes the number of options, the maximum number of
+                // values per option and the maximum number of constraints as parameters
+                Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints);
+                
+                explicit Fuzzer(std::map<std::string, std::vector<std::string>> options);
+                
+                std::string fuzz();
+                // A method that writes the options and values to a file with the extension
+                // .options
+                void writeOptions(const std::string& optionsFile);
+                
+                // A method that writes the constraints to a file with the extension
+                // .constraints
+                void writeConstraints(const std::string& constraintsFile);
+                
+                // std::string Fuzzer::fuzz();
+                
+                private:
+                // A map of options to vectors of values
+                std::map<std::string, std::vector<std::string> > options;
+                
+                // A list of vectors of pairs of options and values
+                std::list<std::vector<std::pair<std::string, std::string> > > constraints;
+                
+                // A helper method that generates a random number between min and max
+                int randomInt(int min, int max);
+                };
+                
+                #endif
+                </code></pre>
             Hier ist Model.hpp:
             <pre><code>
-    #ifndef MODEL_HPP
-    #define MODEL_HPP
-
-    #include <map>
-    #include <string>
-
-
-    // A class that represents a model with a map of options and values
-    class Model {
-    public:
-        // A constructor that takes a map as a parameter
-        Model(const std::map<std::string, std::string>& map);
-
-        // A getter method that returns the map of the model
-        std::map<std::string, std::string> getMap() const;
-
-    private:
-        // A map of strings that stores the options and values of the model
-        std::map<std::string, std::string> map;
-    };
-
-    #endif</code></pre>
+                #ifndef MODEL_HPP
+                #define MODEL_HPP
+                
+                #include <map>
+                #include <string>
+                
+                
+                // A class that represents a model with a map of options and values
+                class Model {
+                public:
+                // A constructor that takes a map as a parameter
+                Model(const std::map<std::string, std::string>& map);
+                
+                // A getter method that returns the map of the model
+                std::map<std::string, std::string> getMap() const;
+                
+                private:
+                // A map of strings that stores the options and values of the model
+                std::map<std::string, std::string> map;
+                };
+                
+                #endif</code></pre>
             Hier ist ModelGenerator.hpp:
             <pre><code>
-    #ifndef MODELGENERATOR_HPP
-    #define MODELGENERATOR_HPP
-
-    #include <list>
-    #include <map>
-    #include <string>
-    #include <vector>
-
-    // A class that generates models based on a given set of options and constraints
-
-    class ModelGenerator {
-    public:
-        // A constructor that takes a vector of options and a vector of constraints as
-        // parameters
-        ModelGenerator(
-            const std::vector<std::pair<std::string, std::vector<std::string> > >&
-                options,
-            const std::vector<std::vector<std::pair<std::string, std::string> > >&
-                constraints);
-
-        // A method that generates models and returns them as a list of maps of
-        // options to values
-        std::list<std::map<std::string, std::string> > generateModels() const;
-
-    private:
-        // A vector of pairs of strings and vectors of strings that stores the options
-        std::vector<std::pair<std::string, std::vector<std::string> > > options;
-
-        // A vector of vectors of pairs of strings that stores the constraints
-        std::vector<std::vector<std::pair<std::string, std::string> > > constraints;
-    };
-
-    #endif
-    </code></pre>
+                #ifndef MODELGENERATOR_HPP
+                #define MODELGENERATOR_HPP
+                
+                #include <list>
+                #include <map>
+                #include <string>
+                #include <vector>
+                
+                // A class that generates models based on a given set of options and constraints
+                
+                class ModelGenerator {
+                public:
+                // A constructor that takes a vector of options and a vector of constraints as
+                // parameters
+                ModelGenerator(
+                    const std::vector<std::pair<std::string, std::vector<std::string> > >&
+                        options,
+                    const std::vector<std::vector<std::pair<std::string, std::string> > >&
+                        constraints);
+                
+                // A method that generates models and returns them as a list of maps of
+                // options to values
+                std::list<std::map<std::string, std::string> > generateModels() const;
+                
+                private:
+                // A vector of pairs of strings and vectors of strings that stores the options
+                std::vector<std::pair<std::string, std::vector<std::string> > > options;
+                
+                // A vector of vectors of pairs of strings that stores the constraints
+                std::vector<std::vector<std::pair<std::string, std::string> > > constraints;
+                };
+                
+                #endif
+                </code></pre>
             Hier ist Option.hpp:
             <pre><code>
-    #ifndef OPTION_HPP
-    #define OPTION_HPP
-
-    #include <string>
-    #include <vector>
-
-    // A class that represents an option with a name and a vector of possible values
-    class Option {
-    public:
-        // A constructor that takes a name and a vector of values as parameters
-        Option(const std::string& name, const std::vector<std::string>& values);
-
-        // A getter method that returns the name of the option
-        std::string getName() const;
-
-        // A getter method that returns the vector of values of the option
-        std::vector<std::string> getValues() const;
-
-    private:
-        // A string that stores the name of the option
-        std::string name;
-
-        // A vector of strings that stores the possible values of the option
-        std::vector<std::string> values;
-    };
-
-    #endif
-    </code></pre>
+                #ifndef OPTION_HPP
+                #define OPTION_HPP
+                
+                #include <string>
+                #include <vector>
+                
+                // A class that represents an option with a name and a vector of possible values
+                class Option {
+                public:
+                // A constructor that takes a name and a vector of values as parameters
+                Option(const std::string& name, const std::vector<std::string>& values);
+                
+                // A getter method that returns the name of the option
+                std::string getName() const;
+                
+                // A getter method that returns the vector of values of the option
+                std::vector<std::string> getValues() const;
+                
+                private:
+                // A string that stores the name of the option
+                std::string name;
+                
+                // A vector of strings that stores the possible values of the option
+                std::vector<std::string> values;
+                };
+                
+                #endif
+                </code></pre>
             Hier ist Parser.hpp:
             <pre><code>
-    #ifndef PARSER_HPP
-    #define PARSER_HPP
-
-    #include <fstream>
-    #include <istream>
-    #include <list>
-    #include <map>
-    #include <string>
-
-    #include "Constraint.hpp"
-    #include "Option.hpp"
-
-    // A class that parses .options and .constraints files and fills the data
-    // structures
-    class Parser {
-    public:
-        // A constructor that takes two file names as parameters
-        Parser(const std::string& optionsFile, const std::string& constraintsFile);
-
-        // A method that returns the map of options
-        std::map<std::string, Option> getOptions() const;
-
-        // A method that returns the list of constraints
-        std::list<Constraint> getConstraints() const;
-
-        // A method that reads a string from a stream until a comma or a newline is
-        // found or until the end of the stream is reached
-        std::string readString(std::istream& stream);
-
-    private:
-        // Two strings that store the file names
-        std::string optionsFile;
-        std::string constraintsFile;
-        // A method that parses the .options file and returns a vector of options
-        std::vector<Option> parseOptions(std::istream& stream);
-
-        // A method that parses the .constraints file and returns a vector of
-        // constraints
-        std::vector<Constraint> parseConstraints(std::istream& stream);
-    };
-
-    #endif
-    </code></pre>
+                #ifndef PARSER_HPP
+                #define PARSER_HPP
+                
+                #include <fstream>
+                #include <istream>
+                #include <list>
+                #include <map>
+                #include <string>
+                
+                #include "Constraint.hpp"
+                #include "Option.hpp"
+                
+                // A class that parses .options and .constraints files and fills the data
+                // structures
+                class Parser {
+                public:
+                // A constructor that takes two file names as parameters
+                Parser(const std::string& optionsFile, const std::string& constraintsFile);
+                
+                // A method that returns the map of options
+                std::map<std::string, Option> getOptions() const;
+                
+                // A method that returns the list of constraints
+                std::list<Constraint> getConstraints() const;
+                
+                // A method that reads a string from a stream until a comma or a newline is
+                // found or until the end of the stream is reached
+                std::string readString(std::istream& stream);
+                
+                private:
+                // Two strings that store the file names
+                std::string optionsFile;
+                std::string constraintsFile;
+                // A method that parses the .options file and returns a vector of options
+                std::vector<Option> parseOptions(std::istream& stream);
+                
+                // A method that parses the .constraints file and returns a vector of
+                // constraints
+                std::vector<Constraint> parseConstraints(std::istream& stream);
+                };
+                
+                #endif
+                </code></pre>
             Hier ist PrettyPrinter.hpp:
             <pre><code>
-    #ifndef PRETTYPRINTER_HPP
-    #define PRETTYPRINTER_HPP
-
-    #include <list>
-    #include <map>
-    #include <string>
-    #include <fstream> 
-
-    #include "Constraint.hpp"
-    #include "Option.hpp"
-
-    // A class that prints the options and constraints in a readable format
-    class PrettyPrinter {
-    public:
-        // A constructor that takes two file names as parameters
-        PrettyPrinter(const std::string& optionsFile,
-                    const std::string& constraintsFile);
-
-        // A method that prints the options to the .options file
-        void printOptions(const std::vector<Option>& options);
-
-        // A method that prints the constraints to the .constraints file
-        void printConstraints(const std::vector<Constraint>& constraints);
-
-    private:
-        // Two strings that store the file names
-        std::string optionsFile;
-        std::string constraintsFile;
-    };
-
-    #endif
-    </code></pre>
+                #ifndef PRETTYPRINTER_HPP
+                #define PRETTYPRINTER_HPP
+                
+                #include <list>
+                #include <map>
+                #include <string>
+                #include <fstream> 
+                
+                #include "Constraint.hpp"
+                #include "Option.hpp"
+                
+                // A class that prints the options and constraints in a readable format
+                class PrettyPrinter {
+                public:
+                // A constructor that takes two file names as parameters
+                PrettyPrinter(const std::string& optionsFile,
+                                const std::string& constraintsFile);
+                
+                // A method that prints the options to the .options file
+                void printOptions(const std::vector<Option>& options);
+                
+                // A method that prints the constraints to the .constraints file
+                void printConstraints(const std::vector<Constraint>& constraints);
+                
+                private:
+                // Two strings that store the file names
+                std::string optionsFile;
+                std::string constraintsFile;
+                };
+                
+                #endif
+                </code></pre>
             Hier ist Solver.hpp:
             <pre><code>
-    #ifndef SOLVER_HPP
-    #define SOLVER_HPP
-
-    #include <vector>
-
-    #include "Constraint.hpp"
-    #include "Option.hpp"
-    #include "Parser.hpp"
-
-    class Solver {
-    public:
-        Solver(const Parser& parser);
-        std::vector<std::vector<std::string> > solve();
-
-        // A method that returns the list of maps of options to values
-        std::list<std::map<std::string, std::string>> getModels() const;
-
-        // A method that chooses a random pair of options and values
-
-        std::pair<std::string, std::string> choosePair() const; 
-
-        // A Parser object that stores the options and constraints
-        Parser parser;
-        // A method that checks if a configuration is compatible with the constraints
-        bool checkConstraints(const std::map<std::string, std::string>& config) const;
-
-    private:
-        std::vector<Option> options;
-        std::vector<Constraint> constraints;
-        std::vector<std::vector<std::string>> models;
-    };
-
-    #endif
-    </code></pre>
+                #ifndef SOLVER_HPP
+                #define SOLVER_HPP
+                
+                #include <vector>
+                
+                #include "Constraint.hpp"
+                #include "Option.hpp"
+                #include "Parser.hpp"
+                
+                class Solver {
+                public:
+                Solver(const Parser& parser);
+                std::vector<std::vector<std::string>> solve();
+                
+                // A method that returns the list of maps of options to values
+                std::list<std::map<std::string, std::string>> getModels() const;
+                
+                // A method that chooses a random pair of options and values
+                
+                std::pair<std::string, std::string> choosePair() const;
+                
+                // A Parser object that stores the options and constraints
+                Parser parser;
+                // A method that checks if a configuration is compatible with the constraints
+                bool checkConstraints(const std::map<std::string, std::string>& config) const;
+                
+                private:
+                std::vector<Option> options;
+                std::vector<Constraint> constraints;
+                std::vector<std::vector<std::string>> models;
+                };
+                
+                #endif
+                </code></pre>
             Hier ist Constraint.cpp:
             <pre><code>
-    </code></pre>
+                </code></pre>
             Hier ist Fuzzer.cpp:
             <pre><code>
-    #include "Fuzzer.hpp"
-
-    #include <fstream>
-    #include <map>
-    #include <random>
-    #include <string>
-    #include <vector>
-
-    std::string Fuzzer::fuzz() {
-        std::string result = "";
-        for (auto pair : options) {
-        std::string option = pair.first;
-        std::vector<std::string> values = pair.second;
-        std::string value = values[randomInt(0, values.size() - 1)];
-        result += option + "=" + value + " ";
-        }
-        return result;
-    }
-
-    // This method generates a random number between min and max
-    int Fuzzer::randomInt(int min, int max) {
-        // Create a uniform distribution with the given range
-        std::uniform_int_distribution<> dis(min, max);
-
-        // Create a random number generator with a fixed seed (e.g. 42)
-        std::mt19937 gen(42);
-
-        // Return a random number from the distribution
-        return dis(gen);
-    }
-
-    // This method writes the options and values to a file with the extension
-    // .options
-    void Fuzzer::writeOptions(const std::string& optionsFile) {
-        // Open the file for writing
-        std::ofstream file(optionsFile);
-
-        if (!file) {
-        // If the file cannot be opened, throw an exception
-        throw std::runtime_error("Could not open file " + optionsFile);
-        }
-
-        // Write each option and its values to the file separated by commas
-        for (const auto& pair : options) {
-        file << pair.first << ",";
-        for (const auto& value : pair.second) {
-            file << value << ",";
-        }
-        file << "\n";
-        }
-
-        // Close the file
-        file.close();
-    }
-
-    // This method writes the constraints to a file with the extension
-    // .constraints
-    void Fuzzer::writeConstraints(const std::string& constraintsFile) {
-        // Open the file for writing
-        std::ofstream file(constraintsFile);
-
-        if (!file) {
-        // If the file cannot be opened, throw an exception
-        throw std::runtime_error("Could not open file " + constraintsFile);
-        }
-
-        // Write each constraint to the file as a line of pairs of options and
-        // values separated by commas
-        for (const auto& constraint : constraints) {
-        for (const auto& pair : constraint) {
-            file << pair.first << "," << pair.second << ",";
-        }
-        file << "\n";
-        }
-
-        // Close the file
-        file.close();
-    }
-    </code></pre>
+                #include "Fuzzer.hpp"
+                
+                #include <fstream>
+                #include <map>
+                #include <random>
+                #include <string>
+                #include <vector>
+                
+                std::string Fuzzer::fuzz() {
+                std::string result = "";
+                for (auto pair : options) {
+                    std::string option = pair.first;
+                    std::vector<std::string> values = pair.second;
+                    std::string value = values[randomInt(0, values.size() - 1)];
+                    result += option + "=" + value + " ";
+                }
+                return result;
+                }
+                
+                // This method generates a random number between min and max
+                int Fuzzer::randomInt(int min, int max) {
+                // Create a uniform distribution with the given range
+                std::uniform_int_distribution<> dis(min, max);
+                
+                // Create a random number generator with a fixed seed (e.g. 42)
+                std::mt19937 gen(42);
+                
+                // Return a random number from the distribution
+                return dis(gen);
+                }
+                
+                // This method writes the options and values to a file with the extension
+                // .options
+                void Fuzzer::writeOptions(const std::string& optionsFile) {
+                // Open the file for writing
+                std::ofstream file(optionsFile);
+                
+                if (!file) {
+                    // If the file cannot be opened, throw an exception
+                    throw std::runtime_error("Could not open file " + optionsFile);
+                }
+                
+                // Write each option and its values to the file separated by commas
+                for (const auto& pair : options) {
+                    file << pair.first << ",";
+                    for (const auto& value : pair.second) {
+                    file << value << ",";
+                    }
+                    file << "\n";
+                }
+                
+                // Close the file
+                file.close();
+                }
+                
+                // This method writes the constraints to a file with the extension
+                // .constraints
+                void Fuzzer::writeConstraints(const std::string& constraintsFile) {
+                // Open the file for writing
+                std::ofstream file(constraintsFile);
+                
+                if (!file) {
+                    // If the file cannot be opened, throw an exception
+                    throw std::runtime_error("Could not open file " + constraintsFile);
+                }
+                
+                // Write each constraint to the file as a line of pairs of options and
+                // values separated by commas
+                for (const auto& constraint : constraints) {
+                    for (const auto& pair : constraint) {
+                    file << pair.first << "," << pair.second << ",";
+                    }
+                    file << "\n";
+                }
+                
+                // Close the file
+                file.close();
+                }
+                </code></pre>
             Hier ist Main.cpp:
             <pre><code>
-    #include <fstream>
-    #include <iostream>
-
-    #include "Parser.hpp"
-    #include "Solver.hpp"
-
-    // The main function that starts the program
-    int main(int argc, char* argv[]) {
-        // Check if the correct number of parameters is given
-        if (argc != 5) {
-        // If not, print an error message and exit the program
-        std::cerr << "Usage: " << argv[0]
-                    << " input_options input_constraints output_models num_models\n";
-        return 1;
-        }
-
-        // Get the names of the input and output files from the parameters
-        std::string inputOptions = argv[1];
-        std::string inputConstraints = argv[2];
-        std::string outputModels = argv[3];
-        int numModels = std::stoi(argv[4]);
-
-        // Create a Parser object with the names of the input files
-        Parser parser(inputOptions, inputConstraints);
-
-        // Create a Solver object with the Parser object
-        Solver solver(parser);
-
-        // Generate the models using the solve method of the Solver object
-        solver.solve();
-
-        // Open the output file for writing
-        std::ofstream out(outputModels);
-
-        // Check if the file is opened successfully
-        if (!out) {
-        // If not, print an error message and exit the program
-        std::cerr << "Cannot open " << outputModels << '\n';
-        return 1;
-        }
-
-        // Write the models to the output file
-        int count = 0;
-        for (const auto& model : solver.getModels()) {
-        if (count >= numModels) {
-            break;
-        }
-        for (const auto& model : solver.getModels()) {
-            out << "Model " << ++count << '\n';
-            for (const auto& pair : model) {
-            out << pair.first << "=" << pair.second << '\n';
-            }
-        }
-        out << '\n';
-        count++;
-        }
-
-        // Close the output file
-        out.close();
-
-        return 0;
-    }
-    </code></pre>
+                #include <fstream>
+                #include <iostream>
+                
+                #include "Parser.hpp"
+                #include "Solver.hpp"
+                
+                // The main function that starts the program
+                int main(int argc, char* argv[]) {
+                // Check if the correct number of parameters is given
+                if (argc != 5) {
+                    // If not, print an error message and exit the program
+                    std::cerr << "Usage: " << argv[0]
+                            << " input_options input_constraints output_models num_models\n";
+                    return 1;
+                }
+                
+                // Get the names of the input and output files from the parameters
+                std::string inputOptions = argv[1];
+                std::string inputConstraints = argv[2];
+                std::string outputModels = argv[3];
+                int numModels = std::stoi(argv[4]);
+                
+                // Create a Parser object with the names of the input files
+                Parser parser(inputOptions, inputConstraints);
+                
+                // Create a Solver object with the Parser object
+                Solver solver(parser);
+                
+                // Generate the models using the solve method of the Solver object
+                solver.solve();
+                
+                // Open the output file for writing
+                std::ofstream out(outputModels);
+                
+                // Check if the file is opened successfully
+                if (!out) {
+                    // If not, print an error message and exit the program
+                    std::cerr << "Cannot open " << outputModels << '\n';
+                    return 1;
+                }
+                
+                // Write the models to the output file
+                int count = 0;
+                for (const auto& model : solver.getModels()) {
+                    if (count >= numModels) {
+                    break;
+                    }
+                    for (const auto& model : solver.getModels()) {
+                    out << "Model " << ++count << '\n';
+                    for (const auto& pair : model) {
+                        out << pair.first << "=" << pair.second << '\n';
+                    }
+                    }
+                    out << '\n';
+                    count++;
+                }
+                
+                // Close the output file
+                out.close();
+                
+                return 0;
+                }
+                </code></pre>
             Hier ist ModelGenerator.cpp:
             <pre><code>
-    #include "ModelGenerator.hpp"
-
-    #include <algorithm>
-    #include <random>
-
-    // A constructor that takes a vector of options and a vector of constraints as
-    // parameters
-    ModelGenerator::ModelGenerator(
-        const std::vector<std::pair<std::string, std::vector<std::string> > >&
-            options,
-        const std::vector<std::vector<std::pair<std::string, std::string> > >&
-            constraints)
-        : options(options), constraints(constraints) {}
-
-    // A method that generates models and returns them as a list of maps of options
-    // to values
-    std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
-        const {
-        // Create an empty list of maps that will store the models
-        std::list<std::map<std::string, std::string> > models;
-
-        // Create an empty map that will store which pairs are already covered
-        std::map<std::pair<std::string, std::string>, bool> coveredPairs;
-
-        // Create an empty map that will store which options are already set
-        std::map<std::string, bool> setOptions;
-
-        // Create an empty map that will store the current configuration
-        std::map<std::string, std::string> currentConfig;
-
-        // Create a random number generator with a fixed seed (e.g. 42) to generate
-        // random values
-        std::mt19937 gen(42);
-
-        // Repeat the following steps until either all pairs are covered or 1000
-        // configurations are generated that do not satisfy the constraints
-        int invalidCount = 0;
-        while (coveredPairs.size() < options.size() * (options.size() - 1) / 2 &&
-            invalidCount < 1000) {
-        // Set all options to false in the map of options to booleans
-        for (const auto& pair : options) {
-            setOptions[pair.first] = false;
-        }
-
-        // Set all values to "" in the map of options to values
-        for (const auto& pair : options) {
-            currentConfig[pair.first] = "";
-        }
-
-        // Choose a random option from the vector of options
-        std::uniform_int_distribution<> dis1(0, options.size() - 1);
-        std::string option1 = options[dis1(gen)].first;
-
-        // Choose a random value from the list of values of the option
-        const auto& values1 =
-            std::find_if(options.begin(), options.end(), [&](const auto& pair) {
-                return pair.first == option1;
-            })->second;
-        std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-        std::string value1 = values1[dis2(gen)];
-
-        // Set the option to true in the map of options to booleans
-        setOptions[option1] = true;
-
-        // Set the value in the map of options to values
-        currentConfig[option1] = value1;
-
-        // Repeat the following steps until all options are set
-        while (std::find_if(setOptions.begin(), setOptions.end(),
-                            [](const auto& pair) { return !pair.second; }) !=
-                setOptions.end()) {
-            // Choose a random number between 0 and 99
-            std::uniform_int_distribution<> dis3(0, 99);
-            int r = dis3(gen);
-
-            if (r < 10) {
-            // If the number is less than 10, choose a random option that is not yet
-            // set and choose a random value from its list of values. Set the option
-            // and value as described above.
-            // Find all options that are not yet set
-            std::vector<std::string> unsetOptions;
-            for (const auto& pair : setOptions) {
-                if (!pair.second) {
-                unsetOptions.push_back(pair.first);
+                #include "ModelGenerator.hpp"
+                
+                #include <algorithm>
+                #include <random>
+                
+                // A constructor that takes a vector of options and a vector of constraints as
+                // parameters
+                ModelGenerator::ModelGenerator(
+                    const std::vector<std::pair<std::string, std::vector<std::string> > >&
+                        options,
+                    const std::vector<std::vector<std::pair<std::string, std::string> > >&
+                        constraints)
+                    : options(options), constraints(constraints) {}
+                
+                // A method that generates models and returns them as a list of maps of options
+                // to values
+                std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
+                    const {
+                // Create an empty list of maps that will store the models
+                std::list<std::map<std::string, std::string> > models;
+                
+                // Create an empty map that will store which pairs are already covered
+                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                
+                // Create an empty map that will store which options are already set
+                std::map<std::string, bool> setOptions;
+                
+                // Create an empty map that will store the current configuration
+                std::map<std::string, std::string> currentConfig;
+                
+                // Create a random number generator with a fixed seed (e.g. 42) to generate
+                // random values
+                std::mt19937 gen(42);
+                
+                // Repeat the following steps until either all pairs are covered or 1000
+                // configurations are generated that do not satisfy the constraints
+                int invalidCount = 0;
+                while (coveredPairs.size() < options.size() * (options.size() - 1) / 2 &&
+                        invalidCount < 1000) {
+                    // Set all options to false in the map of options to booleans
+                    for (const auto& pair : options) {
+                    setOptions[pair.first] = false;
+                    }
+                
+                    // Set all values to "" in the map of options to values
+                    for (const auto& pair : options) {
+                    currentConfig[pair.first] = "";
+                    }
+                
+                    // Choose a random option from the vector of options
+                    std::uniform_int_distribution<> dis1(0, options.size() - 1);
+                    std::string option1 = options[dis1(gen)].first;
+                
+                    // Choose a random value from the list of values of the option
+                    const auto& values1 =
+                        std::find_if(options.begin(), options.end(), [&](const auto& pair) {
+                        return pair.first == option1;
+                        })->second;
+                    std::uniform_int_distribution<> dis2(0, values1.size() - 1);
+                    std::string value1 = values1[dis2(gen)];
+                
+                    // Set the option to true in the map of options to booleans
+                    setOptions[option1] = true;
+                
+                    // Set the value in the map of options to values
+                    currentConfig[option1] = value1;
+                
+                    // Repeat the following steps until all options are set
+                    while (std::find_if(setOptions.begin(), setOptions.end(),
+                                        [](const auto& pair) { return !pair.second; }) !=
+                        setOptions.end()) {
+                    // Choose a random number between 0 and 99
+                    std::uniform_int_distribution<> dis3(0, 99);
+                    int r = dis3(gen);
+                
+                    if (r < 10) {
+                        // If the number is less than 10, choose a random option that is not yet
+                        // set and choose a random value from its list of values. Set the option
+                        // and value as described above.
+                        // Find all options that are not yet set
+                        std::vector<std::string> unsetOptions;
+                        for (const auto& pair : setOptions) {
+                        if (!pair.second) {
+                            unsetOptions.push_back(pair.first);
+                        }
+                        }
+                
+                        // Choose a random option from them
+                        std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
+                        std::string option2 = unsetOptions[dis4(gen)];
+                
+                        // Find the list of values of the option
+                        const auto& values2 =
+                            std::find_if(options.begin(), options.end(), [&](const auto& pair) {
+                            return pair.first == option2;
+                            })->second;
+                
+                        // Choose a random value from them
+                        std::uniform_int_distribution<> dis5(0, values2.size() - 1);
+                        std::string value2 = values2[dis5(gen)];
+                
+                        // Set the option and value as described above
+                        setOptions[option2] = true;
+                        currentConfig[option2] = value2;
+                    } else {
+                        // If the number is greater or equal to 10, choose a random pair that is
+                        // not yet covered. Set the two options and their values as described
+                        // above.
+                        // Find all pairs that are not yet covered
+                        std::vector<std::pair<std::string, std::string> > uncoveredPairs;
+                        for (const auto& pair1 : options) {
+                        for (const auto& pair2 : options) {
+                            if (pair1.first < pair2.first &&
+                                coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
+                                    coveredPairs.end()) {
+                            uncoveredPairs.push_back(
+                                std::make_pair(pair1.first, pair2.first));
+                            }
+                        }
+                        }
+                
+                        // Choose a random pair from them
+                        std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
+                        auto pair = uncoveredPairs[dis6(gen)];
+                
+                        // Find the list of values of the first option
+                        const auto& values3 =
+                            std::find_if(options.begin(), options.end(), [&](const auto& p) {
+                            return p.first == pair.first;
+                            })->second;
+                
+                        // Choose a random value from them
+                        std::uniform_int_distribution<> dis7(0, values3.size() - 1);
+                        std::string value3 = values3[dis7(gen)];
+                
+                        // Set the first option and value as described above
+                        setOptions[pair.first] = true;
+                        currentConfig[pair.first] = value3;
+                
+                        // Find the list of values of the second option
+                        const auto& values4 =
+                            std::find_if(options.begin(), options.end(), [&](const auto& p) {
+                            return p.first == pair.second;
+                            })->second;
+                
+                        // Choose a random value from them
+                        std::uniform_int_distribution<> dis8(0, values4.size() - 1);
+                        std::string value4 = values4[dis8(gen)];
+                
+                        // Set the second option and value as described above
+                        setOptions[pair.second] = true;
+                        currentConfig[pair.second] = value4;
+                    }
+                    }
+                
+                    // Check if the current configuration satisfies all constraints
+                    if (std::all_of(constraints.begin(), constraints.end(),
+                                    [&](const auto& constraint) {
+                                    return std::none_of(constraint.begin(), constraint.end(),
+                                                        [&](const auto& pair) {
+                                                            return currentConfig[pair.first] ==
+                                                                pair.second;
+                                                        });
+                                    })) {
+                    // If yes, add it to the list of maps and mark all pairs as covered
+                    models.push_back(currentConfig);
+                    for (const auto& pair1 : currentConfig) {
+                        for (const auto& pair2 : currentConfig) {
+                        if (pair1.first < pair2.first) {
+                            coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
+                        }
+                        }
+                    }
+                    } else {
+                    // If no, increase a counter by one
+                    invalidCount++;
+                    }
                 }
-            }
-
-            // Choose a random option from them
-            std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
-            std::string option2 = unsetOptions[dis4(gen)];
-
-            // Find the list of values of the option
-            const auto& values2 =
-                std::find_if(options.begin(), options.end(), [&](const auto& pair) {
-                    return pair.first == option2;
-                })->second;
-
-            // Choose a random value from them
-            std::uniform_int_distribution<> dis5(0, values2.size() - 1);
-            std::string value2 = values2[dis5(gen)];
-
-            // Set the option and value as described above
-            setOptions[option2] = true;
-            currentConfig[option2] = value2;
-            } else {
-            // If the number is greater or equal to 10, choose a random pair that is
-            // not yet covered. Set the two options and their values as described
-            // above.
-            // Find all pairs that are not yet covered
-            std::vector<std::pair<std::string, std::string> > uncoveredPairs;
-            for (const auto& pair1 : options) {
-                for (const auto& pair2 : options) {
-                if (pair1.first < pair2.first &&
-                    coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
-                        coveredPairs.end()) {
-                    uncoveredPairs.push_back(
-                        std::make_pair(pair1.first, pair2.first));
+                
+                // Return the list of maps
+                return models;
                 }
-                }
-            }
-
-            // Choose a random pair from them
-            std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
-            auto pair = uncoveredPairs[dis6(gen)];
-
-            // Find the list of values of the first option
-            const auto& values3 =
-                std::find_if(options.begin(), options.end(), [&](const auto& p) {
-                    return p.first == pair.first;
-                })->second;
-
-            // Choose a random value from them
-            std::uniform_int_distribution<> dis7(0, values3.size() - 1);
-            std::string value3 = values3[dis7(gen)];
-
-            // Set the first option and value as described above
-            setOptions[pair.first] = true;
-            currentConfig[pair.first] = value3;
-
-            // Find the list of values of the second option
-            const auto& values4 =
-                std::find_if(options.begin(), options.end(), [&](const auto& p) {
-                    return p.first == pair.second;
-                })->second;
-
-            // Choose a random value from them
-            std::uniform_int_distribution<> dis8(0, values4.size() - 1);
-            std::string value4 = values4[dis8(gen)];
-
-            // Set the second option and value as described above
-            setOptions[pair.second] = true;
-            currentConfig[pair.second] = value4;
-            }
-        }
-
-        // Check if the current configuration satisfies all constraints
-        if (std::all_of(constraints.begin(), constraints.end(),
-                        [&](const auto& constraint) {
-                            return std::none_of(constraint.begin(), constraint.end(),
-                                                [&](const auto& pair) {
-                                                return currentConfig[pair.first] ==
-                                                        pair.second;
-                                                });
-                        })) {
-            // If yes, add it to the list of maps and mark all pairs as covered
-            models.push_back(currentConfig);
-            for (const auto& pair1 : currentConfig) {
-            for (const auto& pair2 : currentConfig) {
-                if (pair1.first < pair2.first) {
-                coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
-                }
-            }
-            }
-        } else {
-            // If no, increase a counter by one
-            invalidCount++;
-        }
-        }
-
-        // Return the list of maps
-        return models;
-    }
-    </code></pre>
+                </code></pre>
             Hier ist Option.cpp:
             <pre><code>
-    </code></pre>
+                </code></pre>
             Hier ist Parser.cpp:
             <pre><code>
-    // Hier ist Parser.cpp:
-
-    #include "Parser.hpp"
-
-    #include <fstream>
-    #include <sstream>
-    #include <stdexcept>
-
-    #include "Constraint.hpp"
-    #include "Option.hpp"
-
-    // A constructor that takes two file names as parameters
-    Parser::Parser(const std::string& optionsFile,
-                    const std::string& constraintsFile)
-        : optionsFile(optionsFile), constraintsFile(constraintsFile) {
-        // Open the .options file for reading
-        std::ifstream input(optionsFile);
-        if (!input) {
-        // Throw an exception if the file cannot be opened
-        throw std::runtime_error("Cannot open " + optionsFile);
-        }
-        // Parse the options from the input stream
-        parseOptions(input);
-        // Close the input stream
-        input.close();
-
-        // Open the .constraints file for reading
-        input.open(constraintsFile);
-        if (!input) {
-        // Throw an exception if the file cannot be opened
-        throw std::runtime_error("Cannot open " + constraintsFile);
-        }
-        // Parse the constraints from the input stream
-        parseConstraints(input);
-        // Close the input stream
-        input.close();
-    }
-
-    // This method returns the map of options
-    // A method that parses the .options file and returns a vector of options
-    std::vector<Option> Parser::parseOptions(std::istream& stream) {
-        std::vector<Option> options;
-        std::string name, value;
-        while ((name = readString(stream)) != "") {
-        std::vector<std::string> values;
-        while ((value = readString(stream)) != "") {
-            values.push_back(value);
-        }
-        options.emplace_back(name, values);
-        }
-        return options;
-    }
-
-    // This method returns the list of constraints
-    // A method that parses the .constraints file and returns a vector of
-    // constraints
-    std::vector<Constraint> Parser::parseConstraints(std::istream& stream) {
-        std::vector<Constraint> constraints;
-        std::string option, value;
-        while ((option = readString(stream)) != "" &&
-            (value = readString(stream)) != "") {
-        std::vector<std::pair<std::string, std::string>> pairs;
-        pairs.emplace_back(option, value);
-        constraints.emplace_back(pairs);
-        }
-        return constraints;
-    }
-
-    // This method reads a string from a stream until a comma or a newline is found
-    // or until the end of the stream is reached
-    std::string Parser::readString(std::istream& stream) {
-        std::string str;
-        stream >> str;
-        return str;
-    }</code></pre>
+                // Hier ist Parser.cpp:
+                
+                #include "Parser.hpp"
+                
+                #include <fstream>
+                #include <sstream>
+                #include <stdexcept>
+                
+                #include "Constraint.hpp"
+                #include "Option.hpp"
+                
+                // A constructor that takes two file names as parameters
+                Parser::Parser(const std::string& optionsFile,
+                            const std::string& constraintsFile)
+                    : optionsFile(optionsFile), constraintsFile(constraintsFile) {
+                // Open the .options file for reading
+                std::ifstream input(optionsFile);
+                if (!input) {
+                    // Throw an exception if the file cannot be opened
+                    throw std::runtime_error("Cannot open " + optionsFile);
+                }
+                // Parse the options from the input stream
+                parseOptions(input);
+                // Close the input stream
+                input.close();
+                
+                // Open the .constraints file for reading
+                input.open(constraintsFile);
+                if (!input) {
+                    // Throw an exception if the file cannot be opened
+                    throw std::runtime_error("Cannot open " + constraintsFile);
+                }
+                // Parse the constraints from the input stream
+                parseConstraints(input);
+                // Close the input stream
+                input.close();
+                }
+                
+                // This method returns the map of options
+                // A method that parses the .options file and returns a vector of options
+                std::vector<Option> Parser::parseOptions(std::istream& stream) {
+                std::vector<Option> options;
+                std::string name, value;
+                while ((name = readString(stream)) != "") {
+                    std::vector<std::string> values;
+                    while ((value = readString(stream)) != "") {
+                    values.push_back(value);
+                    }
+                    options.emplace_back(name, values);
+                }
+                return options;
+                }
+                
+                // This method returns the list of constraints
+                // A method that parses the .constraints file and returns a vector of
+                // constraints
+                std::vector<Constraint> Parser::parseConstraints(std::istream& stream) {
+                std::vector<Constraint> constraints;
+                std::string option, value;
+                while ((option = readString(stream)) != "" &&
+                        (value = readString(stream)) != "") {
+                    std::vector<std::pair<std::string, std::string>> pairs;
+                    pairs.emplace_back(option, value);
+                    constraints.emplace_back(pairs);
+                }
+                return constraints;
+                }
+                
+                // This method reads a string from a stream until a comma or a newline is found
+                // or until the end of the stream is reached
+                std::string Parser::readString(std::istream& stream) {
+                std::string str;
+                stream >> str;
+                return str;
+                }</code></pre>
             Hier ist PrettyPrinter.cpp:
             <pre><code>
-    #include "PrettyPrinter.hpp"
-
-    #include <fstream>
-    #include <stdexcept>
-
-    // A constructor that takes two file names as parameters
-    PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
-                                const std::string& constraintsFile) {
-        this->optionsFile = optionsFile;
-        this->constraintsFile = constraintsFile;
-    }
-
-    // A method that prints the options to the .options file
-    void PrettyPrinter::printOptions(const std::vector<Option>& options) {
-        // Open the .options file for writing
-        std::ofstream out(optionsFile);
-
-        // Check if the file is opened successfully
-        if (!out) {
-        // Throw an exception if the file cannot be opened
-        throw std::runtime_error("Cannot open " + optionsFile);
-        }
-
-        // Iterate over the vector of options
-        for (const Option& option : options) {
-        // Write the name of the option to the file
-        out << option.getName();
-
-        // Iterate over the vector of values of the option
-        for (const std::string& value : option.getValues()) {
-            // Write a comma and the value to the file
-            out << ',' << value;
-        }
-
-        // Write a newline character to the file
-        out << '\n';
-        }
-
-        // Close the file
-        out.close();
-    }
-
-    // A method that prints the constraints to the .constraints file
-    void PrettyPrinter::printConstraints(
-        const std::vector<Constraint>& constraints) {
-        // Open the .constraints file for writing
-        std::ofstream out(constraintsFile);
-
-        // Check if the file is opened successfully
-        if (!out) {
-        // Throw an exception if the file cannot be opened
-        throw std::runtime_error("Cannot open " + constraintsFile);
-        }
-
-        // Iterate over the vector of constraints
-        for (const Constraint& constraint : constraints) {
-        // Create a flag that indicates whether this is the first pair in the
-        // constraint
-        bool first = true;
-
-        // Iterate over the vector of pairs of the constraint
-        for (const std::pair<std::string, std::string>& pair :
-            constraint.getPairs()) {
-            // Check if this is not the first pair in the constraint
-            if (!first) {
-            // Write a comma to the file
-            out << ',';
-            } else {
-            // Set the flag to false
-            first = false;
-            }
-
-            // Write the option and value of the pair to the file separated by a comma
-            out << pair.first << ',' << pair.second;
-        }
-
-        // Write a newline character to the file
-        out << '\n';
-        }
-
-        // Close the file
-        out.close();
-    }
-    </code></pre>
+                #include "PrettyPrinter.hpp"
+                
+                #include <fstream>
+                #include <stdexcept>
+                
+                // A constructor that takes two file names as parameters
+                PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
+                                            const std::string& constraintsFile) {
+                this->optionsFile = optionsFile;
+                this->constraintsFile = constraintsFile;
+                }
+                
+                // A method that prints the options to the .options file
+                void PrettyPrinter::printOptions(const std::vector<Option>& options) {
+                // Open the .options file for writing
+                std::ofstream out(optionsFile);
+                
+                // Check if the file is opened successfully
+                if (!out) {
+                    // Throw an exception if the file cannot be opened
+                    throw std::runtime_error("Cannot open " + optionsFile);
+                }
+                
+                // Iterate over the vector of options
+                for (const Option& option : options) {
+                    // Write the name of the option to the file
+                    out << option.getName();
+                
+                    // Iterate over the vector of values of the option
+                    for (const std::string& value : option.getValues()) {
+                    // Write a comma and the value to the file
+                    out << ',' << value;
+                    }
+                
+                    // Write a newline character to the file
+                    out << '\n';
+                }
+                
+                // Close the file
+                out.close();
+                }
+                
+                // A method that prints the constraints to the .constraints file
+                void PrettyPrinter::printConstraints(
+                    const std::vector<Constraint>& constraints) {
+                // Open the .constraints file for writing
+                std::ofstream out(constraintsFile);
+                
+                // Check if the file is opened successfully
+                if (!out) {
+                    // Throw an exception if the file cannot be opened
+                    throw std::runtime_error("Cannot open " + constraintsFile);
+                }
+                
+                // Iterate over the vector of constraints
+                for (const Constraint& constraint : constraints) {
+                    // Create a flag that indicates whether this is the first pair in the
+                    // constraint
+                    bool first = true;
+                
+                    // Iterate over the vector of pairs of the constraint
+                    for (const std::pair<std::string, std::string>& pair :
+                        constraint.getPairs()) {
+                    // Check if this is not the first pair in the constraint
+                    if (!first) {
+                        // Write a comma to the file
+                        out << ',';
+                    } else {
+                        // Set the flag to false
+                        first = false;
+                    }
+                
+                    // Write the option and value of the pair to the file separated by a comma
+                    out << pair.first << ',' << pair.second;
+                    }
+                
+                    // Write a newline character to the file
+                    out << '\n';
+                }
+                
+                // Close the file
+                out.close();
+                }
+                </code></pre>
             Hier ist Solver.cpp:
             <pre><code>
-    #include "Solver.hpp"
-
-    #include <fstream>
-    #include <iostream>
-    #include <random>
-
-    #include "Parser.hpp"
-
-    // The constructor stores the parser in the member variable
-    Solver::Solver(const Parser& parser) : parser(parser) {}
-
-    // This method chooses a random pair of options and values
-    std::pair<std::string, std::string> Solver::choosePair() const {
-        // Create a random number generator with a fixed seed (e.g. 42)
-        std::mt19937 gen(42);
-        // Get the map of options from the parser
-        const auto& optionsMap = parser.getOptions();
-        // Choose a random option from the map of options of the parser
-        std::uniform_int_distribution<> dis1(0, optionsMap.size() - 1);
-        auto it1 = optionsMap.begin();
-        std::advance(it1, dis1(gen));
-        std::string option1 = it1->first;
-
-        // Choose a random value from the list of values of the option
-        const auto& values1 = it1->second.getValues();
-        std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-        std::string value1 = values1[dis2(gen)];
-        // Return the pair of option and value
-        return std::make_pair(option1, value1);
-    }
-
-    // This method generates the models and stores them in a list of maps of options
-    // to values
-    std::vector<std::vector<std::string> > Solver::solve() {
-        // Create an empty list of maps of options to values that will store the
-        // models
-        models.clear();
-
-        // Create an empty map of pairs to booleans that will store which pairs are
-        // already covered
-        std::map<std::pair<std::string, std::string>, bool> coveredPairs;
-
-        // Create an empty map of options to booleans that will store which options
-        // are already set
-        std::map<std::string, bool> setOptions;
-
-        // Create an empty map of options to values that will store the current
-        // configuration
-        std::map<std::string, std::string> currentConfig;
-
-        // Choose a pair with high probability
-        std::pair<std::string, std::string> pair = choosePair();
-
-        // Check if the pair is compatible with the current configuration
-        bool compatible = true;
-        for (auto& optionValue : currentConfig) {
-        // If the pair has the same option as an existing option-value pair
-        if (pair.first == optionValue.first) {
-            // If the pair has a different value than the existing option-value pair
-            if (pair.second != optionValue.second) {
-            // The pair is not compatible
-            compatible = false;
-            break;
-            }
-        }
-        }
-
-        // If the pair is compatible, add it to the current configuration
-        if (compatible) {
-        currentConfig[pair.first] = pair.second;
-        }
-
-        // Create a random number generator with a fixed seed (e.g. 42) to generate
-        // random values
-        std::mt19937 gen(42);
-
-        // Repeat the following steps until either all pairs are covered or 1000
-        // configurations are generated that do not satisfy the constraints
-        int invalidCount = 0;
-        while (coveredPairs.size() < parser.getOptions().size() *
-                                        (parser.getOptions().size() - 1) / 2 &&
-            invalidCount < 1000) {
-        // Set all options to false in the map of options to booleans
-        for (const auto& pair : parser.getOptions()) {
-            setOptions[pair.first] = false;
-        }
-
-        // Set all values to "" in the map of options to values
-        for (const auto& pair : parser.getOptions()) {
-            currentConfig[pair.first] = "";
-        }
-
-        // Choose a random option from the map of options of the parser
-        std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
-        auto it1 = parser.getOptions().begin();
-        std::advance(it1, dis1(gen));
-        std::string option1 = it1->first;
-
-        // Choose a random value from the list of values of the option
-        const auto& values1 = it1->second.getValues();
-        std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-        std::string value1 = values1[dis2(gen)];
-
-        // Set the option to true in the map of options to booleans
-        setOptions[option1] = true;
-
-        // Set the value in the map of options to values
-        currentConfig[option1] = value1;
-
-        // Repeat the following steps until all options are set
-        while (std::find(setOptions.begin(), setOptions.end(), false) !=
-                setOptions.end()) {
-            // Choose a random number between 0 and 99
-            std::uniform_int_distribution<> dis3(0, 99);
-            int r = dis3(gen);
-            if (r < 10) {
-            // If the number is less than 10, choose a random option that is not yet
-            // set and choose a random value from its list of values. Set the option
-            // and value as described above.
-            // Find all options that are not yet set
-            std::vector<std::string> unsetOptions;
-            for (const auto& pair : setOptions) {
-                if (!pair.second) {
-                unsetOptions.push_back(pair.first);
+                #include "Solver.hpp"
+                
+                #include <fstream>
+                #include <iostream>
+                #include <map>
+                #include <random>
+                
+                #include "Parser.hpp"
+                
+                // The constructor stores the parser in the member variable
+                Solver::Solver(const Parser& parser) : parser(parser) {}
+                
+                // This method chooses a random pair of options and values
+                std::pair<std::string, std::string> Solver::choosePair() const {
+                // Create a random number generator with a fixed seed (e.g. 42)
+                std::mt19937 gen(42);
+                // Get the map of options from the parser
+                const auto& optionsMap = parser.getOptions();
+                // Choose a random option from the map of options of the parser
+                std::uniform_int_distribution<> dis1(0, optionsMap.size() - 1);
+                auto it1 = optionsMap.begin();
+                std::advance(it1, dis1(gen));
+                std::string option1 = it1->first;
+                
+                // Choose a random value from the list of values of the option
+                const auto& values1 = it1->second.getValues();
+                std::uniform_int_distribution<> dis2(0, values1.size() - 1);
+                std::string value1 = values1[dis2(gen)];
+                // Return the pair of option and value
+                return std::make_pair(option1, value1);
                 }
-            }
-
-            // Choose a random option from them
-            std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
-            std::string option2 = unsetOptions[dis4(gen)];
-
-            // Find the list of values of the option
-            const auto& values2 = parser.getOptions().at(option2).getValues();
-
-            // Choose a random value from them
-            std::uniform_int_distribution<> dis5(0, values2.size() - 1);
-            std::string value2 = values2[dis5(gen)];
-
-            // Set the option and value as described above
-            setOptions[option2] = true;
-            currentConfig[option2] = value2;
-
-            } else {
-            // If the number is greater or equal to 10, choose a random pair that is
-            // not yet covered. Set the two options and their values as described
-            // above.
-            // Find all pairs that are not yet covered
-            std::vector<std::pair<std::string, std::string> > uncoveredPairs;
-            for (const auto& pair1 : parser.getOptions()) {
-                for (const auto& pair2 : parser.getOptions()) {
-                if (pair1.first < pair2.first &&
-                    coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
-                        coveredPairs.end()) {
-                    uncoveredPairs.push_back(
-                        std::make_pair(pair1.first, pair2.first));
+                
+                // This method generates the models and stores them in a list of maps of options
+                // to values
+                std::vector<std::vector<std::string>> Solver::solve() {
+                // Create an empty list of maps of options to values that will store the
+                // models
+                models.clear();
+                
+                // Create an empty map of pairs to booleans that will store which pairs are
+                // already covered
+                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                
+                // Create an empty map of options to booleans that will store which options
+                // are already set
+                std::map<std::string, bool> setOptions;
+                
+                // Create an empty map of options to values that will store the current
+                // configuration
+                std::map<std::string, std::string> currentConfig;
+                
+                // Choose a pair with high probability
+                std::pair<std::string, std::string> pair = choosePair();
+                
+                // Check if the pair is compatible with the current configuration
+                bool compatible = true;
+                for (auto& optionValue : currentConfig) {
+                    // If the pair has the same option as an existing option-value pair
+                    if (pair.first == optionValue.first) {
+                    // If the pair has a different value than the existing option-value pair
+                    if (pair.second != optionValue.second) {
+                        // The pair is not compatible
+                        compatible = false;
+                        break;
+                    }
+                    }
+                }
+                
+                // If the pair is compatible, add it to the current configuration
+                if (compatible) {
+                    currentConfig[pair.first] = pair.second;
+                }
+                
+                // Create a random number generator with a fixed seed (e.g. 42) to generate
+                // random values
+                std::mt19937 gen(42);
+                
+                // Repeat the following steps until either all pairs are covered or 1000
+                // configurations are generated that do not satisfy the constraints
+                int invalidCount = 0;
+                while (coveredPairs.size() < parser.getOptions().size() *
+                                                (parser.getOptions().size() - 1) / 2 &&
+                        invalidCount < 1000) {
+                    // Set all options to false in the map of options to booleans
+                    for (const auto& pair : parser.getOptions()) {
+                    setOptions[pair.first] = false;
+                    }
+                
+                    // Set all values to "" in the map of options to values
+                    for (const auto& pair : parser.getOptions()) {
+                    currentConfig[pair.first] = "";
+                    }
+                
+                    // Choose a random option from the map of options of the parser
+                    std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
+                    auto it1 = parser.getOptions().begin();
+                    std::advance(it1, dis1(gen));
+                    std::string option1 = it1->first;
+                
+                    // Choose a random value from the list of values of the option
+                    const auto& values1 = it1->second.getValues();
+                    std::uniform_int_distribution<> dis2(0, values1.size() - 1);
+                    std::string value1 = values1[dis2(gen)];
+                
+                    // Set the option to true in the map of options to booleans
+                    setOptions[option1] = true;
+                
+                    // Set the value in the map of options to values
+                    currentConfig[option1] = value1;
+                
+                    // Repeat the following steps until all options are set
+                    while (std::find(setOptions.begin(), setOptions.end(), false) !=
+                        setOptions.end()) {
+                    // Choose a random number between 0 and 99
+                    std::uniform_int_distribution<> dis3(0, 99);
+                    int r = dis3(gen);
+                    if (r < 10) {
+                        // If the number is less than 10, choose a random option that is not yet
+                        // set and choose a random value from its list of values. Set the option
+                        // and value as described above.
+                        // Find all options that are not yet set
+                        std::vector<std::string> unsetOptions;
+                        for (const auto& pair : setOptions) {
+                        if (!pair.second) {
+                            unsetOptions.push_back(pair.first);
+                        }
+                        }
+                
+                        // Choose a random option from them
+                        std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
+                        std::string option2 = unsetOptions[dis4(gen)];
+                
+                        // Find the list of values of the option
+                        const auto& values2 = parser.getOptions().at(option2).getValues();
+                
+                        // Choose a random value from them
+                        std::uniform_int_distribution<> dis5(0, values2.size() - 1);
+                        std::string value2 = values2[dis5(gen)];
+                
+                        // Set the option and value as described above
+                        setOptions[option2] = true;
+                        currentConfig[option2] = value2;
+                
+                    } else {
+                        // If the number is greater or equal to 10, choose a random pair that is
+                        // not yet covered. Set the two options and their values as described
+                        // above.
+                        // Find all pairs that are not yet covered
+                        std::vector<std::pair<std::string, std::string>> uncoveredPairs;
+                        for (const auto& pair1 : parser.getOptions()) {
+                        for (const auto& pair2 : parser.getOptions()) {
+                            if (pair1.first < pair2.first &&
+                                coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
+                                    coveredPairs.end()) {
+                            uncoveredPairs.push_back(
+                                std::make_pair(pair1.first, pair2.first));
+                            }
+                        }
+                        }
+                
+                        // Choose a random pair from them
+                        std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
+                        auto pair = uncoveredPairs[dis6(gen)];
+                
+                        // Find the list of values of the first option
+                        const auto& values3 = parser.getOptions().at(pair.first).getValues();
+                
+                        // Choose a random value from them
+                        std::uniform_int_distribution<> dis7(0, values3.size() - 1);
+                        std::string value3 = values3[dis7(gen)];
+                
+                        // Set the first option and value as described above
+                        setOptions[pair.first] = true;
+                        currentConfig[pair.first] = value3;
+                
+                        // Find the list of values of the second option
+                        const auto& values4 = parser.getOptions().at(pair.second).getValues();
+                
+                        // Choose a random value from them
+                        std::uniform_int_distribution<> dis8(0, values4.size() - 1);
+                        std::string value4 = values4[dis8(gen)];
+                
+                        // Set the second option and value as described above
+                        setOptions[pair.second] = true;
+                        currentConfig[pair.second] = value4;
+                    }
+                    }
+                
+                    // Check if the current configuration is compatible with the constraints of
+                    // the parser
+                    if (checkConstraints(currentConfig)) {
+                    // If yes, add it to the list of maps and mark all pairs as covered
+                    std::list<std::map<std::string, std::string>> models;
+                    for (const auto& model : mapModels) {
+                        models.push_back(model);
+                    }
+                    for (const auto& pair1 : currentConfig) {
+                        for (const auto& pair2 : currentConfig) {
+                        if (pair1.first < pair2.first) {
+                            coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
+                        }
+                        }
+                    }
+                    } else {
+                    // If no, increase a counter by one
+                    invalidCount++;
+                    }
                 }
                 }
-            }
-
-            // Choose a random pair from them
-            std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
-            auto pair = uncoveredPairs[dis6(gen)];
-
-            // Find the list of values of the first option
-            const auto& values3 = parser.getOptions().at(pair.first).getValues();
-
-            // Choose a random value from them
-            std::uniform_int_distribution<> dis7(0, values3.size() - 1);
-            std::string value3 = values3[dis7(gen)];
-
-            // Set the first option and value as described above
-            setOptions[pair.first] = true;
-            currentConfig[pair.first] = value3;
-
-            // Find the list of values of the second option
-            const auto& values4 = parser.getOptions().at(pair.second).getValues();
-
-            // Choose a random value from them
-            std::uniform_int_distribution<> dis8(0, values4.size() - 1);
-            std::string value4 = values4[dis8(gen)];
-
-            // Set the second option and value as described above
-            setOptions[pair.second] = true;
-            currentConfig[pair.second] = value4;
-            }
-        }
-
-        // Check if the current configuration is compatible with the constraints of
-        // the parser
-        if (checkConstraints(currentConfig)) {
-            // If yes, add it to the list of maps and mark all pairs as covered
-            models.push_back(currentConfig);
-            for (const auto& pair1 : currentConfig) {
-            for (const auto& pair2 : currentConfig) {
-                if (pair1.first < pair2.first) {
-                coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
+                
+                // This method returns the list of maps
+                std::list<std::map<std::string, std::string>> Solver::getModels() const {
+                return models;
                 }
-            }
-            }
-        } else {
-            // If no, increase a counter by one
-            invalidCount++;
-        }
-        }
-    }
+                // This method checks if a configuration is compatible with the constraints
+                bool Solver::checkConstraints(
+                    const std::map<std::string, std::string>& config) const {
+                // Iterate over the list of constraints of the parser
+                for (const auto& constraint : parser.getConstraints()) {
+                    // Get the list of pairs of option and value
+                    const auto& pairs = constraint.getPairs();
+                    // Check if all pairs occur in the configuration
+                    bool allPairsInConfig = true;
+                    for (const auto& pair : pairs) {
+                    if (config.at(pair.first) != pair.second) {
+                        allPairsInConfig = false;
+                        break;
+                    }
+                    }
+                    // If all pairs occur in the configuration, return false, as the
+                    // configuration is not compatible with the constraints
+                    if (allPairsInConfig) {
+                    return false;
+                    }
+                }
+                // If no constraints are violated, return true
+                return true;
+                }
+                </code></pre>
 
-    // This method returns the list of maps
-    const std::list<std::map<std::string, std::string> >& Solver::getModels()
-        const {
-        return models;
-    }
-
-    // This method checks if a configuration is compatible with the constraints
-    bool Solver::checkConstraints(
-        const std::map<std::string, std::string>& config) const {
-        // Iterate over the list of constraints of the parser
-        for (const auto& constraint : parser.getConstraints()) {
-        // Get the list of pairs of option and value
-        const auto& pairs = constraint.getPairs();
-        // Check if all pairs occur in the configuration
-        bool allPairsInConfig = true;
-        for (const auto& pair : pairs) {
-            if (config.at(pair.first) != pair.second) {
-            allPairsInConfig = false;
-            break;
-            }
-        }
-        // If all pairs occur in the configuration, return false, as the
-        // configuration is not compatible with the constraints
-        if (allPairsInConfig) {
-            return false;
-        }
-        }
-        // If no constraints are violated, return true
-        return true;
-    }
-    </code></pre>
         </div>
 
         </code></pre>
