@@ -37,7 +37,7 @@
 
 
     <main>
-        "Programmierend: C++"
+        Programmieren wir alle in C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -324,7 +324,317 @@
         </div>
 
         <h1>Implementierte Code für Aufgabe 1, Aufgabe 2, Aufgabe3A und Aufgabe3B</h1>
-        <div>
+
+        <div id="problemeMitCode">
+            Probleme mit den codes:
+            <pre>
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-01-Debug-01-230821-01 % make all
+                    rm -f *Main *.o 
+                    g++ -std=c++17 -c Constraint.cpp
+                    g++ -std=c++17 -c Fuzzer.cpp
+                    g++ -std=c++17 -c Main.cpp
+                    g++ -std=c++17 -c ModelGenerator.cpp
+                    g++ -std=c++17 -c Option.cpp
+                    g++ -std=c++17 -c Parser.cpp
+                    g++ -std=c++17 -c PrettyPrinter.cpp
+                    g++ -std=c++17 -c Solver.cpp
+                    Solver.cpp:95:16: warning: object backing the pointer will be destroyed at the end of the full-expression
+                        [-Wdangling-gsl]
+                        auto it1 = parser.getOptions().begin();
+                                ^~~~~~~~~~~~~~~~~~~
+                    Solver.cpp:192:14: error: no matching member function for call to 'push_back'
+                        models.push_back(currentConfig);
+                        ~~~~~~~^~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:711:36: note: candidate function not viable:
+                        no known conversion from 'std::map<std::string, std::string>' (aka 'map<basic_string<char,
+                        char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > >') to 'const
+                        std::__1::__vector_base<std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > >,
+                        std::__1::allocator<std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > >::value_type' (aka 'const
+                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >') for
+                        1st argument
+                        _LIBCPP_INLINE_VISIBILITY void push_back(const_reference __x);
+                                                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:714:36: note: candidate function not viable:
+                        no known conversion from 'std::map<std::string, std::string>' (aka 'map<basic_string<char,
+                        char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > >') to
+                        'std::__1::vector<std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > >,
+                        std::__1::allocator<std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > >::value_type' (aka
+                        'std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >') for
+                        1st argument
+                        _LIBCPP_INLINE_VISIBILITY void push_back(value_type&& __x);
+                                                    ^
+                    Solver.cpp:208:63: error: return type of out-of-line definition of 'Solver::getModels' differs from that in the
+                        declaration
+                    const std::list<std::map<std::string, std::string> >& Solver::getModels()
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~         ^
+                    ./Solver.hpp:16:49: note: previous declaration is here
+                    std::list<std::map<std::string, std::string>> getModels() const;
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:210:10: error: no viable conversion from returned value of type 'const
+                        std::vector<std::vector<std::string> >' (aka 'const vector<vector<basic_string<char, char_traits<char>,
+                        allocator<char> > > >') to function return type 'const std::list<std::map<std::string, std::string> >' (aka
+                        'const list<map<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char,
+                        char_traits<char>, allocator<char> > > >')
+                    return models;
+                            ^~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:895:5: note: candidate constructor not viable:
+                        no known conversion from 'const std::vector<std::vector<std::string> >' (aka 'const
+                        vector<vector<basic_string<char, char_traits<char>, allocator<char> > > >') to 'const
+                        std::__1::list<std::__1::map<std::__1::basic_string<char>, std::__1::basic_string<char>,
+                        std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const
+                        std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::map<std::__1::basic_string<char>, std::__1::basic_string<char>,
+                        std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const
+                        std::__1::basic_string<char>, std::__1::basic_string<char> > > > > > &' for 1st argument
+                        list(const list& __c);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:900:5: note: candidate constructor not viable:
+                        no known conversion from 'const std::vector<std::vector<std::string> >' (aka 'const
+                        vector<vector<basic_string<char, char_traits<char>, allocator<char> > > >') to
+                        'initializer_list<std::__1::list<std::__1::map<std::__1::basic_string<char>, std::__1::basic_string<char>,
+                        std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const
+                        std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::map<std::__1::basic_string<char>, std::__1::basic_string<char>,
+                        std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const
+                        std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::value_type>' (aka
+                        'initializer_list<std::__1::map<std::__1::basic_string<char>, std::__1::basic_string<char>,
+                        std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const
+                        std::__1::basic_string<char>, std::__1::basic_string<char> > > > >') for 1st argument
+                        list(initializer_list<value_type> __il);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:904:5: note: candidate constructor not viable:
+                        no known conversion from 'const std::vector<std::vector<std::string> >' (aka 'const
+                        vector<vector<basic_string<char, char_traits<char>, allocator<char> > > >') to
+                        'std::__1::list<std::__1::map<std::__1::basic_string<char>, std::__1::basic_string<char>,
+                        std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const
+                        std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::map<std::__1::basic_string<char>, std::__1::basic_string<char>,
+                        std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const
+                        std::__1::basic_string<char>, std::__1::basic_string<char> > > > > > &&' for 1st argument
+                        list(list&& __c)
+                        ^
+                    In file included from Solver.cpp:1:
+                    In file included from ./Solver.hpp:4:
+                    In file included from /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:274:
+                    In file included from /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__bit_reference:15:
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:919:22: error: invalid operands to binary
+                        expression
+                        ('std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>,
+                        bool>, std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long>
+                        >::value_type' (aka 'pair<const std::__1::basic_string<char>, bool>') and 'const bool')
+                            if (*__first == __value_)
+                                ~~~~~~~~ ^  ~~~~~~~~
+                    Solver.cpp:111:17: note: in instantiation of function template specialization
+                        'std::__1::find<std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>,
+                        bool>, std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long>
+                        >, bool>' requested here
+                        while (std::find(setOptions.begin(), setOptions.end(), false) !=
+                                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:390:1: note: candidate function not
+                        viable: no known conversion from
+                        'std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>,
+                        bool>, std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long>
+                        >::value_type' (aka 'pair<const std::__1::basic_string<char>, bool>') to 'const std::__1::error_code' for
+                        1st argument
+                    operator==(const error_code& __x, const error_code& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:397:1: note: candidate function not
+                        viable: no known conversion from
+                        'std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>,
+                        bool>, std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long>
+                        >::value_type' (aka 'pair<const std::__1::basic_string<char>, bool>') to 'const std::__1::error_code' for
+                        1st argument
+                    operator==(const error_code& __x, const error_condition& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:405:1: note: candidate function not
+                        viable: no known conversion from
+                        'std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>,
+                        bool>, std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long>
+                        >::value_type' (aka 'pair<const std::__1::basic_string<char>, bool>') to 'const std::__1::error_condition'
+                        for 1st argument
+                    operator==(const error_condition& __x, const error_code& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:412:1: note: candidate function not
+                        viable: no known conversion from
+                        'std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>,
+                        bool>, std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long>
+                        >::value_type' (aka 'pair<const std::__1::basic_string<char>, bool>') to 'const std::__1::error_condition'
+                        for 1st argument
+                    operator==(const error_condition& __x, const error_condition& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/utility:576:1: note: candidate template ignored:
+                        could not match 'pair<type-parameter-0-0, type-parameter-0-1>' against 'const bool'
+                    operator==(const pair<_T1,_T2>& __x, const pair<_T1,_T2>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:807:1: note: candidate template ignored:
+                        could not match 'reverse_iterator' against 'pair'
+                    operator==(const reverse_iterator<_Iter1>& __x, const reverse_iterator<_Iter2>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1036:1: note: candidate template ignored:
+                        could not match 'istream_iterator' against 'pair'
+                    operator==(const istream_iterator<_Tp, _CharT, _Traits, _Distance>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1140:6: note: candidate template ignored:
+                        could not match 'istreambuf_iterator' against 'pair'
+                    bool operator==(const istreambuf_iterator<_CharT,_Traits>& __a,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1243:1: note: candidate template ignored:
+                        could not match 'move_iterator' against 'pair'
+                    operator==(const move_iterator<_Iter1>& __x, const move_iterator<_Iter2>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1615:1: note: candidate template ignored:
+                        could not match '__wrap_iter' against 'pair'
+                    operator==(const __wrap_iter<_Iter1>& __x, const __wrap_iter<_Iter2>& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/tuple:1176:1: note: candidate template ignored:
+                        could not match 'tuple' against 'pair'
+                    operator==(const tuple<_Tp...>& __x, const tuple<_Up...>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2042:6: note: candidate template ignored:
+                        could not match 'allocator' against 'pair'
+                    bool operator==(const allocator<_Tp>&, const allocator<_Up>&) _NOEXCEPT {return true;}
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2877:1: note: candidate template ignored:
+                        could not match 'unique_ptr' against 'pair'
+                    operator==(const unique_ptr<_T1, _D1>& __x, const unique_ptr<_T2, _D2>& __y) {return __x.get() == __y.get();}
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2913:1: note: candidate template ignored:
+                        could not match 'unique_ptr' against 'pair'
+                    operator==(const unique_ptr<_T1, _D1>& __x, nullptr_t) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2921:1: note: candidate template ignored:
+                        could not match 'unique_ptr<type-parameter-0-0, type-parameter-0-1>' against 'const bool'
+                    operator==(nullptr_t, const unique_ptr<_T1, _D1>& __x) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4426:1: note: candidate template ignored:
+                        could not match 'shared_ptr' against 'pair'
+                    operator==(const shared_ptr<_Tp>& __x, const shared_ptr<_Up>& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4480:1: note: candidate template ignored:
+                        could not match 'shared_ptr' against 'pair'
+                    operator==(const shared_ptr<_Tp>& __x, nullptr_t) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4488:1: note: candidate template ignored:
+                        could not match 'shared_ptr<type-parameter-0-0>' against 'const bool'
+                    operator==(nullptr_t, const shared_ptr<_Tp>& __x) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/functional:2581:1: note: candidate template
+                        ignored: could not match 'function' against 'pair'
+                    operator==(const function<_Rp(_ArgTypes...)>& __f, nullptr_t) _NOEXCEPT {return !__f;}
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/functional:2586:1: note: candidate template
+                        ignored: could not match 'function<type-parameter-0-0 (type-parameter-0-1...)>' against 'const bool'
+                    operator==(nullptr_t, const function<_Rp(_ArgTypes...)>& __f) _NOEXCEPT {return !__f;}
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:3335:1: note: candidate template ignored:
+                        could not match 'vector' against 'pair'
+                    operator==(const vector<_Tp, _Allocator>& __x, const vector<_Tp, _Allocator>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:614:6: note: candidate template
+                        ignored: could not match 'basic_string_view' against 'pair'
+                    bool operator==(basic_string_view<_CharT, _Traits> __lhs,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:623:6: note: candidate template
+                        ignored: could not match 'basic_string_view' against 'pair'
+                    bool operator==(basic_string_view<_CharT, _Traits> __lhs,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:632:6: note: candidate template
+                        ignored: could not match 'basic_string_view<type-parameter-0-0, type-parameter-0-1>' against 'bool'
+                    bool operator==(typename common_type<basic_string_view<_CharT, _Traits> >::type __lhs,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:563:6: note: candidate template ignored:
+                        could not match 'fpos' against 'pair'
+                    bool operator==(const fpos<_StateT>& __x, const fpos<_StateT>& __y)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3850:1: note: candidate template ignored:
+                        could not match 'basic_string' against 'pair'
+                    operator==(const basic_string<_CharT, _Traits, _Allocator>& __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3862:1: note: candidate template ignored:
+                        could not match 'basic_string' against 'pair'
+                    operator==(const basic_string<char, char_traits<char>, _Allocator>& __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3881:1: note: candidate template ignored:
+                        could not match 'const _CharT *' against
+                        'std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::basic_string<char>,
+                        bool>, std::__1::__tree_node<std::__1::__value_type<std::__1::basic_string<char>, bool>, void *> *, long>
+                        >::value_type' (aka 'pair<const std::__1::basic_string<char>, bool>')
+                    operator==(const _CharT* __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3894:1: note: candidate template ignored:
+                        could not match 'basic_string' against 'pair'
+                    operator==(const basic_string<_CharT,_Traits,_Allocator>& __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:2418:1: note: candidate template ignored:
+                        could not match 'list' against 'pair'
+                    operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1035:1: note: candidate template ignored:
+                        could not match 'optional' against 'pair'
+                    operator==(const optional<_Tp>& __x, const optional<_Up>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1128:1: note: candidate template ignored:
+                        could not match 'optional' against 'pair'
+                    operator==(const optional<_Tp>& __x, nullopt_t) noexcept
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1136:1: note: candidate template ignored:
+                        could not match 'optional<type-parameter-0-0>' against 'const bool'
+                    operator==(nullopt_t, const optional<_Tp>& __x) noexcept
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1229:1: note: candidate template ignored:
+                        could not match 'optional' against 'pair'
+                    operator==(const optional<_Tp>& __x, const _Up& __v)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1241:1: note: candidate template ignored:
+                        could not match 'optional<type-parameter-0-1>' against 'const bool'
+                    operator==(const _Tp& __v, const optional<_Up>& __x)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1594:1: note: candidate template ignored: could
+                        not match 'map' against 'pair'
+                    operator==(const map<_Key, _Tp, _Compare, _Allocator>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:2176:1: note: candidate template ignored: could
+                        not match 'multimap' against 'pair'
+                    operator==(const multimap<_Key, _Tp, _Compare, _Allocator>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/deque:2967:1: note: candidate template ignored:
+                        could not match 'deque' against 'pair'
+                    operator==(const deque<_Tp, _Allocator>& __x, const deque<_Tp, _Allocator>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stack:256:1: note: candidate template ignored:
+                        could not match 'stack' against 'pair'
+                    operator==(const stack<_Tp, _Container>& __x, const stack<_Tp, _Container>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2393:1: note: candidate template ignored:
+                        could not match 'mersenne_twister_engine' against 'pair'
+                    operator==(const mersenne_twister_engine<_UInt, _Wp, _Np, _Mp, _Rp, _Ap, _Up, _Dp, _Sp,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2718:1: note: candidate template ignored:
+                        could not match 'subtract_with_carry_engine' against 'pair'
+                    operator==(
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2936:1: note: candidate template ignored:
+                        could not match 'discard_block_engine' against 'pair'
+                    operator==(const discard_block_engine<_Eng, _Pp, _Rp>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:3187:1: note: candidate template ignored:
+                        could not match 'independent_bits_engine' against 'pair'
+                    operator==(
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:3418:1: note: candidate template ignored:
+                        could not match 'shuffle_order_engine' against 'pair'
+                    operator==(
+                    ^
+                    1 warning and 4 errors generated.
+                    make: *** [Solver.o] Error 1
+                </pre>
+        </div>
+
+        <div id="codesInCPlusPlus">
             Hier ist Constraint.hpp:
             <pre><code>
                 #ifndef CONSTRAINT_HPP
