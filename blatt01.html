@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren IN C++
+        Programmiertes C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -328,7 +328,7 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-01-Debug-01-230821-01 % make all
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-01-Debug-01-230821-01 % make all          
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
                     g++ -std=c++17 -c Fuzzer.cpp
@@ -336,77 +336,218 @@
                     g++ -std=c++17 -c ModelGenerator.cpp
                     g++ -std=c++17 -c Option.cpp
                     g++ -std=c++17 -c Parser.cpp
-                    Parser.cpp:41:29: error: return type of out-of-line definition of 'Parser::parseOptions' differs from that in the declaration
-                    std::vector<Option> Parser::parseOptions(std::istream& stream) {
-                    ~~~~~~~~~~~~~~~~~~~         ^
-                    ./Parser.hpp:44:8: note: previous declaration is here
-                    void parseOptions(std::istream &stream);
-                    ~~~~ ^
-                    Parser.cpp:57:33: error: return type of out-of-line definition of 'Parser::parseConstraints' differs from that in the declaration
-                    std::vector<Constraint> Parser::parseConstraints(std::istream& stream) {
-                    ~~~~~~~~~~~~~~~~~~~~~~~         ^
-                    ./Parser.hpp:48:8: note: previous declaration is here
-                    void parseConstraints(std::istream &stream);
-                    ~~~~ ^
-                    2 errors generated.
-                    make: *** [Parser.o] Error 1
-                    </pre>
+                    g++ -std=c++17 -c PrettyPrinter.cpp
+                    g++ -std=c++17 -c Solver.cpp
+                    Solver.cpp:48:23: error: no viable overloaded operator[] for type 'std::map<std::pair<std::string, std::string>, bool>' (aka 'map<pair<basic_string<char,
+                        char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > >, bool>')
+                            coveredPairs[{{option1.getName(), value1},
+                            ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1129:18: note: candidate function not viable: cannot convert initializer list argument to 'const
+                        std::__1::map<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, bool, std::__1::less<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, bool>
+                        > >::key_type' (aka 'const std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >')
+                        mapped_type& operator[](const key_type& __k);
+                                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1131:18: note: candidate function not viable: cannot convert initializer list argument to
+                        'std::__1::map<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, bool, std::__1::less<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, bool>
+                        > >::key_type' (aka 'std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >')
+                        mapped_type& operator[](key_type&& __k);
+                                    ^
+                    Solver.cpp:60:22: error: no viable conversion from 'map<pair<std::string, std::string>, [...]>' to 'const map<pair<std::pair<std::string, std::string>,
+                        std::pair<std::string, std::string>>, [...]>'
+                    while (!allCovered(coveredPairs) && failures < MAX_FAILURES) {
+                                        ^~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1004:5: note: candidate constructor not viable: no known conversion from
+                        'std::map<std::pair<std::string, std::string>, bool>' (aka 'map<pair<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char,
+                        char_traits<char>, allocator<char> > >, bool>') to 'const std::__1::map<std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool,
+                        std::__1::less<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> > > &' for 1st argument
+                        map(const map& __m)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1029:5: note: candidate constructor not viable: no known conversion from
+                        'std::map<std::pair<std::string, std::string>, bool>' (aka 'map<pair<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char,
+                        char_traits<char>, allocator<char> > >, bool>') to 'std::__1::map<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool,
+                        std::__1::less<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> > > &&' for 1st argument
+                        map(map&& __m)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1046:5: note: candidate constructor not viable: no known conversion from
+                        'std::map<std::pair<std::string, std::string>, bool>' (aka 'map<pair<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char,
+                        char_traits<char>, allocator<char> > >, bool>') to 'initializer_list<std::__1::map<std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool,
+                        std::__1::less<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> > >::value_type>' (aka
+                        'initializer_list<pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> >') for 1st argument
+                        map(initializer_list<value_type> __il, const key_compare& __comp = key_compare())
+                        ^
+                    ./Solver.hpp:64:41: note: passing argument to parameter 'coveredPairs' here
+                                                    bool> &coveredPairs) const;
+                                                            ^
+                    Solver.cpp:76:49: error: no member named 'first' in 'std::__1::basic_string<char>'
+                            if (!pair.second && (pair.first.first.first == option.getName() ||
+                                                ~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:77:50: error: no member named 'first' in 'std::__1::basic_string<char>'
+                                                pair.first.second.first == option.getName())) {
+                                                ~~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:86:30: error: use of undeclared identifier 'randomInt'
+                                availablePairs[randomInt(0, availablePairs.size() - 1)];
+                                                ^
+                    Solver.cpp:87:32: error: no member named 'first' in 'std::__1::basic_string<char>'
+                            if (chosenPair.first.first == option.getName()) {
+                                ~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:88:37: error: no member named 'first' in 'std::__1::basic_string<char>'
+                                config[chosenPair.first.first] = chosenPair.first.second;
+                                    ~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:88:63: error: no member named 'second' in 'std::__1::basic_string<char>'
+                                config[chosenPair.first.first] = chosenPair.first.second;
+                                                                ~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:89:38: error: no member named 'first' in 'std::__1::basic_string<char>'
+                                config[chosenPair.second.first] = chosenPair.second.second;
+                                    ~~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:89:65: error: no member named 'second' in 'std::__1::basic_string<char>'
+                                config[chosenPair.second.first] = chosenPair.second.second;
+                                                                ~~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:91:37: error: no member named 'first' in 'std::__1::basic_string<char>'
+                                config[chosenPair.first.first] = chosenPair.first.second;
+                                    ~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:91:63: error: no member named 'second' in 'std::__1::basic_string<char>'
+                                config[chosenPair.first.first] = chosenPair.first.second;
+                                                                ~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:92:38: error: no member named 'first' in 'std::__1::basic_string<char>'
+                                config[chosenPair.second.first] = chosenPair.second.second;
+                                    ~~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:92:65: error: no member named 'second' in 'std::__1::basic_string<char>'
+                                config[chosenPair.second.first] = chosenPair.second.second;
+                                                                ~~~~~~~~~~~~~~~~~ ^
+                    Solver.cpp:116:34: error: non-const lvalue reference to type 'map<pair<std::pair<std::string, std::string>, std::pair<std::string, std::string>>, [...]>' cannot
+                        bind to a value of unrelated type 'map<pair<std::string, std::string>, [...]>'
+                        updateCoveredPairs(config, coveredPairs);
+                                                    ^~~~~~~~~~~~
+                    ./Solver.hpp:58:23: note: passing argument to parameter 'coveredPairs' here
+                                bool> &coveredPairs) const;
+                                        ^
+                    Solver.cpp:130:64: error: no viable conversion from 'map<pair<std::string, std::string>, [...]>' to 'const map<pair<std::pair<std::string, std::string>,
+                        std::pair<std::string, std::string>>, [...]>'
+                    std::cout << "Number of uncovered pairs: " << countUncovered(coveredPairs)
+                                                                                ^~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1004:5: note: candidate constructor not viable: no known conversion from
+                        'std::map<std::pair<std::string, std::string>, bool>' (aka 'map<pair<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char,
+                        char_traits<char>, allocator<char> > >, bool>') to 'const std::__1::map<std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool,
+                        std::__1::less<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> > > &' for 1st argument
+                        map(const map& __m)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1029:5: note: candidate constructor not viable: no known conversion from
+                        'std::map<std::pair<std::string, std::string>, bool>' (aka 'map<pair<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char,
+                        char_traits<char>, allocator<char> > >, bool>') to 'std::__1::map<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool,
+                        std::__1::less<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> > > &&' for 1st argument
+                        map(map&& __m)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1046:5: note: candidate constructor not viable: no known conversion from
+                        'std::map<std::pair<std::string, std::string>, bool>' (aka 'map<pair<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char,
+                        char_traits<char>, allocator<char> > >, bool>') to 'initializer_list<std::__1::map<std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool,
+                        std::__1::less<std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> > >::value_type>' (aka
+                        'initializer_list<pair<const std::__1::pair<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > >, bool> >') for 1st argument
+                        map(initializer_list<value_type> __il, const key_compare& __comp = key_compare())
+                        ^
+                    ./Solver.hpp:71:29: note: passing argument to parameter 'coveredPairs' here
+                                        bool> &coveredPairs) const;
+                                                ^
+                    Solver.cpp:175:28: error: use of undeclared identifier 'randomInt'
+                    Option option1 = options[randomInt(0, options.size() - 1)];
+                                            ^
+                    Solver.cpp:176:28: error: use of undeclared identifier 'randomInt'
+                    Option option2 = options[randomInt(0, options.size() - 1)];
+                                            ^
+                    Solver.cpp:192:17: error: use of undeclared identifier 'randomInt'
+                    return values[randomInt(0, values.size() - 1)];
+                                    ^
+                    fatal error: too many errors emitted, stopping now [-ferror-limit=]
+                    20 errors generated.
+                    make: *** [Solver.o] Error 1
+                </pre>
             <pre id="p2">
-                    [{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 13,"startColumn": 44,"endLineNumber": 13,"endColumn": 44
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no viable overloaded '='","startLineNumber": 15,"startColumn": 3,"endLineNumber": 15,"endColumn": 32
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"=\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 15,"startColumn": 11,"endLineNumber": 15,"endColumn": 11,"relatedInformation": [{"startLineNumber": 15,"startColumn": 11,"endLineNumber": 15,"endColumn": 11,"message": "Operandentypen sind: std::__1::vector<Option, std::__1::allocator<Option>> = std::__1::map<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>>","resource": "/Solver.cpp"}]
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no viable overloaded '='","startLineNumber": 16,"startColumn": 3,"endLineNumber": 16,"endColumn": 40
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"=\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 16,"startColumn": 15,"endLineNumber": 16,"endColumn": 15,"relatedInformation": [{"startLineNumber": 16,"startColumn": 15,"endLineNumber": 16,"endColumn": 15,"message": "Operandentypen sind: std::__1::vector<Constraint, std::__1::allocator<Constraint>> = std::__1::list<Constraint, std::__1::allocator<Constraint>>","resource": "/Solver.cpp"}]
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 25,"startColumn": 20,"endLineNumber": 25,"endColumn": 20
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "expected ']'","startLineNumber": 25,"startColumn": 20,"endLineNumber": 25,"endColumn": 20
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'allCovered'","startLineNumber": 34,"startColumn": 11,"endLineNumber": 34,"endColumn": 11
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"allCovered\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 34,"startColumn": 11,"endLineNumber": 34,"endColumn": 21
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'MAX_FAILURES'","startLineNumber": 34,"startColumn": 48,"endLineNumber": 34,"endColumn": 48
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"MAX_FAILURES\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 34,"startColumn": 48,"endLineNumber": 34,"endColumn": 60
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'randomDouble'","startLineNumber": 41,"startColumn": 11,"endLineNumber": 41,"endColumn": 11
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"randomDouble\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 41,"startColumn": 11,"endLineNumber": 41,"endColumn": 23
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'PAIR_PROBABILITY'","startLineNumber": 41,"startColumn": 32,"endLineNumber": 41,"endColumn": 32
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"PAIR_PROBABILITY\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 41,"startColumn": 32,"endLineNumber": 41,"endColumn": 48
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'chooseOption'","startLineNumber": 58,"startColumn": 23,"endLineNumber": 58,"endColumn": 23
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"chooseOption\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 58,"startColumn": 23,"endLineNumber": 58,"endColumn": 35
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'countUncovered'","startLineNumber": 83,"startColumn": 49,"endLineNumber": 83,"endColumn": 49
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"countUncovered\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 83,"startColumn": 49,"endLineNumber": 83,"endColumn": 63
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 131,"startColumn": 21,"endLineNumber": 131,"endColumn": 21
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 135,"startColumn": 21,"endLineNumber": 135,"endColumn": 21
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 137,"startColumn": 19,"endLineNumber": 137,"endColumn": 19
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 153,"startColumn": 19,"endLineNumber": 153,"endColumn": 19
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'hasValue' in 'Option'","startLineNumber": 172,"startColumn": 10,"endLineNumber": 172,"endColumn": 17
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 172,"startColumn": 18,"endLineNumber": 172,"endColumn": 26
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'hasValue' in 'Option'","startLineNumber": 172,"startColumn": 38,"endLineNumber": 172,"endColumn": 45
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 172,"startColumn": 46,"endLineNumber": 172,"endColumn": 54
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'hasValue' in 'Option'","startLineNumber": 173,"startColumn": 10,"endLineNumber": 173,"endColumn": 17
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 173,"startColumn": 18,"endLineNumber": 173,"endColumn": 26
-                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 173,"startColumn": 46,"endLineNumber": 173,"endColumn": 54
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 9,"endLineNumber": 42,"endColumn": 9
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 43,"startColumn": 9,"endLineNumber": 43,"endColumn": 9
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 44,"startColumn": 9,"endLineNumber": 44,"endColumn": 9
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 45,"startColumn": 9,"endLineNumber": 45,"endColumn": 9
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 9,"endLineNumber": 46,"endColumn": 9
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 58,"startColumn": 9,"endLineNumber": 58,"endColumn": 9
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 59,"startColumn": 9,"endLineNumber": 59,"endColumn": 9
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 94,"startColumn": 14,"endLineNumber": 94,"endColumn": 14
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 94,"startColumn": 31,"endLineNumber": 94,"endColumn": 31
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 96,"startColumn": 5,"endLineNumber": 96,"endColumn": 5
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 102,"startColumn": 16,"endLineNumber": 102,"endColumn": 16
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 102,"startColumn": 27,"endLineNumber": 102,"endColumn": 27
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 104,"startColumn": 7,"endLineNumber": 104,"endColumn": 7
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 105,"startColumn": 7,"endLineNumber": 105,"endColumn": 7
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 147,"startColumn": 3,"endLineNumber": 147,"endColumn": 3
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 164,"startColumn": 8,"endLineNumber": 164,"endColumn": 8
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 164,"startColumn": 19,"endLineNumber": 164,"endColumn": 19
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 166,"startColumn": 5,"endLineNumber": 166,"endColumn": 5
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 167,"startColumn": 5,"endLineNumber": 167,"endColumn": 5
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 168,"startColumn": 5,"endLineNumber": 168,"endColumn": 5
-                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 169,"startColumn": 5,"endLineNumber": 169,"endColumn": 5
-                }]
-                .
+                    [{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 41,"startColumn": 46,"endLineNumber": 41,"endColumn": 46
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 85,"startColumn": 51,"endLineNumber": 85,"endColumn": 51
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no member named 'emplace_back' in 'std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >'","startLineNumber": 101,"startColumn": 7,"endLineNumber": 101,"endColumn": 12
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no member named 'emplace_back' in 'std::__1::list<Constraint, std::__1::allocator<Constraint> >'","startLineNumber": 104,"startColumn": 5,"endLineNumber": 104,"endColumn": 16
+                }]. 
                 
-                [{"resource": "Solver.hpp","owner": "clang","severity": 8,"message": "function definition does not declare parameters","startLineNumber": 38,"startColumn": 16,"endLineNumber": 38,"endColumn": 16
+                [{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"[]\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 48,"startColumn": 23,"endLineNumber": 48,"endColumn": 23,"relatedInformation": [{"startLineNumber": 48,"startColumn": 23,"endLineNumber": 48,"endColumn": 23,"message": "Operandentypen sind: std::__1::map<std::__1::pair<std::__1::string, std::__1::string>, bool, std::__1::less<std::__1::pair<std::__1::string, std::__1::string>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::string, std::__1::string>, bool>>> [ {...} ]","resource": "Solver.cpp"}]
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 48,"startColumn": 24,"endLineNumber": 48,"endColumn": 24
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "expected ']'","startLineNumber": 48,"startColumn": 24,"endLineNumber": 48,"endColumn": 24
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "312","severity": 8,"message": "Es ist keine passende benutzerdefinierte Konvertierung von \"std::__1::map<std::__1::pair<std::__1::string, std::__1::string>, bool, std::__1::less<std::__1::pair<std::__1::string, std::__1::string>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::string, std::__1::string>, bool>>>\" in \"const std::__1::map<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool, std::__1::less<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool>>>\" vorhanden.","source": "C/C++","startLineNumber": 60,"startColumn": 22,"endLineNumber": 60,"endColumn": 34
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no viable conversion from 'map<pair<std::string, std::string>, [...]>' to 'const map<pair<std::pair<std::string, std::string>, std::pair<std::string, std::string>>, [...]>'","startLineNumber": 60,"startColumn": 22,"endLineNumber": 60,"endColumn": 34
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 74,"startColumn": 55,"endLineNumber": 74,"endColumn": 55
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'std::__1::basic_string<char>'","startLineNumber": 76,"startColumn": 32,"endLineNumber": 76,"endColumn": 48
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 76,"startColumn": 49,"endLineNumber": 76,"endColumn": 54
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'std::__1::basic_string<char>'","startLineNumber": 77,"startColumn": 32,"endLineNumber": 77,"endColumn": 49
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 77,"startColumn": 50,"endLineNumber": 77,"endColumn": 55
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'randomInt'","startLineNumber": 86,"startColumn": 30,"endLineNumber": 86,"endColumn": 30
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"randomInt\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 86,"startColumn": 30,"endLineNumber": 86,"endColumn": 39
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'std::__1::basic_string<char>'","startLineNumber": 87,"startColumn": 15,"endLineNumber": 87,"endColumn": 31
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 87,"startColumn": 32,"endLineNumber": 87,"endColumn": 37
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'std::__1::basic_string<char>'","startLineNumber": 88,"startColumn": 20,"endLineNumber": 88,"endColumn": 36
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 88,"startColumn": 37,"endLineNumber": 88,"endColumn": 42
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'second' in 'std::__1::basic_string<char>'","startLineNumber": 88,"startColumn": 46,"endLineNumber": 88,"endColumn": 62
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 88,"startColumn": 63,"endLineNumber": 88,"endColumn": 69
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'std::__1::basic_string<char>'","startLineNumber": 89,"startColumn": 20,"endLineNumber": 89,"endColumn": 37
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 89,"startColumn": 38,"endLineNumber": 89,"endColumn": 43
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'second' in 'std::__1::basic_string<char>'","startLineNumber": 89,"startColumn": 47,"endLineNumber": 89,"endColumn": 64
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 89,"startColumn": 65,"endLineNumber": 89,"endColumn": 71
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'std::__1::basic_string<char>'","startLineNumber": 91,"startColumn": 20,"endLineNumber": 91,"endColumn": 36
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 91,"startColumn": 37,"endLineNumber": 91,"endColumn": 42
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'second' in 'std::__1::basic_string<char>'","startLineNumber": 91,"startColumn": 46,"endLineNumber": 91,"endColumn": 62
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 91,"startColumn": 63,"endLineNumber": 91,"endColumn": 69
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'std::__1::basic_string<char>'","startLineNumber": 92,"startColumn": 20,"endLineNumber": 92,"endColumn": 37
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 92,"startColumn": 38,"endLineNumber": 92,"endColumn": 43
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'second' in 'std::__1::basic_string<char>'","startLineNumber": 92,"startColumn": 47,"endLineNumber": 92,"endColumn": 64
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 92,"startColumn": 65,"endLineNumber": 92,"endColumn": 71
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "434","severity": 8,"message": "Ein Verweis vom Typ \"\"std::__1::map<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool, std::__1::less<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool>>> &\"\" (nicht konstantenqualifiziert) kann nicht mit einem Wert vom Typ \"\"std::__1::map<std::__1::pair<std::__1::string, std::__1::string>, bool, std::__1::less<std::__1::pair<std::__1::string, std::__1::string>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::string, std::__1::string>, bool>>>\"\" initialisiert werden.","source": "C/C++","startLineNumber": 116,"startColumn": 34,"endLineNumber": 116,"endColumn": 46
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "non-const lvalue reference to type 'map<pair<std::pair<std::string, std::string>, std::pair<std::string, std::string>>, [...]>' cannot bind to a value of unrelated type 'map<pair<std::string, std::string>, [...]>'","startLineNumber": 116,"startColumn": 34,"endLineNumber": 116,"endColumn": 46
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "312","severity": 8,"message": "Es ist keine passende benutzerdefinierte Konvertierung von \"std::__1::map<std::__1::pair<std::__1::string, std::__1::string>, bool, std::__1::less<std::__1::pair<std::__1::string, std::__1::string>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::string, std::__1::string>, bool>>>\" in \"const std::__1::map<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool, std::__1::less<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool>>>\" vorhanden.","source": "C/C++","startLineNumber": 130,"startColumn": 64,"endLineNumber": 130,"endColumn": 76
+                },{"resource": "Solver.cpp","owner": "clang","severity": 8,"message": "no viable conversion from 'map<pair<std::string, std::string>, [...]>' to 'const map<pair<std::pair<std::string, std::string>, std::pair<std::string, std::string>>, [...]>'","startLineNumber": 130,"startColumn": 64,"endLineNumber": 130,"endColumn": 76
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"randomInt\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 175,"startColumn": 28,"endLineNumber": 175,"endColumn": 37
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"randomInt\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 192,"startColumn": 17,"endLineNumber": 192,"endColumn": 26
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "147","severity": 8,"message": "Die Deklaration ist nicht mit \"\"void Solver::updateCoveredPairs(const std::__1::map<std::__1::string, std::__1::string, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::string>>> &config, std::__1::map<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool, std::__1::less<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool>>> &coveredPairs) const\" (deklariert in Zeile 54 von \"Solver.hpp\")\" kompatibel.","source": "C/C++","startLineNumber": 196,"startColumn": 14,"endLineNumber": 196,"endColumn": 32
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"[]\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 204,"startColumn": 21,"endLineNumber": 204,"endColumn": 21,"relatedInformation": [{"startLineNumber": 204,"startColumn": 21,"endLineNumber": 204,"endColumn": 21,"message": "Operandentypen sind: std::__1::map<std::__1::pair<std::__1::string, std::__1::string>, bool, std::__1::less<std::__1::pair<std::__1::string, std::__1::string>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::string, std::__1::string>, bool>>> [ {...} ]","resource": "Solver.cpp"}]
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "147","severity": 8,"message": "Die Deklaration ist nicht mit \"\"bool Solver::allCovered(const std::__1::map<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool, std::__1::less<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool>>> &coveredPairs) const\" (deklariert in Zeile 62 von \"Solver.hpp\")\" kompatibel.","source": "C/C++","startLineNumber": 212,"startColumn": 14,"endLineNumber": 212,"endColumn": 24
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "147","severity": 8,"message": "Die Deklaration ist nicht mit \"\"int Solver::countUncovered(const std::__1::map<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool, std::__1::less<std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>>, bool>>> &coveredPairs) const\" (deklariert in Zeile 68 von \"Solver.hpp\")\" kompatibel.","source": "C/C++","startLineNumber": 224,"startColumn": 13,"endLineNumber": 224,"endColumn": 27
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "169","severity": 8,"message": "Es wurde eine Deklaration erwartet.","source": "C/C++","startLineNumber": 242,"startColumn": 1,"endLineNumber": 242,"endColumn": 3
+                },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "169","severity": 8,"message": "Es wurde eine Deklaration erwartet.","source": "C/C++","startLineNumber": 249,"startColumn": 1,"endLineNumber": 249,"endColumn": 2
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 22,"startColumn": 8,"endLineNumber": 22,"endColumn": 8
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 22,"startColumn": 18,"endLineNumber": 22,"endColumn": 18
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 29,"startColumn": 8,"endLineNumber": 29,"endColumn": 8
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 29,"startColumn": 24,"endLineNumber": 29,"endColumn": 24
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 12,"endLineNumber": 46,"endColumn": 12
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 24,"endLineNumber": 46,"endColumn": 24
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 47,"startColumn": 14,"endLineNumber": 47,"endColumn": 14
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 47,"startColumn": 26,"endLineNumber": 47,"endColumn": 26
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 65,"startColumn": 10,"endLineNumber": 65,"endColumn": 10
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 65,"startColumn": 22,"endLineNumber": 65,"endColumn": 22
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 75,"startColumn": 14,"endLineNumber": 75,"endColumn": 14
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 75,"startColumn": 24,"endLineNumber": 75,"endColumn": 24
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 139,"startColumn": 8,"endLineNumber": 139,"endColumn": 8
+                },{"resource": "Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 139,"startColumn": 24,"endLineNumber": 139,"endColumn": 24
+                }].
+                
+                [{"resource": "Solver.hpp","owner": "clang","severity": 8,"message": "function definition does not declare parameters","startLineNumber": 40,"startColumn": 16,"endLineNumber": 40,"endColumn": 16
                 }].
                 
                 [{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 24,"startColumn": 8,"endLineNumber": 24,"endColumn": 8
@@ -419,14 +560,17 @@
                 },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 71,"startColumn": 31,"endLineNumber": 71,"endColumn": 31
                 },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 72,"startColumn": 16,"endLineNumber": 72,"endColumn": 16
                 },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 72,"startColumn": 27,"endLineNumber": 72,"endColumn": 27
-                }]. 
-                
+                }].
                 [{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 27,"startColumn": 14,"endLineNumber": 27,"endColumn": 14
                 },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 27,"startColumn": 26,"endLineNumber": 27,"endColumn": 26
                 },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 16,"endLineNumber": 28,"endColumn": 16
                 },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 27,"endLineNumber": 28,"endColumn": 27
                 }]
-                    </pre>
+                
+                
+                
+                
+                </pre>
         </div>
 
         <div id="codesInCPlusPlus">
@@ -625,10 +769,6 @@
                 // A method that returns the list of constraints
                 std::list<Constraint> getConstraints() const;
                 
-                // A method that reads a string from a stream until a comma or a newline is
-                // found or until the end of the stream is reached
-                std::string readString(std::istream &stream);
-                
                 private:
                 // Two strings that store the file names
                 std::string optionsFile;
@@ -646,6 +786,10 @@
                 // A method that parses the .constraints file and fills the list of
                 // constraints
                 void parseConstraints(std::istream &stream);
+                
+                // A method that reads a string from a stream until a comma or a newline is
+                // found or until the end of the stream is reached
+                std::string readString(std::istream &stream);
                 };
                 
                 #endif
@@ -686,24 +830,26 @@
                 </code></pre>
             Hier ist Solver.hpp:
             <pre><code>
+                // Solver.hpp
                 #ifndef SOLVER_HPP
-                
                 #define SOLVER_HPP
                 
+                #include <algorithm>
+                #include <iostream>
                 #include <list>
                 #include <map>
                 #include <random>
-                #include <string>
                 #include <vector>
                 
                 #include "Constraint.hpp"
                 #include "Option.hpp"
                 #include "Parser.hpp"
                 
+                // A class that generates models based on a given set of options and constraints
                 class Solver {
                 public:
                 // A constructor that takes a Parser object as a parameter
-                Solver(const Parser &parser) : parser(parser) {}
+                Solver(const Parser &parser);
                 
                 // A method that generates models and returns them as a list of maps of
                 // options to values. It also prints some statistics to stdout.
@@ -729,7 +875,9 @@
                 bool checkConstraints(const std::map<std::string, std::string> &config) const;
                 
                 // A method that chooses a random pair of options and values
-                std::pair<Option, Option> choosePair() const;
+                std::pair<std::pair<std::string, std::string>,
+                            std::pair<std::string, std::string> >
+                choosePair() const;
                 
                 // A method that chooses a random value from an option
                 std::string chooseValue(const Option &option) const;
@@ -737,7 +885,25 @@
                 // A method that updates the covered pairs map with a given configuration
                 void updateCoveredPairs(
                     const std::map<std::string, std::string> &config,
-                    std::map<std::pair<Option, Option>, bool> &coveredPairs) const;
+                    std::map<std::pair<std::pair<std::string, std::string>,
+                                        std::pair<std::string, std::string> >,
+                            bool> &coveredPairs) const;
+                
+                // A helper method that checks if all pairs in the covered pairs map are
+                // covered
+                bool allCovered(const std::map<std::pair<std::pair<std::string, std::string>,
+                                                        std::pair<std::string, std::string> >,
+                                                bool> &coveredPairs) const;
+                
+                // A helper method that counts the number of uncovered pairs in the covered
+                // pairs map
+                int countUncovered(
+                    const std::map<std::pair<std::pair<std::string, std::string>,
+                                            std::pair<std::string, std::string> >,
+                                    bool> &coveredPairs) const;
+                
+                // A helper method that generates a random double between 0 and 1
+                double randomDouble() const;
                 };
                 
                 #endif
@@ -1075,6 +1241,7 @@
                 #include "Parser.hpp"
                 
                 #include <fstream>
+                #include <iostream>
                 #include <sstream>
                 #include <stdexcept>
                 
@@ -1082,69 +1249,100 @@
                 #include "Option.hpp"
                 
                 // A constructor that takes two file names as parameters
-                Parser::Parser(const std::string& optionsFile,
-                            const std::string& constraintsFile)
+                Parser::Parser(const std::string &optionsFile,
+                            const std::string &constraintsFile)
                     : optionsFile(optionsFile), constraintsFile(constraintsFile) {
-                // Open the .options file for reading
-                std::ifstream input(optionsFile);
-                if (!input) {
-                    // Throw an exception if the file cannot be opened
-                    throw std::runtime_error("Cannot open " + optionsFile);
+                // Open the .options file
+                std::ifstream optionsStream(optionsFile);
+                if (!optionsStream) {
+                    std::cerr << "Could not open file " << optionsFile << "\n";
+                    exit(10);
                 }
-                // Parse the options from the input stream
-                parseOptions(input);
-                // Close the input stream
-                input.close();
+                // Parse the .options file and fill the map of options
+                parseOptions(optionsStream);
+                // Close the .options file
+                optionsStream.close();
                 
-                // Open the .constraints file for reading
-                input.open(constraintsFile);
-                if (!input) {
-                    // Throw an exception if the file cannot be opened
-                    throw std::runtime_error("Cannot open " + constraintsFile);
+                // Open the .constraints file
+                std::ifstream constraintsStream(constraintsFile);
+                if (!constraintsStream) {
+                    std::cerr << "Could not open file " << constraintsFile << "\n";
+                    exit(10);
                 }
-                // Parse the constraints from the input stream
-                parseConstraints(input);
-                // Close the input stream
-                input.close();
+                // Parse the .constraints file and fill the list of constraints
+                parseConstraints(constraintsStream);
+                // Close the .constraints file
+                constraintsStream.close();
                 }
                 
-                // This method returns the map of options
-                // A method that parses the .options file and returns a vector of options
-                std::vector<Option> Parser::parseOptions(std::istream& stream) {
-                std::vector<Option> options;
-                std::string name, value;
-                while ((name = readString(stream)) != "") {
-                    std::vector<std::string> values;
-                    while ((value = readString(stream)) != "") {
-                    values.push_back(value);
-                    }
-                    options.emplace_back(name, values);
-                }
+                // A method that returns the map of options
+                std::map<std::string, std::vector<std::string>> Parser::getOptions() const {
                 return options;
                 }
                 
-                // This method returns the list of constraints
-                // A method that parses the .constraints file and returns a vector of
-                // constraints
-                std::vector<Constraint> Parser::parseConstraints(std::istream& stream) {
-                std::vector<Constraint> constraints;
-                std::string option, value;
-                while ((option = readString(stream)) != "" &&
-                        (value = readString(stream)) != "") {
-                    std::vector<std::pair<std::string, std::string>> pairs;
-                    pairs.emplace_back(option, value);
-                    constraints.emplace_back(pairs);
+                // A method that returns the list of constraints
+                std::list<Constraint> Parser::getConstraints() const { return constraints; }
+                
+                // A method that reads a string from a stream until a comma or a newline is
+                // found or until the end of the stream is reached
+                std::string Parser::readString(std::istream &stream) {
+                std::string result = "";
+                char c;
+                while (stream.get(c)) {
+                    if (c == ',' || c == '\n') {
+                    break;
+                    }
+                    result += c;
                 }
-                return constraints;
+                return result;
                 }
                 
-                // This method reads a string from a stream until a comma or a newline is found
-                // or until the end of the stream is reached
-                std::string Parser::readString(std::istream& stream) {
-                std::string str;
-                stream >> str;
-                return str;
-                }</code></pre>
+                // A method that parses the .options file and fills the map of options
+                void Parser::parseOptions(std::istream &stream) {
+                while (stream) {
+                    // Read the option name
+                    std::string option = readString(stream);
+                    if (option.empty()) {
+                    break;
+                    }
+                    // Read the values until a newline is found
+                    std::vector<std::string> values;
+                    while (stream && stream.peek() != '\n') {
+                    std::string value = readString(stream);
+                    values.push_back(value);
+                    }
+                    // Add the option and values to the map
+                    options[option] = values;
+                }
+                }
+                
+                // A method that parses the .constraints file and fills the list of constraints
+                void Parser::parseConstraints(std::istream &stream) {
+                while (stream) {
+                    // Read the pairs until a newline is found
+                    std::vector<std::pair<std::string, std::string>> pairs;
+                    while (stream && stream.peek() != '\n') {
+                    // Read the option name and value
+                    std::string option = readString(stream);
+                    std::string value = readString(stream);
+                    // Check if the option and value are valid
+                    if (options.count(option) == 0) {
+                        std::cerr << "Invalid option: " << option << "\n";
+                        exit(20);
+                    }
+                    if (std::find(options[option].begin(), options[option].end(), value) ==
+                        options[option].end()) {
+                        std::cerr << "Invalid value: " << value << "\n";
+                        exit(20);
+                    }
+                    // Add the pair to the vector
+                    pairs.emplace_back(option, value);
+                    }
+                    // Add the constraint to the list
+                    constraints.emplace_back(pairs);
+                }
+                }
+                </code></pre>
             Hier ist PrettyPrinter.cpp:
             <pre><code>
                 #include "PrettyPrinter.hpp"
@@ -1233,71 +1431,114 @@
                 </code></pre>
             Hier ist Solver.cpp:
             <pre><code>
+                // Solver.cpp
+                
                 #include "Solver.hpp"
                 
                 #include <algorithm>
-                #include <fstream>
                 #include <iostream>
-                #include <map>
                 #include <random>
-                #include <string>
                 
                 #include "Parser.hpp"
                 
-                // This method generates models and returns them as a list of maps
-                std::list<std::map<std::string, std::string>> Solver::solve() {
-                // Get the options and constraints from the parser
-                options = parser.getOptions();
-                constraints = parser.getConstraints();
+                // A constant that defines the probability of choosing a pair instead of a
+                // random value
+                const double PAIR_PROBABILITY = 0.8;
                 
-                // Create a map of pairs of options to booleans to keep track of the covered
-                // pairs
-                std::map<std::pair<Option, Option>, bool> coveredPairs;
+                // A constant that defines the maximum number of failures before terminating
+                const int MAX_FAILURES = 1000;
                 
-                // Initialize all pairs as uncovered
+                // A method that generates models and returns them as a list of maps of options
+                // to values
+                std::list<std::map<std::string, std::string> > Solver::solve() {
+                // Initialize the vector of Option objects from the map of options in parser
+                for (auto pair : parser.getOptions()) {
+                    Option option(pair.first, pair.second);
+                    options.push_back(option);
+                }
+                
+                // Initialize the vector of Constraint objects from the list of constraints in
+                // parser
+                for (auto constraint : parser.getConstraints()) {
+                    constraints.push_back(constraint);
+                }
+                
+                // Initialize the list of models as empty
+                models.clear();
+                
+                // Initialize a map of pairs of options and values to booleans that indicates
+                // if they are covered or not
+                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                
+                // For each pair of options, generate all possible pairs of values and set
+                // them as uncovered
                 for (size_t i = 0; i < options.size(); i++) {
                     for (size_t j = i + 1; j < options.size(); j++) {
-                    coveredPairs[{options[i], options[j]}] = false;
+                    Option option1 = options[i];
+                    Option option2 = options[j];
+                    for (auto value1 : option1.getValues()) {
+                        for (auto value2 : option2.getValues()) {
+                        coveredPairs[{{option1.getName(), value1},
+                                        {option2.getName(), value2}}] = false;
+                        }
+                    }
                     }
                 }
                 
-                // Create a counter for the number of failed configurations
-                int failed = 0;
+                // Initialize a counter for the number of failures
+                int failures = 0;
                 
                 // Loop until all pairs are covered or the maximum number of failures is
                 // reached
-                while (!allCovered(coveredPairs) && failed < MAX_FAILURES) {
-                    // Create an empty map for the current configuration
+                while (!allCovered(coveredPairs) && failures < MAX_FAILURES) {
+                    // Initialize an empty configuration
                     std::map<std::string, std::string> config;
                 
-                    // Loop until all options are set in the configuration
-                    while (config.size() < options.size()) {
-                    // Choose a random pair of options and values with high probability
-                    if (randomDouble(0, 1) < PAIR_PROBABILITY) {
-                        auto pair = choosePair();
-                        auto option1 = pair.first;
-                        auto option2 = pair.second;
-                        auto value1 = chooseValue(option1);
-                        auto value2 = chooseValue(option2);
+                    // For each option, choose a value to add to the configuration
+                    for (auto option : options) {
+                    // Generate a random double between 0 and 1
+                    double r = randomDouble();
                 
-                        // Set the options and values in the configuration if they are not
-                        // already set
-                        if (config.count(option1.getName()) == 0) {
-                        config[option1.getName()] = value1;
+                    // If the random double is less than the pair probability, choose a pair
+                    // that is not covered yet
+                    if (r < PAIR_PROBABILITY) {
+                        // Find all the pairs that involve the current option and are not
+                        // covered yet
+                        std::vector<std::pair<std::string, std::string>> availablePairs;
+                        for (auto pair : coveredPairs) {
+                        if (!pair.second && (pair.first.first.first == option.getName() ||
+                                            pair.first.second.first == option.getName())) {
+                            availablePairs.push_back(pair.first);
                         }
-                        if (config.count(option2.getName()) == 0) {
-                        config[option2.getName()] = value2;
                         }
-                    } else {
-                        // Choose a random option and value with low probability
-                        auto option = chooseOption();
-                        auto value = chooseValue(option);
                 
-                        // Set the option and value in the configuration if it is not already
-                        // set
-                        if (config.count(option.getName()) == 0) {
+                        // If there are any available pairs, choose one randomly and add it to
+                        // the configuration
+                        if (!availablePairs.empty()) {
+                        std::pair<std::string, std::string> chosenPair =
+                            availablePairs[randomInt(0, availablePairs.size() - 1)];
+                        if (chosenPair.first.first == option.getName()) {
+                            config[chosenPair.first.first] = chosenPair.first.second;
+                            config[chosenPair.second.first] = chosenPair.second.second;
+                        } else {
+                            config[chosenPair.first.first] = chosenPair.first.second;
+                            config[chosenPair.second.first] = chosenPair.second.second;
+                        }
+                        }
+                
+                        // Otherwise, choose a random value from the option and add it to the
+                        // configuration
+                        else {
+                        std::string value = chooseValue(option);
                         config[option.getName()] = value;
                         }
+                    }
+                
+                    // Otherwise, choose a random value from the option and add it to the
+                    // configuration
+                    else {
+                        std::string value = chooseValue(option);
+                        config[option.getName()] = value;
                     }
                     }
                 
@@ -1306,117 +1547,215 @@
                     // If yes, add it to the list of models and update the covered pairs map
                     models.push_back(config);
                     updateCoveredPairs(config, coveredPairs);
-                    } else {
-                    // If no, increment the failed counter
-                    failed++;
+                
+                    // Reset the failures counter
+                    failures = 0;
+                    }
+                
+                    // If no, increment the failures counter
+                    else {
+                    failures++;
                     }
                 }
                 
                 // Print some statistics to stdout
-                std::cout << "Number of models: " << models.size() << "\n";
-                std::cout << "Number of failed configurations: " << failed << "\n";
+                std::cout << "Number of models generated: " << models.size() << "\n";
                 std::cout << "Number of uncovered pairs: " << countUncovered(coveredPairs)
                             << "\n";
-                
-                // Return the list of models
                 return models;
                 }
                 
-                // This method checks if a configuration is compatible with the constraints
+                // A method that checks if a configuration is compatible with the constraints
                 bool Solver::checkConstraints(
                     const std::map<std::string, std::string> &config) const {
-                // Loop through each constraint
-                for (const auto &constraint : constraints) {
-                    // Get the pairs of the constraint
-                    auto pairs = constraint.getPairs();
+                // For each constraint, check if it is violated by the configuration
+                for (auto constraint : constraints) {
+                    // Get the pairs of options and values from the constraint
+                    std::vector<std::pair<std::string, std::string>> pairs =
+                        constraint.getPairs();
                 
-                    // Create a flag to indicate if the constraint is violated
-                    bool violated = true;
+                    // Assume that the constraint is satisfied until proven otherwise
+                    bool satisfied = true;
                 
-                    // Loop through each pair of the constraint
-                    for (const auto &pair : pairs) {
-                    // Get the option and value of the pair
-                    auto option = pair.first;
-                    auto value = pair.second;
+                    // For each pair in the constraint, check if it matches with the
+                    // configuration
+                    for (auto pair : pairs) {
+                    // Get the option and value from the pair
+                    std::string option = pair.first;
+                    std::string value = pair.second;
                 
-                    // Check if the option and value match the configuration
-                    if (config.at(option) == value) {
-                        // If yes, set the flag to false and break the loop
-                        violated = false;
+                    // If the option is not in the configuration or its value does not match,
+                    // the constraint is not satisfied
+                    if (config.count(option) == 0 || config.at(option) != value) {
+                        satisfied = false;
                         break;
                     }
                     }
-                
-                    // If the flag is true, return false
-                    if (violated) {
+                    // If the constraint is satisfied, the configuration is not compatible
+                    if (satisfied) {
                     return false;
                     }
                 }
-                
-                // If no constraint is violated, return true
+                // If none of the constraints are satisfied, the configuration is compatible
                 return true;
                 }
                 
-                // This method chooses a random pair of options and values
-                std::pair<Option, Option> Solver::choosePair() const {
-                // Create a uniform distribution for the options
-                std::uniform_int_distribution<> dis1(0, options.size() - 1);
+                // A method that chooses a random pair of options and values
+                std::pair<std::pair<std::string, std::string>,
+                        std::pair<std::string, std::string>>
+                Solver::choosePair() const {
+                // Choose two random options
+                Option option1 = options[randomInt(0, options.size() - 1)];
+                Option option2 = options[randomInt(0, options.size() - 1)];
                 
-                // Choose a random index for the first option
-                int index1 = dis1(gen);
+                // Choose a random value for each option
+                std::string value1 = chooseValue(option1);
+                std::string value2 = chooseValue(option2);
                 
-                // Choose a random index for the second option that is different from the
-                // first one
-                int index2 = dis1(gen);
-                while (index2 == index1) {
-                    index2 = dis1(gen);
+                // Return the pair of pairs
+                return {{option1.getName(), value1}, {option2.getName(), value2}};
                 }
                 
-                // Return the pair of options
-                return {options[index1], options[index2]};
-                }
-                
-                // This method chooses a random value from an option
+                // A method that chooses a random value from an option
                 std::string Solver::chooseValue(const Option &option) const {
                 // Get the values of the option
-                auto values = option.getValues();
+                std::vector<std::string> values = option.getValues();
                 
-                // Create a uniform distribution for the values
-                std::uniform_int_distribution<> dis(0, values.size() - 1);
-                
-                // Choose a random index for the value
-                int index = dis(gen);
-                
-                // Return the value
-                return values[index];
+                // Choose a random value and return it
+                return values[randomInt(0, values.size() - 1)];
                 }
                 
-                // This method updates the covered pairs map with a given configuration
+                // A method that updates the covered pairs map with a given configuration
                 void Solver::updateCoveredPairs(
                     const std::map<std::string, std::string> &config,
-                    std::map<std::pair<Option, Option>, bool> &coveredPairs) const {
-                // Loop through each pair in the map
-                for (auto &pair : coveredPairs) {
-                    // Get the options and values of the pair
-                    auto option1 = pair.first.first;
-                    auto option2 = pair.first.second;
-                    auto value1 = config.at(option1.getName());
-                    auto value2 = config.at(option2.getName());
-                
-                    // Check if the pair matches the configuration
-                    if ((option1.hasValue(value1) && option2.hasValue(value2)) ||
-                        (option1.hasValue(value2) && option2.hasValue(value1))) {
-                    // If yes, set the boolean to true
-                    pair.second = true;
+                    std::map<std::pair<std::string, std::string>, bool> &coveredPairs) const {
+                // For each pair of options in the configuration, mark the corresponding pair
+                // of values as covered
+                for (auto pair1 : config) {
+                    for (auto pair2 : config) {
+                    if (pair1.first < pair2.first) {
+                        coveredPairs[{{pair1.first, pair1.second},
+                                    {pair2.first, pair2.second}}] = true;
+                    }
                     }
                 }
+                }
+                
+                // A helper method that checks if all pairs in the covered pairs map are covered
+                bool Solver::allCovered(const std::map<std::pair<std::string, std::string>,
+                                                    bool> &coveredPairs) const {
+                for (auto pair : coveredPairs) {
+                    if (!pair.second) {
+                    return false;
+                    }
+                }
+                return true;
+                }
+                
+                // A helper method that counts the number of uncovered pairs in the covered
+                // pairs map
+                int Solver::countUncovered(const std::map<std::pair<std::string, std::string>,
+                                                        bool> &coveredPairs) const {
+                int count = 0;
+                for (auto pair : coveredPairs) {
+                    if (!pair.second) {
+                    count++;
+                    }
+                }
+                return count;
+                }
+                
+                // A helper method that generates a random double between 0 and 1
+                double Solver::randomDouble() const {
+                std::uniform_real_distribution<> dis(0.0, 1.0);
+                return dis(gen);
+                }
+                
+                // If the constraint is satisfied, the configuration is not compatible
+                if (satisfied) {
+                return false;
+                }
+                }
+                
+                // If none of the constraints are satisfied, the configuration is compatible
+                return true;
+                }
+                
+                // A method that chooses a random pair of options and values
+                std::pair<std::pair<std::string, std::string>,
+                        std::pair<std::string, std::string>>
+                Solver::choosePair() const {
+                // Choose two random options
+                Option option1 = options[randomInt(0, options.size() - 1)];
+                Option option2 = options[randomInt(0, options.size() - 1)];
+                
+                // Choose a random value for each option
+                std::string value1 = chooseValue(option1);
+                std::string value2 = chooseValue(option2);
+                
+                // Return the pair of pairs
+                return {{option1.getName(), value1}, {option2.getName(), value2}};
+                }
+                
+                // A method that chooses a random value from an option
+                std::string Solver::chooseValue(const Option &option) const {
+                // Get the values of the option
+                std::vector<std::string> values = option.getValues();
+                
+                // Choose a random value and return it
+                return values[randomInt(0, values.size() - 1)];
+                }
+                
+                // A method that updates the covered pairs map with a given configuration
+                void Solver::updateCoveredPairs(
+                    const std::map<std::string, std::string> &config,
+                    std::map<std::pair<std::string, std::string>, bool> &coveredPairs) const {
+                // For each pair of options in the configuration, mark the corresponding pair
+                // of values as covered
+                for (auto pair1 : config) {
+                    for (auto pair2 : config) {
+                    if (pair1.first < pair2.first) {
+                        coveredPairs[{{pair1.first, pair1.second},
+                                    {pair2.first, pair2.second}}] = true;
+                    }
+                    }
+                }
+                }
+                
+                // A helper method that checks if all pairs in the covered pairs map are covered
+                bool Solver::allCovered(const std::map<std::pair<std::string, std::string>,
+                                                    bool> &coveredPairs) const {
+                for (auto pair : coveredPairs) {
+                    if (!pair.second) {
+                    return false;
+                    }
+                }
+                return true;
+                }
+                
+                // A helper method that counts the number of uncovered pairs in the covered
+                // pairs map
+                int Solver::countUncovered(const std::map<std::pair<std::string, std::string>,
+                                                        bool> &coveredPairs) const {
+                int count = 0;
+                for (auto pair : coveredPairs) {
+                    if (!pair.second) {
+                    count++;
+                    }
+                }
+                return count;
+                }
+                
+                // A helper method that generates a random double between 0 and 1
+                double Solver::randomDouble() const {
+                std::uniform_real_distribution<> dis(0.0, 1.0);
+                return dis(gen);
                 }
                 </code></pre>
 
 
         </div>
 
-        </code></pre>
         Hier ist Makefile01:
         <pre>
                                     <code>
