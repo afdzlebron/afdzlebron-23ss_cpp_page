@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Programmieren C++</title>
+    <title>Programmieren PYTHON</title>
     <!-- icon -->
     <!-- <link rel="icon" href="./img/attent.ico" /> -->
     <!-- css -->
@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren Sie In C++
+        Programmieren in PYTHON
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -315,237 +315,257 @@
         <div>
             Hier ist project.py:
             <pre><code>
-                import os
-                import random
-                import csv
-                
-                class Options:
-                    # Initialize an empty dictionary to store the options and their values
-                    def __init__(self):
-                        self.options = {}
-                
-                    # Parse a .options file and fill the dictionary
-                    def parse(self, filename):
-                        # Open the file in read mode
-                        with open(filename, "r") as file:
-                            # Create a csv reader object
-                            reader = csv.reader(file)
-                            # Loop through each row in the file
-                            for row in reader:
-                                # Check if the row is not empty
-                                if row:
-                                    # Get the option name and its values from the row
-                                    option = row[0]
-                                    values = row[1:]
-                                    # Check if the option name is not empty and has at least one value
-                                    if option and values:
-                                        # Store the option and its values in the dictionary
-                                        self.options[option] = values
+                    import os
+                    import random
+                    import csv
+                    
+                    class Options:
+                        # Initialize an empty dictionary to store the options and their values
+                        def __init__(self):
+                            self.options = {}
+                    
+                        # Parse a .options file and fill the dictionary
+                        def parse(self, filename):
+                            # Open the file in read mode
+                            with open(filename, "r") as file:
+                                # Create a csv reader object
+                                reader = csv.reader(file)
+                                # Loop through each row in the file
+                                for row in reader:
+                                    # Check if the row is not empty
+                                    if row:
+                                        # Get the option name and its values from the row
+                                        option = row[0]
+                                        values = row[1:]
+                                        # Check if the option name is not empty and has at least one value
+                                        if option and values:
+                                            # Store the option and its values in the dictionary
+                                            self.options[option] = values
+                                        else:
+                                            # Raise an exception if the option name or values are empty
+                                            raise ValueError(f"Invalid option or values in {filename}")
                                     else:
-                                        # Raise an exception if the option name or values are empty
-                                        raise ValueError(f"Invalid option or values in {filename}")
-                                else:
-                                    # Raise an exception if the row is empty
-                                    raise ValueError(f"Empty row in {filename}")
-                
-                    # Print the options and their values in a .options file format
-                    def print(self, filename):
-                        # Open the file in write mode
-                        with open(filename, "w") as file:
-                            # Create a csv writer object
-                            writer = csv.writer(file)
-                            # Loop through each option and its values in the dictionary
-                            for option, values in self.options.items():
-                                # Write a row with the option name and its values
-                                writer.writerow([option] + values)
-                
-                class Constraints:
-                    # Initialize an empty list to store the constraints
-                    def __init__(self):
-                        self.constraints = []
-                
-                    # Parse a .constraints file and fill the list
-                    def parse(self, filename):
-                        # Open the file in read mode
-                        with open(filename, "r") as file:
-                            # Create a csv reader object
-                            reader = csv.reader(file)
-                            # Loop through each row in the file
-                            for row in reader:
-                                # Check if the row is not empty
-                                if row:
-                                    # Get the constraint as a list of pairs of option and value
-                                    constraint = [(row[i], row[i+1]) for i in range(0, len(row), 2)]
-                                    # Check if the constraint has at least two pairs of option and value
-                                    if len(constraint) >= 2:
-                                        # Store the constraint in the list
-                                        self.constraints.append(constraint)
+                                        # Raise an exception if the row is empty
+                                        raise ValueError(f"Empty row in {filename}")
+                    
+                        # Print the options and their values in a .options file format
+                        def print(self, filename):
+                            # Open the file in write mode
+                            with open(filename, "w") as file:
+                                # Create a csv writer object
+                                writer = csv.writer(file)
+                                # Loop through each option and its values in the dictionary
+                                for option, values in self.options.items():
+                                    # Write a row with the option name and its values
+                                    writer.writerow([option] + values)
+                    
+                    class Constraints:
+                        # Initialize an empty list to store the constraints
+                        def __init__(self):
+                            self.constraints = []
+                    
+                        # Parse a .constraints file and fill the list
+                        def parse(self, filename):
+                            # Open the file in read mode
+                            with open(filename, "r") as file:
+                                # Create a csv reader object
+                                reader = csv.reader(file)
+                                # Loop through each row in the file
+                                for row in reader:
+                                    # Check if the row is not empty
+                                    if row:
+                                        # Check if the row has an even number of elements
+                                        if len(row) % 2 == 0:
+                                            # Get the constraint as a list of pairs of option and value
+                                            constraint = [(row[i], row[i+1]) for i in range(0, len(row), 2)]
+                                            # Check if the constraint has at least two pairs of option and value
+                                            if len(constraint) >= 2:
+                                                # Store the constraint in the list
+                                                self.constraints.append(constraint)
+                                            else:
+                                                # Raise an exception if the constraint has less than two pairs of option and value
+                                                raise ValueError(f"Invalid constraint in {filename}")
+                                        else:
+                                            # Raise an exception if the row has an odd number of elements
+                                            raise ValueError(f"Invalid row with an odd number of elements in {filename}")
                                     else:
-                                        # Raise an exception if the constraint has less than two pairs of option and value
-                                        raise ValueError(f"Invalid constraint in {filename}")
-                                else:
-                                    # Raise an exception if the row is empty
-                                    raise ValueError(f"Empty row in {filename}")
-                
-                    # Print the constraints and their options and values in a .constraints file format
-                    def print(self, filename):
-                        # Open the file in write mode
-                        with open(filename, "w") as file:
-                            # Create a csv writer object
-                            writer = csv.writer(file)
-                            # Loop through each constraint in the list
-                            for constraint in self.constraints:
-                                # Write a row with the pairs of option and value flattened into a single list
-                                writer.writerow([item for pair in constraint for item in pair])
-                
-                class Models:
-                    # Initialize an empty list to store the models and a counter for failed attempts
-                    def __init__(self):
-                        self.models = []
-                        self.failures = 0
-                
-                    # Generate possible models by randomly creating configurations that satisfy the options and constraints
-                    def generate(self, options, constraints):
-                        # Define some constants for probabilities and limits
-                        LOW_PROB = 0.1  # The probability of choosing a single option instead of a pair of options to extend a configuration
-                        HIGH_PROB = 0.9  # The probability of choosing a pair of options that is not covered yet instead of any pair of options to extend a configuration
-                        MAX_FAILURES = 1000  # The maximum number of failed attempts to create a valid configuration before stopping the generation
-                
-                        MAX_MODELS = 100  # The maximum number of models to generate
-                
-                        all_pairs = set()
-                        for option, values in options.options.items():
-                            for value in values:
-                                all_pairs.add((option, value))
-                
-                        covered_pairs = set()
-                
-                        while self.failures < MAX_FAILURES and len(self.models) < MAX_MODELS:
-                
-                            config = {}
-                
-                            while True:
-                
-                                if len(config) == len(options.options):
-                
-                                    if self.is_valid(config, constraints):
-                
-                                        self.models.append(config)
-                
-                                        covered_pairs.update(config.items())
-                
-                                        self.failures = 0
-                
-                                    else:
-                
-                                        self.failures += 1
-                
-                                    break
-                
-                                r = random.random()
-                
-                                if r < LOW_PROB:
-                
-                                    option = random.choice(list(options.options.keys() - config.keys()))
-                
-                                    value = random.choice(options.options[option])
-                
-                                    config[option] = value
-                
-                                else:
-                
+                                        # Raise an exception if the row is empty
+                                        raise ValueError(f"Empty row in {filename}")
+                    
+                        # Print the constraints and their options and values in a .constraints file format
+                        def print(self, filename):
+                            # Open the file in write mode
+                            with open(filename, "w") as file:
+                                # Create a csv writer object
+                                writer = csv.writer(file)
+                                # Loop through each constraint in the list
+                                for constraint in self.constraints:
+                                    # Write a row with the pairs of option and value flattened into a single list
+                                    writer.writerow([item for pair in constraint for item in pair])
+                    
+                    class Models:
+                        # Initialize an empty list to store the models and a counter for failed attempts
+                        def __init__(self):
+                            self.models = []
+                            self.failures = 0
+                    
+                        # Generate possible models by randomly creating configurations that satisfy the options and constraints
+                        def generate(self, options, constraints):
+                            # Define some constants for probabilities and limits
+                            LOW_PROB = 0.1  # The probability of choosing a single option instead of a pair of options to extend a configuration
+                            HIGH_PROB = 0.9  # The probability of choosing a pair of options that is not covered yet instead of any pair of options to extend a configuration
+                            MAX_FAILURES = 1000  # The maximum number of failed attempts to create a valid configuration before stopping the generation
+                            MAX_MODELS = 100  # The maximum number of models to generate
+                    
+                            # Create a set of all possible pairs of options and values from the options
+                            all_pairs = set()
+                            for option, values in options.options.items():
+                                for value in values:
+                                    all_pairs.add((option, value))
+                    
+                            # Create a set of covered pairs of options and values that have been used in the models
+                            covered_pairs = set()
+                    
+                            # Loop until the maximum number of failures or models is reached
+                            while self.failures < MAX_FAILURES and len(self.models) < MAX_MODELS:
+                                # Create an empty configuration as a dictionary of option and value
+                                config = {}
+                    
+                                # Loop until the configuration is complete or invalid
+                                while True:
+                                    # Check if the configuration is complete, i.e. it has all the options
+                                    if len(config) == len(options.options):
+                                        # Check if the configuration is valid, i.e. it satisfies all the constraints
+                                        if self.is_valid(config, constraints):
+                                            # Add the configuration as a model to the list
+                                            self.models.append(config)
+                                            # Update the covered pairs with the pairs in the model
+                                            covered_pairs.update(config.items())
+                                            # Reset the failures counter
+                                            self.failures = 0
+                                        else:
+                                            # Increment the failures counter
+                                            self.failures += 1
+                                        # Break the loop
+                                        break
+                    
+                                    # Choose a random number between 0 and 1
                                     r = random.random()
-                
-                                    if r < HIGH_PROB:
-                
-                                        pair = random.choice(list((all_pairs - covered_pairs) & self.get_compatible_pairs(config)))
-                
-                                        config[pair[0]] = pair[1]
-                
+                    
+                                    # If the random number is less than the low probability, choose a single option to extend the configuration
+                                    if r < LOW_PROB:
+                                        # Choose a random option that is not in the configuration yet
+                                        option = random.choice(list(options.options.keys() - config.keys()))
+                                        # Choose a random value for that option
+                                        value = random.choice(options.options[option])
+                                        # Add the option and value to the configuration
+                                        config[option] = value
+                    
+                                    # Otherwise, choose a pair of options to extend the configuration
                                     else:
-                
-                                        pair = random.choice(list(self.get_compatible_pairs(config)))
-                
-                                        config[pair[0]] = pair[1]
-                
-                    def is_valid(self, config, constraints):
-                
-                        for constraint in constraints.constraints:
-                
-                            for pair in constraint:
-                
-                                if pair[0] in config and config[pair[0]] == pair[1]:
-                
-                                    continue
-                
+                                        # Choose a random number between 0 and 1
+                                        r = random.random()
+                    
+                                        # If the random number is less than the high probability, choose a pair of options that is not covered yet and is compatible with the configuration
+                                        if r < HIGH_PROB:
+                                            # Choose a random pair that is not in the covered pairs and is compatible with the configuration
+                                            pair = random.choice(list((all_pairs - covered_pairs) & self.get_compatible_pairs(config)))
+                                            # Add the pair to the configuration
+                                            config[pair[0]] = pair[1]
+                    
+                                        # Otherwise, choose any pair of options that is compatible with the configuration
+                                        else:
+                                            # Choose a random pair that is compatible with the configuration
+                                            pair = random.choice(list(self.get_compatible_pairs(config)))
+                                            # Add the pair to the configuration
+                                            config[pair[0]] = pair[1]
+                    
+                        # Check if a configuration is valid, i.e. it satisfies all the constraints
+                        def is_valid(self, config, constraints):
+                            # Loop through each constraint in the constraints list
+                            for constraint in constraints.constraints:
+                                # Loop through each pair of option and value in the constraint
+                                for pair in constraint:
+                                    # Check if the option is in the configuration and its value matches the constraint value
+                                    if pair[0] in config and config[pair[0]] == pair[1]:
+                                        # If so, continue to check the next pair in the constraint
+                                        continue
+                                    else:
+                                        # If not, break the loop and move on to check the next constraint
+                                        break
+                    
                                 else:
-                
-                                    break
-                
-                            else:
-                
-                                return False
-                
-                        return True
-                
-                    def get_compatible_pairs(self, config):
-                
-                        compatible_pairs = set()
-                
-                        for option, value in config.items():
-                
-                            for other_option, other_value in config.items():
-                
-                                if option != other_option:
-                
-                                    compatible_pairs.add((option, value))
-                                    compatible_pairs.add((other_option, other_value))
-                
-                        return compatible_pairs
-                
-                    def print(self, filename):
-                
-                        with open(filename, "w") as file:
-                
-                            writer = csv.writer(file)
-                
-                            writer.writerow(list(options.options.keys()))
-                
-                            for model in self.models:
-                
-                                writer.writerow([model[option] for option in options.options.keys()])
-                
-                def main():
-                
-                    options_files = [f for f in os.listdir() if f.endswith(".options")]
-                
-                    for options_file in options_files:
-                
-                        options = Options()
-                        options.parse(options_file)
-                
-                        constraints_file = options_file.replace(".options", ".constraints")
-                
-                        if os.path.exists(constraints_file):
-                
-                            constraints = Constraints()
-                            constraints.parse(constraints_file)
-                
-                            models = Models()
-                            models.generate(options, constraints)
-                
-                            models_file = options_file.replace(".options", ".models")
-                
-                            options.print(options_file)
-                            constraints.print(constraints_file)
-                            models.print(models_file)
-                
-                if __name__ == "__main__":
-                    main()
-                </code></pre>
+                                    # If all pairs in the constraint match the configuration, return False as the configuration violates the constraint
+                                    return False
+                    
+                            # If none of the constraints are violated by the configuration, return True as the configuration is valid
+                            return True
+                    
+                        # Get all possible pairs of options and values that are compatible with a partial configuration, i.e. they do not conflict with any existing option or value in the configuration
+                        def get_compatible_pairs(self, config):
+                            # Create an empty set to store the compatible pairs
+                            compatible_pairs = set()
+                            # Loop through each option and value in the config dictionary
+                            for option, value in config.items():
+                                # Loop through each other option and value in the config dictionary
+                                for other_option, other_value in config.items():
+                                    # Check if they are different options
+                                    if option != other_option:
+                                        # Add both pairs to the compatible pairs set
+                                        compatible_pairs.add((option, value))
+                                        compatible_pairs.add((other_option, other_value))
+                            # Return the compatible pairs set
+                            return compatible_pairs
+                    
+                        # Print the models and their options and values in a .models file format
+                        def print(self, filename):
+                            # Open the file in write mode
+                            with open(filename, "w") as file:
+                                # Create a csv writer object
+                                writer = csv.writer(file)
+                                # Write the header row with the option names
+                                writer.writerow(list(options.options.keys()))
+                                # Loop through each model in the list
+                                for model in self.models:
+                                    # Write a row with the values of the options in the model
+                                    writer.writerow([model[option] for option in options.options.keys()])
+                    
+                    def main():
+                        # Get the list of .options files in the current directory
+                        options_files = [f for f in os.listdir() if f.endswith(".options")]
+                    
+                        # Loop through each .options file
+                        for options_file in options_files:
+                            # Create an Options object and parse the .options file
+                            options = Options()
+                            options.parse(options_file)
+                    
+                            # Get the corresponding .constraints file name
+                            constraints_file = options_file.replace(".options", ".constraints")
+                    
+                            # Check if the .constraints file exists
+                            if os.path.exists(constraints_file):
+                                # Create a Constraints object and parse the .constraints file
+                                constraints = Constraints()
+                                constraints.parse(constraints_file)
+                    
+                                # Create a Models object and generate possible models that satisfy the options and constraints
+                                models = Models()
+                                models.generate(options, constraints)
+                    
+                                # Get the corresponding .models file name
+                                models_file = options_file.replace(".options", ".models")
+                    
+                                # Print the options, constraints, and models to their respective files
+                                options.print(options_file)
+                                constraints.print(constraints_file)
+                                models.print(models_file)
+                    
+                    if __name__ == "__main__":
+                        main()
+                    </code></pre>
 
         </div>
-
         </code></pre>
         Hier ist Makefile01:
         <pre>
