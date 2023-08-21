@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren wir C++
+        Programmier C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -328,27 +328,9 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                    [{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Constraint\"\" hat keinen Member \"\"addPair\"\".","source": "C/C++","startLineNumber": 4,"startColumn": 18,"endLineNumber": 4,"endColumn": 25
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 8,"startColumn": 3,"endLineNumber": 8,"endColumn": 8
-                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "redefinition of 'getPair'","startLineNumber": 12,"startColumn": 49,"endLineNumber": 12,"endColumn": 49
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Constraint\"\" hat keinen Member \"\"getPair\"\".","source": "C/C++","startLineNumber": 12,"startColumn": 49,"endLineNumber": 12,"endColumn": 56
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "1670","severity": 8,"message": "Ein Typqualifizierer ist in einer statischen Nichtmemberfunktion nicht zulässig.","source": "C/C++","startLineNumber": 12,"startColumn": 68,"endLineNumber": 12,"endColumn": 73
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 14,"startColumn": 29,"endLineNumber": 14,"endColumn": 34
-                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'pairs'; did you mean 'pair'?","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 3
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 8
-                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "no member named 'push_back' in 'std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >'","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 8
-                }].
-                [{"resource": "/Option.cpp","owner": "clang","severity": 8,"message": "redefinition of 'addValue'","startLineNumber": 10,"startColumn": 14,"endLineNumber": 10,"endColumn": 14
-                }]
-                </pre>
-            <pre id="p2">
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all          
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
-                    In file included from Constraint.cpp:1:
-                    ./Constraint.hpp:22:80: warning: non-void function does not return a value [-Wreturn-type]
-                    std::vector<std::pair<std::string, std::string> > getPairs(int index) const {}
-                                                                                                ^
                     Constraint.cpp:4:18: error: out-of-line definition of 'addPair' does not match any declaration in 'Constraint'
                     void Constraint::addPair(const std::string& option, const std::string& value) {
                                     ^~~~~~~
@@ -365,8 +347,26 @@
                     Constraint.cpp:28:9: error: no member named 'push_back' in 'std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >'
                     pairs.push_back(pair);
                     ~~~~~ ^
-                    1 warning and 4 errors generated.
-                    make: *** [Constraint.o] Error 1
+                    4 errors generated.
+                </pre>
+            <pre id="p2">
+                    [{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Constraint\"\" hat keinen Member \"\"addPair\"\".","source": "C/C++","startLineNumber": 4,"startColumn": 18,"endLineNumber": 4,"endColumn": 25
+                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 8,"startColumn": 3,"endLineNumber": 8,"endColumn": 8
+                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "redefinition of 'getPair'","startLineNumber": 12,"startColumn": 49,"endLineNumber": 12,"endColumn": 49
+                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Constraint\"\" hat keinen Member \"\"getPair\"\".","source": "C/C++","startLineNumber": 12,"startColumn": 49,"endLineNumber": 12,"endColumn": 56
+                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "1670","severity": 8,"message": "Ein Typqualifizierer ist in einer statischen Nichtmemberfunktion nicht zulässig.","source": "C/C++","startLineNumber": 12,"startColumn": 68,"endLineNumber": 12,"endColumn": 73
+                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 14,"startColumn": 29,"endLineNumber": 14,"endColumn": 34
+                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'pairs'; did you mean 'pair'?","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 3
+                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 8
+                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "no member named 'push_back' in 'std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >'","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 8
+                }].
+                [{"resource": "/Constraint.hpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 13,"startColumn": 66,"endLineNumber": 13,"endColumn": 66
+                },{"resource": "/Constraint.hpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 28,"startColumn": 49,"endLineNumber": 28,"endColumn": 49
+                }].
+                [{"resource": "/Option.cpp","owner": "clang","severity": 8,"message": "redefinition of 'addValue'","startLineNumber": 10,"startColumn": 14,"endLineNumber": 10,"endColumn": 14
+                }].
+                
+                
                 </pre>
         </div>
 
@@ -385,22 +385,22 @@
                 class Constraint {
                 public:
                 // A constructor that takes a vector of pairs as a parameter
-                Constraint(const std::vector<std::pair<std::string, std::string> >& pairs) {
+                Constraint(const std::vector<std::pair<std::string, std::string>>& pairs) {
                     // Assign the parameter to the member variable
                     this->pairs = pairs;
                 }
                 
-                // // A method that adds a pair of option and value to the vector of pairs
-                // void addPair(const std::string& option, const std::string& value);
-                
                 // A getter method that returns the vector of pairs of the constraint
-                std::vector<std::pair<std::string, std::string> > getPairs(int index) const {}
-                
+                std::vector<std::pair<std::string, std::string> > getPairs()
+                    const {
+                    // Return the member variable
+                    return pairs;
+                }
                 
                 private:
                 // A vector of pairs of strings that stores the options and values of the
                 // constraint
-                std::vector<std::pair<std::string, std::string> > pairs;
+                std::vector<std::pair<std::string, std::string>> pairs;
                 };
                 
                 #endif
