@@ -328,7 +328,7 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-01-Debug-01-230821-01 % make all          
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-01-Debug-01-230821-01 % make all
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
                     g++ -std=c++17 -c Fuzzer.cpp
@@ -350,42 +350,83 @@
                     ~~~~ ^
                     2 errors generated.
                     make: *** [Parser.o] Error 1
-                </pre>
+                    </pre>
             <pre id="p2">
-                    [{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"std::__1::vector<_Tp, _Allocator>::vector [mit _Tp=Option, _Allocator=std::__1::allocator<Option>]\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 15,"startColumn": 13,"endLineNumber": 15,"endColumn": 16,"relatedInformation": [{"startLineNumber": 15,"startColumn": 13,"endLineNumber": 15,"endColumn": 16,"message": "Argumenttypen sind: (std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::string, Option>, std::__1::__tree_node<std::__1::__value_type<std::__1::string, Option>, void *> *, ptrdiff_t>>, std::__1::__map_iterator<std::__1::__tree_iterator<std::__1::__value_type<std::__1::string, Option>, std::__1::__tree_node<std::__1::__value_type<std::__1::string, Option>, void *> *, ptrdiff_t>>)","resource": "Solver.cpp"}]
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 50,"startColumn": 33,"endLineNumber": 50,"endColumn": 38
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 51,"startColumn": 46,"endLineNumber": 51,"endColumn": 52
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 71,"startColumn": 40,"endLineNumber": 71,"endColumn": 45
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 72,"startColumn": 53,"endLineNumber": 72,"endColumn": 59
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"[]\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 96,"startColumn": 21,"endLineNumber": 96,"endColumn": 21,"relatedInformation": [{"startLineNumber": 96,"startColumn": 21,"endLineNumber": 96,"endColumn": 21,"message": "Operandentypen sind: std::__1::map<std::__1::pair<std::__1::string, std::__1::string>, bool, std::__1::less<std::__1::pair<std::__1::string, std::__1::string>>, std::__1::allocator<std::__1::pair<const std::__1::pair<std::__1::string, std::__1::string>, bool>>> [ std::__1::pair<std::__1::pair<std::__1::string, std::__1::string>, std::__1::pair<std::__1::string, std::__1::string>> ]","resource": "Solver.cpp"},{"startLineNumber": 96,"startColumn": 21,"endLineNumber": 96,"endColumn": 21,"message": "�1\u0004\u0001","resource": "Solver.cpp"},{"startLineNumber": 96,"startColumn": 21,"endLineNumber": 96,"endColumn": 21,"message": "�1\u0004\u0001","resource": "Solver.cpp"}]
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "312","severity": 8,"message": "Es ist keine passende benutzerdefinierte Konvertierung von \"const std::__1::vector<std::__1::map<std::__1::string, std::__1::string, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::map<std::__1::string, std::__1::string, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::string>>>>>\" in \"std::__1::list<std::__1::map<std::__1::string, std::__1::string, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::map<std::__1::string, std::__1::string, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::string>>>>>\" vorhanden.","source": "C/C++","startLineNumber": 121,"startColumn": 10,"endLineNumber": 121,"endColumn": 16
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "147","severity": 8,"message": "Die Deklaration ist nicht mit \"\"std::__1::pair<std::__1::string, std::__1::string> Solver::choosePair() const\" (deklariert in Zeile 18 von \"Solver.hpp\")\" kompatibel.","source": "C/C++","startLineNumber": 127,"startColumn": 9,"endLineNumber": 127,"endColumn": 19
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "312","severity": 8,"message": "Es ist keine passende benutzerdefinierte Konvertierung von \"const Option\" in \"std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>\" vorhanden.","source": "C/C++","startLineNumber": 137,"startColumn": 63,"endLineNumber": 137,"endColumn": 70
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "312","severity": 8,"message": "Es ist keine passende benutzerdefinierte Konvertierung von \"const Option\" in \"std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>\" vorhanden.","source": "C/C++","startLineNumber": 138,"startColumn": 63,"endLineNumber": 138,"endColumn": 70
-                    },{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "2291","severity": 8,"message": "diese bereichsbasierte 'for'-Anweisung erfordert eine geeignete \"begin\"-Funktion, die jedoch nicht gefunden wurde","source": "C/C++","startLineNumber": 156,"startColumn": 29,"endLineNumber": 156,"endColumn": 39
-                    }]
-                    
-                    [{"resource": "/Solver.hpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 35,"startColumn": 46,"endLineNumber": 35,"endColumn": 46
-                    },{"resource": "/Solver.hpp","owner": "clang","severity": 8,"message": "function definition does not declare parameters","startLineNumber": 38,"startColumn": 16,"endLineNumber": 38,"endColumn": 16
-                    }]
-                    
-                    [{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 24,"startColumn": 8,"endLineNumber": 24,"endColumn": 8
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 24,"startColumn": 18,"endLineNumber": 24,"endColumn": 18
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 14,"endLineNumber": 46,"endColumn": 14
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 25,"endLineNumber": 46,"endColumn": 25
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 16,"endLineNumber": 48,"endColumn": 16
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 28,"endLineNumber": 48,"endColumn": 28
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 71,"startColumn": 14,"endLineNumber": 71,"endColumn": 14
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 71,"startColumn": 31,"endLineNumber": 71,"endColumn": 31
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 72,"startColumn": 16,"endLineNumber": 72,"endColumn": 16
-                    },{"resource": "/Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 72,"startColumn": 27,"endLineNumber": 72,"endColumn": 27
-                    }]
-                    [{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 27,"startColumn": 14,"endLineNumber": 27,"endColumn": 14
-                    },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 27,"startColumn": 26,"endLineNumber": 27,"endColumn": 26
-                    },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 16,"endLineNumber": 28,"endColumn": 16
-                    },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 27,"endLineNumber": 28,"endColumn": 27
-                    }]
-                </pre>
+                    [{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 13,"startColumn": 44,"endLineNumber": 13,"endColumn": 44
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no viable overloaded '='","startLineNumber": 15,"startColumn": 3,"endLineNumber": 15,"endColumn": 32
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"=\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 15,"startColumn": 11,"endLineNumber": 15,"endColumn": 11,"relatedInformation": [{"startLineNumber": 15,"startColumn": 11,"endLineNumber": 15,"endColumn": 11,"message": "Operandentypen sind: std::__1::vector<Option, std::__1::allocator<Option>> = std::__1::map<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>>","resource": "/Solver.cpp"}]
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no viable overloaded '='","startLineNumber": 16,"startColumn": 3,"endLineNumber": 16,"endColumn": 40
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"=\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 16,"startColumn": 15,"endLineNumber": 16,"endColumn": 15,"relatedInformation": [{"startLineNumber": 16,"startColumn": 15,"endLineNumber": 16,"endColumn": 15,"message": "Operandentypen sind: std::__1::vector<Constraint, std::__1::allocator<Constraint>> = std::__1::list<Constraint, std::__1::allocator<Constraint>>","resource": "/Solver.cpp"}]
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 25,"startColumn": 20,"endLineNumber": 25,"endColumn": 20
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "expected ']'","startLineNumber": 25,"startColumn": 20,"endLineNumber": 25,"endColumn": 20
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'allCovered'","startLineNumber": 34,"startColumn": 11,"endLineNumber": 34,"endColumn": 11
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"allCovered\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 34,"startColumn": 11,"endLineNumber": 34,"endColumn": 21
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'MAX_FAILURES'","startLineNumber": 34,"startColumn": 48,"endLineNumber": 34,"endColumn": 48
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"MAX_FAILURES\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 34,"startColumn": 48,"endLineNumber": 34,"endColumn": 60
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'randomDouble'","startLineNumber": 41,"startColumn": 11,"endLineNumber": 41,"endColumn": 11
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"randomDouble\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 41,"startColumn": 11,"endLineNumber": 41,"endColumn": 23
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'PAIR_PROBABILITY'","startLineNumber": 41,"startColumn": 32,"endLineNumber": 41,"endColumn": 32
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"PAIR_PROBABILITY\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 41,"startColumn": 32,"endLineNumber": 41,"endColumn": 48
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'chooseOption'","startLineNumber": 58,"startColumn": 23,"endLineNumber": 58,"endColumn": 23
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"chooseOption\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 58,"startColumn": 23,"endLineNumber": 58,"endColumn": 35
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'countUncovered'","startLineNumber": 83,"startColumn": 49,"endLineNumber": 83,"endColumn": 49
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"countUncovered\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 83,"startColumn": 49,"endLineNumber": 83,"endColumn": 63
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 131,"startColumn": 21,"endLineNumber": 131,"endColumn": 21
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 135,"startColumn": 21,"endLineNumber": 135,"endColumn": 21
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 137,"startColumn": 19,"endLineNumber": 137,"endColumn": 19
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 153,"startColumn": 19,"endLineNumber": 153,"endColumn": 19
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'hasValue' in 'Option'","startLineNumber": 172,"startColumn": 10,"endLineNumber": 172,"endColumn": 17
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 172,"startColumn": 18,"endLineNumber": 172,"endColumn": 26
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'hasValue' in 'Option'","startLineNumber": 172,"startColumn": 38,"endLineNumber": 172,"endColumn": 45
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 172,"startColumn": 46,"endLineNumber": 172,"endColumn": 54
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 8,"message": "no member named 'hasValue' in 'Option'","startLineNumber": 173,"startColumn": 10,"endLineNumber": 173,"endColumn": 17
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 173,"startColumn": 18,"endLineNumber": 173,"endColumn": 26
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"hasValue\"\".","source": "C/C++","startLineNumber": 173,"startColumn": 46,"endLineNumber": 173,"endColumn": 54
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 9,"endLineNumber": 42,"endColumn": 9
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 43,"startColumn": 9,"endLineNumber": 43,"endColumn": 9
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 44,"startColumn": 9,"endLineNumber": 44,"endColumn": 9
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 45,"startColumn": 9,"endLineNumber": 45,"endColumn": 9
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 9,"endLineNumber": 46,"endColumn": 9
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 58,"startColumn": 9,"endLineNumber": 58,"endColumn": 9
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 59,"startColumn": 9,"endLineNumber": 59,"endColumn": 9
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 94,"startColumn": 14,"endLineNumber": 94,"endColumn": 14
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 94,"startColumn": 31,"endLineNumber": 94,"endColumn": 31
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 96,"startColumn": 5,"endLineNumber": 96,"endColumn": 5
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 102,"startColumn": 16,"endLineNumber": 102,"endColumn": 16
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 102,"startColumn": 27,"endLineNumber": 102,"endColumn": 27
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 104,"startColumn": 7,"endLineNumber": 104,"endColumn": 7
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 105,"startColumn": 7,"endLineNumber": 105,"endColumn": 7
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 147,"startColumn": 3,"endLineNumber": 147,"endColumn": 3
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 164,"startColumn": 8,"endLineNumber": 164,"endColumn": 8
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 164,"startColumn": 19,"endLineNumber": 164,"endColumn": 19
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 166,"startColumn": 5,"endLineNumber": 166,"endColumn": 5
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 167,"startColumn": 5,"endLineNumber": 167,"endColumn": 5
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 168,"startColumn": 5,"endLineNumber": 168,"endColumn": 5
+                },{"resource": "/Solver.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 169,"startColumn": 5,"endLineNumber": 169,"endColumn": 5
+                }]
+                .
+                
+                [{"resource": "Solver.hpp","owner": "clang","severity": 8,"message": "function definition does not declare parameters","startLineNumber": 38,"startColumn": 16,"endLineNumber": 38,"endColumn": 16
+                }].
+                
+                [{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 24,"startColumn": 8,"endLineNumber": 24,"endColumn": 8
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 24,"startColumn": 18,"endLineNumber": 24,"endColumn": 18
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 14,"endLineNumber": 46,"endColumn": 14
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 25,"endLineNumber": 46,"endColumn": 25
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 16,"endLineNumber": 48,"endColumn": 16
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 28,"endLineNumber": 48,"endColumn": 28
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 71,"startColumn": 14,"endLineNumber": 71,"endColumn": 14
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 71,"startColumn": 31,"endLineNumber": 71,"endColumn": 31
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 72,"startColumn": 16,"endLineNumber": 72,"endColumn": 16
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 72,"startColumn": 27,"endLineNumber": 72,"endColumn": 27
+                }]. 
+                
+                [{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 27,"startColumn": 14,"endLineNumber": 27,"endColumn": 14
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 27,"startColumn": 26,"endLineNumber": 27,"endColumn": 26
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 16,"endLineNumber": 28,"endColumn": 16
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 27,"endLineNumber": 28,"endColumn": 27
+                }]
+                    </pre>
         </div>
 
         <div id="codesInCPlusPlus">
@@ -679,7 +720,7 @@
                 std::vector<Constraint> constraints;
                 
                 // A list of maps of strings to strings that stores the models
-                std::list<std::map<std::string, std::string>> models;
+                std::list<std::map<std::string, std::string> > models;
                 
                 // A random number generator with a fixed seed (e.g. 42)
                 std::mt19937 gen{42};
@@ -1203,175 +1244,175 @@
                 
                 #include "Parser.hpp"
                 
-                Solver::Solver(const Parser& parser) : parser(parser) {
-                // Change the assignment of options and constraints to use the vector
-                // constructor
-                options = std::vector<Option>(parser.getOptions().begin(),
-                                                parser.getOptions().end());
-                constraints = std::vector<Constraint>(parser.getConstraints().begin(),
-                                                        parser.getConstraints().end());
+                // This method generates models and returns them as a list of maps
+                std::list<std::map<std::string, std::string>> Solver::solve() {
+                // Get the options and constraints from the parser
+                options = parser.getOptions();
+                constraints = parser.getConstraints();
+                
+                // Create a map of pairs of options to booleans to keep track of the covered
+                // pairs
+                std::map<std::pair<Option, Option>, bool> coveredPairs;
+                
+                // Initialize all pairs as uncovered
+                for (size_t i = 0; i < options.size(); i++) {
+                    for (size_t j = i + 1; j < options.size(); j++) {
+                    coveredPairs[{options[i], options[j]}] = false;
+                    }
                 }
                 
-                std::list<std::map<std::string, std::string> > Solver::solve() {
-                // Create an empty list of maps that will store the models
-                std::list<std::map<std::string, std::string> > models;
+                // Create a counter for the number of failed configurations
+                int failed = 0;
                 
-                // Create an empty map that will store which pairs are already covered
-                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                // Loop until all pairs are covered or the maximum number of failures is
+                // reached
+                while (!allCovered(coveredPairs) && failed < MAX_FAILURES) {
+                    // Create an empty map for the current configuration
+                    std::map<std::string, std::string> config;
                 
-                // Create an empty map that will store which options are already set
-                std::map<std::string, bool> setOptions;
+                    // Loop until all options are set in the configuration
+                    while (config.size() < options.size()) {
+                    // Choose a random pair of options and values with high probability
+                    if (randomDouble(0, 1) < PAIR_PROBABILITY) {
+                        auto pair = choosePair();
+                        auto option1 = pair.first;
+                        auto option2 = pair.second;
+                        auto value1 = chooseValue(option1);
+                        auto value2 = chooseValue(option2);
                 
-                // Create an empty map that will store the current configuration
-                std::map<std::string, std::string> currentConfig;
-                
-                // Create a random number generator with a fixed seed (e.g. 42) to generate
-                // random values
-                std::mt19937 gen(42);
-                
-                // Repeat the following steps until either all pairs are covered or 1000
-                // configurations are generated that do not satisfy the constraints
-                int invalidCount = 0;
-                while (std::find(coveredPairs.begin(), coveredPairs.end(), false) !=
-                            coveredPairs.end() &&
-                        invalidCount < 1000) {
-                    // Start with an empty configuration
-                    currentConfig.clear();
-                
-                    // For each option in the options vector
-                    for (auto it1 = options.begin(); it1 != options.end(); ++it1) {
-                    // Get the option name and the possible values
-                    std::string option = it1->first;
-                    std::vector<std::string> values = it1->second;
-                
-                    // If the option is already set in the current configuration, skip it
-                    if (setOptions[option]) {
-                        continue;
-                    }
-                
-                    // Choose a random value from the possible values
-                    int index = gen() % values.size();
-                    std::string value = values[index];
-                
-                    // Add the option and the value to the current configuration
-                    currentConfig[option] = value;
-                
-                    // Mark the option as set
-                    setOptions[option] = true;
-                
-                    // For each other option in the options vector
-                    for (auto it2 = it1 + 1; it2 != options.end(); ++it2) {
-                        // Get the other option name and the possible values
-                        std::string otherOption = it2->first;
-                        std::vector<std::string> otherValues = it2->second;
-                
-                        // If the other option is already set in the current configuration,
-                        // skip it
-                        if (setOptions[otherOption]) {
-                        continue;
+                        // Set the options and values in the configuration if they are not
+                        // already set
+                        if (config.count(option1.getName()) == 0) {
+                        config[option1.getName()] = value1;
                         }
-                
-                        // Choose a random value from the possible values
-                        int otherIndex = gen() % otherValues.size();
-                        std::string otherValue = otherValues[otherIndex];
-                
-                        // Add the other option and the value to the current configuration
-                        currentConfig[otherOption] = otherValue;
-                
-                        // Mark the other option as set
-                        setOptions[otherOption] = true;
-                
-                        // Create a pair of options and values
-                        std::pair<std::pair<std::string, std::string>,
-                                std::pair<std::string, std::string>>
-                            pair({{option, value}, {otherOption, otherValue}});
-                
-                        // Mark the pair as covered
-                        coveredPairs[pair] = true;
-                    }
-                    }
-                
-                    // Check if the current configuration is compatible with the constraints
-                    if (checkConstraints(currentConfig)) {
-                    // If yes, add the current configuration to the list of models
-                    models.push_back(currentConfig);
+                        if (config.count(option2.getName()) == 0) {
+                        config[option2.getName()] = value2;
+                        }
                     } else {
-                    // If no, increment the invalid count
-                    invalidCount++;
+                        // Choose a random option and value with low probability
+                        auto option = chooseOption();
+                        auto value = chooseValue(option);
+                
+                        // Set the option and value in the configuration if it is not already
+                        // set
+                        if (config.count(option.getName()) == 0) {
+                        config[option.getName()] = value;
+                        }
+                    }
                     }
                 
-                    // Reset the set options map
-                    for (auto& pair : setOptions) {
-                    pair.second = false;
+                    // Check if the configuration is compatible with the constraints
+                    if (checkConstraints(config)) {
+                    // If yes, add it to the list of models and update the covered pairs map
+                    models.push_back(config);
+                    updateCoveredPairs(config, coveredPairs);
+                    } else {
+                    // If no, increment the failed counter
+                    failed++;
                     }
                 }
+                
+                // Print some statistics to stdout
+                std::cout << "Number of models: " << models.size() << "\n";
+                std::cout << "Number of failed configurations: " << failed << "\n";
+                std::cout << "Number of uncovered pairs: " << countUncovered(coveredPairs)
+                            << "\n";
                 
                 // Return the list of models
                 return models;
                 }
                 
-                // A method that returns the list of maps of options to values
-                std::list<std::map<std::string, std::string>> Solver::getModels() const {
-                return models;
-                }
-                
-                // A method that chooses a random pair of options and values
-                std::pair<std::pair<std::string, std::string>,
-                        std::pair<std::string, std::string>>
-                Solver::choosePair() const {
-                // Create a random number generator with a fixed seed (e.g. 42)
-                std::mt19937 gen(42);
-                
-                // Choose two random options from the options vector
-                int index1 = gen() % options.size();
-                int index2 = gen() % options.size();
-                while (index2 == index1) {
-                    index2 = gen() % options.size();
-                }
-                std::pair<std::string, std::vector<std::string> > option1 = options[index1];
-                std::pair<std::string, std::vector<std::string> > option2 = options[index2];
-                
-                // Choose two random values from the possible values of each option
-                int valueIndex1 = gen() % option1.second.size();
-                int valueIndex2 = gen() % option2.second.size();
-                std::string value1 = option1.second[valueIndex1];
-                std::string value2 = option2.second[valueIndex2];
-                
-                // Return the pair of options and values
-                return {{option1.first, value1}, {option2.first, value2}};
-                }
-                
-                // A method that checks if a configuration is compatible with the constraints
+                // This method checks if a configuration is compatible with the constraints
                 bool Solver::checkConstraints(
-                    const std::map<std::string, std::string>& config) const {
-                // For each constraint in the constraints vector
-                for (const auto& constraint : constraints) {
-                    // For each pair of options and values in the constraint
-                    for (const auto& pair : constraint) {
-                    // Get the option name and the value
-                    std::string option = pair.first;
-                    std::string value = pair.second;
+                    const std::map<std::string, std::string> &config) const {
+                // Loop through each constraint
+                for (const auto &constraint : constraints) {
+                    // Get the pairs of the constraint
+                    auto pairs = constraint.getPairs();
                 
-                    // Check if the configuration has the same option and value
-                    if (config.count(option) > 0 && config.at(option) == value) {
-                        // If yes, continue to check the next pair in the constraint
-                        continue;
-                    } else {
-                        // If no, break out of the loop and check the next constraint
+                    // Create a flag to indicate if the constraint is violated
+                    bool violated = true;
+                
+                    // Loop through each pair of the constraint
+                    for (const auto &pair : pairs) {
+                    // Get the option and value of the pair
+                    auto option = pair.first;
+                    auto value = pair.second;
+                
+                    // Check if the option and value match the configuration
+                    if (config.at(option) == value) {
+                        // If yes, set the flag to false and break the loop
+                        violated = false;
                         break;
                     }
                     }
                 
-                    // If all pairs in the constraint are satisfied by the configuration,
-                    // return false as the configuration is incompatible with the constraint
+                    // If the flag is true, return false
+                    if (violated) {
                     return false;
+                    }
                 }
                 
-                // If none of the constraints are violated by the configuration,
-                // return true as the configuration is compatible with all constraints
+                // If no constraint is violated, return true
                 return true;
                 }
+                
+                // This method chooses a random pair of options and values
+                std::pair<Option, Option> Solver::choosePair() const {
+                // Create a uniform distribution for the options
+                std::uniform_int_distribution<> dis1(0, options.size() - 1);
+                
+                // Choose a random index for the first option
+                int index1 = dis1(gen);
+                
+                // Choose a random index for the second option that is different from the
+                // first one
+                int index2 = dis1(gen);
+                while (index2 == index1) {
+                    index2 = dis1(gen);
+                }
+                
+                // Return the pair of options
+                return {options[index1], options[index2]};
+                }
+                
+                // This method chooses a random value from an option
+                std::string Solver::chooseValue(const Option &option) const {
+                // Get the values of the option
+                auto values = option.getValues();
+                
+                // Create a uniform distribution for the values
+                std::uniform_int_distribution<> dis(0, values.size() - 1);
+                
+                // Choose a random index for the value
+                int index = dis(gen);
+                
+                // Return the value
+                return values[index];
+                }
+                
+                // This method updates the covered pairs map with a given configuration
+                void Solver::updateCoveredPairs(
+                    const std::map<std::string, std::string> &config,
+                    std::map<std::pair<Option, Option>, bool> &coveredPairs) const {
+                // Loop through each pair in the map
+                for (auto &pair : coveredPairs) {
+                    // Get the options and values of the pair
+                    auto option1 = pair.first.first;
+                    auto option2 = pair.first.second;
+                    auto value1 = config.at(option1.getName());
+                    auto value2 = config.at(option2.getName());
+                
+                    // Check if the pair matches the configuration
+                    if ((option1.hasValue(value1) && option2.hasValue(value2)) ||
+                        (option1.hasValue(value2) && option2.hasValue(value1))) {
+                    // If yes, set the boolean to true
+                    pair.second = true;
+                    }
+                }
+                }
                 </code></pre>
+
 
         </div>
 
