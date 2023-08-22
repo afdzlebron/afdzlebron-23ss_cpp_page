@@ -328,91 +328,250 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all          
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
                     g++ -std=c++17 -c Fuzzer.cpp
                     g++ -std=c++17 -c Main.cpp
-                    Main.cpp:29:18: warning: empty parentheses interpreted as a function declaration [-Wvexing-parse]
-                        Parser parser();
-                                    ^~
-                    Main.cpp:29:18: note: remove parentheses to declare a variable
-                        Parser parser();
-                                    ^~
-                    Main.cpp:33:30: error: base of member reference is a function; perhaps you meant to call it with no arguments?
-                        ModelGenerator generator(parser.getOptions(), parser.getConstraints());
-                                                ^~~~~~
-                                                    ()
-                    Main.cpp:33:51: error: base of member reference is a function; perhaps you meant to call it with no arguments?
-                        ModelGenerator generator(parser.getOptions(), parser.getConstraints());
-                                                                    ^~~~~~
-                                                                            ()
-                    Main.cpp:33:20: error: no matching constructor for initialization of 'ModelGenerator'
-                        ModelGenerator generator(parser.getOptions(), parser.getConstraints());
-                                    ^         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    ./ModelGenerator.hpp:15:3: note: candidate constructor not viable: no known conversion from 'vector<Option>' to 'const
-                        vector<std::pair<std::string, std::vector<std::string> >>' for 1st argument
-                    ModelGenerator(
-                    ^
-                    ./ModelGenerator.hpp:11:7: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
-                    class ModelGenerator {
+                    g++ -std=c++17 -c ModelGenerator.cpp
+                    ModelGenerator.cpp:9:7: error: no matching constructor for initialization of 'std::vector<std::pair<std::string, std::vector<std::string> > >'
+                        (aka 'vector<pair<basic_string<char, char_traits<char>, allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char>
+                        > > > >')
+                        : options(parser.getOptions()), constraints(parser.getConstraints()) {}
+                        ^       ~~~~~~~~~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:501:40: note: candidate constructor not viable: no known conversion from
+                        'std::vector<Option>' to 'const std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > > >::allocator_type' (aka 'const
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > >') for 1st argument
+                        _LIBCPP_INLINE_VISIBILITY explicit vector(const allocator_type& __a)
+                                                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:513:14: note: candidate constructor not viable: no known conversion from
+                        'std::vector<Option>' to 'std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > > >::size_type'
+                        (aka 'unsigned long') for 1st argument
+                        explicit vector(size_type __n);
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:557:5: note: candidate constructor not viable: no known conversion from
+                        'vector<Option, allocator<Option>>' to 'const vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                        allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > >>>' for 1st argument
+                        vector(const vector& __x);
                         ^
-                    ./ModelGenerator.hpp:11:7: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
-                    1 warning and 3 errors generated.
-                    make: *** [Main.o] Error 1
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:564:5: note: candidate constructor not viable: no known conversion from
+                        'std::vector<Option>' to 'initializer_list<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > > >::value_type>' (aka
+                        'initializer_list<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > >') for 1st argument
+                        vector(initializer_list<value_type> __il);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:570:5: note: candidate constructor not viable: no known conversion from
+                        'vector<Option, allocator<Option>>' to 'vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                        allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > >>>' for 1st argument
+                        vector(vector&& __x)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:520:9: note: candidate constructor template not viable: requires 2
+                        arguments, but 1 was provided
+                            vector(_InputIterator __first,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:528:9: note: candidate constructor template not viable: requires at least
+                        3 arguments, but 1 was provided
+                            vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:535:9: note: candidate constructor template not viable: requires 2
+                        arguments, but 1 was provided
+                            vector(_ForwardIterator __first,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:542:9: note: candidate constructor template not viable: requires at least
+                        3 arguments, but 1 was provided
+                            vector(_ForwardIterator __first, _ForwardIterator __last, const allocator_type& __a,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:495:5: note: candidate constructor not viable: requires 0 arguments, but
+                        1 was provided
+                        vector() _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:515:14: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        explicit vector(size_type __n, const allocator_type& __a);
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:517:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(size_type __n, const value_type& __x);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:558:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(const vector& __x, const allocator_type& __a);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:567:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(initializer_list<value_type> __il, const allocator_type& __a);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:578:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(vector&& __x, const allocator_type& __a);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:518:5: note: candidate constructor not viable: requires 3 arguments, but
+                        1 was provided
+                        vector(size_type __n, const value_type& __x, const allocator_type& __a);
+                        ^
+                    ModelGenerator.cpp:9:37: error: no matching constructor for initialization of
+                        'std::vector<std::vector<std::pair<std::string, std::string> > >' (aka 'vector<vector<pair<basic_string<char, char_traits<char>,
+                        allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > > >')
+                        : options(parser.getOptions()), constraints(parser.getConstraints()) {}
+                                                        ^           ~~~~~~~~~~~~~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:501:40: note: candidate constructor not viable: no known conversion from
+                        'std::vector<Constraint>' to 'const std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::allocator_type' (aka 'const
+                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > >') for 1st argument
+                        _LIBCPP_INLINE_VISIBILITY explicit vector(const allocator_type& __a)
+                                                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:513:14: note: candidate constructor not viable: no known conversion from
+                        'std::vector<Constraint>' to 'std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::size_type'
+                        (aka 'unsigned long') for 1st argument
+                        explicit vector(size_type __n);
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:557:5: note: candidate constructor not viable: no known conversion from
+                        'vector<Constraint, allocator<Constraint>>' to 'const vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >>>' for 1st argument
+                        vector(const vector& __x);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:564:5: note: candidate constructor not viable: no known conversion from
+                        'std::vector<Constraint>' to 'initializer_list<std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::value_type>' (aka
+                        'initializer_list<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > >') for 1st argument
+                        vector(initializer_list<value_type> __il);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:570:5: note: candidate constructor not viable: no known conversion from
+                        'vector<Constraint, allocator<Constraint>>' to 'vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                        allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >>>' for 1st argument
+                        vector(vector&& __x)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:520:9: note: candidate constructor template not viable: requires 2
+                        arguments, but 1 was provided
+                            vector(_InputIterator __first,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:528:9: note: candidate constructor template not viable: requires at least
+                        3 arguments, but 1 was provided
+                            vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:535:9: note: candidate constructor template not viable: requires 2
+                        arguments, but 1 was provided
+                            vector(_ForwardIterator __first,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:542:9: note: candidate constructor template not viable: requires at least
+                        3 arguments, but 1 was provided
+                            vector(_ForwardIterator __first, _ForwardIterator __last, const allocator_type& __a,
+                            ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:495:5: note: candidate constructor not viable: requires 0 arguments, but
+                        1 was provided
+                        vector() _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:515:14: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        explicit vector(size_type __n, const allocator_type& __a);
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:517:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(size_type __n, const value_type& __x);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:558:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(const vector& __x, const allocator_type& __a);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:567:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(initializer_list<value_type> __il, const allocator_type& __a);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:578:5: note: candidate constructor not viable: requires 2 arguments, but
+                        1 was provided
+                        vector(vector&& __x, const allocator_type& __a);
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:518:5: note: candidate constructor not viable: requires 3 arguments, but
+                        1 was provided
+                        vector(size_type __n, const value_type& __x, const allocator_type& __a);
+                        ^
+                    ModelGenerator.cpp:17:38: error: function cannot return function type 'std::random_device ()'
+                    std::mt19937 gen(std::random_device()());  // Create a random number generator
+                                                        ^
+                    ModelGenerator.cpp:17:19: warning: parentheses were disambiguated as a function declaration [-Wvexing-parse]
+                    std::mt19937 gen(std::random_device()());  // Create a random number generator
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~
+                    ModelGenerator.cpp:17:20: note: add a pair of parentheses to declare a variable
+                    std::mt19937 gen(std::random_device()());  // Create a random number generator
+                                    ^
+                                    (
+                    ModelGenerator.cpp:31:37: error: no viable constructor or deduction guide for deduction of template arguments of 'uniform_int_distribution'
+                        std::uniform_int_distribution dist(
+                                                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:3008:14: note: candidate template ignored: deduced conflicting types
+                        for parameter '_IntType' ('int' vs. 'unsigned long')
+                        explicit uniform_int_distribution(result_type __a = 0,
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:2977:7: note: candidate function template not viable: requires 1
+                        argument, but 2 were provided
+                    class uniform_int_distribution
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:3011:14: note: candidate function template not viable: requires single
+                        argument '__p', but 2 arguments were provided
+                        explicit uniform_int_distribution(const param_type& __p) : __p_(__p) {}
+                                ^
+                    1 warning and 4 errors generated.
+                    make: *** [ModelGenerator.o] Error 1
                     afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % ./SH-Files2HTML.sh
 
                     </pre>
             <pre id="p2">
-                    [{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'Fuzzer' does not match any declaration in 'Fuzzer'","startLineNumber": 7,"startColumn": 9,"endLineNumber": 7,"endColumn": 15
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 8,"startColumn": 3,"endLineNumber": 8,"endColumn": 3
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "no member named 'random_device' in namespace 'std'","startLineNumber": 8,"startColumn": 12,"endLineNumber": 8,"endColumn": 17
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'fuzz' does not match any declaration in 'Fuzzer'","startLineNumber": 12,"startColumn": 21,"endLineNumber": 12,"endColumn": 25
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 17,"startColumn": 48,"endLineNumber": 17,"endColumn": 48
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'randomString'","startLineNumber": 30,"startColumn": 33,"endLineNumber": 30,"endColumn": 33
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 47,"startColumn": 15,"endLineNumber": 47,"endColumn": 15
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'randomString' does not match any declaration in 'Fuzzer'","startLineNumber": 50,"startColumn": 21,"endLineNumber": 50,"endColumn": 33
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 34,"startColumn": 8,"endLineNumber": 34,"endColumn": 8
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 34,"startColumn": 19,"endLineNumber": 34,"endColumn": 19
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 36,"startColumn": 10,"endLineNumber": 36,"endColumn": 10
-                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 36,"startColumn": 22,"endLineNumber": 36,"endColumn": 22
-                }],
-                [{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "base of member reference is a function; perhaps you meant to call it with no arguments?","startLineNumber": 33,"startColumn": 30,"endLineNumber": 33,"endColumn": 36
-                },{"resource": "Main.cpp","owner": "C/C++: IntelliSense","code": "153","severity": 8,"message": "Der Ausdruck muss vom Typ \"Klasse\" sein, weist jedoch den Typ \"\"Parser (*)()\"\" auf.","source": "C/C++","startLineNumber": 33,"startColumn": 30,"endLineNumber": 33,"endColumn": 36
-                },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'ModelGenerator'","startLineNumber": 33,"startColumn": 30,"endLineNumber": 33,"endColumn": 74
-                },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "base of member reference is a function; perhaps you meant to call it with no arguments?","startLineNumber": 33,"startColumn": 51,"endLineNumber": 33,"endColumn": 57
-                },{"resource": "Main.cpp","owner": "C/C++: IntelliSense","code": "153","severity": 8,"message": "Der Ausdruck muss vom Typ \"Klasse\" sein, weist jedoch den Typ \"\"Parser (*)()\"\" auf.","source": "C/C++","startLineNumber": 33,"startColumn": 51,"endLineNumber": 33,"endColumn": 57
-                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "empty parentheses interpreted as a function declaration [-Wvexing-parse]","startLineNumber": 29,"startColumn": 18,"endLineNumber": 29,"endColumn": 20
-                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 37,"startColumn": 5,"endLineNumber": 37,"endColumn": 5
-                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 16,"endLineNumber": 51,"endColumn": 16
-                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 28,"endLineNumber": 51,"endColumn": 28
-                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 55,"startColumn": 18,"endLineNumber": 55,"endColumn": 18
-                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 55,"startColumn": 29,"endLineNumber": 55,"endColumn": 29
-                }],
-                [{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "unknown type name 'optionsFile'","startLineNumber": 16,"startColumn": 22,"endLineNumber": 16,"endColumn": 22
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"optionsFile\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 16,"startColumn": 22,"endLineNumber": 16,"endColumn": 33
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'optionsFile'","startLineNumber": 19,"startColumn": 55,"endLineNumber": 19,"endColumn": 55
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 29,"startColumn": 24,"endLineNumber": 29,"endColumn": 24
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"readString\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 29,"startColumn": 24,"endLineNumber": 29,"endColumn": 34
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Option'","startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"Option::Option\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23,"relatedInformation": [{"startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23,"message": "Argumenttypen sind: (std::__1::string)","resource": "Parser.cpp"}]
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 36,"startColumn": 21,"endLineNumber": 36,"endColumn": 21
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no viable overloaded operator[] for type 'std::vector<Option>'","startLineNumber": 41,"startColumn": 5,"endLineNumber": 41,"endColumn": 17
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"[]\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"relatedInformation": [{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Operandentypen sind: std::__1::vector<Option, std::__1::allocator<Option>> [ std::__1::string ]","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator[](std::__1::vector<_Tp, _Allocator>::size_type __n) const noexcept [mit _Tp=Option, _Allocator=std::__1::allocator<Option>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator[](std::__1::vector<_Tp, _Allocator>::size_type __n) noexcept [mit _Tp=Option, _Allocator=std::__1::allocator<Option>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Der integrierte Operator [](<pointer to object>, <ptrdiff_t>) stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Der integrierte Operator [](<ptrdiff_t>, <pointer to object>) stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"}]
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "unknown type name 'constraintsFile'","startLineNumber": 51,"startColumn": 22,"endLineNumber": 51,"endColumn": 22
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"constraintsFile\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 51,"startColumn": 22,"endLineNumber": 51,"endColumn": 37
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'constraintsFile'","startLineNumber": 54,"startColumn": 55,"endLineNumber": 54,"endColumn": 55
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Constraint'","startLineNumber": 64,"startColumn": 16,"endLineNumber": 64,"endColumn": 16
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "291","severity": 8,"message": "Für die Klasse \"\"Constraint\"\" ist kein Standardkonstruktor vorhanden.","source": "C/C++","startLineNumber": 64,"startColumn": 16,"endLineNumber": 64,"endColumn": 26
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 69,"startColumn": 22,"endLineNumber": 69,"endColumn": 22
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"readString\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 69,"startColumn": 22,"endLineNumber": 69,"endColumn": 32
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 70,"startColumn": 21,"endLineNumber": 70,"endColumn": 21
-                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'readString' does not match any declaration in 'Parser'","startLineNumber": 90,"startColumn": 21,"endLineNumber": 90,"endColumn": 31
-                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Parser\"\" hat keinen Member \"\"readString\"\".","source": "C/C++","startLineNumber": 90,"startColumn": 21,"endLineNumber": 90,"endColumn": 31
-                },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "parentheses were disambiguated as a function declaration [-Wvexing-parse]","startLineNumber": 16,"startColumn": 21,"endLineNumber": 16,"endColumn": 34
-                },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "parentheses were disambiguated as a function declaration [-Wvexing-parse]","startLineNumber": 51,"startColumn": 21,"endLineNumber": 51,"endColumn": 38
-                }]
-                
+                    [{"resource": "ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"std::__1::vector<_Tp, _Allocator>::vector [mit _Tp=std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>]\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 9,"startColumn": 14,"endLineNumber": 9,"endColumn": 14,"relatedInformation": [{"startLineNumber": 9,"startColumn": 14,"endLineNumber": 9,"endColumn": 14,"message": "Argumenttypen sind: (std::__1::vector<Option, std::__1::allocator<Option>>)","resource": "ModelGenerator.cpp"}]
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'std::vector<std::pair<std::string, std::vector<std::string> > >' (aka 'vector<pair<basic_string<char, char_traits<char>, allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char> > > > >')","startLineNumber": 9,"startColumn": 15,"endLineNumber": 9,"endColumn": 34
+                    },{"resource": "ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"std::__1::vector<_Tp, _Allocator>::vector [mit _Tp=std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>>]\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 9,"startColumn": 48,"endLineNumber": 9,"endColumn": 48,"relatedInformation": [{"startLineNumber": 9,"startColumn": 48,"endLineNumber": 9,"endColumn": 48,"message": "Argumenttypen sind: (std::__1::vector<Constraint, std::__1::allocator<Constraint>>)","resource": "ModelGenerator.cpp"}]
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'std::vector<std::vector<std::pair<std::string, std::string> > >' (aka 'vector<vector<pair<basic_string<char, char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > > >')","startLineNumber": 9,"startColumn": 49,"endLineNumber": 9,"endColumn": 72
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 8,"message": "function cannot return function type 'std::random_device ()'","startLineNumber": 17,"startColumn": 38,"endLineNumber": 17,"endColumn": 38
+                    },{"resource": "ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "90","severity": 8,"message": "Eine Funktion, die eine Funktion zurückgibt, ist nicht zulässig.","source": "C/C++","startLineNumber": 17,"startColumn": 41,"endLineNumber": 17,"endColumn": 41
+                    },{"resource": "ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "3158","severity": 8,"message": "Klassenvorlagenargumente können nicht abgeleitet werden.","source": "C/C++","startLineNumber": 31,"startColumn": 7,"endLineNumber": 31,"endColumn": 10
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 8,"message": "use of class template 'std::uniform_int_distribution' requires template arguments","startLineNumber": 31,"startColumn": 12,"endLineNumber": 31,"endColumn": 12
+                    },{"resource": "ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"uniform_int_distribution\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 31,"startColumn": 37,"endLineNumber": 31,"endColumn": 41,"relatedInformation": [{"startLineNumber": 31,"startColumn": 37,"endLineNumber": 31,"endColumn": 41,"message": "Argumenttypen sind: (int, unsigned long)","resource": "ModelGenerator.cpp"}]
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "parentheses were disambiguated as a function declaration [-Wvexing-parse]","startLineNumber": 17,"startColumn": 19,"endLineNumber": 17,"endColumn": 43
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 25,"startColumn": 16,"endLineNumber": 25,"endColumn": 16
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 25,"startColumn": 27,"endLineNumber": 25,"endColumn": 27
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 27,"startColumn": 13,"endLineNumber": 27,"endColumn": 13
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 13,"endLineNumber": 28,"endColumn": 13
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 41,"startColumn": 16,"endLineNumber": 41,"endColumn": 16
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 41,"startColumn": 26,"endLineNumber": 41,"endColumn": 26
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 45,"startColumn": 18,"endLineNumber": 45,"endColumn": 18
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 45,"startColumn": 29,"endLineNumber": 45,"endColumn": 29
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 46,"startColumn": 15,"endLineNumber": 46,"endColumn": 15
+                    },{"resource": "ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 47,"startColumn": 15,"endLineNumber": 47,"endColumn": 15
+                    }], 
+                    [{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"optionsFile\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 16,"startColumn": 22,"endLineNumber": 16,"endColumn": 33
+                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"readString\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 29,"startColumn": 24,"endLineNumber": 29,"endColumn": 34
+                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"Option::Option\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23,"relatedInformation": [{"startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23,"message": "Argumenttypen sind: (std::__1::string)","resource": "Parser.cpp"}]
+                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"[]\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"relatedInformation": [{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Operandentypen sind: std::__1::vector<Option, std::__1::allocator<Option>> [ std::__1::string ]","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator[](std::__1::vector<_Tp, _Allocator>::size_type __n) const noexcept [mit _Tp=Option, _Allocator=std::__1::allocator<Option>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator[](std::__1::vector<_Tp, _Allocator>::size_type __n) noexcept [mit _Tp=Option, _Allocator=std::__1::allocator<Option>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Der integrierte Operator [](<pointer to object>, <ptrdiff_t>) stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Der integrierte Operator [](<ptrdiff_t>, <pointer to object>) stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"}]
+                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"constraintsFile\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 51,"startColumn": 22,"endLineNumber": 51,"endColumn": 37
+                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "291","severity": 8,"message": "Für die Klasse \"\"Constraint\"\" ist kein Standardkonstruktor vorhanden.","source": "C/C++","startLineNumber": 64,"startColumn": 16,"endLineNumber": 64,"endColumn": 26
+                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"readString\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 69,"startColumn": 22,"endLineNumber": 69,"endColumn": 32
+                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Parser\"\" hat keinen Member \"\"readString\"\".","source": "C/C++","startLineNumber": 90,"startColumn": 21,"endLineNumber": 90,"endColumn": 31
+                    }]
                     </pre>
         </div>
 
@@ -421,37 +580,29 @@
             Hier ist Constraint.hpp:
             <pre><code>
                 #ifndef CONSTRAINT_HPP
-                
                 #define CONSTRAINT_HPP
                 
-                #include <stdexcept>
                 #include <string>
                 #include <vector>
                 
                 // A class that represents a constraint with a vector of pairs of options and
-                
                 // values
-                
                 class Constraint {
                 public:
                 // A constructor that takes a vector of pairs as a parameter
-                
-                Constraint(const std::vector<std::pair<std::string, std::string> >& pairs)
+                Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
                     : pairs(pairs) {}
                 
                 // A getter method that returns the vector of pairs of the constraint as a
                 // const reference
-                
-                const std::vector<std::pair<std::string, std::string> >& getPairs() const;
+                const std::vector<std::pair<std::string, std::string> > &getPairs() const;
                 
                 // A method that adds a pair of option and value to the vector of pairs
-                
-                void addPair(const std::string& option, const std::string& value);
+                void addPair(const std::string &option, const std::string &value);
                 
                 private:
                 // A vector of pairs of strings that stores the options and values of the
                 // constraint
-                
                 std::vector<std::pair<std::string, std::string> > pairs;
                 };
                 
@@ -462,12 +613,12 @@
                 #ifndef FUZZER_HPP
                 #define FUZZER_HPP
                 
+                #include <fstream>
                 #include <list>
                 #include <map>
+                #include <random>
                 #include <string>
                 #include <vector>
-                #include <random>
-                
                 
                 // A class that generates random options, values and constraints
                 class Fuzzer {
@@ -476,31 +627,31 @@
                 // values per option and the maximum number of constraints as parameters
                 Fuzzer();
                 
-                Fuzzer(std::map<std::string, std::vector<std::string> > options)
+                Fuzzer(const std::map<std::string, std::vector<std::string> > &options)
                     : options(options){};
+                
                 // A method that writes the options and values to a file with the extension
                 // .options
-                void writeOptions(const std::string& optionsFile);
+                void writeOptions(const std::string &optionsFile);
                 
                 // A method that writes the constraints to a file with the extension
                 // .constraints
-                void writeConstraints(const std::string& constraintsFile);
+                void writeConstraints(const std::string &constraintsFile);
                 
+                // A method that generates a random string of a given length
                 std::string randomString(int length);
                 
-                // A helper method that generates a random number between min and max
-                int randomInt(int min, int max);
-                
-                // Deklariert die Funktion fuzz
-                std::string fuzz();  
-                
                 private:
-                std::mt19937 gen;  // Zufallsgenerator als Member-Variable
+                std::mt19937 gen;  // Random number generator as a member variable
+                
                 // A map of options to vectors of values
                 std::map<std::string, std::vector<std::string> > options;
                 
                 // A list of vectors of pairs of options and values
                 std::list<std::vector<std::pair<std::string, std::string> > > constraints;
+                
+                // A helper method that generates a random number between min and max
+                int randomInt(int min, int max);
                 };
                 
                 #endif
@@ -544,17 +695,13 @@
                 #include <string>
                 #include <vector>
                 
-                // A class that generates models based on a given set of options and constraints
+                #include "Parser.hpp"
                 
+                // A class that generates models based on a given set of options and constraints
                 class ModelGenerator {
                 public:
-                // A constructor that takes a vector of options and a vector of constraints as
-                // parameters
-                ModelGenerator(
-                    const std::vector<std::pair<std::string, std::vector<std::string> > >&
-                        options,
-                    const std::vector<std::vector<std::pair<std::string, std::string> > >&
-                        constraints);
+                // A constructor that takes a Parser object as a parameter
+                ModelGenerator(const Parser &parser);
                 
                 // A method that generates models and returns them as a list of maps of
                 // options to values
@@ -733,57 +880,65 @@
                 #include <iostream>
                 #include <sstream>
                 
-                Fuzzer::Fuzzer() {
-                gen.seed(std::random_device()());  // Initialisiert den Zufallsgenerator mit
-                                                    // einer zufälligen Zahl
-                }
-                
-                std::string Fuzzer::fuzz() {
-                std::stringstream
-                    ss;  // Erstellt einen String-Stream zum Speichern der Ausgabe
-                int numOptions = randomInt(
-                    1, 5);  // Wählt eine zufällige Anzahl von Optionen zwischen 1 und 5
-                std::map<std::string, std::vector<std::string>>
-                    options;  // Erstellt eine Map zum Speichern der Optionen und ihrer Werte
-                for (int i = 0; i < numOptions; i++) {
-                    std::string option(
-                        1,
-                        'A' + randomInt(0, 25));  // Konvertiert den char in einen std::string
-                    options[option] =
-                        std::vector<std::string>();  // Initialisiert den Vektor als leer
-                    int numValues = randomInt(
-                        1, 3);  // Wählt eine zufällige Anzahl von Werten zwischen 1 und 3
-                    for (int j = 0; j < numValues; j++) {
-                    int valueLength = randomInt(
-                        1, 10);  // Wählt eine zufällige Länge für den Wert zwischen 1 und 10
-                    options[option].push_back(randomString(
-                        valueLength));  // Fügt einen zufälligen String als Wert hinzu
-                    }
-                }
-                for (auto& pair : options) {         // Iteriert über alle Paare in der Map
-                    ss << "-" << pair.first << " ";    // Schreibt die Option in den Stream
-                    for (auto& value : pair.second) {  // Iteriert über alle Werte in dem Vektor
-                    ss << value << " ";              // Schreibt den Wert in den Stream
-                    }
-                    ss << "\n";  // Schreibt einen Zeilenumbruch in den Stream
-                }
-                return ss.str();  // Gibt den Inhalt des Streams als String zurück
-                }
-                
-                int Fuzzer::randomInt(int min, int max) {
-                std::uniform_int_distribution<int> dist(
-                    min, max);     // Erstellt eine Gleichverteilung zwischen min und max
-                return dist(gen);  // Gibt eine zufällige Zahl aus der Verteilung zurück
+                Fuzzer::Fuzzer() : gen(std::random_device()()) {
+                // Initialize the random number generator with a random number
                 }
                 
                 std::string Fuzzer::randomString(int length) {
-                std::string
-                    result;  // Erstellt einen leeren String zum Speichern des Ergebnisses
+                std::string result;  // Create an empty string to store the result
                 for (int i = 0; i < length; i++) {
-                    char c = 'a' + randomInt(0, 25);  // Wählt einen zufälligen Kleinbuchstaben
-                    result += c;  // Fügt den Buchstaben an das Ende des Strings an
+                    char c = 'a' + randomInt(0, 25);  // Choose a random lowercase letter
+                    result += c;  // Append the letter to the end of the string
                 }
-                return result;  // Gibt den String zurück
+                return result;  // Return the string
+                }
+                
+                int Fuzzer::randomInt(int min, int max) {
+                std::uniform_int_distribution dist(
+                    min, max);     // Create a uniform distribution between min and max
+                return dist(gen);  // Return a random number from the distribution
+                }
+                
+                void Fuzzer::writeOptions(const std::string &optionsFile) {
+                std::ofstream out(optionsFile);  // Open the output file for writing
+                
+                if (!out) {  // Check if the file is opened successfully
+                    throw std::runtime_error("Cannot open " +
+                                            optionsFile);  // If not, throw an exception
+                }
+                
+                for (auto &pair : options) {  // Iterate over all pairs in the map
+                    out << pair.first
+                        << ",";  // Write the option to the file with a comma separator
+                    for (auto &value : pair.second) {  // Iterate over all values in the vector
+                    out << value
+                        << ",";  // Write the value to the file with a comma separator
+                    }
+                    out << "\n";  // Write a newline to the file
+                }
+                
+                out.close();  // Close the output file
+                }
+                
+                void Fuzzer::writeConstraints(const std::string &constraintsFile) {
+                std::ofstream out(constraintsFile);  // Open the output file for writing
+                
+                if (!out) {  // Check if the file is opened successfully
+                    throw std::runtime_error("Cannot open " +
+                                            constraintsFile);  // If not, throw an exception
+                }
+                
+                for (auto &vec : constraints) {  // Iterate over all vectors in the list
+                    for (auto &pair : vec) {       // Iterate over all pairs in the vector
+                    out << pair.first
+                        << ",";  // Write the option to the file with a comma separator
+                    out << pair.second
+                        << ",";  // Write the value to the file with a comma separator
+                    }
+                    out << "\n";  // Write a newline to the file
+                }
+                
+                out.close();  // Close the output file
                 }
                 </code></pre>
             Hier ist Main.cpp:
@@ -795,7 +950,7 @@
                 #include "Parser.hpp"
                 
                 // The main function that starts the program
-                int main(int argc, char* argv[]) {
+                int main(int argc, char *argv[]) {
                 // Check if the correct number of parameters is given
                 if (argc != 5) {
                     // If not, print an error message and exit the program
@@ -816,11 +971,14 @@
                     }
                 
                     // Create a Parser object with the names of the input files
-                    Parser parser();
+                    Parser parser;
                 
-                    // Create a ModelGenerator object with the options and constraints from the
-                    // Parser object
-                    ModelGenerator generator(parser.getOptions(), parser.getConstraints());
+                    // Parse the options and constraints from the input files
+                    parser.parseOptions(inputOptions);
+                    parser.parseConstraints(inputConstraints);
+                
+                    // Create a ModelGenerator object with the Parser object as a parameter
+                    ModelGenerator generator(parser);
                 
                     // Generate the models using the generateModels method of the ModelGenerator
                     // object
@@ -838,11 +996,11 @@
                 
                     // Write the models to the output file
                     int count = 0;
-                    for (const auto& model : models) {
+                    for (const auto &model : models) {
                     if (count >= numModels) {
                         break;
                     }
-                    for (const auto& pair : model) {
+                    for (const auto &pair : model) {
                         out << pair.first << ',' << pair.second << '\n';
                     }
                     out << '\n';
@@ -852,7 +1010,7 @@
                     // Close the output file
                     out.close();
                 
-                } catch (const std::exception& e) {
+                } catch (const std::exception &e) {
                     // If any exception occurs, print the error message and exit the program
                     std::cerr << e.what() << '\n';
                     return -1;
@@ -868,182 +1026,70 @@
                 #include <algorithm>
                 #include <random>
                 
-                // A constructor that takes a vector of options and a vector of constraints as
-                // parameters
-                ModelGenerator::ModelGenerator(
-                    const std::vector<std::pair<std::string, std::vector<std::string> > >&
-                        options,
-                    const std::vector<std::vector<std::pair<std::string, std::string> > >&
-                        constraints)
-                    : options(options), constraints(constraints) {}
+                // A constructor that takes a Parser object as a parameter and initializes the
+                // options and constraints from it
+                ModelGenerator::ModelGenerator(const Parser &parser)
+                    : options(parser.getOptions()), constraints(parser.getConstraints()) {}
                 
                 // A method that generates models and returns them as a list of maps of options
                 // to values
                 std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
                     const {
-                // Create an empty list of maps that will store the models
-                std::list<std::map<std::string, std::string> > models;
+                std::list<std::map<std::string, std::string> >
+                    models;  // Create an empty list to store the models
+                std::mt19937 gen(std::random_device()());  // Create a random number generator
+                int maxTries =
+                    1000;  // Set a maximum number of tries to generate a valid configuration
                 
-                // Create an empty map that will store which pairs are already covered
-                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                while (maxTries > 0) {
+                    std::map<std::string, std::string>
+                        model;  // Create an empty map to store the model
                 
-                // Create an empty map that will store which options are already set
-                std::map<std::string, bool> setOptions;
+                    for (const auto &pair :
+                        options) {  // Iterate over all pairs in the vector of options
+                    const auto &option = pair.first;  // Get the option from the pair
+                    const auto &values =
+                        pair.second;  // Get the vector of values from the pair
                 
-                // Create an empty map that will store the current configuration
-                std::map<std::string, std::string> currentConfig;
+                    std::uniform_int_distribution dist(
+                        0, values.size() - 1);  // Create a uniform distribution between 0 and
+                                                // the size of the vector of values minus one
+                    int index = dist(gen);  // Generate a random index from the distribution
                 
-                // Create a random number generator with a fixed seed (e.g. 42) to generate
-                // random values
-                std::mt19937 gen(42);
-                
-                // Repeat the following steps until either all pairs are covered or 1000
-                // configurations are generated that do not satisfy the constraints
-                int invalidCount = 0;
-                while (coveredPairs.size() < options.size() * (options.size() - 1) / 2 &&
-                        invalidCount < 1000) {
-                    // Set all options to false in the map of options to booleans
-                    for (const auto& pair : options) {
-                    setOptions[pair.first] = false;
+                    model[option] = values[index];  // Add the option and value to the map
                     }
                 
-                    // Set all values to "" in the map of options to values
-                    for (const auto& pair : options) {
-                    currentConfig[pair.first] = "";
+                    bool valid = true;  // Assume that the model is valid
+                
+                    for (const auto &vec : constraints) {  // Iterate over all vectors in the
+                                                        // vector of constraints
+                    bool satisfied = false;  // Assume that the constraint is not satisfied
+                
+                    for (const auto &pair : vec) {  // Iterate over all pairs in the vector
+                        const auto &option = pair.first;  // Get the option from the pair
+                        const auto &value = pair.second;  // Get the value from the pair
+                
+                        if (model[option] == value) {  // Check if the option in the model has
+                                                    // the same value as in the constraint
+                        satisfied = true;            // If so, set satisfied to true
+                        break;                       // Break out of the inner loop
+                        }
                     }
                 
-                    // Choose a random option from the vector of options
-                    std::uniform_int_distribution<> dis1(0, options.size() - 1);
-                    std::string option1 = options[dis1(gen)].first;
-                
-                    // Choose a random value from the list of values of the option
-                    const auto& values1 =
-                        std::find_if(options.begin(), options.end(), [&](const auto& pair) {
-                        return pair.first == option1;
-                        })->second;
-                    std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-                    std::string value1 = values1[dis2(gen)];
-                
-                    // Set the option to true in the map of options to booleans
-                    setOptions[option1] = true;
-                
-                    // Set the value in the map of options to values
-                    currentConfig[option1] = value1;
-                
-                    // Repeat the following steps until all options are set
-                    while (std::find_if(setOptions.begin(), setOptions.end(),
-                                        [](const auto& pair) { return !pair.second; }) !=
-                        setOptions.end()) {
-                    // Choose a random number between 0 and 99
-                    std::uniform_int_distribution<> dis3(0, 99);
-                    int r = dis3(gen);
-                
-                    if (r < 10) {
-                        // If the number is less than 10, choose a random option that is not yet
-                        // set and choose a random value from its list of values. Set the option
-                        // and value as described above.
-                        // Find all options that are not yet set
-                        std::vector<std::string> unsetOptions;
-                        for (const auto& pair : setOptions) {
-                        if (!pair.second) {
-                            unsetOptions.push_back(pair.first);
-                        }
-                        }
-                
-                        // Choose a random option from them
-                        std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
-                        std::string option2 = unsetOptions[dis4(gen)];
-                
-                        // Find the list of values of the option
-                        const auto& values2 =
-                            std::find_if(options.begin(), options.end(), [&](const auto& pair) {
-                            return pair.first == option2;
-                            })->second;
-                
-                        // Choose a random value from them
-                        std::uniform_int_distribution<> dis5(0, values2.size() - 1);
-                        std::string value2 = values2[dis5(gen)];
-                
-                        // Set the option and value as described above
-                        setOptions[option2] = true;
-                        currentConfig[option2] = value2;
-                    } else {
-                        // If the number is greater or equal to 10, choose a random pair that is
-                        // not yet covered. Set the two options and their values as described
-                        // above.
-                        // Find all pairs that are not yet covered
-                        std::vector<std::pair<std::string, std::string> > uncoveredPairs;
-                        for (const auto& pair1 : options) {
-                        for (const auto& pair2 : options) {
-                            if (pair1.first < pair2.first &&
-                                coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
-                                    coveredPairs.end()) {
-                            uncoveredPairs.push_back(
-                                std::make_pair(pair1.first, pair2.first));
-                            }
-                        }
-                        }
-                
-                        // Choose a random pair from them
-                        std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
-                        auto pair = uncoveredPairs[dis6(gen)];
-                
-                        // Find the list of values of the first option
-                        const auto& values3 =
-                            std::find_if(options.begin(), options.end(), [&](const auto& p) {
-                            return p.first == pair.first;
-                            })->second;
-                
-                        // Choose a random value from them
-                        std::uniform_int_distribution<> dis7(0, values3.size() - 1);
-                        std::string value3 = values3[dis7(gen)];
-                
-                        // Set the first option and value as described above
-                        setOptions[pair.first] = true;
-                        currentConfig[pair.first] = value3;
-                
-                        // Find the list of values of the second option
-                        const auto& values4 =
-                            std::find_if(options.begin(), options.end(), [&](const auto& p) {
-                            return p.first == pair.second;
-                            })->second;
-                
-                        // Choose a random value from them
-                        std::uniform_int_distribution<> dis8(0, values4.size() - 1);
-                        std::string value4 = values4[dis8(gen)];
-                
-                        // Set the second option and value as described above
-                        setOptions[pair.second] = true;
-                        currentConfig[pair.second] = value4;
+                    if (!satisfied) {  // Check if the constraint is not satisfied
+                        valid = false;   // If so, set valid to false
+                        break;           // Break out of the outer loop
                     }
                     }
                 
-                    // Check if the current configuration satisfies all constraints
-                    if (std::all_of(constraints.begin(), constraints.end(),
-                                    [&](const auto& constraint) {
-                                    return std::none_of(constraint.begin(), constraint.end(),
-                                                        [&](const auto& pair) {
-                                                            return currentConfig[pair.first] ==
-                                                                pair.second;
-                                                        });
-                                    })) {
-                    // If yes, add it to the list of maps and mark all pairs as covered
-                    models.push_back(currentConfig);
-                    for (const auto& pair1 : currentConfig) {
-                        for (const auto& pair2 : currentConfig) {
-                        if (pair1.first < pair2.first) {
-                            coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
-                        }
-                        }
+                    if (valid) {                // Check if the model is valid
+                    models.push_back(model);  // If so, add it to the list of models
                     }
-                    } else {
-                    // If no, increase a counter by one
-                    invalidCount++;
-                    }
+                
+                    maxTries--;  // Decrement maxTries by one
                 }
                 
-                // Return the list of maps
-                return models;
+                return models;  // Return the list of models
                 }
                 </code></pre>
             Hier ist Option.cpp:
