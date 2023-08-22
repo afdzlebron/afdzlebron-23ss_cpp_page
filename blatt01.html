@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren in C++ -Aktuell-
+        Programmieren in C++ (Aktuelles)
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -315,6 +315,48 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all
+                    rm -f *Main *.o 
+                    g++ -std=c++17 -c Constraint.cpp
+                    g++ -std=c++17 -c Fuzzer.cpp
+                    g++ -std=c++17 -c Main.cpp
+                    g++ -std=c++17 -c ModelGenerator.cpp
+                    g++ -std=c++17 -c Option.cpp
+                    g++ -std=c++17 -c Parser.cpp
+                    Parser.cpp:17:8: error: use of undeclared identifier 'file'; did you mean 'false'?
+                    if (!file.open(filename)) {
+                        ^~~~
+                        false
+                    Parser.cpp:17:12: error: member reference base type 'bool' is not a structure or union
+                    if (!file.open(filename)) {
+                        ~~~~^~~~~
+                    Parser.cpp:30:23: error: use of undeclared identifier 'file'
+                    while (std::getline(file, line)) {
+                                        ^
+                    Parser.cpp:49:15: error: no member named 'first' in 'Option'
+                        if (opt.first == name) {   // Wenn der Name der Option übereinstimmt
+                            ~~~ ^
+                    Parser.cpp:50:13: error: no member named 'second' in 'Option'
+                            opt.second = option.getValues();  // Die Werte der Option aktualisieren
+                            ~~~ ^
+                    Parser.cpp:62:3: error: use of undeclared identifier 'file'
+                    file.close();
+                    ^
+                    Parser.cpp:86:16: error: no matching constructor for initialization of 'Constraint'
+                        Constraint constraint;
+                                ^
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all          
+                    rm -f *Main *.o 
+                    g++ -std=c++17 -c Constraint.cpp
+                    g++ -std=c++17 -c Fuzzer.cpp
+                    g++ -std=c++17 -c Main.cpp
+                    Main.cpp:43:73: error: expected ';' after expression
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all
+                    rm -f *Main *.o 
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all
+                    rm -f *Main *.o 
+                    g++ -std=c++17 -c Constraint.cpp
                     afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all  
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
@@ -329,17 +371,99 @@
                         : parser(parser), generator(parser.getOptions(), parser.getConstraints()) {}
                                         ^         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     ./ModelGenerator.hpp:18:3: note: candidate constructor not viable: no known conversion from 'vector<Option>' to 'const
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make clean
+                    rm -f *Main *.o 
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all          
+                    rm -f *Main *.o 
+                    g++ -std=c++17 -c Constraint.cpp
+                    g++ -std=c++17 -c Fuzzer.cpp
+                    g++ -std=c++17 -c Main.cpp
+                    Main.cpp:59:20: error: no matching constructor for initialization of 'ModelGenerator'
+                        ModelGenerator generator(convertedOptions, convertedConstraints);
+                                    ^         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    ./ModelGenerator.hpp:18:3: note: candidate constructor not viable: requires single argument 'parser', but 2 arguments were provided
+                    ModelGenerator(const Parser &parser){};
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all  
+                    rm -f *Main *.o 
+                    g++ -std=c++17 -c Constraint.cpp
+                    g++ -std=c++17 -c Fuzzer.cpp
+                    g++ -std=c++17 -c Main.cpp
+                    g++ -std=c++17 -c ModelGenerator.cpp
+                    ModelGenerator.cpp:20:29: error: use of undeclared identifier 'parser'
+                    for (const auto &option : parser.getOptions()) {
+                                                ^
+                    ModelGenerator.cpp:28:33: error: use of undeclared identifier 'parser'
+                    for (const auto &constraint : parser.getConstraints()) {
+                                                    ^
+                    ModelGenerator.cpp:37:11: error: no viable overloaded '='
+                    options = convertedOptions;
+                    ~~~~~~~ ^ ~~~~~~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:560:13: note: candidate function not viable: 'this' argument has type
+                        'const std::vector<std::pair<std::string, std::vector<std::string> > >' (aka 'const vector<pair<basic_string<char, char_traits<char>,
+                        allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char> > > > >'), but method is not marked const
+                        vector& operator=(const vector& __x);
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:580:13: note: candidate function not viable: 'this' argument has type
+                        'const std::vector<std::pair<std::string, std::vector<std::string> > >' (aka 'const vector<pair<basic_string<char, char_traits<char>,
+                        allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char> > > > >'), but method is not marked const
+                        vector& operator=(vector&& __x)
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:584:13: note: candidate function not viable: 'this' argument has type
+                        'const std::vector<std::pair<std::string, std::vector<std::string> > >' (aka 'const vector<pair<basic_string<char, char_traits<char>,
+                        allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char> > > > >'), but method is not marked const
+                        vector& operator=(initializer_list<value_type> __il)
+                                ^
+                    ModelGenerator.cpp:38:15: error: no viable overloaded '='
+                    constraints = convertedConstraints;
+                    ~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:560:13: note: candidate function not viable: 'this' argument has type
+                        'const std::vector<std::vector<std::pair<std::string, std::string> > >' (aka 'const vector<vector<pair<basic_string<char,
+                        char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > > >'), but method is not marked const
+                        vector& operator=(const vector& __x);
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:580:13: note: candidate function not viable: 'this' argument has type
+                        'const std::vector<std::vector<std::pair<std::string, std::string> > >' (aka 'const vector<vector<pair<basic_string<char,
+                        char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > > >'), but method is not marked const
+                        vector& operator=(vector&& __x)
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:584:13: note: candidate function not viable: 'this' argument has type
+                        'const std::vector<std::vector<std::pair<std::string, std::string> > >' (aka 'const vector<vector<pair<basic_string<char,
+                        char_traits<char>, allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > > >'), but method is not marked const
+                        vector& operator=(initializer_list<value_type> __il)
+                                ^
+                    4 errors generated.
+                    make: *** [ModelGenerator.o] Error 1
                             </pre>
-            [{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine
-            Instanz des Konstruktors \"\"ModelGenerator::ModelGenerator\"\" stimmt mit der Argumentliste
-            überein.","source": "C/C++","startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn":
-            32,"relatedInformation": [{"startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn":
-            32,"message": "Argumenttypen sind: (std::__1::vector<Option, std::__1::allocator<Option>>, std::__1::vector
-                <Constraint, std::__1::allocator<Constraint>>)","resource": "/Users/afdzlebron/Library/Mobile
-                    Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Solver.cpp"}]
-                    }]
-                    <pre id="p2">
-
+            <pre id="p2">
+                    [{"resource": "/Main.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 43,"startColumn": 34,"endLineNumber": 43,"endColumn": 34
+                },{"resource": "/Main.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 52,"startColumn": 39,"endLineNumber": 52,"endColumn": 39
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 16,"endLineNumber": 42,"endColumn": 16
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 29,"endLineNumber": 42,"endColumn": 29
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 49,"startColumn": 16,"endLineNumber": 49,"endColumn": 16
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 49,"startColumn": 33,"endLineNumber": 49,"endColumn": 33
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 18,"endLineNumber": 51,"endColumn": 18
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 29,"endLineNumber": 51,"endColumn": 29
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 78,"startColumn": 10,"endLineNumber": 78,"endColumn": 10
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 79,"startColumn": 13,"endLineNumber": 79,"endColumn": 13
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 83,"startColumn": 18,"endLineNumber": 83,"endColumn": 18
+                },{"resource": "/Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 83,"startColumn": 29,"endLineNumber": 83,"endColumn": 29
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'parser'","startLineNumber": 20,"startColumn": 29,"endLineNumber": 20,"endColumn": 29
+                },{"resource": "/ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"parser\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 20,"startColumn": 29,"endLineNumber": 20,"endColumn": 35
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'parser'","startLineNumber": 28,"startColumn": 33,"endLineNumber": 28,"endColumn": 33
+                },{"resource": "/ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"parser\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 28,"startColumn": 33,"endLineNumber": 28,"endColumn": 39
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 31,"startColumn": 37,"endLineNumber": 31,"endColumn": 37
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 8,"message": "no viable overloaded '='","startLineNumber": 37,"startColumn": 3,"endLineNumber": 37,"endColumn": 29
+                },{"resource": "/ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"=\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 37,"startColumn": 11,"endLineNumber": 37,"endColumn": 11,"relatedInformation": [{"startLineNumber": 37,"startColumn": 11,"endLineNumber": 37,"endColumn": 11,"message": "Operandentypen sind: const std::__1::vector<std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>> = std::__1::map<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>>","resource": "/ModelGenerator.cpp"},{"startLineNumber": 37,"startColumn": 11,"endLineNumber": 37,"endColumn": 11,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator=(std::initializer_list<std::__1::vector<_Tp, _Allocator>::value_type> __il) [mit _Tp=std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "/ModelGenerator.cpp"},{"startLineNumber": 37,"startColumn": 11,"endLineNumber": 37,"endColumn": 11,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator=(std::__1::vector<_Tp, _Allocator> &&__x) [mit _Tp=std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "/ModelGenerator.cpp"},{"startLineNumber": 37,"startColumn": 11,"endLineNumber": 37,"endColumn": 11,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator=(const std::__1::vector<_Tp, _Allocator> &__x) [mit _Tp=std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::pair<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "/ModelGenerator.cpp"}]
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 8,"message": "no viable overloaded '='","startLineNumber": 38,"startColumn": 3,"endLineNumber": 38,"endColumn": 37
+                },{"resource": "/ModelGenerator.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"=\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 38,"startColumn": 15,"endLineNumber": 38,"endColumn": 15,"relatedInformation": [{"startLineNumber": 38,"startColumn": 15,"endLineNumber": 38,"endColumn": 15,"message": "Operandentypen sind: const std::__1::vector<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>>> = std::__1::list<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>, std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>>>","resource": "/ModelGenerator.cpp"},{"startLineNumber": 38,"startColumn": 15,"endLineNumber": 38,"endColumn": 15,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator=(std::initializer_list<std::__1::vector<_Tp, _Allocator>::value_type> __il) [mit _Tp=std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "/ModelGenerator.cpp"},{"startLineNumber": 38,"startColumn": 15,"endLineNumber": 38,"endColumn": 15,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator=(std::__1::vector<_Tp, _Allocator> &&__x) [mit _Tp=std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "/ModelGenerator.cpp"},{"startLineNumber": 38,"startColumn": 15,"endLineNumber": 38,"endColumn": 15,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator=(const std::__1::vector<_Tp, _Allocator> &__x) [mit _Tp=std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>, _Allocator=std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "/ModelGenerator.cpp"}]
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 20,"startColumn": 14,"endLineNumber": 20,"endColumn": 14
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 20,"startColumn": 27,"endLineNumber": 20,"endColumn": 27
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 14,"endLineNumber": 28,"endColumn": 14
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 28,"startColumn": 31,"endLineNumber": 28,"endColumn": 31
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 30,"startColumn": 16,"endLineNumber": 30,"endColumn": 16
+                },{"resource": "/ModelGenerator.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 30,"startColumn": 27,"endLineNumber": 30,"endColumn": 27
+                },{"resource": "/Solver.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"ModelGenerator::ModelGenerator\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn": 32,"relatedInformation": [{"startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn": 32,"message": "Argumenttypen sind: (std::__1::vector<Option, std::__1::allocator<Option>>, std::__1::vector<Constraint, std::__1::allocator<Constraint>>)","resource": "/Solver.cpp"}]
+                }]
                             </pre>
         </div>
         <div id="codesInCPlusPlus">
@@ -471,21 +595,21 @@
                 // A constructor that takes a vector of options and a vector of constraints as
                 // parameters
                 ModelGenerator(
-                    const std::vector<std::pair<std::string, std::vector<std::string>>>
+                    const std::vector<std::pair<std::string, std::vector<std::string> > >
                         &options,
-                    const std::vector<std::vector<std::pair<std::string, std::string>>>
+                    const std::vector<std::vector<std::pair<std::string, std::string> > >
                         &constraints);
                 
                 // A method that generates models and returns them as a list of maps of
                 // options to values
-                std::list<std::map<std::string, std::string>> generateModels() const;
+                std::list<std::map<std::string, std::string> > generateModels() const;
                 
                 private:
                 // A vector of pairs of strings and vectors of strings that stores the options
-                std::vector<std::pair<std::string, std::vector<std::string>>> options;
+                std::vector<std::pair<std::string, std::vector<std::string> > > options;
                 
                 // A vector of vectors of pairs of strings that stores the constraints
-                std::vector<std::vector<std::pair<std::string, std::string>>> constraints;
+                std::vector<std::vector<std::pair<std::string, std::string> > > constraints;
                 };
                 
                 #endif
@@ -612,6 +736,7 @@
                 // Solver.hpp
                 
                 #ifndef SOLVER_HPP
+                
                 #define SOLVER_HPP
                 
                 #include <list>
@@ -643,6 +768,10 @@
                 
                 // A list of maps that stores the models
                 std::list<std::map<std::string, std::string> > models;
+                
+                // A map of strings and vectors of strings that stores the options
+                std::map<std::string, std::vector<std::string> >
+                    options;  // Change this from vector to map
                 };
                 
                 #endif
@@ -842,16 +971,41 @@
                 
                 #include "ModelGenerator.hpp"
                 
+                #include <algorithm>
                 #include <random>
                 
-                // A constructor that takes a vector of options and a vector of constraints as
-                // parameters
+                #include "Parser.hpp"
+                
+                // A constructor that takes a Parser as a parameter
                 ModelGenerator::ModelGenerator(
                     const std::vector<std::pair<std::string, std::vector<std::string> > >
                         &options,
                     const std::vector<std::vector<std::pair<std::string, std::string> > >
                         &constraints)
-                    : options(options), constraints(constraints) {}
+                    : options(options), constraints(constraints) {
+                // Convert the options from the parser to a map of strings and vectors of
+                // strings
+                std::map<std::string, std::vector<std::string> > convertedOptions;
+                for (const auto &option : parser.getOptions()) {
+                    convertedOptions[option.getName()] = option.getValues();
+                }
+                
+                // Convert the constraints from the parser to a list of vectors of pairs of
+                // strings
+                std::list<std::vector<std::pair<std::string, std::string> > >
+                    convertedConstraints;
+                for (const auto &constraint : parser.getConstraints()) {
+                    std::vector<std::pair<std::string, std::string> > convertedConstraint;
+                    for (const auto &pair : constraint.getPairs()) {
+                    convertedConstraint.push_back({pair.first, pair.second});
+                    }
+                    convertedConstraints.push_back(convertedConstraint);
+                }
+                
+                // Assign the converted options and constraints to the member variables
+                options = convertedOptions;
+                constraints = convertedConstraints;
+                }
                 
                 // A method that generates models and returns them as a list of maps of
                 // options to values
@@ -864,7 +1018,9 @@
                 std::uniform_int_distribution<int> dist(
                     0, 1);  // Create a uniform distribution between 0 and 1 with int as the
                             // template parameter
+                
                 // TODO: Implement the model generation algorithm here
+                
                 return models;  // Return the list of models
                 }
                 </code></pre>
