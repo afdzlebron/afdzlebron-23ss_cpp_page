@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren SIE IN C++
+        Programmieren C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -332,423 +332,92 @@
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
                     g++ -std=c++17 -c Fuzzer.cpp
-                    Fuzzer.cpp:18:43: error: too many arguments to function call, expected 2, have 3
-                        char option = 'A' + randomInt(gen, 0, 25);
-                                            ~~~~~~~~~         ^~
-                    ./Fuzzer.hpp:34:3: note: 'randomInt' declared here
-                    int randomInt(int min, int max);
+                    g++ -std=c++17 -c Main.cpp
+                    Main.cpp:29:18: warning: empty parentheses interpreted as a function declaration [-Wvexing-parse]
+                        Parser parser();
+                                    ^~
+                    Main.cpp:29:18: note: remove parentheses to declare a variable
+                        Parser parser();
+                                    ^~
+                    Main.cpp:33:30: error: base of member reference is a function; perhaps you meant to call it with no arguments?
+                        ModelGenerator generator(parser.getOptions(), parser.getConstraints());
+                                                ^~~~~~
+                                                    ()
+                    Main.cpp:33:51: error: base of member reference is a function; perhaps you meant to call it with no arguments?
+                        ModelGenerator generator(parser.getOptions(), parser.getConstraints());
+                                                                    ^~~~~~
+                                                                            ()
+                    Main.cpp:33:20: error: no matching constructor for initialization of 'ModelGenerator'
+                        ModelGenerator generator(parser.getOptions(), parser.getConstraints());
+                                    ^         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    ./ModelGenerator.hpp:15:3: note: candidate constructor not viable: no known conversion from 'vector<Option>' to 'const
+                        vector<std::pair<std::string, std::vector<std::string> >>' for 1st argument
+                    ModelGenerator(
                     ^
-                    Fuzzer.cpp:21:14: error: no viable overloaded operator[] for type 'std::map<std::string, std::vector<std::string> >' (aka
-                        'map<basic_string<char, char_traits<char>, allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char> > > >')
-                        options[option] =
-                        ~~~~~~~^~~~~~~
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1129:18: note: candidate function not viable: no known conversion from
-                        'char' to 'const std::__1::map<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > >, std::__1::less<std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > > > >::key_type' (aka 'const std::__1::basic_string<char>') for 1st argument
-                        mapped_type& operator[](const key_type& __k);
-                                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1131:18: note: candidate function not viable: no known conversion from
-                        'char' to 'std::__1::map<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > >, std::__1::less<std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > > > >::key_type' (aka 'std::__1::basic_string<char>') for 1st argument
-                        mapped_type& operator[](key_type&& __k);
-                                    ^
-                    Fuzzer.cpp:23:11: error: no viable constructor or deduction guide for deduction of template arguments of 'vector'
-                            std::vector();  // Initialize the vector as empty
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:495:5: note: candidate template ignored: couldn't infer template argument
-                        '_Tp'
-                        vector() _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
+                    ./ModelGenerator.hpp:11:7: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 2 were provided
+                    class ModelGenerator {
                         ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:469:28: note: candidate function template not viable: requires 1
-                        argument, but 0 were provided
-                    class _LIBCPP_TEMPLATE_VIS vector
-                                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:501:40: note: candidate function template not viable: requires single
-                        argument '__a', but no arguments were provided
-                        _LIBCPP_INLINE_VISIBILITY explicit vector(const allocator_type& __a)
-                                                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:513:14: note: candidate function template not viable: requires single
-                        argument '__n', but no arguments were provided
-                        explicit vector(size_type __n);
-                                ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:515:14: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                        explicit vector(size_type __n, const allocator_type& __a);
-                                ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:517:5: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                        vector(size_type __n, const value_type& __x);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:518:5: note: candidate function template not viable: requires 3
-                        arguments, but 0 were provided
-                        vector(size_type __n, const value_type& __x, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:520:9: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                            vector(_InputIterator __first,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:528:9: note: candidate function template not viable: requires at least 3
-                        arguments, but 0 were provided
-                            vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:535:9: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                            vector(_ForwardIterator __first,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:542:9: note: candidate function template not viable: requires at least 3
-                        arguments, but 0 were provided
-                            vector(_ForwardIterator __first, _ForwardIterator __last, const allocator_type& __a,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:557:5: note: candidate function template not viable: requires single
-                        argument '__x', but no arguments were provided
-                        vector(const vector& __x);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:558:5: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                        vector(const vector& __x, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:564:5: note: candidate function template not viable: requires single
-                        argument '__il', but no arguments were provided
-                        vector(initializer_list<value_type> __il);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:567:5: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                        vector(initializer_list<value_type> __il, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:570:5: note: candidate function template not viable: requires single
-                        argument '__x', but no arguments were provided
-                        vector(vector&& __x)
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:578:5: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                        vector(vector&& __x, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:935:1: note: candidate function template not viable: requires 2
-                        arguments, but 0 were provided
-                    vector(_InputIterator, _InputIterator)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:942:1: note: candidate function template not viable: requires 3
-                        arguments, but 0 were provided
-                    vector(_InputIterator, _InputIterator, _Alloc)
-                    ^
-                    Fuzzer.cpp:30:39: error: too many arguments to function call, expected 2, have 3
-                        int numValues = randomInt(gen, 1, maxValuesPerOption);
-                                        ~~~~~~~~~         ^~~~~~~~~~~~~~~~~~
-                    ./Fuzzer.hpp:34:3: note: 'randomInt' declared here
-                    int randomInt(int min, int max);
-                    ^
-                    Fuzzer.cpp:33:37: error: too many arguments to function call, expected 2, have 3
-                        int value = randomInt(gen, 0, 9);
-                                    ~~~~~~~~~         ^
-                    ./Fuzzer.hpp:34:3: note: 'randomInt' declared here
-                    int randomInt(int min, int max);
-                    ^
-                    Fuzzer.cpp:45:42: error: too many arguments to function call, expected 2, have 3
-                    int numConstraints = randomInt(gen, 0, maxConstraints);
-                                        ~~~~~~~~~         ^~~~~~~~~~~~~~
-                    ./Fuzzer.hpp:34:3: note: 'randomInt' declared here
-                    int randomInt(int min, int max);
-                    ^
-                    Fuzzer.cpp:50:38: error: too many arguments to function call, expected 2, have 3
-                        int numPairs = randomInt(gen, 1, options.size());
-                                    ~~~~~~~~~         ^~~~~~~~~~~~~~
-                    ./Fuzzer.hpp:34:3: note: 'randomInt' declared here
-                    int randomInt(int min, int max);
-                    ^
-                    Fuzzer.cpp:55:42: error: too many arguments to function call, expected 2, have 3
-                        std::advance(it, randomInt(gen, 0, options.size() - 1));
-                                        ~~~~~~~~~         ^~~~~~~~~~~~~~~~~~
-                    ./Fuzzer.hpp:34:3: note: 'randomInt' declared here
-                    int randomInt(int min, int max);
-                    ^
-                    Fuzzer.cpp:57:12: error: no viable conversion from 'const std::__1::basic_string<char>' to 'char'
-                        char option = it->first;
-                            ^        ~~~~~~~~~
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:875:5: note: candidate function
-                        operator __self_view() const _NOEXCEPT { return __self_view(data(), size()); }
-                        ^
-                    Fuzzer.cpp:61:44: error: too many arguments to function call, expected 2, have 3
-                        int value = values[randomInt(gen, 0, values.size() - 1)];
-                                            ~~~~~~~~~         ^~~~~~~~~~~~~~~~~
-                    ./Fuzzer.hpp:34:3: note: 'randomInt' declared here
-                    int randomInt(int min, int max);
-                    ^
-                    Fuzzer.cpp:74:21: error: out-of-line definition of 'fuzz' does not match any declaration in 'Fuzzer'
-                    std::string Fuzzer::fuzz() {
-                                        ^~~~
-                    Fuzzer.cpp:155:13: error: out-of-line definition of 'randomInt' does not match any declaration in 'Fuzzer'
-                    int Fuzzer::randomInt(std::mt19937& gen, int min, int max) {
-                                ^~~~~~~~~
-                    In file included from Fuzzer.cpp:1:
-                    In file included from ./Fuzzer.hpp:4:
-                    In file included from /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:187:
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:919:22: error: invalid operands to binary expression
-                        ('std::__1::basic_string<char>' and 'const int')
-                            if (*__first == __value_)
-                                ~~~~~~~~ ^  ~~~~~~~~
-                    Fuzzer.cpp:35:16: note: in instantiation of function template specialization
-                        'std::__1::find<std::__1::__wrap_iter<std::__1::basic_string<char> *>, int>' requested here
-                        if (std::find(pair.second.begin(), pair.second.end(), value) ==
-                                ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:390:1: note: candidate function not viable: no known conversion
-                        from 'std::__1::basic_string<char>' to 'const std::__1::error_code' for 1st argument
-                    operator==(const error_code& __x, const error_code& __y) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:397:1: note: candidate function not viable: no known conversion
-                        from 'std::__1::basic_string<char>' to 'const std::__1::error_code' for 1st argument
-                    operator==(const error_code& __x, const error_condition& __y) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:405:1: note: candidate function not viable: no known conversion
-                        from 'std::__1::basic_string<char>' to 'const std::__1::error_condition' for 1st argument
-                    operator==(const error_condition& __x, const error_code& __y) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:412:1: note: candidate function not viable: no known conversion
-                        from 'std::__1::basic_string<char>' to 'const std::__1::error_condition' for 1st argument
-                    operator==(const error_condition& __x, const error_condition& __y) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/utility:576:1: note: candidate template ignored: could not match 'pair' against
-                        'basic_string'
-                    operator==(const pair<_T1,_T2>& __x, const pair<_T1,_T2>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:807:1: note: candidate template ignored: could not match
-                        'reverse_iterator' against 'basic_string'
-                    operator==(const reverse_iterator<_Iter1>& __x, const reverse_iterator<_Iter2>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1036:1: note: candidate template ignored: could not match
-                        'istream_iterator' against 'basic_string'
-                    operator==(const istream_iterator<_Tp, _CharT, _Traits, _Distance>& __x,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1140:6: note: candidate template ignored: could not match
-                        'istreambuf_iterator' against 'basic_string'
-                    bool operator==(const istreambuf_iterator<_CharT,_Traits>& __a,
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1243:1: note: candidate template ignored: could not match
-                        'move_iterator' against 'basic_string'
-                    operator==(const move_iterator<_Iter1>& __x, const move_iterator<_Iter2>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1615:1: note: candidate template ignored: could not match '__wrap_iter'
-                        against 'basic_string'
-                    operator==(const __wrap_iter<_Iter1>& __x, const __wrap_iter<_Iter2>& __y) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/tuple:1176:1: note: candidate template ignored: could not match 'tuple' against
-                        'basic_string'
-                    operator==(const tuple<_Tp...>& __x, const tuple<_Up...>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2042:6: note: candidate template ignored: could not match 'allocator'
-                        against 'basic_string'
-                    bool operator==(const allocator<_Tp>&, const allocator<_Up>&) _NOEXCEPT {return true;}
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2877:1: note: candidate template ignored: could not match 'unique_ptr'
-                        against 'basic_string'
-                    operator==(const unique_ptr<_T1, _D1>& __x, const unique_ptr<_T2, _D2>& __y) {return __x.get() == __y.get();}
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2913:1: note: candidate template ignored: could not match 'unique_ptr'
-                        against 'basic_string'
-                    operator==(const unique_ptr<_T1, _D1>& __x, nullptr_t) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2921:1: note: candidate template ignored: could not match
-                        'unique_ptr<type-parameter-0-0, type-parameter-0-1>' against 'const int'
-                    operator==(nullptr_t, const unique_ptr<_T1, _D1>& __x) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4426:1: note: candidate template ignored: could not match 'shared_ptr'
-                        against 'basic_string'
-                    operator==(const shared_ptr<_Tp>& __x, const shared_ptr<_Up>& __y) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4480:1: note: candidate template ignored: could not match 'shared_ptr'
-                        against 'basic_string'
-                    operator==(const shared_ptr<_Tp>& __x, nullptr_t) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4488:1: note: candidate template ignored: could not match
-                        'shared_ptr<type-parameter-0-0>' against 'const int'
-                    operator==(nullptr_t, const shared_ptr<_Tp>& __x) _NOEXCEPT
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/functional:2581:1: note: candidate template ignored: could not match 'function'
-                        against 'basic_string'
-                    operator==(const function<_Rp(_ArgTypes...)>& __f, nullptr_t) _NOEXCEPT {return !__f;}
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/functional:2586:1: note: candidate template ignored: could not match
-                        'function<type-parameter-0-0 (type-parameter-0-1...)>' against 'const int'
-                    operator==(nullptr_t, const function<_Rp(_ArgTypes...)>& __f) _NOEXCEPT {return !__f;}
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:2418:1: note: candidate template ignored: could not match 'list' against
-                        'basic_string'
-                    operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1035:1: note: candidate template ignored: could not match 'optional'
-                        against 'basic_string'
-                    operator==(const optional<_Tp>& __x, const optional<_Up>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1128:1: note: candidate template ignored: could not match 'optional'
-                        against 'basic_string'
-                    operator==(const optional<_Tp>& __x, nullopt_t) noexcept
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1136:1: note: candidate template ignored: could not match
-                        'optional<type-parameter-0-0>' against 'const int'
-                    operator==(nullopt_t, const optional<_Tp>& __x) noexcept
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1229:1: note: candidate template ignored: could not match 'optional'
-                        against 'basic_string'
-                    operator==(const optional<_Tp>& __x, const _Up& __v)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1241:1: note: candidate template ignored: could not match
-                        'optional<type-parameter-0-1>' against 'const int'
-                    operator==(const _Tp& __v, const optional<_Up>& __x)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1594:1: note: candidate template ignored: could not match 'map' against
-                        'basic_string'
-                    operator==(const map<_Key, _Tp, _Compare, _Allocator>& __x,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:2176:1: note: candidate template ignored: could not match 'multimap' against
-                        'basic_string'
-                    operator==(const multimap<_Key, _Tp, _Compare, _Allocator>& __x,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:614:6: note: candidate template ignored: could not match
-                        'basic_string_view' against 'basic_string'
-                    bool operator==(basic_string_view<_CharT, _Traits> __lhs,
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:623:6: note: candidate template ignored: could not match
-                        'basic_string_view' against 'basic_string'
-                    bool operator==(basic_string_view<_CharT, _Traits> __lhs,
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:632:6: note: candidate template ignored: could not match
-                        'basic_string_view<type-parameter-0-0, type-parameter-0-1>' against 'int'
-                    bool operator==(typename common_type<basic_string_view<_CharT, _Traits> >::type __lhs,
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:563:6: note: candidate template ignored: could not match 'fpos' against
-                        'basic_string'
-                    bool operator==(const fpos<_StateT>& __x, const fpos<_StateT>& __y)
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3850:1: note: candidate template ignored: could not match
-                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'const int'
-                    operator==(const basic_string<_CharT, _Traits, _Allocator>& __lhs,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3862:1: note: candidate template ignored: could not match
-                        'basic_string<char, std::__1::char_traits<char>, type-parameter-0-0>' against 'const int'
-                    operator==(const basic_string<char, char_traits<char>, _Allocator>& __lhs,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3881:1: note: candidate template ignored: could not match
-                        'const _CharT *' against 'std::__1::basic_string<char>'
-                    operator==(const _CharT* __lhs,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3894:1: note: candidate template ignored: could not match
-                        'const _CharT *' against 'int'
-                    operator==(const basic_string<_CharT,_Traits,_Allocator>& __lhs,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:3335:1: note: candidate template ignored: could not match 'vector'
-                        against 'basic_string'
-                    operator==(const vector<_Tp, _Allocator>& __x, const vector<_Tp, _Allocator>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/deque:2967:1: note: candidate template ignored: could not match 'deque' against
-                        'basic_string'
-                    operator==(const deque<_Tp, _Allocator>& __x, const deque<_Tp, _Allocator>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stack:256:1: note: candidate template ignored: could not match 'stack' against
-                        'basic_string'
-                    operator==(const stack<_Tp, _Container>& __x, const stack<_Tp, _Container>& __y)
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2393:1: note: candidate template ignored: could not match
-                        'mersenne_twister_engine' against 'basic_string'
-                    operator==(const mersenne_twister_engine<_UInt, _Wp, _Np, _Mp, _Rp, _Ap, _Up, _Dp, _Sp,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2718:1: note: candidate template ignored: could not match
-                        'subtract_with_carry_engine' against 'basic_string'
-                    operator==(
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2936:1: note: candidate template ignored: could not match
-                        'discard_block_engine' against 'basic_string'
-                    operator==(const discard_block_engine<_Eng, _Pp, _Rp>& __x,
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:3187:1: note: candidate template ignored: could not match
-                        'independent_bits_engine' against 'basic_string'
-                    operator==(
-                    ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:3418:1: note: candidate template ignored: could not match
-                        'shuffle_order_engine' against 'basic_string'
-                    operator==(
-                    ^
-                    13 errors generated.
-                    make: *** [Fuzzer.o] Error 1
-                </pre>
+                    ./ModelGenerator.hpp:11:7: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 2 were provided
+                    1 warning and 3 errors generated.
+                    make: *** [Main.o] Error 1
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % ./SH-Files2HTML.sh
+
+                    </pre>
             <pre id="p2">
-                    [{"resource": "Constraint.cpp","owner": "clang","severity": 8,"message": "no member named 'emplace_back' in 'std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >'","startLineNumber": 6,"startColumn": 3,"endLineNumber": 6,"endColumn": 8
-                    },{"resource": "Constraint.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 12,"startColumn": 53,"endLineNumber": 12,"endColumn": 53
-                    }], 
-                    [{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "too many arguments to function call, expected 2, have 3","startLineNumber": 18,"startColumn": 25,"endLineNumber": 18,"endColumn": 45
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"std::__1::mt19937\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 18,"startColumn": 35,"endLineNumber": 18,"endColumn": 38
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "140","severity": 8,"message": "Zu viele Argumente im Funktionsaufruf.","source": "C/C++","startLineNumber": 18,"startColumn": 43,"endLineNumber": 18,"endColumn": 45
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "no viable overloaded operator[] for type 'std::map<std::string, std::vector<std::string> >' (aka 'map<basic_string<char, char_traits<char>, allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char> > > >')","startLineNumber": 21,"startColumn": 7,"endLineNumber": 21,"endColumn": 21
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"[]\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 21,"startColumn": 14,"endLineNumber": 21,"endColumn": 14,"relatedInformation": [{"startLineNumber": 21,"startColumn": 14,"endLineNumber": 21,"endColumn": 14,"message": "Operandentypen sind: std::__1::map<std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>, std::__1::less<std::__1::string>, std::__1::allocator<std::__1::pair<const std::__1::string, std::__1::vector<std::__1::string, std::__1::allocator<std::__1::string>>>>> [ char ]","resource": "Fuzzer.cpp"},{"startLineNumber": 21,"startColumn": 14,"endLineNumber": 21,"endColumn": 14,"message": "�\u0001\u0001","resource": "Fuzzer.cpp"},{"startLineNumber": 21,"startColumn": 14,"endLineNumber": 21,"endColumn": 14,"message": "�\u0001\u0001","resource": "Fuzzer.cpp"}]
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "3158","severity": 8,"message": "Klassenvorlagenargumente können nicht abgeleitet werden.","source": "C/C++","startLineNumber": 23,"startColumn": 11,"endLineNumber": 23,"endColumn": 14
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "use of class template 'vector' requires template arguments","startLineNumber": 23,"startColumn": 16,"endLineNumber": 23,"endColumn": 16
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"std::__1::vector\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 23,"startColumn": 23,"endLineNumber": 23,"endColumn": 24
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "too many arguments to function call, expected 2, have 3","startLineNumber": 30,"startColumn": 21,"endLineNumber": 30,"endColumn": 57
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"std::__1::mt19937\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 30,"startColumn": 31,"endLineNumber": 30,"endColumn": 34
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "140","severity": 8,"message": "Zu viele Argumente im Funktionsaufruf.","source": "C/C++","startLineNumber": 30,"startColumn": 39,"endLineNumber": 30,"endColumn": 57
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "too many arguments to function call, expected 2, have 3","startLineNumber": 33,"startColumn": 19,"endLineNumber": 33,"endColumn": 38
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"std::__1::mt19937\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 33,"startColumn": 29,"endLineNumber": 33,"endColumn": 32
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "140","severity": 8,"message": "Zu viele Argumente im Funktionsaufruf.","source": "C/C++","startLineNumber": 33,"startColumn": 37,"endLineNumber": 33,"endColumn": 38
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "too many arguments to function call, expected 2, have 3","startLineNumber": 45,"startColumn": 24,"endLineNumber": 45,"endColumn": 56
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"std::__1::mt19937\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 45,"startColumn": 34,"endLineNumber": 45,"endColumn": 37
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "140","severity": 8,"message": "Zu viele Argumente im Funktionsaufruf.","source": "C/C++","startLineNumber": 45,"startColumn": 42,"endLineNumber": 45,"endColumn": 56
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 48,"startColumn": 51,"endLineNumber": 48,"endColumn": 51
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "too many arguments to function call, expected 2, have 3","startLineNumber": 50,"startColumn": 20,"endLineNumber": 50,"endColumn": 52
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"std::__1::mt19937\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 50,"startColumn": 30,"endLineNumber": 50,"endColumn": 33
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "140","severity": 8,"message": "Zu viele Argumente im Funktionsaufruf.","source": "C/C++","startLineNumber": 50,"startColumn": 38,"endLineNumber": 50,"endColumn": 45
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "too many arguments to function call, expected 2, have 3","startLineNumber": 55,"startColumn": 24,"endLineNumber": 55,"endColumn": 60
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"std::__1::mt19937\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 55,"startColumn": 34,"endLineNumber": 55,"endColumn": 37
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "140","severity": 8,"message": "Zu viele Argumente im Funktionsaufruf.","source": "C/C++","startLineNumber": 55,"startColumn": 42,"endLineNumber": 55,"endColumn": 49
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"const std::__1::string\"\" in \"\"char\"\" vorhanden.","source": "C/C++","startLineNumber": 57,"startColumn": 21,"endLineNumber": 57,"endColumn": 23
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "no viable conversion from 'const std::__1::basic_string<char>' to 'char'","startLineNumber": 57,"startColumn": 21,"endLineNumber": 57,"endColumn": 30
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"const std::__1::string\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 61,"startColumn": 19,"endLineNumber": 61,"endColumn": 25
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "too many arguments to function call, expected 2, have 3","startLineNumber": 61,"startColumn": 26,"endLineNumber": 61,"endColumn": 61
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "413","severity": 8,"message": "Es ist keine passende Konvertierungsfunktion von \"\"std::__1::mt19937\"\" in \"\"int\"\" vorhanden.","source": "C/C++","startLineNumber": 61,"startColumn": 36,"endLineNumber": 61,"endColumn": 39
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "140","severity": 8,"message": "Zu viele Argumente im Funktionsaufruf.","source": "C/C++","startLineNumber": 61,"startColumn": 44,"endLineNumber": 61,"endColumn": 50
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "304","severity": 8,"message": "Keine Instanz von Überladene Funktion \"std::__1::vector<_Tp, _Allocator>::push_back [mit _Tp=std::__1::pair<std::__1::string, std::__1::string>, _Allocator=std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>]\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 66,"startColumn": 20,"endLineNumber": 66,"endColumn": 29,"relatedInformation": [{"startLineNumber": 66,"startColumn": 20,"endLineNumber": 66,"endColumn": 29,"message": "Argumenttypen sind: (std::__1::pair<char, int>)","resource": "Fuzzer.cpp"},{"startLineNumber": 66,"startColumn": 20,"endLineNumber": 66,"endColumn": 29,"message": "Der Objekttyp ist: std::__1::vector<std::__1::pair<std::__1::string, std::__1::string>, std::__1::allocator<std::__1::pair<std::__1::string, std::__1::string>>>","resource": "Fuzzer.cpp"}]
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Fuzzer\"\" hat keinen Member \"\"fuzz\"\".","source": "C/C++","startLineNumber": 74,"startColumn": 21,"endLineNumber": 74,"endColumn": 25
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'fuzz' does not match any declaration in 'Fuzzer'","startLineNumber": 74,"startColumn": 21,"endLineNumber": 74,"endColumn": 25
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"options\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 77,"startColumn": 20,"endLineNumber": 77,"endColumn": 27
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "3158","severity": 8,"message": "Klassenvorlagenargumente können nicht abgeleitet werden.","source": "C/C++","startLineNumber": 80,"startColumn": 5,"endLineNumber": 80,"endColumn": 8
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "no type named 'vector' in namespace 'std'; did you mean 'hecto'?","startLineNumber": 80,"startColumn": 5,"endLineNumber": 80,"endColumn": 10
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"std::__1::vector\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 80,"startColumn": 17,"endLineNumber": 80,"endColumn": 23,"relatedInformation": [{"startLineNumber": 80,"startColumn": 17,"endLineNumber": 80,"endColumn": 23,"message": "Argumenttypen sind: (<error-type>)","resource": "Fuzzer.cpp"}]
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "no viable conversion from 'std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >' to 'std::hecto' (aka 'ratio<100LL, 1LL>')","startLineNumber": 80,"startColumn": 26,"endLineNumber": 80,"endColumn": 37
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"randomInt\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 82,"startColumn": 32,"endLineNumber": 82,"endColumn": 41
-                    },{"resource": "Fuzzer.cpp","owner": "C/C++: IntelliSense","code": "147","severity": 8,"message": "Die Deklaration ist nicht mit \"\"int Fuzzer::randomInt(int min, int max)\" (deklariert in Zeile 34 von \"Fuzzer.hpp\")\" kompatibel.","source": "C/C++","startLineNumber": 155,"startColumn": 13,"endLineNumber": 155,"endColumn": 22
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'randomInt' does not match any declaration in 'Fuzzer'","startLineNumber": 155,"startColumn": 13,"endLineNumber": 155,"endColumn": 22
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 29,"startColumn": 8,"endLineNumber": 29,"endColumn": 8
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 29,"startColumn": 19,"endLineNumber": 29,"endColumn": 19
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 53,"startColumn": 7,"endLineNumber": 53,"endColumn": 7
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 59,"startColumn": 13,"endLineNumber": 59,"endColumn": 13
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 77,"startColumn": 8,"endLineNumber": 77,"endColumn": 8
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 77,"startColumn": 18,"endLineNumber": 77,"endColumn": 18
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 107,"startColumn": 14,"endLineNumber": 107,"endColumn": 14
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 107,"startColumn": 25,"endLineNumber": 107,"endColumn": 25
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 110,"startColumn": 16,"endLineNumber": 110,"endColumn": 16
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 110,"startColumn": 28,"endLineNumber": 110,"endColumn": 28
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 139,"startColumn": 14,"endLineNumber": 139,"endColumn": 14
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 139,"startColumn": 31,"endLineNumber": 139,"endColumn": 31
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 140,"startColumn": 16,"endLineNumber": 140,"endColumn": 16
-                    },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 140,"startColumn": 27,"endLineNumber": 140,"endColumn": 27
-                    }],
-                    [{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "no member named 'getOptions' in 'Parser'","startLineNumber": 33,"startColumn": 30,"endLineNumber": 33,"endColumn": 36
-                    },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "no member named 'getConstraints' in 'Parser'","startLineNumber": 33,"startColumn": 51,"endLineNumber": 33,"endColumn": 57
-                    },{"resource": "Main.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Solver\"\" hat keinen Member \"\"getModels\"\".","source": "C/C++","startLineNumber": 49,"startColumn": 37,"endLineNumber": 49,"endColumn": 46
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 37,"startColumn": 5,"endLineNumber": 37,"endColumn": 5
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 16,"endLineNumber": 51,"endColumn": 16
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 28,"endLineNumber": 51,"endColumn": 28
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 55,"startColumn": 18,"endLineNumber": 55,"endColumn": 18
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 55,"startColumn": 29,"endLineNumber": 55,"endColumn": 29
-                    }],
-                    [{"resource": "Solver.hpp","owner": "C/C++: IntelliSense","code": "292","severity": 8,"message": "\"\"parser\"\" ist kein nicht statischer Datenmember bzw. nicht statische Basisklasse von \"\"Solver\"\".","source": "C/C++","startLineNumber": 13,"startColumn": 34,"endLineNumber": 13,"endColumn": 40
-                    },{"resource": "Solver.hpp","owner": "clang","severity": 8,"message": "member initializer 'parser' does not name a non-static data member or base class","startLineNumber": 13,"startColumn": 34,"endLineNumber": 13,"endColumn": 48
-                    }]
-                </pre>
+                    [{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'Fuzzer' does not match any declaration in 'Fuzzer'","startLineNumber": 7,"startColumn": 9,"endLineNumber": 7,"endColumn": 15
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 8,"startColumn": 3,"endLineNumber": 8,"endColumn": 3
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "no member named 'random_device' in namespace 'std'","startLineNumber": 8,"startColumn": 12,"endLineNumber": 8,"endColumn": 17
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'fuzz' does not match any declaration in 'Fuzzer'","startLineNumber": 12,"startColumn": 21,"endLineNumber": 12,"endColumn": 25
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 17,"startColumn": 48,"endLineNumber": 17,"endColumn": 48
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'randomString'","startLineNumber": 30,"startColumn": 33,"endLineNumber": 30,"endColumn": 33
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'gen'","startLineNumber": 47,"startColumn": 15,"endLineNumber": 47,"endColumn": 15
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'randomString' does not match any declaration in 'Fuzzer'","startLineNumber": 50,"startColumn": 21,"endLineNumber": 50,"endColumn": 33
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 34,"startColumn": 8,"endLineNumber": 34,"endColumn": 8
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 34,"startColumn": 19,"endLineNumber": 34,"endColumn": 19
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 36,"startColumn": 10,"endLineNumber": 36,"endColumn": 10
+                },{"resource": "Fuzzer.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 36,"startColumn": 22,"endLineNumber": 36,"endColumn": 22
+                }],
+                [{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "base of member reference is a function; perhaps you meant to call it with no arguments?","startLineNumber": 33,"startColumn": 30,"endLineNumber": 33,"endColumn": 36
+                },{"resource": "Main.cpp","owner": "C/C++: IntelliSense","code": "153","severity": 8,"message": "Der Ausdruck muss vom Typ \"Klasse\" sein, weist jedoch den Typ \"\"Parser (*)()\"\" auf.","source": "C/C++","startLineNumber": 33,"startColumn": 30,"endLineNumber": 33,"endColumn": 36
+                },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'ModelGenerator'","startLineNumber": 33,"startColumn": 30,"endLineNumber": 33,"endColumn": 74
+                },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "base of member reference is a function; perhaps you meant to call it with no arguments?","startLineNumber": 33,"startColumn": 51,"endLineNumber": 33,"endColumn": 57
+                },{"resource": "Main.cpp","owner": "C/C++: IntelliSense","code": "153","severity": 8,"message": "Der Ausdruck muss vom Typ \"Klasse\" sein, weist jedoch den Typ \"\"Parser (*)()\"\" auf.","source": "C/C++","startLineNumber": 33,"startColumn": 51,"endLineNumber": 33,"endColumn": 57
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "empty parentheses interpreted as a function declaration [-Wvexing-parse]","startLineNumber": 29,"startColumn": 18,"endLineNumber": 29,"endColumn": 20
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 37,"startColumn": 5,"endLineNumber": 37,"endColumn": 5
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 16,"endLineNumber": 51,"endColumn": 16
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 28,"endLineNumber": 51,"endColumn": 28
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 55,"startColumn": 18,"endLineNumber": 55,"endColumn": 18
+                },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 55,"startColumn": 29,"endLineNumber": 55,"endColumn": 29
+                }],
+                [{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "unknown type name 'optionsFile'","startLineNumber": 16,"startColumn": 22,"endLineNumber": 16,"endColumn": 22
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"optionsFile\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 16,"startColumn": 22,"endLineNumber": 16,"endColumn": 33
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'optionsFile'","startLineNumber": 19,"startColumn": 55,"endLineNumber": 19,"endColumn": 55
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 29,"startColumn": 24,"endLineNumber": 29,"endColumn": 24
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"readString\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 29,"startColumn": 24,"endLineNumber": 29,"endColumn": 34
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Option'","startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"Option::Option\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23,"relatedInformation": [{"startLineNumber": 32,"startColumn": 19,"endLineNumber": 32,"endColumn": 23,"message": "Argumenttypen sind: (std::__1::string)","resource": "Parser.cpp"}]
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 36,"startColumn": 21,"endLineNumber": 36,"endColumn": 21
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no viable overloaded operator[] for type 'std::vector<Option>'","startLineNumber": 41,"startColumn": 5,"endLineNumber": 41,"endColumn": 17
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "349","severity": 8,"message": "Kein \"[]\"-Operator stimmt mit diesen Operanden überein.","source": "C/C++","startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"relatedInformation": [{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Operandentypen sind: std::__1::vector<Option, std::__1::allocator<Option>> [ std::__1::string ]","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator[](std::__1::vector<_Tp, _Allocator>::size_type __n) const noexcept [mit _Tp=Option, _Allocator=std::__1::allocator<Option>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Funktion \"std::__1::vector<_Tp, _Allocator>::operator[](std::__1::vector<_Tp, _Allocator>::size_type __n) noexcept [mit _Tp=Option, _Allocator=std::__1::allocator<Option>]\" stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Der integrierte Operator [](<pointer to object>, <ptrdiff_t>) stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"},{"startLineNumber": 41,"startColumn": 12,"endLineNumber": 41,"endColumn": 12,"message": "Der integrierte Operator [](<ptrdiff_t>, <pointer to object>) stimmt nicht überein, da das Argument #1 nicht mit dem Parameter übereinstimmt","resource": "Parser.cpp"}]
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "unknown type name 'constraintsFile'","startLineNumber": 51,"startColumn": 22,"endLineNumber": 51,"endColumn": 22
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"constraintsFile\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 51,"startColumn": 22,"endLineNumber": 51,"endColumn": 37
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'constraintsFile'","startLineNumber": 54,"startColumn": 55,"endLineNumber": 54,"endColumn": 55
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Constraint'","startLineNumber": 64,"startColumn": 16,"endLineNumber": 64,"endColumn": 16
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "291","severity": 8,"message": "Für die Klasse \"\"Constraint\"\" ist kein Standardkonstruktor vorhanden.","source": "C/C++","startLineNumber": 64,"startColumn": 16,"endLineNumber": 64,"endColumn": 26
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 69,"startColumn": 22,"endLineNumber": 69,"endColumn": 22
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"readString\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 69,"startColumn": 22,"endLineNumber": 69,"endColumn": 32
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'readString'","startLineNumber": 70,"startColumn": 21,"endLineNumber": 70,"endColumn": 21
+                },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "out-of-line definition of 'readString' does not match any declaration in 'Parser'","startLineNumber": 90,"startColumn": 21,"endLineNumber": 90,"endColumn": 31
+                },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Parser\"\" hat keinen Member \"\"readString\"\".","source": "C/C++","startLineNumber": 90,"startColumn": 21,"endLineNumber": 90,"endColumn": 31
+                },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "parentheses were disambiguated as a function declaration [-Wvexing-parse]","startLineNumber": 16,"startColumn": 21,"endLineNumber": 16,"endColumn": 34
+                },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "parentheses were disambiguated as a function declaration [-Wvexing-parse]","startLineNumber": 51,"startColumn": 21,"endLineNumber": 51,"endColumn": 38
+                }]
+                
+                    </pre>
         </div>
 
         <div id="codesInCPlusPlus">
+
             Hier ist Constraint.hpp:
             <pre><code>
                 #ifndef CONSTRAINT_HPP
@@ -797,16 +466,18 @@
                 #include <map>
                 #include <string>
                 #include <vector>
+                #include <random>
+                
                 
                 // A class that generates random options, values and constraints
                 class Fuzzer {
                 public:
                 // A constructor that takes the number of options, the maximum number of
                 // values per option and the maximum number of constraints as parameters
-                Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints);
+                Fuzzer();
                 
                 Fuzzer(std::map<std::string, std::vector<std::string> > options)
-                    : options(options) {};
+                    : options(options){};
                 // A method that writes the options and values to a file with the extension
                 // .options
                 void writeOptions(const std::string& optionsFile);
@@ -815,15 +486,21 @@
                 // .constraints
                 void writeConstraints(const std::string& constraintsFile);
                 
+                std::string randomString(int length);
+                
+                // A helper method that generates a random number between min and max
+                int randomInt(int min, int max);
+                
+                // Deklariert die Funktion fuzz
+                std::string fuzz();  
+                
                 private:
+                std::mt19937 gen;  // Zufallsgenerator als Member-Variable
                 // A map of options to vectors of values
                 std::map<std::string, std::vector<std::string> > options;
                 
                 // A list of vectors of pairs of options and values
                 std::list<std::vector<std::pair<std::string, std::string> > > constraints;
-                
-                // A helper method that generates a random number between min and max
-                int randomInt(int min, int max);
                 };
                 
                 #endif
@@ -938,35 +615,32 @@
                 </code></pre>
             Hier ist Parser.hpp:
             <pre><code>
+                // Parser.hpp
                 #ifndef PARSER_HPP
                 #define PARSER_HPP
                 
-                #include <istream>
-                #include <list>
                 #include <map>
                 #include <string>
+                #include <vector>
                 
                 #include "Constraint.hpp"
                 #include "Option.hpp"
                 
-                // A class that parses .options and .constraints files and fills the data
-                // structures
                 class Parser {
-                public:
-                // A constructor that takes two file names as parameters
-                Parser(const std::string& optionsFile, const std::string& constraintsFile);
-                
-                // A method that parses the .options file and returns a vector of options
-                std::vector<Option> parseOptions();
-                
-                // A method that parses the .constraints file and returns a vector of
-                // constraints
-                std::vector<Constraint> parseConstraints();
-                
                 private:
-                // Two strings that store the file names
-                std::string optionsFile;
-                std::string constraintsFile;
+                std::vector<Option> options;  // Speichert die Optionen aus der .options Datei
+                std::vector<Constraint>
+                    constraints;  // Speichert die Constraints aus der .constraints Datei
+                public:
+                Parser();
+                void parseOptions(const std::string& filename);  // Liest die Optionen aus der
+                                                                // .options Datei ein
+                void parseConstraints(
+                    const std::string&
+                        filename);  // Liest die Constraints aus der .constraints Datei ein
+                std::vector<Option> getOptions() const;  // Gibt die Optionen zurück
+                std::vector<Constraint> getConstraints()
+                    const;  // Gibt die Constraints zurück
                 };
                 
                 #endif
@@ -1042,179 +716,74 @@
                 
                 void Constraint::addPair(const std::string& option, const std::string& value) {
                 pairs.emplace_back(option, value);
-                }
+                } 
                 
                 // A method that returns the vector of pairs of the constraint as a const
                 // reference
                 
-                const std::vector<std::pair<std::string, std::string>>& Constraint::getPairs()
+                const std::vector<std::pair<std::string, std::string> >& Constraint::getPairs()
                     const {
                 return pairs;
                 }</code></pre>
             Hier ist Fuzzer.cpp:
             <pre><code>
+                // Fuzzer.cpp
                 #include "Fuzzer.hpp"
                 
-                #include <algorithm>
-                #include <fstream>
                 #include <iostream>
-                #include <random>
+                #include <sstream>
                 
-                // The constructor generates random options, values and constraints
-                
-                Fuzzer::Fuzzer(int numOptions, int maxValuesPerOption, int maxConstraints) {
-                // Create a random number generator with a fixed seed (e.g. 42)
-                
-                std::mt19937 gen(42);
-                
-                // Generate random options with one-letter names
-                
-                for (int i = 0; i < numOptions; i++) {
-                    char option = 'A' + randomInt(gen, 0, 25);
-                
-                    if (options.find(std::string(1, option)) == options.end()) {
-                    options[option] =
-                
-                        std::vector();  // Initialize the vector as empty
-                    }
-                }
-                
-                // Generate random values for each option from 0 to 9
-                
-                for (auto& pair : options) {
-                    int numValues = randomInt(gen, 1, maxValuesPerOption);
-                
-                    for (int i = 0; i < numValues; i++) {
-                    int value = randomInt(gen, 0, 9);
-                
-                    if (std::find(pair.second.begin(), pair.second.end(), value) ==
-                
-                        pair.second.end()) {
-                        pair.second.push_back(std::to_string(value));
-                    }
-                    }
-                }
-                
-                // Generate random constraints with pairs of options and values
-                
-                int numConstraints = randomInt(gen, 0, maxConstraints);
-                
-                for (int i = 0; i < numConstraints; i++) {
-                    std::vector<std::pair<std::string, std::string>> constraint;
-                
-                    int numPairs = randomInt(gen, 1, options.size());
-                
-                    for (int j = 0; j < numPairs; j++) {
-                    auto it = options.begin();
-                
-                    std::advance(it, randomInt(gen, 0, options.size() - 1));
-                
-                    char option = it->first;
-                
-                    const auto& values = it->second;
-                
-                    int value = values[randomInt(gen, 0, values.size() - 1)];
-                
-                    if (std::find(constraint.begin(), constraint.end(),
-                
-                                    std::make_pair(option, value)) == constraint.end()) {
-                        constraint.push_back(std::make_pair(option, value));
-                    }
-                    }
-                
-                    constraints.push_back(constraint);
-                }
+                Fuzzer::Fuzzer() {
+                gen.seed(std::random_device()());  // Initialisiert den Zufallsgenerator mit
+                                                    // einer zufälligen Zahl
                 }
                 
                 std::string Fuzzer::fuzz() {
-                std::string result = "";
-                
-                for (auto pair : options) {
-                    std::string option = pair.first;
-                
-                    std::vector values = pair.second;
-                
-                    std::string value = values[randomInt(0, values.size() - 1)];
-                
-                    result += option + "=" + value + " ";
-                }
-                
-                return result;
-                }
-                
-                // This method writes the options and values to a file with the extension
-                
-                // .options
-                
-                void Fuzzer::writeOptions(const std::string& optionsFile) {
-                // Open the file for writing
-                
-                std::ofstream file(optionsFile);
-                
-                if (!file) {
-                    // If the file cannot be opened, throw an exception
-                
-                    throw std::runtime_error("Could not open file " + optionsFile);
-                }
-                
-                // Write each option and its values to the file separated by commas
-                
-                for (const auto& pair : options) {
-                    file << pair.first << ",";
-                
-                    for (const auto& value : pair.second) {
-                    file << value << ",";
+                std::stringstream
+                    ss;  // Erstellt einen String-Stream zum Speichern der Ausgabe
+                int numOptions = randomInt(
+                    1, 5);  // Wählt eine zufällige Anzahl von Optionen zwischen 1 und 5
+                std::map<std::string, std::vector<std::string>>
+                    options;  // Erstellt eine Map zum Speichern der Optionen und ihrer Werte
+                for (int i = 0; i < numOptions; i++) {
+                    std::string option(
+                        1,
+                        'A' + randomInt(0, 25));  // Konvertiert den char in einen std::string
+                    options[option] =
+                        std::vector<std::string>();  // Initialisiert den Vektor als leer
+                    int numValues = randomInt(
+                        1, 3);  // Wählt eine zufällige Anzahl von Werten zwischen 1 und 3
+                    for (int j = 0; j < numValues; j++) {
+                    int valueLength = randomInt(
+                        1, 10);  // Wählt eine zufällige Länge für den Wert zwischen 1 und 10
+                    options[option].push_back(randomString(
+                        valueLength));  // Fügt einen zufälligen String als Wert hinzu
                     }
-                
-                    file << "\n";
                 }
-                
-                // Close the file
-                
-                file.close();
-                }
-                
-                // This method writes the constraints to a file with the extension .constraints
-                
-                void Fuzzer::writeConstraints(const std::string& constraintsFile) {
-                // Open the file for writing
-                
-                std::ofstream file(constraintsFile);
-                
-                if (!file) {
-                    // If the file cannot be opened, throw an exception
-                
-                    throw std::runtime_error("Could not open file " + constraintsFile);
-                }
-                
-                // Write each constraint to the file as a line of pairs of options and values
-                
-                // separated by commas
-                
-                for (const auto& constraint : constraints) {
-                    for (const auto& pair : constraint) {
-                    file << pair.first << "," << pair.second << ",";
+                for (auto& pair : options) {         // Iteriert über alle Paare in der Map
+                    ss << "-" << pair.first << " ";    // Schreibt die Option in den Stream
+                    for (auto& value : pair.second) {  // Iteriert über alle Werte in dem Vektor
+                    ss << value << " ";              // Schreibt den Wert in den Stream
                     }
-                
-                    file << "\n";
+                    ss << "\n";  // Schreibt einen Zeilenumbruch in den Stream
+                }
+                return ss.str();  // Gibt den Inhalt des Streams als String zurück
                 }
                 
-                // Close the file
-                
-                file.close();
+                int Fuzzer::randomInt(int min, int max) {
+                std::uniform_int_distribution<int> dist(
+                    min, max);     // Erstellt eine Gleichverteilung zwischen min und max
+                return dist(gen);  // Gibt eine zufällige Zahl aus der Verteilung zurück
                 }
                 
-                // This method generates a random number between min and max using a given
-                // generator
-                
-                int Fuzzer::randomInt(std::mt19937& gen, int min, int max) {
-                // Create a uniform distribution with the given range
-                
-                std::uniform_int_distribution<> dis(min, max);
-                
-                // Return a random number from the distribution using the generator
-                
-                return dis(gen);
+                std::string Fuzzer::randomString(int length) {
+                std::string
+                    result;  // Erstellt einen leeren String zum Speichern des Ergebnisses
+                for (int i = 0; i < length; i++) {
+                    char c = 'a' + randomInt(0, 25);  // Wählt einen zufälligen Kleinbuchstaben
+                    result += c;  // Fügt den Buchstaben an das Ende des Strings an
+                }
+                return result;  // Gibt den String zurück
                 }
                 </code></pre>
             Hier ist Main.cpp:
@@ -1247,7 +816,7 @@
                     }
                 
                     // Create a Parser object with the names of the input files
-                    Parser parser(inputOptions, inputConstraints);
+                    Parser parser();
                 
                     // Create a ModelGenerator object with the options and constraints from the
                     // Parser object
@@ -1501,12 +1070,10 @@
                 #include "Option.hpp"
                 
                 // The constructor stores the names of the files in the member variables
-                Parser::Parser(const std::string& optionsFile,
-                            const std::string& constraintsFile)
-                    : optionsFile(optionsFile), constraintsFile(constraintsFile) {}
+                Parser::Parser() {}
                 
                 // This method reads the .options file and fills the map of options
-                void Parser::parseOptions() {
+                void Parser::parseOptions(const std::string& filename) {
                 // Open the file for reading
                 std::ifstream file(optionsFile);
                 if (!file) {
@@ -1541,7 +1108,7 @@
                 }
                 
                 // This method reads the .constraints file and fills the list of constraints
-                void Parser::parseConstraints() {
+                void Parser::parseConstraints(const std::string& filename) {
                 // Open the file for reading
                 std::ifstream file(constraintsFile);
                 if (!file) {
@@ -1575,14 +1142,10 @@
                 }
                 
                 // This method returns the map of options
-                const std::map<std::string, Option>& Parser::getOptions() const {
-                return options;
-                }
+                std::vector<Option> Parser::getOptions() const { return options; }
                 
                 // This method returns the list of constraints
-                const std::list<Constraint>& Parser::getConstraints() const {
-                return constraints;
-                }
+                std::vector<Constraint> Parser::getConstraints() const { return constraints; }
                 
                 // This method reads a string from a stream until a comma or a newline is found
                 // or until the end of the stream is reached
