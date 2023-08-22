@@ -43,216 +43,216 @@
             <h1>Projekt: Übersicht</h1>
             <pre>
 
-            (1) Einführung in das Problem:
-            Wir interessieren uns für die Paarbildungsmethode. 
-            Bei dieser Methode geht es darum, ein Programm mit vielen Optionen zu testen, wobei möglichst wenige Konfigurationen verwendet werden.
-            Leider gibt es meistens zu viele Optionen, um alle testen zu können: 
-            Der SAT-Solver Lingeling von Armin Biere hat mehr Optionen als Atome im Universum (weil es Parameter gibt, die Integer oder sogar Gleitkommazahlen als Wert annehmen können).
-            Da es einfach zu viele Konfigurationen gibt, interessieren wir uns nur dafür, dass zwei Optionen (die kombiniert werden können) auch einmal gemeinsam getestet werden können - unabhängig von den anderen Optionen. 
-            Solch eine Kombination von zwei Optionen mit jeweils einem Wert ist ein Paar. 
-            Eine Kombination von 10 Optionen ermöglicht es also, `9 + 8 + 7 + ... + 1` = `55` Paare zu testen. 
-            Es reicht jedoch nicht aus, einfach alle Optionen aufzulisten, da es auch Optionen gibt, die nicht miteinander kompatibel sind.
-            Damit das alles klarer wird werden wir uns jetzt ein Beispiel ansehen (Wikipedia Beispiel mit anderen Namen). 
-            Es gibt 3 Auswahlmöglichkeiten:
-        
-                Prozessor Intel oder AMD
-        
-                RAM Geschwindigkeit 5000MT/s, 6000MT/s, und 7000MT/s
-        
-                Bildschirm 1K, 2K, 4K, 8K
-        
-            Es gibt `2 * 3 + 2 * 4 + 3 * 4` Paare (jeden Prozessor mit jeder Geschwindigkeit, jeden Prozessor mit jedem Bildschirm, und jede Geschwindigkeit mit jedem Bildschirm).
-            Mit der Paarbildungsmethode reicht es sich für folgende 12 Modelle zu interessieren, anstatt alle
-            26 Modelle:
-        
-            ```
-            Prozessor   RAM     Bildschirm
-                Intel       7          1K
-                Intel       5          8K
-                AMD         5          4K
-                AMD         6          8K
-                Intel       6          4K
-                AMD         6          1K
-                AMD         5          1K
-                AMD         7          2K
-                Intel       6          2K
-                Intel       7          8K
-                AMD         7          4K
-                Intel       5          2K
-            ```
-            Eigentlich ist es noch etwas komplizierter, weil es Optionen gibt, die nicht kompatibel sind. Zum
-            Beispiel unterstützt AMD nur 5000MT/s und stürzt bei höheren Geschwindigkeiten ab. Es ist
-            auch nicht möglich, gleichzeitig Intel mit dem langsamen Speicher und dem 8K-Bildschirm zu
-            wählen.
-        
-        
-            (2) Die Darstellung:
-            Um unser Problem darzustellen, nutzen wir einfach CSV-Dateien. Eine CSV-Datei (comma separated value) bedeutet einfach, das der Text mit Komma separiert wird.
-            Für die Optionen (der Dateiname sollte mit ``.options`` enden) schreiben wir einfach jede Option
-            mit allen möglichen Werten auf:
-            ```
-            Prozessor,Intel,AMD
-            RAM,5,6,7
-            Bildschirm,1,2,4,8
-            ```
-        
-            Wir erlauben ASCII, aber kein UTF-16. 
-            Das muss jedoch nicht nachgeprüft werden. 
-            Sie können einfach char nutzen. Wir erlauben auch Leerzeichen in den Namen.
-            Dann können wir die Optionen aufschreiben, die nicht gleichzeitig wahr sein sollen (Der Dateiname sollte mit ``.constraints`` enden).
-        
-            ```
-            Prozessor,AMD,RAM,6
-            Prozessor,AMD,RAM,7
-            Prozessor,Intel,RAM,5,Bildschirm,8
-            ```
-        
-            Jeder Zeile bedeuted also, dass mindestens eine Option anders gesetzt werden muss.
-            Lösungen (Modelle) schreiben wir wieder als CSV. 
-            Dabei müssen natürlich alle Optionen gesetzt werden und die Werte müssen mit den Constraints kompatibel sein. 
-            Eine mögliche Datei könnte beispielsweise wie folgt aussehen (der Dateiname sollte mit `.models` enden):
-        
-            ```
-            Prozessor,Intel,RAM,5,Bildschirm,2
-            Prozessor,Intel,RAM,6,Bildschirm,2
-            RAM,7,Prozessor,Intel,Bildschirm,1
-            Prozessor,Intel,RAM,7,Bildschirm,4
-            Prozessor,AMD,RAM,5,Bildschirm,4
-            RAM,5,Prozessor,AMD,Bildschirm,8
-            RAM,5,Prozessor,AMD,Bildschirm,1
-            Prozessor,Intel,RAM,6,Bildschirm,4
-            Bildschirm,2,Prozessor,AMD,RAM,5
-            Prozessor,Intel,RAM,6,Bildschirm,8
-            ```
-        
-            Das Ziel dieses Projekts ist es, eine Approximation aller Modelle zu produzieren (alle Modelle sollen korrekt sein, aber es könnten einige fehlen). 
-            Da es sich um einen probabilistischen Ansatz handelt, könnten hier Lösungen fehlen (direkt aus dem Solver in meiner Lösung).
-        
-            ```
-            c   there are 3 uncovered pairs
-            c   RAM->6 && Prozessor->AMD
-            c   Bildschirm->4 && RAM->6
-            c   Bildschirm->8 && RAM->6
-            ```
-            Die Paare 2 und 3 könnten mit dem Intel Prozessor bedeckt werden, aber das wurde nicht generiert.
-        
-        
-            (3) Ziele:
-            Sie müssen folgendes implementieren im C++:
-        
-            ->Parser und pretty-printer (Blatt 11) die Datein ``.options`` und ``.constraints`` einlesen und wieder ausgeben.
-        
-            ->Solver (Pflicht, Blatt 12) Die Datei .models soll mit möglichen Modellen gefüllt werden. 
-            Die einfachste korrekte Implementierung produziert keine Modelle, aber das gibt auch keine Punkte.
-        
-            ->Checker (Variante A, Blatt 12) Er liest die Dateien ``.options``, ``.constraints`` und `.models` ein und prüfe, ob alle gefundenen Modelle auch die Constraints erfüllen.
-        
-            ->Fuzzer (Variante B, Blatt 12) Random Dateien ``.options`` und ``.constraints`` generieren. Das Ziel ist es diese Probleme zu lösen und nach Bugs zu suchen.
-        
-            Die Varianten bauen sehr stark auf das Lösen auf. Sie können also in beliebiger Reihenfolge implementiert werden.
-        
-            Sie müssen sowohl Variante A als auch B machen.
-        
-            Um beim Testen zu helfen, gibt es zwei binäre Dateien zur Verfügung:
-        
-                • einen Fuzzer namens `crippled-fuzzer`, der jedoch nur 16 unterschiedliche Programme generieren kann. 
-                    Er generiert auch nur Optionen, die einen Buchstaben lang sind, und die Werte sind entweder 0 oder 1.
-        
-                • einen Checker namens `russian-roulette-checker`, der zwar überprüft, aber oft mit s UNKNOWN antwortet.
-        
-        
-            (4):
-        
-            (4.1)    Lösen von Problem:
-        
-            Um das Problem zu lösen, müssen Sie (möglichst alle) Modelle generieren. 
-            Um dies zu tun, werden wir zufällig generierte Konfigurationen nutzen.
-            Dafür müssen Sie zuerst alle möglichen Paare generieren.
-            Wenn Sie dann eine Konfiguration produzieren wollen, fangen Sie mit der leeren Konfiguration an und erweitern sie. 
-            Dafür füllen Sie die Konfiguration mit einer Option. 
-            Da es notwendig sein kann, auch einen Wert zu nehmen, der bereits gesehen worden ist, setzen Sie mit geringer Wahrscheinlichkeit eine Option unabhängig von den noch verbleibenden Paaren. 
-            Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar, das noch nicht abgedeckt ist.
-            Wenn Sie dann eine vollständige Konfiguration generiert haben, müssen Sie testen, ob sie mit den Constraints kompatibel ist. Wenn dies der Fall ist, haben Sie ein neues Modell gefunden und können alle Paare als abgedeckt markieren.
-            Nach 1000 Konfigurationen, die die Constraints nicht erfüllen, sind wir dann fertig (auch wenn
-            es vielleicht noch mehr Möglichkeiten gibt).
-        
-            `Tabelle 1: Return Codes`: 
-            ```
-            Return code | Sinn
-            ______________________________
-                0       | Keine Fehler
-                10       | Datei konnte nicht geöffnet werden
-                20       | Keine valide Eingabedatei (z.B., nicht deklarierte Option)
-                30       | Anderer Fehler
-            ```
-        
-        
-            In Tabelle 1 finden Sie die genauen Rückgabewerte, die aus dem Hauptprogramm kommen sollen, je nachdem, was passiert ist.
-        
-        
-            (4.2)    Checker:
-        
-            Ein Checker ist ein Program, der die 3 Datein (Optionen, Constraints, und Modelle) nimmt und immer schaut ob:
-        
-                1. in jedem Model alle Optionen genau einmal angegeben werden
-        
-                2. jedes Model auch alle Constraints erfüllt
-        
-                3. In den Modellen und in den Constraint gibt es nur Optionen und Werte aus der `.options` Datei.
-        
-                4. invalide Input Dateien (fehlende Werte zum Beispiel)
-        
-            Nicht zulässig sind also Konfiguration und Constraints:
-                wo Optionen erfunden wurden (Punkt 3 oben),
-                wo Werte erfunden wurden (Punkt 3 oben), 
-                wo nicht alle Option gesetzt sind (Punkt 1 oben), 
-                oder Modelle die nicht die Constraints erfüllen (Punkt 2 oben).
-        
-            Nicht relevant für den Checker ist die Reihenfolge der Optionen oder Modelle die doppelt auftauchen.
-            In Tabelle 2 stehen erneut die unterschiedlichen Return-Codes und das Verhalten, das das Programm haben sollte.
-            Um das Problem möglichst genau zu lösen, sehen Sie sich bitte die Vorlesung zum Lösen des
-            SAT-Problems im nächsten Sommersemester an. Beachten Sie, dass auch fleißig implementiert wird.
-            Eigentlich würden wir hier auch einen verifizierten Checker haben wollen. 
-            Es ist jedoch noch offen, ob es eine Isabelle-Vorlesung im nächsten Sommersemester gibt.
-        
-            `Tabelle 1: Return Codes`:
-            ```
-            Return code |  Sinn
-            -----------------------------------------------------------------------------
-                0      |  Keine Fehler, korrekt gecheckt. Es sollte auch `s` `VERIFIED` auf `stdout` stehen (in C++, `std::cout <<`).
-                10     |  Nicht-mögliche `.options`.
-                20     |  Nicht-mögliche `.constraints`.
-                30     |  Fehler in `.models`. In diesem Fall sollte auf `stderr` (in C++, `std::cerr <<` genau stehen welches `Models` nicht valide ist und warum). Es sollte auch s `UNVERIFIED` auf `stdout`..
-                40     |  Anderer Fehler (gibt `s` `UNKNOWN` aus: das sollte Ihr Checker nicht machen).
-            ```
-        
-            4.3    Fuzzer:
-        
-            Ein Fuzzer ist ein Programm, das zufällige Optionen, Werte und Constraints generiert, um valide
-            Dateien zu erzeugen:
-        
-                1. Alle Optionen und Werte aus den Constraints sind auch in der `.options` Datei enthalten.
-        
-            Blatt 11:
-        
-            Aufgabe 1:
-        
-            Als ersten Schritt zur Realisierung schreiben Sie bitte folgenden Code:
-        
-                1. Schreiben Sie alle benötigten .hpp Dateien mit allen Klassen, Methoden und Membervariablen, die Ihrer Meinung nach für Ihr Programm am Ende benötigt werden. Schreiben Sie zu jeder Klasse, Methode oder Membervariablen einen (kurzen aber aussagekräftigen) erklärenden Kommentar.
+                (1) Einführung in das Problem:
+                Wir interessieren uns für die Paarbildungsmethode. 
+                Bei dieser Methode geht es darum, ein Programm mit vielen Optionen zu testen, wobei möglichst wenige Konfigurationen verwendet werden.
+                Leider gibt es meistens zu viele Optionen, um alle testen zu können: 
+                Der SAT-Solver Lingeling von Armin Biere hat mehr Optionen als Atome im Universum (weil es Parameter gibt, die Integer oder sogar Gleitkommazahlen als Wert annehmen können).
+                Da es einfach zu viele Konfigurationen gibt, interessieren wir uns nur dafür, dass zwei Optionen (die kombiniert werden können) auch einmal gemeinsam getestet werden können - unabhängig von den anderen Optionen. 
+                Solch eine Kombination von zwei Optionen mit jeweils einem Wert ist ein Paar. 
+                Eine Kombination von 10 Optionen ermöglicht es also, `9 + 8 + 7 + ... + 1` = `55` Paare zu testen. 
+                Es reicht jedoch nicht aus, einfach alle Optionen aufzulisten, da es auch Optionen gibt, die nicht miteinander kompatibel sind.
+                Damit das alles klarer wird werden wir uns jetzt ein Beispiel ansehen (Wikipedia Beispiel mit anderen Namen). 
+                Es gibt 3 Auswahlmöglichkeiten:
+            
+                    Prozessor Intel oder AMD
+            
+                    RAM Geschwindigkeit 5000MT/s, 6000MT/s, und 7000MT/s
+            
+                    Bildschirm 1K, 2K, 4K, 8K
+            
+                Es gibt `2 * 3 + 2 * 4 + 3 * 4` Paare (jeden Prozessor mit jeder Geschwindigkeit, jeden Prozessor mit jedem Bildschirm, und jede Geschwindigkeit mit jedem Bildschirm).
+                Mit der Paarbildungsmethode reicht es sich für folgende 12 Modelle zu interessieren, anstatt alle
+                26 Modelle:
+            
+                ```
+                Prozessor   RAM     Bildschirm
+                    Intel       7          1K
+                    Intel       5          8K
+                    AMD         5          4K
+                    AMD         6          8K
+                    Intel       6          4K
+                    AMD         6          1K
+                    AMD         5          1K
+                    AMD         7          2K
+                    Intel       6          2K
+                    Intel       7          8K
+                    AMD         7          4K
+                    Intel       5          2K
+                ```
+                Eigentlich ist es noch etwas komplizierter, weil es Optionen gibt, die nicht kompatibel sind. Zum
+                Beispiel unterstützt AMD nur 5000MT/s und stürzt bei höheren Geschwindigkeiten ab. Es ist
+                auch nicht möglich, gleichzeitig Intel mit dem langsamen Speicher und dem 8K-Bildschirm zu
+                wählen.
+            
+            
+                (2) Die Darstellung:
+                Um unser Problem darzustellen, nutzen wir einfach CSV-Dateien. Eine CSV-Datei (comma separated value) bedeutet einfach, das der Text mit Komma separiert wird.
+                Für die Optionen (der Dateiname sollte mit ``.options`` enden) schreiben wir einfach jede Option
+                mit allen möglichen Werten auf:
+                ```
+                Prozessor,Intel,AMD
+                RAM,5,6,7
+                Bildschirm,1,2,4,8
+                ```
+            
+                Wir erlauben ASCII, aber kein UTF-16. 
+                Das muss jedoch nicht nachgeprüft werden. 
+                Sie können einfach char nutzen. Wir erlauben auch Leerzeichen in den Namen.
+                Dann können wir die Optionen aufschreiben, die nicht gleichzeitig wahr sein sollen (Der Dateiname sollte mit ``.constraints`` enden).
+            
+                ```
+                Prozessor,AMD,RAM,6
+                Prozessor,AMD,RAM,7
+                Prozessor,Intel,RAM,5,Bildschirm,8
+                ```
+            
+                Jeder Zeile bedeuted also, dass mindestens eine Option anders gesetzt werden muss.
+                Lösungen (Modelle) schreiben wir wieder als CSV. 
+                Dabei müssen natürlich alle Optionen gesetzt werden und die Werte müssen mit den Constraints kompatibel sein. 
+                Eine mögliche Datei könnte beispielsweise wie folgt aussehen (der Dateiname sollte mit `.models` enden):
+            
+                ```
+                Prozessor,Intel,RAM,5,Bildschirm,2
+                Prozessor,Intel,RAM,6,Bildschirm,2
+                RAM,7,Prozessor,Intel,Bildschirm,1
+                Prozessor,Intel,RAM,7,Bildschirm,4
+                Prozessor,AMD,RAM,5,Bildschirm,4
+                RAM,5,Prozessor,AMD,Bildschirm,8
+                RAM,5,Prozessor,AMD,Bildschirm,1
+                Prozessor,Intel,RAM,6,Bildschirm,4
+                Bildschirm,2,Prozessor,AMD,RAM,5
+                Prozessor,Intel,RAM,6,Bildschirm,8
+                ```
+            
+                Das Ziel dieses Projekts ist es, eine Approximation aller Modelle zu produzieren (alle Modelle sollen korrekt sein, aber es könnten einige fehlen). 
+                Da es sich um einen probabilistischen Ansatz handelt, könnten hier Lösungen fehlen (direkt aus dem Solver in meiner Lösung).
+            
+                ```
+                c   there are 3 uncovered pairs
+                c   RAM->6 && Prozessor->AMD
+                c   Bildschirm->4 && RAM->6
+                c   Bildschirm->8 && RAM->6
+                ```
+                Die Paare 2 und 3 könnten mit dem Intel Prozessor bedeckt werden, aber das wurde nicht generiert.
+            
+            
+                (3) Ziele:
+                Sie müssen folgendes implementieren im C++:
+            
+                ->Parser und pretty-printer (Blatt 11) die Datein ``.options`` und ``.constraints`` einlesen und wieder ausgeben.
+            
+                ->Solver (Pflicht, Blatt 12) Die Datei .models soll mit möglichen Modellen gefüllt werden. 
+                Die einfachste korrekte Implementierung produziert keine Modelle, aber das gibt auch keine Punkte.
+            
+                ->Checker (Variante A, Blatt 12) Er liest die Dateien ``.options``, ``.constraints`` und `.models` ein und prüfe, ob alle gefundenen Modelle auch die Constraints erfüllen.
+            
+                ->Fuzzer (Variante B, Blatt 12) Random Dateien ``.options`` und ``.constraints`` generieren. Das Ziel ist es diese Probleme zu lösen und nach Bugs zu suchen.
+            
+                Die Varianten bauen sehr stark auf das Lösen auf. Sie können also in beliebiger Reihenfolge implementiert werden.
+            
+                Sie müssen sowohl Variante A als auch B machen.
+            
+                Um beim Testen zu helfen, gibt es zwei binäre Dateien zur Verfügung:
+            
+                    • einen Fuzzer namens `crippled-fuzzer`, der jedoch nur 16 unterschiedliche Programme generieren kann. 
+                        Er generiert auch nur Optionen, die einen Buchstaben lang sind, und die Werte sind entweder 0 oder 1.
+            
+                    • einen Checker namens `russian-roulette-checker`, der zwar überprüft, aber oft mit s UNKNOWN antwortet.
+            
+            
+                (4):
+            
+                (4.1)    Lösen von Problem:
+            
+                Um das Problem zu lösen, müssen Sie (möglichst alle) Modelle generieren. 
+                Um dies zu tun, werden wir zufällig generierte Konfigurationen nutzen.
+                Dafür müssen Sie zuerst alle möglichen Paare generieren.
+                Wenn Sie dann eine Konfiguration produzieren wollen, fangen Sie mit der leeren Konfiguration an und erweitern sie. 
+                Dafür füllen Sie die Konfiguration mit einer Option. 
+                Da es notwendig sein kann, auch einen Wert zu nehmen, der bereits gesehen worden ist, setzen Sie mit geringer Wahrscheinlichkeit eine Option unabhängig von den noch verbleibenden Paaren. 
+                Mit hoher Wahrscheinlichkeit nehmen Sie aber ein Paar, das noch nicht abgedeckt ist.
+                Wenn Sie dann eine vollständige Konfiguration generiert haben, müssen Sie testen, ob sie mit den Constraints kompatibel ist. Wenn dies der Fall ist, haben Sie ein neues Modell gefunden und können alle Paare als abgedeckt markieren.
+                Nach 1000 Konfigurationen, die die Constraints nicht erfüllen, sind wir dann fertig (auch wenn
+                es vielleicht noch mehr Möglichkeiten gibt).
+            
+                `Tabelle 1: Return Codes`: 
+                ```
+                Return code | Sinn
+                ______________________________
+                    0       | Keine Fehler
+                    10       | Datei konnte nicht geöffnet werden
+                    20       | Keine valide Eingabedatei (z.B., nicht deklarierte Option)
+                    30       | Anderer Fehler
+                ```
+            
+            
+                In Tabelle 1 finden Sie die genauen Rückgabewerte, die aus dem Hauptprogramm kommen sollen, je nachdem, was passiert ist.
+            
+            
+                (4.2)    Checker:
+            
+                Ein Checker ist ein Program, der die 3 Datein (Optionen, Constraints, und Modelle) nimmt und immer schaut ob:
+            
+                    1. in jedem Model alle Optionen genau einmal angegeben werden
+            
+                    2. jedes Model auch alle Constraints erfüllt
+            
+                    3. In den Modellen und in den Constraint gibt es nur Optionen und Werte aus der `.options` Datei.
+            
+                    4. invalide Input Dateien (fehlende Werte zum Beispiel)
+            
+                Nicht zulässig sind also Konfiguration und Constraints:
+                    wo Optionen erfunden wurden (Punkt 3 oben),
+                    wo Werte erfunden wurden (Punkt 3 oben), 
+                    wo nicht alle Option gesetzt sind (Punkt 1 oben), 
+                    oder Modelle die nicht die Constraints erfüllen (Punkt 2 oben).
+            
+                Nicht relevant für den Checker ist die Reihenfolge der Optionen oder Modelle die doppelt auftauchen.
+                In Tabelle 2 stehen erneut die unterschiedlichen Return-Codes und das Verhalten, das das Programm haben sollte.
+                Um das Problem möglichst genau zu lösen, sehen Sie sich bitte die Vorlesung zum Lösen des
+                SAT-Problems im nächsten Sommersemester an. Beachten Sie, dass auch fleißig implementiert wird.
+                Eigentlich würden wir hier auch einen verifizierten Checker haben wollen. 
+                Es ist jedoch noch offen, ob es eine Isabelle-Vorlesung im nächsten Sommersemester gibt.
+            
+                `Tabelle 1: Return Codes`:
+                ```
+                Return code |  Sinn
+                -----------------------------------------------------------------------------
+                    0      |  Keine Fehler, korrekt gecheckt. Es sollte auch `s` `VERIFIED` auf `stdout` stehen (in C++, `std::cout <<`).
+                    10     |  Nicht-mögliche `.options`.
+                    20     |  Nicht-mögliche `.constraints`.
+                    30     |  Fehler in `.models`. In diesem Fall sollte auf `stderr` (in C++, `std::cerr <<` genau stehen welches `Models` nicht valide ist und warum). Es sollte auch s `UNVERIFIED` auf `stdout`..
+                    40     |  Anderer Fehler (gibt `s` `UNKNOWN` aus: das sollte Ihr Checker nicht machen).
+                ```
+            
+                4.3    Fuzzer:
+            
+                Ein Fuzzer ist ein Programm, das zufällige Optionen, Werte und Constraints generiert, um valide
+                Dateien zu erzeugen:
+            
+                    1. Alle Optionen und Werte aus den Constraints sind auch in der `.options` Datei enthalten.
+            
+                Blatt 11:
+            
+                Aufgabe 1:
+            
+                Als ersten Schritt zur Realisierung schreiben Sie bitte folgenden Code:
+            
+                    1. Schreiben Sie alle benötigten .hpp Dateien mit allen Klassen, Methoden und Membervariablen, die Ihrer Meinung nach für Ihr Programm am Ende benötigt werden. Schreiben Sie zu jeder Klasse, Methode oder Membervariablen einen (kurzen aber aussagekräftigen) erklärenden Kommentar.
 
-                2. Schreiben Sie den Parser für die `.options` und `.constraints`. Der Parser soll die Datenstrukturen füllen. Für den Parser dürfen Sie nur `get(char)` (aus `std::istream`) (oder die C Version `getc`). Sie dürfen also nicht direkt strings einlesen.
+                    2. Schreiben Sie den Parser für die `.options` und `.constraints`. Der Parser soll die Datenstrukturen füllen. Für den Parser dürfen Sie nur `get(char)` (aus `std::istream`) (oder die C Version `getc`). Sie dürfen also nicht direkt strings einlesen.
 
-                3. Schreiben Sie eine Funktion, die die Optionen und die Constraints wieder ausgibt.  Das ist ein Pretty-printer. Sie soll also eine zweite `.options` Datei und eine zweite `.constraints` ausgeben, die identisch zur Originaldatei (bis auf der Reihenfolge) ist. Ein Aufruf sollte in etwa so aussehen: `mein-super-program` `a.options` `a.constraints` `a_copy.options` a_copy.constraints`.  Zum Beispiel kann `a.options` den Inhalt von Sektion 2 enthalten und `a_copy.options` die Variante:
-                    ```
-                    Bildschirm,8,2,1,4
-                    RAM,6,5,7
-                    Prozessor,Intel,AMD
-                    ```
-                    Die Reihenfolge kann natürlich auch die selbe bleiben. 
-                    Geben Sie einfach die Optionen und Werte so aus wie es am einfachsten im Code ist (aber: die Option muss natürlich am Anfang stehen).
-        
-        </pre>
+                    3. Schreiben Sie eine Funktion, die die Optionen und die Constraints wieder ausgibt.  Das ist ein Pretty-printer. Sie soll also eine zweite `.options` Datei und eine zweite `.constraints` ausgeben, die identisch zur Originaldatei (bis auf der Reihenfolge) ist. Ein Aufruf sollte in etwa so aussehen: `mein-super-program` `a.options` `a.constraints` `a_copy.options` a_copy.constraints`.  Zum Beispiel kann `a.options` den Inhalt von Sektion 2 enthalten und `a_copy.options` die Variante:
+                        ```
+                        Bildschirm,8,2,1,4
+                        RAM,6,5,7
+                        Prozessor,Intel,AMD
+                        ```
+                        Die Reihenfolge kann natürlich auch die selbe bleiben. 
+                        Geben Sie einfach die Optionen und Werte so aus wie es am einfachsten im Code ist (aber: die Option muss natürlich am Anfang stehen).
+            
+            </pre>
             <h1>Projekt:</h1>
 
             Aufgabe 2:
@@ -275,1063 +275,1064 @@
             Hier ist a.constraints:
 
             <pre>
-                    <code>
-                    Prozessor,AMD,RAM,6
-                    Prozessor,AMD,RAM,7
-                    Prozessor,Intel,RAM,5,Bildschirm,8
-                </code>
-                </pre>
+                        <code>
+                        Prozessor,AMD,RAM,6
+                        Prozessor,AMD,RAM,7
+                        Prozessor,Intel,RAM,5,Bildschirm,8
+                    </code>
+                    </pre>
             Hier ist a.models:
             <pre>
-                    <code>
-                Prozessor,Intel,RAM,7,Bildschirm,2
-                RAM,6,Prozessor,Intel,Bildschirm,1
-                Prozessor,Intel,RAM,5,Bildschirm,2
-                Prozessor,AMD,RAM,5,Bildschirm,1
-                Prozessor,AMD,RAM,5,Bildschirm,8
-                Prozessor,Intel,RAM,5,Bildschirm,4
-                RAM,6,Prozessor,Intel,Bildschirm,8
-                </code>
-                </pre>
+                        <code>
+                    Prozessor,Intel,RAM,7,Bildschirm,2
+                    RAM,6,Prozessor,Intel,Bildschirm,1
+                    Prozessor,Intel,RAM,5,Bildschirm,2
+                    Prozessor,AMD,RAM,5,Bildschirm,1
+                    Prozessor,AMD,RAM,5,Bildschirm,8
+                    Prozessor,Intel,RAM,5,Bildschirm,4
+                    RAM,6,Prozessor,Intel,Bildschirm,8
+                    </code>
+                    </pre>
             Hier ist a.options:
             <pre>
-                    <code>
-                Prozessor,Intel,AMD
-                RAM,5,6,7
-                Bildschirm,1,2,4,8
-                </code
-                ></pre>
+                        <code>
+                    Prozessor,Intel,AMD
+                    RAM,5,6,7
+                    Bildschirm,1,2,4,8
+                    </code
+                    ></pre>
             Hier ist a2.options:
             <pre>
-                    <code>
-                Prozessor,Intel,AMD
-                RAM,5,6,7
-                Bildschirm,8,1,2,4</code>
-                </pre>
-
+                        <code>
+                    Prozessor,Intel,AMD
+                    RAM,5,6,7
+                    Bildschirm,8,1,2,4</code>
+                    </pre>
         </div>
+
         <h1>Implementierte Code für Aufgabe 1, Aufgabe 2, Aufgabe3A und Aufgabe3B</h1>
 
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                        afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all
-                        rm -f *Main *.o 
-                        g++ -std=c++17 -c Constraint.cpp
-                        g++ -std=c++17 -c Fuzzer.cpp
-                        g++ -std=c++17 -c Main.cpp
-                        g++ -std=c++17 -c ModelGenerator.cpp
-                        g++ -std=c++17 -c Option.cpp
-                        g++ -std=c++17 -c Parser.cpp
-                        Parser.cpp:17:8: error: use of undeclared identifier 'file'; did you mean 'false'?
-                        if (!file.open(filename)) {
-                            ^~~~
-                            false
-                        Parser.cpp:17:12: error: member reference base type 'bool' is not a structure or union
-                        if (!file.open(filename)) {
-                            ~~~~^~~~~
-                        Parser.cpp:30:23: error: use of undeclared identifier 'file'
-                        while (std::getline(file, line)) {
-                                            ^
-                        Parser.cpp:49:15: error: no member named 'first' in 'Option'
-                            if (opt.first == name) {   // Wenn der Name der Option übereinstimmt
-                                ~~~ ^
-                        Parser.cpp:50:13: error: no member named 'second' in 'Option'
-                                opt.second = option.getValues();  // Die Werte der Option aktualisieren
-                                ~~~ ^
-                        Parser.cpp:62:3: error: use of undeclared identifier 'file'
-                        file.close();
-                        ^
-                        Parser.cpp:86:16: error: no matching constructor for initialization of 'Constraint'
-                            Constraint constraint;
-                                    ^
-                        ./Constraint.hpp:12:3: note: candidate constructor not viable: requires single argument 'pairs', but no arguments were provided
-                        Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
-                        ^
-                        ./Constraint.hpp:9:7: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 0 were provided
-                        class Constraint {
+                            afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all
+                            rm -f *Main *.o 
+                            g++ -std=c++17 -c Constraint.cpp
+                            g++ -std=c++17 -c Fuzzer.cpp
+                            g++ -std=c++17 -c Main.cpp
+                            g++ -std=c++17 -c ModelGenerator.cpp
+                            g++ -std=c++17 -c Option.cpp
+                            g++ -std=c++17 -c Parser.cpp
+                            Parser.cpp:17:8: error: use of undeclared identifier 'file'; did you mean 'false'?
+                            if (!file.open(filename)) {
+                                ^~~~
+                                false
+                            Parser.cpp:17:12: error: member reference base type 'bool' is not a structure or union
+                            if (!file.open(filename)) {
+                                ~~~~^~~~~
+                            Parser.cpp:30:23: error: use of undeclared identifier 'file'
+                            while (std::getline(file, line)) {
+                                                ^
+                            Parser.cpp:49:15: error: no member named 'first' in 'Option'
+                                if (opt.first == name) {   // Wenn der Name der Option übereinstimmt
+                                    ~~~ ^
+                            Parser.cpp:50:13: error: no member named 'second' in 'Option'
+                                    opt.second = option.getValues();  // Die Werte der Option aktualisieren
+                                    ~~~ ^
+                            Parser.cpp:62:3: error: use of undeclared identifier 'file'
+                            file.close();
                             ^
-                        ./Constraint.hpp:9:7: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 0 were provided
-                        7 errors generated.
-                        make: *** [Parser.o] Error 1
-                    </pre>
+                            Parser.cpp:86:16: error: no matching constructor for initialization of 'Constraint'
+                                Constraint constraint;
+                                        ^
+                            ./Constraint.hpp:12:3: note: candidate constructor not viable: requires single argument 'pairs', but no arguments were provided
+                            Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
+                            ^
+                            ./Constraint.hpp:9:7: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 0 were provided
+                            class Constraint {
+                                ^
+                            ./Constraint.hpp:9:7: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 0 were provided
+                            7 errors generated.
+                            make: *** [Parser.o] Error 1
+                        </pre>
             <pre id="p2">
-                        [{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 40,"startColumn": 63,"endLineNumber": 40,"endColumn": 63
-                    },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 43,"startColumn": 34,"endLineNumber": 43,"endColumn": 34
-                    },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 47,"startColumn": 63,"endLineNumber": 47,"endColumn": 63
-                    },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 50,"startColumn": 53,"endLineNumber": 50,"endColumn": 53
-                    },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 52,"startColumn": 39,"endLineNumber": 52,"endColumn": 39
-                    },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 63,"startColumn": 48,"endLineNumber": 63,"endColumn": 48
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 16,"endLineNumber": 42,"endColumn": 16
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 29,"endLineNumber": 42,"endColumn": 29
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 49,"startColumn": 16,"endLineNumber": 49,"endColumn": 16
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 49,"startColumn": 33,"endLineNumber": 49,"endColumn": 33
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 18,"endLineNumber": 51,"endColumn": 18
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 29,"endLineNumber": 51,"endColumn": 29
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 78,"startColumn": 10,"endLineNumber": 78,"endColumn": 10
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 79,"startColumn": 13,"endLineNumber": 79,"endColumn": 13
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 83,"startColumn": 18,"endLineNumber": 83,"endColumn": 18
-                    },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 83,"startColumn": 29,"endLineNumber": 83,"endColumn": 29
-                    }],
-                    
-                    [{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'file'; did you mean 'false'?","startLineNumber": 17,"startColumn": 8,"endLineNumber": 17,"endColumn": 8
-                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"file\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 17,"startColumn": 8,"endLineNumber": 17,"endColumn": 12
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "member reference base type 'bool' is not a structure or union","startLineNumber": 17,"startColumn": 8,"endLineNumber": 17,"endColumn": 17
-                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "304","severity": 8,"message": "Keine Instanz von Überladene Funktion \"std::getline\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 30,"startColumn": 10,"endLineNumber": 30,"endColumn": 13,"relatedInformation": [{"startLineNumber": 30,"startColumn": 10,"endLineNumber": 30,"endColumn": 13,"message": "Argumenttypen sind: (<error-type>, std::__1::string)","resource": "Parser.cpp"}]
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'file'","startLineNumber": 30,"startColumn": 23,"endLineNumber": 30,"endColumn": 23
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 38,"startColumn": 25,"endLineNumber": 38,"endColumn": 25
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'Option'","startLineNumber": 49,"startColumn": 11,"endLineNumber": 49,"endColumn": 14
-                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 49,"startColumn": 15,"endLineNumber": 49,"endColumn": 20
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no member named 'second' in 'Option'","startLineNumber": 50,"startColumn": 9,"endLineNumber": 50,"endColumn": 12
-                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 50,"startColumn": 13,"endLineNumber": 50,"endColumn": 19
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 57,"startColumn": 11,"endLineNumber": 57,"endColumn": 11
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'file'","startLineNumber": 62,"startColumn": 3,"endLineNumber": 62,"endColumn": 3
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Constraint'","startLineNumber": 86,"startColumn": 16,"endLineNumber": 86,"endColumn": 16
-                    },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "291","severity": 8,"message": "Für die Klasse \"\"Constraint\"\" ist kein Standardkonstruktor vorhanden.","source": "C/C++","startLineNumber": 86,"startColumn": 16,"endLineNumber": 86,"endColumn": 26
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 10,"endLineNumber": 48,"endColumn": 10
-                    },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 20,"endLineNumber": 48,"endColumn": 20
-                    }],
-                    [{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"ModelGenerator::ModelGenerator\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn": 32,"relatedInformation": [{"startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn": 32,"message": "Argumenttypen sind: (std::__1::vector<Option, std::__1::allocator<Option>>, std::__1::vector<Constraint, std::__1::allocator<Constraint>>)","resource": "Solver.cpp"}]
-                    }]
-                    
-                    </pre>
+                            [{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 40,"startColumn": 63,"endLineNumber": 40,"endColumn": 63
+                        },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 43,"startColumn": 34,"endLineNumber": 43,"endColumn": 34
+                        },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 47,"startColumn": 63,"endLineNumber": 47,"endColumn": 63
+                        },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 50,"startColumn": 53,"endLineNumber": 50,"endColumn": 53
+                        },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 52,"startColumn": 39,"endLineNumber": 52,"endColumn": 39
+                        },{"resource": "Main.cpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 63,"startColumn": 48,"endLineNumber": 63,"endColumn": 48
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 16,"endLineNumber": 42,"endColumn": 16
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 42,"startColumn": 29,"endLineNumber": 42,"endColumn": 29
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 49,"startColumn": 16,"endLineNumber": 49,"endColumn": 16
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 49,"startColumn": 33,"endLineNumber": 49,"endColumn": 33
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 18,"endLineNumber": 51,"endColumn": 18
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 51,"startColumn": 29,"endLineNumber": 51,"endColumn": 29
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 78,"startColumn": 10,"endLineNumber": 78,"endColumn": 10
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 79,"startColumn": 13,"endLineNumber": 79,"endColumn": 13
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 83,"startColumn": 18,"endLineNumber": 83,"endColumn": 18
+                        },{"resource": "Main.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 83,"startColumn": 29,"endLineNumber": 83,"endColumn": 29
+                        }],
+                        
+                        [{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'file'; did you mean 'false'?","startLineNumber": 17,"startColumn": 8,"endLineNumber": 17,"endColumn": 8
+                        },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"file\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 17,"startColumn": 8,"endLineNumber": 17,"endColumn": 12
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "member reference base type 'bool' is not a structure or union","startLineNumber": 17,"startColumn": 8,"endLineNumber": 17,"endColumn": 17
+                        },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "304","severity": 8,"message": "Keine Instanz von Überladene Funktion \"std::getline\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 30,"startColumn": 10,"endLineNumber": 30,"endColumn": 13,"relatedInformation": [{"startLineNumber": 30,"startColumn": 10,"endLineNumber": 30,"endColumn": 13,"message": "Argumenttypen sind: (<error-type>, std::__1::string)","resource": "Parser.cpp"}]
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'file'","startLineNumber": 30,"startColumn": 23,"endLineNumber": 30,"endColumn": 23
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 38,"startColumn": 25,"endLineNumber": 38,"endColumn": 25
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no member named 'first' in 'Option'","startLineNumber": 49,"startColumn": 11,"endLineNumber": 49,"endColumn": 14
+                        },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"first\"\".","source": "C/C++","startLineNumber": 49,"startColumn": 15,"endLineNumber": 49,"endColumn": 20
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no member named 'second' in 'Option'","startLineNumber": 50,"startColumn": 9,"endLineNumber": 50,"endColumn": 12
+                        },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Option\"\" hat keinen Member \"\"second\"\".","source": "C/C++","startLineNumber": 50,"startColumn": 13,"endLineNumber": 50,"endColumn": 19
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "expected expression","startLineNumber": 57,"startColumn": 11,"endLineNumber": 57,"endColumn": 11
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'file'","startLineNumber": 62,"startColumn": 3,"endLineNumber": 62,"endColumn": 3
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Constraint'","startLineNumber": 86,"startColumn": 16,"endLineNumber": 86,"endColumn": 16
+                        },{"resource": "Parser.cpp","owner": "C/C++: IntelliSense","code": "291","severity": 8,"message": "Für die Klasse \"\"Constraint\"\" ist kein Standardkonstruktor vorhanden.","source": "C/C++","startLineNumber": 86,"startColumn": 16,"endLineNumber": 86,"endColumn": 26
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 10,"endLineNumber": 48,"endColumn": 10
+                        },{"resource": "Parser.cpp","owner": "clang","severity": 4,"message": "range-based for loop is a C++11 extension [-Wc++11-extensions]","startLineNumber": 48,"startColumn": 20,"endLineNumber": 48,"endColumn": 20
+                        }],
+                        [{"resource": "Solver.cpp","owner": "C/C++: IntelliSense","code": "289","severity": 8,"message": "Keine Instanz des Konstruktors \"\"ModelGenerator::ModelGenerator\"\" stimmt mit der Argumentliste überein.","source": "C/C++","startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn": 32,"relatedInformation": [{"startLineNumber": 13,"startColumn": 32,"endLineNumber": 13,"endColumn": 32,"message": "Argumenttypen sind: (std::__1::vector<Option, std::__1::allocator<Option>>, std::__1::vector<Constraint, std::__1::allocator<Constraint>>)","resource": "Solver.cpp"}]
+                        }]
+                        
+                        </pre>
         </div>
         <div id="codesInCPlusPlus">
             Hier ist Constraint.hpp:
             <pre><code>
-                #ifndef CONSTRAINT_HPP
-                #define CONSTRAINT_HPP
-                
-                #include <string>
-                #include <vector>
-                
-                // A class that represents a constraint with a vector of pairs of options and
-                // values
-                class Constraint {
-                public:
-                    // A constructor that takes a vector of pairs as a parameter
-                    Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
-                        : pairs(pairs) {}
-                
-                    // A getter method that returns the vector of pairs of the constraint as a
-                    // const reference
-                    const std::vector<std::pair<std::string, std::string> > &getPairs() const;
-                
-                    // A method that adds a pair of option and value to the vector of pairs
-                    void addPair(const std::string &option, const std::string &value);
-                
-                private:
-                    // A vector of pairs of strings that stores the options and values of the
-                    // constraint
-                    std::vector<std::pair<std::string, std::string> > pairs;
-                };
-                
-                #endif
-                </code></pre>
+                    #ifndef CONSTRAINT_HPP
+                    #define CONSTRAINT_HPP
+                    
+                    #include <string>
+                    #include <vector>
+                    
+                    // A class that represents a constraint with a vector of pairs of options and
+                    // values
+                    class Constraint {
+                    public:
+                        // A constructor that takes a vector of pairs as a parameter
+                        Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
+                            : pairs(pairs) {}
+                    
+                        // A getter method that returns the vector of pairs of the constraint as a
+                        // const reference
+                        const std::vector<std::pair<std::string, std::string> > &getPairs() const;
+                    
+                        // A method that adds a pair of option and value to the vector of pairs
+                        void addPair(const std::string &option, const std::string &value);
+                    
+                    private:
+                        // A vector of pairs of strings that stores the options and values of the
+                        // constraint
+                        std::vector<std::pair<std::string, std::string> > pairs;
+                    };
+                    
+                    #endif
+                    </code></pre>
             Hier ist Fuzzer.hpp:
             <pre><code>
-                #ifndef FUZZER_HPP
-                #define FUZZER_HPP
-                
-                #include <fstream>
-                #include <list>
-                #include <map>
-                #include <random>
-                #include <string>
-                #include <vector>
-                
-                // A class that generates random options, values and constraints
-                class Fuzzer {
-                public:
-                    // A constructor that takes the number of options, the maximum number of
-                    // values per option and the maximum number of constraints as parameters
-                    Fuzzer();
-                
-                    Fuzzer(const std::map<std::string, std::vector<std::string> > &options)
-                        : options(options){};
-                
-                    // A method that writes the options and values to a file with the extension
-                    // .options
-                    void writeOptions(const std::string &optionsFile);
-                
-                    // A method that writes the constraints to a file with the extension
-                    // .constraints
-                    void writeConstraints(const std::string &constraintsFile);
-                
-                    // A method that generates a random string of a given length
-                    std::string randomString(int length);
-                
-                private:
-                    std::mt19937 gen;  // Random number generator as a member variable
-                
-                    // A map of options to vectors of values
-                    std::map<std::string, std::vector<std::string> > options;
-                
-                    // A list of vectors of pairs of options and values
-                    std::list<std::vector<std::pair<std::string, std::string> > > constraints;
-                
-                    // A helper method that generates a random number between min and max
-                    int randomInt(int min, int max);
-                };
-                
-                #endif
-                </code></pre>
+                    #ifndef FUZZER_HPP
+                    #define FUZZER_HPP
+                    
+                    #include <fstream>
+                    #include <list>
+                    #include <map>
+                    #include <random>
+                    #include <string>
+                    #include <vector>
+                    
+                    // A class that generates random options, values and constraints
+                    class Fuzzer {
+                    public:
+                        // A constructor that takes the number of options, the maximum number of
+                        // values per option and the maximum number of constraints as parameters
+                        Fuzzer();
+                    
+                        Fuzzer(const std::map<std::string, std::vector<std::string> > &options)
+                            : options(options){};
+                    
+                        // A method that writes the options and values to a file with the extension
+                        // .options
+                        void writeOptions(const std::string &optionsFile);
+                    
+                        // A method that writes the constraints to a file with the extension
+                        // .constraints
+                        void writeConstraints(const std::string &constraintsFile);
+                    
+                        // A method that generates a random string of a given length
+                        std::string randomString(int length);
+                    
+                    private:
+                        std::mt19937 gen;  // Random number generator as a member variable
+                    
+                        // A map of options to vectors of values
+                        std::map<std::string, std::vector<std::string> > options;
+                    
+                        // A list of vectors of pairs of options and values
+                        std::list<std::vector<std::pair<std::string, std::string> > > constraints;
+                    
+                        // A helper method that generates a random number between min and max
+                        int randomInt(int min, int max);
+                    };
+                    
+                    #endif
+                    </code></pre>
             Hier ist Model.hpp:
             <pre><code>
-                #ifndef MODEL_HPP
-                #define MODEL_HPP
-                
-                #include <map>
-                #include <string>
-                
-                // A class that represents a model with a map of options and values
-                class Model {
-                public:
-                    // A constructor that takes a map as a parameter
-                    Model(const std::map<std::string, std::string>& map) {
-                    // Assign the parameter to the member variable
-                    this->map = map;
-                    }
-                
-                    // A getter method that returns the map of the model
-                    std::map<std::string, std::string> getMap() const {
-                    // Return the member variable
-                    return map;
-                    }
-                
-                private:
-                    // A map of strings that stores the options and values of the model
-                    std::map<std::string, std::string> map;
-                };
-                
-                #endif</code></pre>
+                    #ifndef MODEL_HPP
+                    #define MODEL_HPP
+                    
+                    #include <map>
+                    #include <string>
+                    
+                    // A class that represents a model with a map of options and values
+                    class Model {
+                    public:
+                        // A constructor that takes a map as a parameter
+                        Model(const std::map<std::string, std::string>& map) {
+                        // Assign the parameter to the member variable
+                        this->map = map;
+                        }
+                    
+                        // A getter method that returns the map of the model
+                        std::map<std::string, std::string> getMap() const {
+                        // Return the member variable
+                        return map;
+                        }
+                    
+                    private:
+                        // A map of strings that stores the options and values of the model
+                        std::map<std::string, std::string> map;
+                    };
+                    
+                    #endif</code></pre>
             Hier ist ModelGenerator.hpp:
             <pre><code>
-                // ModelGenerator.hpp
-                
-                #ifndef MODELGENERATOR_HPP
-                #define MODELGENERATOR_HPP
-                
-                #include <list>
-                #include <map>
-                #include <string>
-                #include <vector>
-                
-                #include "Parser.hpp"
-                
-                // A class that generates models based on a given set of options and constraints
-                class ModelGenerator {
-                public:
-                    // A constructor that takes a vector of options and a vector of constraints as
-                    // parameters
-                    ModelGenerator(
-                        const std::vector<std::pair<std::string, std::vector<std::string>>>
-                            &options,
-                        const std::vector<std::vector<std::pair<std::string, std::string>>>
-                            &constraints);
-                
-                    // A method that generates models and returns them as a list of maps of
-                    // options to values
-                    std::list<std::map<std::string, std::string>> generateModels() const;
-                
-                private:
-                    // A vector of pairs of strings and vectors of strings that stores the options
-                    std::vector<std::pair<std::string, std::vector<std::string>>> options;
-                
-                    // A vector of vectors of pairs of strings that stores the constraints
-                    std::vector<std::vector<std::pair<std::string, std::string>>> constraints;
-                };
-                
-                #endif
-                </code></pre>
+                    // ModelGenerator.hpp
+                    
+                    #ifndef MODELGENERATOR_HPP
+                    #define MODELGENERATOR_HPP
+                    
+                    #include <list>
+                    #include <map>
+                    #include <string>
+                    #include <vector>
+                    
+                    #include "Parser.hpp"
+                    
+                    // A class that generates models based on a given set of options and constraints
+                    class ModelGenerator {
+                    public:
+                        // A constructor that takes a vector of options and a vector of constraints as
+                        // parameters
+                        ModelGenerator(
+                            const std::vector<std::pair<std::string, std::vector<std::string>>>
+                                &options,
+                            const std::vector<std::vector<std::pair<std::string, std::string>>>
+                                &constraints);
+                    
+                        // A method that generates models and returns them as a list of maps of
+                        // options to values
+                        std::list<std::map<std::string, std::string>> generateModels() const;
+                    
+                    private:
+                        // A vector of pairs of strings and vectors of strings that stores the options
+                        std::vector<std::pair<std::string, std::vector<std::string>>> options;
+                    
+                        // A vector of vectors of pairs of strings that stores the constraints
+                        std::vector<std::vector<std::pair<std::string, std::string>>> constraints;
+                    };
+                    
+                    #endif
+                    </code></pre>
             Hier ist Option.hpp:
             <pre><code>
-                #ifndef OPTION_HPP
-                #define OPTION_HPP
-                
-                #include <string>
-                #include <vector>
-                
-                // A class that represents an option with a name and a vector of possible values
-                class Option {
-                public:
-                    // A constructor that takes a name and a vector of values as parameters
-                    Option(const std::string& name, const std::vector<std::string>& values) {
-                    // Assign the parameters to the member variables
-                    this->name = name;
-                    this->values = values;
-                    }
-                
-                    // A getter method that returns the name of the option
-                    std::string getName() const {
-                    // Return the member variable
-                    return name;
-                    }
-                
-                    // A method that adds a value to the vector of values
-                    void addValue(const std::string& value);
-                
-                    // A getter method that returns the vector of values of the option
-                    std::vector<std::string> getValues() const {
-                    // Return the member variable
-                    return values;
-                    }
-                
-                private:
-                    // A string that stores the name of the option
-                    std::string name;
-                
-                    // A vector of strings that stores the possible values of the option
-                    std::vector<std::string> values;
-                };
-                
-                #endif
-                </code></pre>
+                    #ifndef OPTION_HPP
+                    #define OPTION_HPP
+                    
+                    #include <string>
+                    #include <vector>
+                    
+                    // A class that represents an option with a name and a vector of possible values
+                    class Option {
+                    public:
+                        // A constructor that takes a name and a vector of values as parameters
+                        Option(const std::string& name, const std::vector<std::string>& values) {
+                        // Assign the parameters to the member variables
+                        this->name = name;
+                        this->values = values;
+                        }
+                    
+                        // A getter method that returns the name of the option
+                        std::string getName() const {
+                        // Return the member variable
+                        return name;
+                        }
+                    
+                        // A method that adds a value to the vector of values
+                        void addValue(const std::string& value);
+                    
+                        // A getter method that returns the vector of values of the option
+                        std::vector<std::string> getValues() const {
+                        // Return the member variable
+                        return values;
+                        }
+                    
+                    private:
+                        // A string that stores the name of the option
+                        std::string name;
+                    
+                        // A vector of strings that stores the possible values of the option
+                        std::vector<std::string> values;
+                    };
+                    
+                    #endif
+                    </code></pre>
             Hier ist Parser.hpp:
             <pre><code>
-                // Parser.hpp
-                
-                #ifndef PARSER_HPP
-                #define PARSER_HPP
-                
-                #include <map>
-                #include <string>
-                #include <vector>
-                
-                #include "Constraint.hpp"
-                #include "Option.hpp"
-                
-                class Parser {
-                public:
-                    // Speichert die Optionen aus der .options Datei
-                    std::vector<Option> options;
-                
-                    // Speichert die Constraints aus der .constraints Datei
-                    std::vector<Constraint> constraints;
-                
-                    Parser();
-                    // Liest die Optionen aus der .options Datei ein
-                    void parseOptions(const std::string& filename);
-                
-                    // Liest die Constraints aus der .constraints Datei ein
-                    void parseConstraints(const std::string& filename);
-                
-                    // Gibt die Optionen zurück
-                    std::vector<Option> getOptions() const;
-                
-                    // Gibt die Constraints zurück
-                    std::vector<Constraint> getConstraints() const;
-                
-                    // method  that returns a string from an input stream
-                    std::string readString(std::istream& in);
-                };
-                
-                #endif
-                </code></pre>
+                    // Parser.hpp
+                    
+                    #ifndef PARSER_HPP
+                    #define PARSER_HPP
+                    
+                    #include <map>
+                    #include <string>
+                    #include <vector>
+                    
+                    #include "Constraint.hpp"
+                    #include "Option.hpp"
+                    
+                    class Parser {
+                    public:
+                        // Speichert die Optionen aus der .options Datei
+                        std::vector<Option> options;
+                    
+                        // Speichert die Constraints aus der .constraints Datei
+                        std::vector<Constraint> constraints;
+                    
+                        Parser();
+                        // Liest die Optionen aus der .options Datei ein
+                        void parseOptions(const std::string& filename);
+                    
+                        // Liest die Constraints aus der .constraints Datei ein
+                        void parseConstraints(const std::string& filename);
+                    
+                        // Gibt die Optionen zurück
+                        std::vector<Option> getOptions() const;
+                    
+                        // Gibt die Constraints zurück
+                        std::vector<Constraint> getConstraints() const;
+                    
+                        // method  that returns a string from an input stream
+                        std::string readString(std::istream& in);
+                    };
+                    
+                    #endif
+                    </code></pre>
             Hier ist PrettyPrinter.hpp:
             <pre><code>
-                #ifndef PRETTYPRINTER_HPP
-                #define PRETTYPRINTER_HPP
-                
-                #include <list>
-                #include <map>
-                #include <string>
-                
-                #include "Constraint.hpp"
-                #include "Option.hpp"
-                
-                // A class that prints the options and constraints in a readable format
-                class PrettyPrinter {
-                public:
-                    // A constructor that takes two file names as parameters
-                    PrettyPrinter(const std::string& optionsFile,
-                                const std::string& constraintsFile);
-                
-                    // A method that prints the options to the .options file
-                    void printOptions(const std::vector<Option>& options);
-                
-                    // A method that prints the constraints to the .constraints file
-                    void printConstraints(const std::vector<Constraint>& constraints);
-                
-                private:
-                    // Two strings that store the file names
-                    std::string optionsFile;
-                    std::string constraintsFile;
-                };
-                
-                #endif
-                </code></pre>
+                    #ifndef PRETTYPRINTER_HPP
+                    #define PRETTYPRINTER_HPP
+                    
+                    #include <list>
+                    #include <map>
+                    #include <string>
+                    
+                    #include "Constraint.hpp"
+                    #include "Option.hpp"
+                    
+                    // A class that prints the options and constraints in a readable format
+                    class PrettyPrinter {
+                    public:
+                        // A constructor that takes two file names as parameters
+                        PrettyPrinter(const std::string& optionsFile,
+                                    const std::string& constraintsFile);
+                    
+                        // A method that prints the options to the .options file
+                        void printOptions(const std::vector<Option>& options);
+                    
+                        // A method that prints the constraints to the .constraints file
+                        void printConstraints(const std::vector<Constraint>& constraints);
+                    
+                    private:
+                        // Two strings that store the file names
+                        std::string optionsFile;
+                        std::string constraintsFile;
+                    };
+                    
+                    #endif
+                    </code></pre>
             Hier ist Solver.hpp:
             <pre><code>
-                // Solver.hpp
-                
-                #ifndef SOLVER_HPP
-                #define SOLVER_HPP
-                
-                #include <list>
-                #include <map>
-                #include <string>
-                
-                #include "Parser.hpp"
-                #include "ModelGenerator.hpp"
-                
-                class Solver {
-                public:
-                    // A Parser object as a member variable
-                    Parser parser;
-                
-                    // The constructor stores the parser in the member variable and creates a
-                    // ModelGenerator object with the options and constraints from the parser
-                    Solver(const Parser &parser);
-                
-                    // This method generates the models using the ModelGenerator object and stores
-                    // them in a list of maps of options to values
-                    void solve();
-                
-                    // This method returns the list of maps as a const reference
-                    const std::list<std::map<std::string, std::string> > &getModels() const;
-                
-                private:
-                    // A ModelGenerator object as a member variable
-                    ModelGenerator generator;
-                
-                    // A list of maps that stores the models
-                    std::list<std::map<std::string, std::string> > models;
-                };
-                
-                #endif
-                </code></pre>
+                    // Solver.hpp
+                    
+                    #ifndef SOLVER_HPP
+                    #define SOLVER_HPP
+                    
+                    #include <list>
+                    #include <map>
+                    #include <string>
+                    
+                    #include "Parser.hpp"
+                    #include "ModelGenerator.hpp"
+                    
+                    class Solver {
+                    public:
+                        // A Parser object as a member variable
+                        Parser parser;
+                    
+                        // The constructor stores the parser in the member variable and creates a
+                        // ModelGenerator object with the options and constraints from the parser
+                        Solver(const Parser &parser);
+                    
+                        // This method generates the models using the ModelGenerator object and stores
+                        // them in a list of maps of options to values
+                        void solve();
+                    
+                        // This method returns the list of maps as a const reference
+                        const std::list<std::map<std::string, std::string> > &getModels() const;
+                    
+                    private:
+                        // A ModelGenerator object as a member variable
+                        ModelGenerator generator;
+                    
+                        // A list of maps that stores the models
+                        std::list<std::map<std::string, std::string> > models;
+                    };
+                    
+                    #endif
+                    </code></pre>
             Hier ist Constraint.cpp:
             <pre><code>
-                #include "Constraint.hpp"
-                
-                // A method that adds a pair of option and value to the vector of pairs
-                
-                void Constraint::addPair(const std::string& option, const std::string& value) {
-                    pairs.emplace_back(option, value);
-                } 
-                
-                // A method that returns the vector of pairs of the constraint as a const
-                // reference
-                
-                const std::vector<std::pair<std::string, std::string> >& Constraint::getPairs()
-                    const {
-                    return pairs;
-                }</code></pre>
+                    #include "Constraint.hpp"
+                    
+                    // A method that adds a pair of option and value to the vector of pairs
+                    
+                    void Constraint::addPair(const std::string& option, const std::string& value) {
+                        pairs.emplace_back(option, value);
+                    } 
+                    
+                    // A method that returns the vector of pairs of the constraint as a const
+                    // reference
+                    
+                    const std::vector<std::pair<std::string, std::string> >& Constraint::getPairs()
+                        const {
+                        return pairs;
+                    }</code></pre>
             Hier ist Fuzzer.cpp:
             <pre><code>
-                // Fuzzer.cpp
-                #include "Fuzzer.hpp"
-                
-                #include <iostream>
-                #include <sstream>
-                
-                Fuzzer::Fuzzer() : gen(std::random_device()()) {
-                    // Initialize the random number generator with a random number
-                }
-                
-                std::string Fuzzer::randomString(int length) {
-                    std::string result;  // Create an empty string to store the result
-                    for (int i = 0; i < length; i++) {
-                    char c = 'a' + randomInt(0, 25);  // Choose a random lowercase letter
-                    result += c;  // Append the letter to the end of the string
+                    // Fuzzer.cpp
+                    #include "Fuzzer.hpp"
+                    
+                    #include <iostream>
+                    #include <sstream>
+                    
+                    Fuzzer::Fuzzer() : gen(std::random_device()()) {
+                        // Initialize the random number generator with a random number
                     }
-                    return result;  // Return the string
-                }
-                
-                int Fuzzer::randomInt(int min, int max) {
-                    std::uniform_int_distribution dist(
-                        min, max);     // Create a uniform distribution between min and max
-                    return dist(gen);  // Return a random number from the distribution
-                }
-                
-                void Fuzzer::writeOptions(const std::string &optionsFile) {
-                    std::ofstream out(optionsFile);  // Open the output file for writing
-                
-                    if (!out) {  // Check if the file is opened successfully
-                    throw std::runtime_error("Cannot open " +
-                                            optionsFile);  // If not, throw an exception
+                    
+                    std::string Fuzzer::randomString(int length) {
+                        std::string result;  // Create an empty string to store the result
+                        for (int i = 0; i < length; i++) {
+                        char c = 'a' + randomInt(0, 25);  // Choose a random lowercase letter
+                        result += c;  // Append the letter to the end of the string
+                        }
+                        return result;  // Return the string
                     }
-                
-                    for (auto &pair : options) {  // Iterate over all pairs in the map
-                    out << pair.first
-                        << ",";  // Write the option to the file with a comma separator
-                    for (auto &value : pair.second) {  // Iterate over all values in the vector
-                        out << value
-                            << ",";  // Write the value to the file with a comma separator
+                    
+                    int Fuzzer::randomInt(int min, int max) {
+                        std::uniform_int_distribution dist(
+                            min, max);     // Create a uniform distribution between min and max
+                        return dist(gen);  // Return a random number from the distribution
                     }
-                    out << "\n";  // Write a newline to the file
-                    }
-                
-                    out.close();  // Close the output file
-                }
-                
-                void Fuzzer::writeConstraints(const std::string &constraintsFile) {
-                    std::ofstream out(constraintsFile);  // Open the output file for writing
-                
-                    if (!out) {  // Check if the file is opened successfully
-                    throw std::runtime_error("Cannot open " +
-                                            constraintsFile);  // If not, throw an exception
-                    }
-                
-                    for (auto &vec : constraints) {  // Iterate over all vectors in the list
-                    for (auto &pair : vec) {       // Iterate over all pairs in the vector
+                    
+                    void Fuzzer::writeOptions(const std::string &optionsFile) {
+                        std::ofstream out(optionsFile);  // Open the output file for writing
+                    
+                        if (!out) {  // Check if the file is opened successfully
+                        throw std::runtime_error("Cannot open " +
+                                                optionsFile);  // If not, throw an exception
+                        }
+                    
+                        for (auto &pair : options) {  // Iterate over all pairs in the map
                         out << pair.first
                             << ",";  // Write the option to the file with a comma separator
-                        out << pair.second
-                            << ",";  // Write the value to the file with a comma separator
+                        for (auto &value : pair.second) {  // Iterate over all values in the vector
+                            out << value
+                                << ",";  // Write the value to the file with a comma separator
+                        }
+                        out << "\n";  // Write a newline to the file
+                        }
+                    
+                        out.close();  // Close the output file
                     }
-                    out << "\n";  // Write a newline to the file
+                    
+                    void Fuzzer::writeConstraints(const std::string &constraintsFile) {
+                        std::ofstream out(constraintsFile);  // Open the output file for writing
+                    
+                        if (!out) {  // Check if the file is opened successfully
+                        throw std::runtime_error("Cannot open " +
+                                                constraintsFile);  // If not, throw an exception
+                        }
+                    
+                        for (auto &vec : constraints) {  // Iterate over all vectors in the list
+                        for (auto &pair : vec) {       // Iterate over all pairs in the vector
+                            out << pair.first
+                                << ",";  // Write the option to the file with a comma separator
+                            out << pair.second
+                                << ",";  // Write the value to the file with a comma separator
+                        }
+                        out << "\n";  // Write a newline to the file
+                        }
+                    
+                        out.close();  // Close the output file
                     }
-                
-                    out.close();  // Close the output file
-                }
-                </code></pre>
+                    </code></pre>
             Hier ist Main.cpp:
             <pre><code>
-                #include <fstream>
-                #include <iostream>
-                #include <sstream>
-                #include <string>
-                #include <vector>
-                
-                #include "ModelGenerator.hpp"  // Include this header instead of Solver.hpp
-                #include "Parser.hpp"
-                #include "PrettyPrinter.hpp"
-                
-                // The main function that starts the program
-                int main(int argc, char *argv[]) {
-                    // Check if the correct number of parameters is given
-                    if (argc != 5) {
-                    // If not, print an error message and exit the program
-                    std::cerr << "Usage: " << argv[0]
-                                << " input_options input_constraints output_models num_models\n";
-                    return -1;
-                    }
-                
-                    // Get the names of the input and output files from the parameters
-                    std::string inputOptions = argv[1];
-                    std::string inputConstraints = argv[2];
-                    std::string outputModels = argv[3];
-                
-                    try {
-                    int numModels = std::stoi(argv[4]);  // Remove the semicolon here
-                    if (numModels < 0) {
-                        throw std::invalid_argument("num_models must be non-negative");
-                    }
-                
-                    // Create a Parser object with the names of the input files
-                    Parser parser;
-                
-                    // Parse the options and constraints from the input files
-                    parser.parseOptions(inputOptions);
-                    parser.parseConstraints(inputConstraints);
-                
-                    // Konvertiere die Optionen in den erwarteten Typ
-                    std::vector<std::pair<std::string, std::vector<std::string>>>
-                        convertedOptions;  // Use a vector instead of a map here
-                    for (const auto &option : parser.options) {
-                        convertedOptions.push_back({option.getName(), option.getValues()});
-                    }
-                
-                    // Konvertiere die Constraints in den erwarteten Typ
-                    std::vector<std::vector<std::pair<std::string, std::string>>>
-                        convertedConstraints;
-                    for (const auto &constraint : parser.constraints) {
-                        std::vector<std::pair<std::string, std::string>> convertedConstraint;
-                        for (const auto &pair : constraint.getPairs()) {
-                        convertedConstraint.push_back({pair.first, pair.second});
-                        }  // Add a closing brace here
-                        convertedConstraints.push_back(convertedConstraint);
-                    }
-                
-                    // Erstelle einen ModelGenerator mit den konvertierten Optionen und
-                    // Constraints
-                    ModelGenerator generator(convertedOptions, convertedConstraints);
-                
-                    // Generate the models using the generateModels method of the ModelGenerator
-                    // object
-                    std::list<std::map<std::string, std::string>> models =
-                        generator.generateModels();
-                
-                    // Open the output file for writing
-                    std::ofstream out(outputModels);
-                
-                    // Check if the file is opened successfully
-                    if (!out) {
+                    #include <fstream>
+                    #include <iostream>
+                    #include <sstream>
+                    #include <string>
+                    #include <vector>
+                    
+                    #include "ModelGenerator.hpp"  // Include this header instead of Solver.hpp
+                    #include "Parser.hpp"
+                    #include "PrettyPrinter.hpp"
+                    
+                    // The main function that starts the program
+                    int main(int argc, char *argv[]) {
+                        // Check if the correct number of parameters is given
+                        if (argc != 5) {
                         // If not, print an error message and exit the program
-                        std::cerr << "Cannot open " << outputModels << '\n';
+                        std::cerr << "Usage: " << argv[0]
+                                    << " input_options input_constraints output_models num_models\n";
                         return -1;
-                    }
-                
-                    // Write the models to the output file
-                    int count = 0;
-                    for (auto it = models.begin(); it != models.end(); ++it) {
-                        const auto &model = *it;
-                        if (count >= numModels) {
-                        break;
                         }
-                        for (const auto &pair : model) {
-                        out << pair.first << ',' << pair.second << '\n';
+                    
+                        // Get the names of the input and output files from the parameters
+                        std::string inputOptions = argv[1];
+                        std::string inputConstraints = argv[2];
+                        std::string outputModels = argv[3];
+                    
+                        try {
+                        int numModels = std::stoi(argv[4]);  // Remove the semicolon here
+                        if (numModels < 0) {
+                            throw std::invalid_argument("num_models must be non-negative");
                         }
-                        out << '\n';
-                        count++;
+                    
+                        // Create a Parser object with the names of the input files
+                        Parser parser;
+                    
+                        // Parse the options and constraints from the input files
+                        parser.parseOptions(inputOptions);
+                        parser.parseConstraints(inputConstraints);
+                    
+                        // Konvertiere die Optionen in den erwarteten Typ
+                        std::vector<std::pair<std::string, std::vector<std::string>>>
+                            convertedOptions;  // Use a vector instead of a map here
+                        for (const auto &option : parser.options) {
+                            convertedOptions.push_back({option.getName(), option.getValues()});
+                        }
+                    
+                        // Konvertiere die Constraints in den erwarteten Typ
+                        std::vector<std::vector<std::pair<std::string, std::string>>>
+                            convertedConstraints;
+                        for (const auto &constraint : parser.constraints) {
+                            std::vector<std::pair<std::string, std::string>> convertedConstraint;
+                            for (const auto &pair : constraint.getPairs()) {
+                            convertedConstraint.push_back({pair.first, pair.second});
+                            }  // Add a closing brace here
+                            convertedConstraints.push_back(convertedConstraint);
+                        }
+                    
+                        // Erstelle einen ModelGenerator mit den konvertierten Optionen und
+                        // Constraints
+                        ModelGenerator generator(convertedOptions, convertedConstraints);
+                    
+                        // Generate the models using the generateModels method of the ModelGenerator
+                        // object
+                        std::list<std::map<std::string, std::string>> models =
+                            generator.generateModels();
+                    
+                        // Open the output file for writing
+                        std::ofstream out(outputModels);
+                    
+                        // Check if the file is opened successfully
+                        if (!out) {
+                            // If not, print an error message and exit the program
+                            std::cerr << "Cannot open " << outputModels << '\n';
+                            return -1;
+                        }
+                    
+                        // Write the models to the output file
+                        int count = 0;
+                        for (auto it = models.begin(); it != models.end(); ++it) {
+                            const auto &model = *it;
+                            if (count >= numModels) {
+                            break;
+                            }
+                            for (const auto &pair : model) {
+                            out << pair.first << ',' << pair.second << '\n';
+                            }
+                            out << '\n';
+                            count++;
+                        }
+                    
+                        // Close the output file
+                        out.close();
+                    
+                        } catch (const std::exception &e) {
+                        // If any exception occurs, print the error message and exit the program
+                        std::cerr << e.what() << '\n';
+                        return -1;
+                        }
+                    
+                        return 0;
                     }
-                
-                    // Close the output file
-                    out.close();
-                
-                    } catch (const std::exception &e) {
-                    // If any exception occurs, print the error message and exit the program
-                    std::cerr << e.what() << '\n';
-                    return -1;
-                    }
-                
-                    return 0;
-                }
-                </code></pre>
+                    </code></pre>
             Hier ist ModelGenerator.cpp:
             <pre><code>
-                // ModelGenerator.cpp
-                
-                #include "ModelGenerator.hpp"
-                
-                #include <random>
-                
-                // A constructor that takes a vector of options and a vector of constraints as
-                // parameters
-                ModelGenerator::ModelGenerator(
-                    const std::vector<std::pair<std::string, std::vector<std::string> > >
-                        &options,
-                    const std::vector<std::vector<std::pair<std::string, std::string> > >
-                        &constraints)
-                    : options(options), constraints(constraints) {}
-                
-                // A method that generates models and returns them as a list of maps of
-                // options to values
-                std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
-                    const {
-                    std::list<std::map<std::string, std::string> >
-                        models;              // Create an empty list to store the models
-                    std::random_device rd;   // Create a random number generator as a variable
-                    std::mt19937 gen(rd());  // Initialize the generator with the random number
-                    std::uniform_int_distribution<int> dist(
-                        0, 1);  // Create a uniform distribution between 0 and 1 with int as the
-                                // template parameter
-                    // TODO: Implement the model generation algorithm here
-                    return models;  // Return the list of models
-                }
-                </code></pre>
+                    // ModelGenerator.cpp
+                    
+                    #include "ModelGenerator.hpp"
+                    
+                    #include <random>
+                    
+                    // A constructor that takes a vector of options and a vector of constraints as
+                    // parameters
+                    ModelGenerator::ModelGenerator(
+                        const std::vector<std::pair<std::string, std::vector<std::string> > >
+                            &options,
+                        const std::vector<std::vector<std::pair<std::string, std::string> > >
+                            &constraints)
+                        : options(options), constraints(constraints) {}
+                    
+                    // A method that generates models and returns them as a list of maps of
+                    // options to values
+                    std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
+                        const {
+                        std::list<std::map<std::string, std::string> >
+                            models;              // Create an empty list to store the models
+                        std::random_device rd;   // Create a random number generator as a variable
+                        std::mt19937 gen(rd());  // Initialize the generator with the random number
+                        std::uniform_int_distribution<int> dist(
+                            0, 1);  // Create a uniform distribution between 0 and 1 with int as the
+                                    // template parameter
+                        // TODO: Implement the model generation algorithm here
+                        return models;  // Return the list of models
+                    }
+                    </code></pre>
             Hier ist Option.cpp:
             <pre><code>
-                #include "Option.hpp"
-                
-                // A method that adds a value to the vector of values
-                void Option::addValue(const std::string& value) {
-                    // Add the value to the vector of values if it is not already in it
-                    if (std::find(values.begin(), values.end(), value) == values.end()) {
-                    values.push_back(value);
+                    #include "Option.hpp"
+                    
+                    // A method that adds a value to the vector of values
+                    void Option::addValue(const std::string& value) {
+                        // Add the value to the vector of values if it is not already in it
+                        if (std::find(values.begin(), values.end(), value) == values.end()) {
+                        values.push_back(value);
+                        }
                     }
-                }
-                </code></pre>
+                    </code></pre>
             Hier ist Parser.cpp:
             <pre><code>
-                #include "Parser.hpp"
-                
-                #include <fstream>
-                #include <sstream>
-                #include <stdexcept>
-                
-                #include "Constraint.hpp"
-                #include "Option.hpp"
-                
-                // The constructor stores the names of the files in the member variables
-                Parser::Parser() {}
-                
-                // This method reads the .options file and fills the map of options
-                void Parser::parseOptions(const std::string& filename) {
-                    // Declare and initialize the variable optionsFile with the filename parameter
-                    std::ifstream optionsFile(filename);
-                    if (!file.open(filename)) {
-                    // If the file cannot be opened, throw an exception
-                    std::stringstream ss;  // Einen stringstream erstellen
-                    ss << "Could not open file "
-                        << filename;  // Die Nachricht und den Dateinamen in den stringstream
-                                    // schreiben
-                    throw std::runtime_error(
-                        ss.str());  // Den Inhalt des stringstream als std::string zurückgeben
-                                    // und eine Ausnahme werfen
-                    }
-                
-                    // Read the file line by line
-                    std::string line;
-                    while (std::getline(file, line)) {
-                    // Create a stream from the line
-                    std::istringstream stream(line);
-                
-                    // Read the name of the option from the stream
-                    std::string name = readString(stream);
-                
-                    // Create an Option object with the name
-                    Option option(name, {});
-                
-                    // Read the possible values from the stream and add them to the option
-                    std::string value;
-                    while ((value = readString(stream)) != "") {
-                        option.addValue(value);
-                    }
-                
-                    bool found = false;  // Eine boolesche Variable erstellen, um zu überprüfen,
-                                        // ob die Option gefunden wurde
-                    for (auto& opt : options) {  // Über alle Elemente im Vektor iterieren
-                        if (opt.first == name) {   // Wenn der Name der Option übereinstimmt
-                        opt.second = option.getValues();  // Die Werte der Option aktualisieren
-                        found = true;  // Die boolesche Variable auf true setzen
-                        break;         // Die Schleife beenden
+                    #include "Parser.hpp"
+                    
+                    #include <fstream>
+                    #include <sstream>
+                    #include <stdexcept>
+                    
+                    #include "Constraint.hpp"
+                    #include "Option.hpp"
+                    
+                    // The constructor stores the names of the files in the member variables
+                    Parser::Parser() {}
+                    
+                    // This method reads the .options file and fills the map of options
+                    void Parser::parseOptions(const std::string& filename) {
+                        // Declare and initialize the variable optionsFile with the filename parameter
+                        std::ifstream optionsFile(filename);
+                        if (!file.open(filename)) {
+                        // If the file cannot be opened, throw an exception
+                        std::stringstream ss;  // Einen stringstream erstellen
+                        ss << "Could not open file "
+                            << filename;  // Die Nachricht und den Dateinamen in den stringstream
+                                        // schreiben
+                        throw std::runtime_error(
+                            ss.str());  // Den Inhalt des stringstream als std::string zurückgeben
+                                        // und eine Ausnahme werfen
                         }
+                    
+                        // Read the file line by line
+                        std::string line;
+                        while (std::getline(file, line)) {
+                        // Create a stream from the line
+                        std::istringstream stream(line);
+                    
+                        // Read the name of the option from the stream
+                        std::string name = readString(stream);
+                    
+                        // Create an Option object with the name
+                        Option option(name, {});
+                    
+                        // Read the possible values from the stream and add them to the option
+                        std::string value;
+                        while ((value = readString(stream)) != "") {
+                            option.addValue(value);
+                        }
+                    
+                        bool found = false;  // Eine boolesche Variable erstellen, um zu überprüfen,
+                                            // ob die Option gefunden wurde
+                        for (auto& opt : options) {  // Über alle Elemente im Vektor iterieren
+                            if (opt.first == name) {   // Wenn der Name der Option übereinstimmt
+                            opt.second = option.getValues();  // Die Werte der Option aktualisieren
+                            found = true;  // Die boolesche Variable auf true setzen
+                            break;         // Die Schleife beenden
+                            }
+                        }
+                        if (!found) {  // Wenn die Option nicht gefunden wurde
+                            options.push_back(
+                                {name, option.getValues()});  // Die Option zum Vektor hinzufügen
+                        }
+                        }
+                    
+                        // Close the file
+                        file.close();
                     }
-                    if (!found) {  // Wenn die Option nicht gefunden wurde
-                        options.push_back(
-                            {name, option.getValues()});  // Die Option zum Vektor hinzufügen
+                    
+                    // This method reads the .constraints file and fills the list of constraints
+                    void Parser::parseConstraints(const std::string& filename) {
+                        // Open the file for reading
+                        std::ifstream file(filename);
+                        if (!file) {
+                        std::stringstream ss;  // Einen stringstream erstellen
+                        ss << "Could not open file "
+                            << filename;  // Die Nachricht und den Dateinamen in den stringstream
+                                        // schreiben
+                        throw std::runtime_error(
+                            ss.str());  // Den Inhalt des stringstream als std::string zurückgeben
+                                        // und eine Ausnahme werfen
+                        }
+                    
+                        // Read the file line by line
+                        std::string line;
+                        while (std::getline(file, line)) {
+                        // Create a stream from the line
+                        std::istringstream stream(line);
+                    
+                        // Create a Constraint object
+                        Constraint constraint;
+                    
+                        // Read pairs of option and value from the stream and add them to the
+                        // constraint
+                        std::string option, value;
+                        while ((option = readString(stream)) != "" &&
+                                (value = readString(stream)) != "") {
+                            constraint.addPair(option, value);
+                        }
+                    
+                        // Add the constraint to the list
+                        constraints.push_back(constraint);
+                        }
+                    
+                        // Close the file
+                        file.close();
                     }
+                    
+                    // This method returns the map of options
+                    std::vector<Option> Parser::getOptions() const { return options; }
+                    
+                    // This method returns the list of constraints
+                    std::vector<Constraint> Parser::getConstraints() const { return constraints; }
+                    
+                    // This method reads a string from a stream until a comma or a newline is found
+                    // or until the end of the stream is reached
+                    std::string Parser::readString(std::istream& stream) {
+                        // Create an empty string
+                        std::string result;
+                    
+                        // Read from the stream character by character
+                        char c;
+                        while (stream.get(c)) {
+                        // If the character is a comma or a newline, break out of the loop
+                        if (c == ',' || c == '\n') {
+                            break;
+                        }
+                    
+                        // Otherwise, add it to the string
+                        result += c;
+                        }
+                    
+                        // Return the string
+                        return result;
                     }
-                
-                    // Close the file
-                    file.close();
-                }
-                
-                // This method reads the .constraints file and fills the list of constraints
-                void Parser::parseConstraints(const std::string& filename) {
-                    // Open the file for reading
-                    std::ifstream file(filename);
-                    if (!file) {
-                    std::stringstream ss;  // Einen stringstream erstellen
-                    ss << "Could not open file "
-                        << filename;  // Die Nachricht und den Dateinamen in den stringstream
-                                    // schreiben
-                    throw std::runtime_error(
-                        ss.str());  // Den Inhalt des stringstream als std::string zurückgeben
-                                    // und eine Ausnahme werfen
-                    }
-                
-                    // Read the file line by line
-                    std::string line;
-                    while (std::getline(file, line)) {
-                    // Create a stream from the line
-                    std::istringstream stream(line);
-                
-                    // Create a Constraint object
-                    Constraint constraint;
-                
-                    // Read pairs of option and value from the stream and add them to the
-                    // constraint
-                    std::string option, value;
-                    while ((option = readString(stream)) != "" &&
-                            (value = readString(stream)) != "") {
-                        constraint.addPair(option, value);
-                    }
-                
-                    // Add the constraint to the list
-                    constraints.push_back(constraint);
-                    }
-                
-                    // Close the file
-                    file.close();
-                }
-                
-                // This method returns the map of options
-                std::vector<Option> Parser::getOptions() const { return options; }
-                
-                // This method returns the list of constraints
-                std::vector<Constraint> Parser::getConstraints() const { return constraints; }
-                
-                // This method reads a string from a stream until a comma or a newline is found
-                // or until the end of the stream is reached
-                std::string Parser::readString(std::istream& stream) {
-                    // Create an empty string
-                    std::string result;
-                
-                    // Read from the stream character by character
-                    char c;
-                    while (stream.get(c)) {
-                    // If the character is a comma or a newline, break out of the loop
-                    if (c == ',' || c == '\n') {
-                        break;
-                    }
-                
-                    // Otherwise, add it to the string
-                    result += c;
-                    }
-                
-                    // Return the string
-                    return result;
-                }
-                </code></pre>
+                    </code></pre>
             Hier ist PrettyPrinter.cpp:
             <pre><code>
-                #include "PrettyPrinter.hpp"
-                
-                #include <fstream>
-                #include <stdexcept>
-                
-                // A constructor that takes two file names as parameters
-                PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
-                                            const std::string& constraintsFile) {
-                    this->optionsFile = optionsFile;
-                    this->constraintsFile = constraintsFile;
-                }
-                
-                // A method that prints the options to the .options file
-                void PrettyPrinter::printOptions(const std::vector<Option>& options) {
-                    // Open the .options file for writing
-                    std::ofstream out(optionsFile);
-                
-                    // Check if the file is opened successfully
-                    if (!out) {
-                    // Throw an exception if the file cannot be opened
-                    throw std::runtime_error("Cannot open " + optionsFile);
+                    #include "PrettyPrinter.hpp"
+                    
+                    #include <fstream>
+                    #include <stdexcept>
+                    
+                    // A constructor that takes two file names as parameters
+                    PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
+                                                const std::string& constraintsFile) {
+                        this->optionsFile = optionsFile;
+                        this->constraintsFile = constraintsFile;
                     }
-                
-                    // Iterate over the vector of options
-                    for (const Option& option : options) {
-                    // Write the name of the option to the file
-                    out << option.getName();
-                
-                    // Iterate over the vector of values of the option
-                    for (const std::string& value : option.getValues()) {
-                        // Write a comma and the value to the file
-                        out << ',' << value;
-                    }
-                
-                    // Write a newline character to the file
-                    out << '\n';
-                    }
-                
-                    // Close the file
-                    out.close();
-                }
-                
-                // A method that prints the constraints to the .constraints file
-                void PrettyPrinter::printConstraints(
-                    const std::vector<Constraint>& constraints) {
-                    // Open the .constraints file for writing
-                    std::ofstream out(constraintsFile);
-                
-                    // Check if the file is opened successfully
-                    if (!out) {
-                    // Throw an exception if the file cannot be opened
-                    throw std::runtime_error("Cannot open " + constraintsFile);
-                    }
-                
-                    // Iterate over the vector of constraints
-                    for (const Constraint& constraint : constraints) {
-                    // Create a flag that indicates whether this is the first pair in the
-                    // constraint
-                    bool first = true;
-                
-                    // Iterate over the vector of pairs of the constraint
-                    for (const std::pair<std::string, std::string>& pair :
-                        constraint.getPairs()) {
-                        // Check if this is not the first pair in the constraint
-                        if (!first) {
-                        // Write a comma to the file
-                        out << ',';
-                        } else {
-                        // Set the flag to false
-                        first = false;
+                    
+                    // A method that prints the options to the .options file
+                    void PrettyPrinter::printOptions(const std::vector<Option>& options) {
+                        // Open the .options file for writing
+                        std::ofstream out(optionsFile);
+                    
+                        // Check if the file is opened successfully
+                        if (!out) {
+                        // Throw an exception if the file cannot be opened
+                        throw std::runtime_error("Cannot open " + optionsFile);
                         }
-                
-                        // Write the option and value of the pair to the file separated by a comma
-                        out << pair.first << ',' << pair.second;
+                    
+                        // Iterate over the vector of options
+                        for (const Option& option : options) {
+                        // Write the name of the option to the file
+                        out << option.getName();
+                    
+                        // Iterate over the vector of values of the option
+                        for (const std::string& value : option.getValues()) {
+                            // Write a comma and the value to the file
+                            out << ',' << value;
+                        }
+                    
+                        // Write a newline character to the file
+                        out << '\n';
+                        }
+                    
+                        // Close the file
+                        out.close();
                     }
-                
-                    // Write a newline character to the file
-                    out << '\n';
+                    
+                    // A method that prints the constraints to the .constraints file
+                    void PrettyPrinter::printConstraints(
+                        const std::vector<Constraint>& constraints) {
+                        // Open the .constraints file for writing
+                        std::ofstream out(constraintsFile);
+                    
+                        // Check if the file is opened successfully
+                        if (!out) {
+                        // Throw an exception if the file cannot be opened
+                        throw std::runtime_error("Cannot open " + constraintsFile);
+                        }
+                    
+                        // Iterate over the vector of constraints
+                        for (const Constraint& constraint : constraints) {
+                        // Create a flag that indicates whether this is the first pair in the
+                        // constraint
+                        bool first = true;
+                    
+                        // Iterate over the vector of pairs of the constraint
+                        for (const std::pair<std::string, std::string>& pair :
+                            constraint.getPairs()) {
+                            // Check if this is not the first pair in the constraint
+                            if (!first) {
+                            // Write a comma to the file
+                            out << ',';
+                            } else {
+                            // Set the flag to false
+                            first = false;
+                            }
+                    
+                            // Write the option and value of the pair to the file separated by a comma
+                            out << pair.first << ',' << pair.second;
+                        }
+                    
+                        // Write a newline character to the file
+                        out << '\n';
+                        }
+                    
+                        // Close the file
+                        out.close();
                     }
-                
-                    // Close the file
-                    out.close();
-                }
-                </code></pre>
+                    </code></pre>
             Hier ist Solver.cpp:
             <pre><code>
-                // Solver.cpp
-                
-                #include "Solver.hpp"
-                
-                #include "Model.hpp"
-                #include "ModelGenerator.hpp"
-                #include "Parser.hpp"
-                
-                // The constructor stores the parser in the member variable and creates a
-                // ModelGenerator object with the options and constraints from the parser
-                // Initialize the generator with the options and constraints from the parser
-                Solver::Solver(const Parser &parser)
-                    : parser(parser), generator(parser.getOptions(), parser.getConstraints()) {}
-                
-                // This method generates the models using the ModelGenerator object and stores
-                // them in a list of maps of options to values Generate the models using the
-                // generator and assign them to the member variable
-                void Solver::solve() { models = generator.generateModels(); }
-                
-                // This method returns the list of maps as a const reference
-                const std::list<std::map<std::string, std::string>> &Solver::getModels() const {
-                    return models;  // Return the member variable
-                }
-                </code></pre>
+                    // Solver.cpp
+                    
+                    #include "Solver.hpp"
+                    
+                    #include "Model.hpp"
+                    #include "ModelGenerator.hpp"
+                    #include "Parser.hpp"
+                    
+                    // The constructor stores the parser in the member variable and creates a
+                    // ModelGenerator object with the options and constraints from the parser
+                    // Initialize the generator with the options and constraints from the parser
+                    Solver::Solver(const Parser &parser)
+                        : parser(parser), generator(parser.getOptions(), parser.getConstraints()) {}
+                    
+                    // This method generates the models using the ModelGenerator object and stores
+                    // them in a list of maps of options to values Generate the models using the
+                    // generator and assign them to the member variable
+                    void Solver::solve() { models = generator.generateModels(); }
+                    
+                    // This method returns the list of maps as a const reference
+                    const std::list<std::map<std::string, std::string>> &Solver::getModels() const {
+                        return models;  // Return the member variable
+                    }
+                    </code></pre>
 
         </div>
+
         Hier ist Makefile01:
         <pre>
-                        <code>
-                            CXX = g++
-                            CXXFLAGS=  --std=c++14 #-Wextra -Wall -pedantic
-                            EXCLUDED = poly2.cpp
-                            HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
-                            OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
-                            TESTLIBS = -lgtest -lgtest_main -lpthread
-                            TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
-                            
-                            all: clean compile
-                            
-                            %.o: %.cpp $(HEADERS)
-                                $(CXX) $(CXXFLAGS) -c $<
-                            
-                            %Main: %Main.cpp $(OBJECTS)
-                                $(CXX) $(CXXFLAGS) -o $@ $^
-                            
-                            compile: bddMain nqueensMain
-                            
-                            %Test: %Test.o $(OBJECTS)
-                                $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
-                            
-                            test: $(TEST_BINARIES)
-                                echo "$(TESTS)"
-                                for test in `ls *Test` ; \
-                                do \
-                                ./$$test || (echo "failed test $$test" && exit 255) \
-                                done
-                            
-                            clean:
-                                rm -f *Main *Test *.o
-                            
-                            format:
-                                clang-format -i *.cpp *.hpp         
-                        </code>
-                    </pre>
+                            <code>
+                                CXX = g++
+                                CXXFLAGS=  --std=c++14 #-Wextra -Wall -pedantic
+                                EXCLUDED = poly2.cpp
+                                HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
+                                OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
+                                TESTLIBS = -lgtest -lgtest_main -lpthread
+                                TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
+                                
+                                all: clean compile
+                                
+                                %.o: %.cpp $(HEADERS)
+                                    $(CXX) $(CXXFLAGS) -c $<
+                                
+                                %Main: %Main.cpp $(OBJECTS)
+                                    $(CXX) $(CXXFLAGS) -o $@ $^
+                                
+                                compile: bddMain nqueensMain
+                                
+                                %Test: %Test.o $(OBJECTS)
+                                    $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
+                                
+                                test: $(TEST_BINARIES)
+                                    echo "$(TESTS)"
+                                    for test in `ls *Test` ; \
+                                    do \
+                                    ./$$test || (echo "failed test $$test" && exit 255) \
+                                    done
+                                
+                                clean:
+                                    rm -f *Main *Test *.o
+                                
+                                format:
+                                    clang-format -i *.cpp *.hpp         
+                            </code>
+                        </pre>
         Hier ist Makefile02:
         <pre>
-                        <code
-                        >
-                            CXX = g++
-                            CXXFLAGS = -std=c++20 -O2 
-                            HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
-                            OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
-                            TESTLIBS = -lgtest -lgtest_main -lpthread
-                            TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
-                            
-                            all: compile
-                            
-                            %.o: %.cpp $(HEADERS)
-                            $(CXX) $(CXXFLAGS) -c $<
-                            
-                            %Main: %Main.cpp $(OBJECTS)
-                            $(CXX) $(CXXFLAGS) -o $@ $^
-                            
-                            compile: prettyPrinterMain
-                            
-                            %Test: %Test.o $(OBJECTS)
-                            $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
-                            
-                            test: $(TEST_BINARIES)
-                            echo "$(TESTS)"
-                            for test in ls *Test ; \
-                                do \
-                                ./$$test || (echo "failed test $$test" && exit 255) \
-                                done
-                            
-                            clean:
-                            rm -f *Main *Test *.o
-                            
-                            format:
-                            clang-format -i *.cpp *.hpp
-                        </code>
-                    </pre>
+                            <code
+                            >
+                                CXX = g++
+                                CXXFLAGS = -std=c++20 -O2 
+                                HEADERS = $(filter-out $(EXCLUDED), $(wildcard *.hpp))
+                                OBJECTS = $(addsuffix .o, $(basename  $(filter-out $(EXCLUDED) %Test.cpp %Main.cpp, $(wildcard *.cpp))))
+                                TESTLIBS = -lgtest -lgtest_main -lpthread
+                                TEST_BINARIES = $(basename $(wildcard *[Tt]est.cpp))
+                                
+                                all: compile
+                                
+                                %.o: %.cpp $(HEADERS)
+                                $(CXX) $(CXXFLAGS) -c $<
+                                
+                                %Main: %Main.cpp $(OBJECTS)
+                                $(CXX) $(CXXFLAGS) -o $@ $^
+                                
+                                compile: prettyPrinterMain
+                                
+                                %Test: %Test.o $(OBJECTS)
+                                $(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)  $(TESTLIBS)
+                                
+                                test: $(TEST_BINARIES)
+                                echo "$(TESTS)"
+                                for test in ls *Test ; \
+                                    do \
+                                    ./$$test || (echo "failed test $$test" && exit 255) \
+                                    done
+                                
+                                clean:
+                                rm -f *Main *Test *.o
+                                
+                                format:
+                                clang-format -i *.cpp *.hpp
+                            </code>
+                        </pre>
         Hier ist fuzz.sh:
         <pre>
-                                <code
-                                >
-                                    #!/bin/bash
-                                FUZZER=./crippled-fuzzer
-                                SOLVER=./solverMain
-                                CHECKER=./russian-roulette-checker
-                
-                                if [ -x $FUZZER ];
-                                then
-                                    echo "found fuzzer"
-                                else
-                                    echo "the fuzzer was not found"
-                                    exit 1
-                                fi
-                                if [ -x $SOLVER ];
-                                then
-                                    echo "found solver"
-                                else
-                                    echo "the solver was not found"
-                                    exit 1
-                                fi
-                                if [ -x $CHECKER ];
-                                then
-                                    echo "found checker"
-                                else
-                                    echo "the checker was not found"
-                                    exit 1
-                                fi
-                                echo "starting the tests"
-                                i=0
-                                while [ true ];
-                                do
-                                    echo "*******************************************"
-                                    echo "************* TEST $i    ******************"
-                                    i=$((i+1))
-                                    $FUZZER fuzzer-test.{options,constraints}
-                                    status=$?
-                                    if [ "$status" -ne 0 ];
+                                    <code
+                                    >
+                                        #!/bin/bash
+                                    FUZZER=./crippled-fuzzer
+                                    SOLVER=./solverMain
+                                    CHECKER=./russian-roulette-checker
+                    
+                                    if [ -x $FUZZER ];
                                     then
-                                echo "the fuzzer failed on"
-                                exit -1;
-                                    fi;
-                                    $SOLVER fuzzer-test.{options,constraints,models}
-                                    status=$?
-                                    if [ "$status" -ne 0 ];
+                                        echo "found fuzzer"
+                                    else
+                                        echo "the fuzzer was not found"
+                                        exit 1
+                                    fi
+                                    if [ -x $SOLVER ];
                                     then
-                                echo "the solver failed on fuzzer-test.{options,constraints,models}"
-                                exit -1;
-                                    fi;
-                                    $CHECKER fuzzer-test.{options,constraints,models}
-                                    status=$?
-                                    if [ "$status" -ne 40 -a "$status" -ne 0 ];
+                                        echo "found solver"
+                                    else
+                                        echo "the solver was not found"
+                                        exit 1
+                                    fi
+                                    if [ -x $CHECKER ];
                                     then
-                                echo "the checker failed on fuzzer-test.{options,constraints,models}"
-                                exit -1;
-                                    fi;
-                                done
-                                    
-                                </code>
-                            </pre>
+                                        echo "found checker"
+                                    else
+                                        echo "the checker was not found"
+                                        exit 1
+                                    fi
+                                    echo "starting the tests"
+                                    i=0
+                                    while [ true ];
+                                    do
+                                        echo "*******************************************"
+                                        echo "************* TEST $i    ******************"
+                                        i=$((i+1))
+                                        $FUZZER fuzzer-test.{options,constraints}
+                                        status=$?
+                                        if [ "$status" -ne 0 ];
+                                        then
+                                    echo "the fuzzer failed on"
+                                    exit -1;
+                                        fi;
+                                        $SOLVER fuzzer-test.{options,constraints,models}
+                                        status=$?
+                                        if [ "$status" -ne 0 ];
+                                        then
+                                    echo "the solver failed on fuzzer-test.{options,constraints,models}"
+                                    exit -1;
+                                        fi;
+                                        $CHECKER fuzzer-test.{options,constraints,models}
+                                        status=$?
+                                        if [ "$status" -ne 40 -a "$status" -ne 0 ];
+                                        then
+                                    echo "the checker failed on fuzzer-test.{options,constraints,models}"
+                                    exit -1;
+                                        fi;
+                                    done
+                                        
+                                    </code>
+                                </pre>
         Hier ist Readme.md für `fuzz.sh`:
         <pre>
-                                <code>
-                                Dieses Verzeichnis enthält den Fuzzer und das Skript der alles aufruft. Im Moment stehen nur Linux binary Datei zu verfügen.
-                                Um alles aufzurufen, müsst ihr:
-                                    1. Die Pfade anpassen in `fuzz.sh`
-                                    2. Das Skript ausführen mit `./fuzz.sh`
-                                Dieses Skript läuft unendlich lange bis ein Fehler gefunden wird und
-                                es überschreibt immer die Datein
-                                `fuzzer-test.{options,constraints,models}`.
-                                    
-                                </code>
-                            </pre>
+                                    <code>
+                                    Dieses Verzeichnis enthält den Fuzzer und das Skript der alles aufruft. Im Moment stehen nur Linux binary Datei zu verfügen.
+                                    Um alles aufzurufen, müsst ihr:
+                                        1. Die Pfade anpassen in `fuzz.sh`
+                                        2. Das Skript ausführen mit `./fuzz.sh`
+                                    Dieses Skript läuft unendlich lange bis ein Fehler gefunden wird und
+                                    es überschreibt immer die Datein
+                                    `fuzzer-test.{options,constraints,models}`.
+                                        
+                                    </code>
+                                </pre>
         </pre>
 
         <h1>Hilfe-und-Diskussion-für-Aufgaben</h1>
@@ -1420,24 +1421,24 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    H,r,y
-                                    n,C,c
-                                    7,J
-                                    f,3,a
-                    </code>
-                    </pre>
+                                    <code>
+                                        H,r,y
+                                        n,C,c
+                                        7,J
+                                        f,3,a
+                        </code>
+                        </pre>
                     </div> constraints:
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                f,a
-                                f,a,n,C,7,J,H,y,n,c
-                                f,3,f,3
-                                H,y,7,J,H,r,f,3,f,a
-                                </code>
-                            </pre>
+                                    <code>
+                                    f,a
+                                    f,a,n,C,7,J,H,y,n,c
+                                    f,3,f,3
+                                    H,y,7,J,H,r,f,3,f,a
+                                    </code>
+                                </pre>
                     </div>
                     Wie soll damit umgegangen werden? In meinem Program hab ich es so umgesetzt dass für ein Constraint
                     für jede
@@ -1891,21 +1892,21 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>   
-                                    parsing von .options
-                                    Wenn parsing nicht geklappt hat, return 10
-                                    
-                                    
-                                    parsing + checking von .constraints
-                                    Wenn parsing + checking nicht geklappt hat, return 20
-                                    
-            
-                                    parsing + checking von .modelle
-                                    Wenn parsing + checking nicht geklappt hat, return 30
-                                    
-                                    return 0;
-                                </code>
-                    </pre>
+                                    <code>   
+                                        parsing von .options
+                                        Wenn parsing nicht geklappt hat, return 10
+                                        
+                                        
+                                        parsing + checking von .constraints
+                                        Wenn parsing + checking nicht geklappt hat, return 20
+                                        
+                
+                                        parsing + checking von .modelle
+                                        Wenn parsing + checking nicht geklappt hat, return 30
+                                        
+                                        return 0;
+                                    </code>
+                        </pre>
                     </div>
                 </div>
             </div>
@@ -1937,8 +1938,8 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre><code>Prozessor, Intel, Prozessor, AMD, Bildschirm, 2
-            Prozessor, Intel, Bildschirm, 2
-            </code></pre>
+                Prozessor, Intel, Bildschirm, 2
+                </code></pre>
                     </div>
 
                     Es dürfen natürlich keine erfundenen <span class="posthilit">Option</span> geben, keine neuen Werte,
@@ -1964,8 +1965,8 @@
                             <div class="codebox">
                                 <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                                 <pre><code>Prozessor, Intel, Prozessor, AMD, Bildschirm, 2
-            Prozessor, Intel, Bildschirm, 2
-            </code></pre>
+                Prozessor, Intel, Bildschirm, 2
+                </code></pre>
                             </div>
 
                             Es dürfen natürlich keine neuen <span class="posthilit">Option</span> geben, keine neuen
@@ -2216,21 +2217,21 @@
                             <div class="codebox">
                                 <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                                 <pre>
-                                        <code>   
-                                        parsing von .options
-                                        Wenn parsing nicht geklappt hat, return 10
-                                        
-                                        
-                                        parsing + checking von .constraints
-                                        Wenn parsing + checking nicht geklappt hat, return 20
-                                        
-            
-                                        parsing + checking von .modelle
-                                        Wenn parsing + checking nicht geklappt hat, return 30
-                                        
-                                        return 0;
-                                        </code>
-                                    </pre>
+                                            <code>   
+                                            parsing von .options
+                                            Wenn parsing nicht geklappt hat, return 10
+                                            
+                                            
+                                            parsing + checking von .constraints
+                                            Wenn parsing + checking nicht geklappt hat, return 20
+                                            
+                
+                                            parsing + checking von .modelle
+                                            Wenn parsing + checking nicht geklappt hat, return 30
+                                            
+                                            return 0;
+                                            </code>
+                                        </pre>
                             </div>
                         </div>
                     </blockquote>
@@ -2315,21 +2316,21 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    parsing von .options
-                                    Wenn parsing nicht geklappt hat, return 10
-                                    
-                                    
-                                    parsing + checking von .constraints
-                                    Wenn parsing + checking nicht geklappt hat, return 20
-                                    
-            
-                                    parsing + checking von .modelle
-                                    Wenn parsing + checking nicht geklappt hat, return 30
-                                    
-                                    return 0;
-                                </code>
-                            </pre>
+                                    <code>
+                                        parsing von .options
+                                        Wenn parsing nicht geklappt hat, return 10
+                                        
+                                        
+                                        parsing + checking von .constraints
+                                        Wenn parsing + checking nicht geklappt hat, return 20
+                                        
+                
+                                        parsing + checking von .modelle
+                                        Wenn parsing + checking nicht geklappt hat, return 30
+                                        
+                                        return 0;
+                                    </code>
+                                </pre>
                     </div>
                     - Tabelle 1 bezieht sich auf SolverMain (?):<br>
                     (a) Falls Dateien nicht geöffnet werden konnten, dann Return 10<br>
@@ -2441,15 +2442,15 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre><code>$ cat a.options # oops kein Wert
-            this is a normal option, value 1, value 2
-            another option, value 1
-            this is an option without value that you cannot parse
-            
-            $ cat b.options # oops eine option ist mehrmal angegeben
-            option1, value 1, value 2
-            option1, value 1
-            option1, hello it's me again
-            </code></pre>
+                this is a normal option, value 1, value 2
+                another option, value 1
+                this is an option without value that you cannot parse
+                
+                $ cat b.options # oops eine option ist mehrmal angegeben
+                option1, value 1, value 2
+                option1, value 1
+                option1, hello it's me again
+                </code></pre>
                     </div>
                 </div>
             </div>
@@ -2520,38 +2521,38 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    # constraints.cpp
-                                    int parse_csv() {
-                                    // blabla 
-                                    
-                                    // some error occurs
-                                    throw "Error opening file: " + std::string(input_filename);
-                                    return 40;
-                                    }
-                                </code>
-                    </pre>
+                                    <code>
+                                        # constraints.cpp
+                                        int parse_csv() {
+                                        // blabla 
+                                        
+                                        // some error occurs
+                                        throw "Error opening file: " + std::string(input_filename);
+                                        return 40;
+                                        }
+                                    </code>
+                        </pre>
                     </div>
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                            <code>
-                                # checkerMain.cpp
-                                int main()
-                                { // blabla
-                                
-                                int response_code;
-                                try {
-                                    // Funktion wird ausgeführt
-                                    response_code = constraints.parse_csv();
-                                    response_code = // weitere funktionen
-                                } catch (const char *msg) {
-                                    // Wenn ein Fehler auftritt, bzw. wenn eine Nachricht zurückgegeben (throw) wird, wird diese und der Fehlercode ausgegeben und das Programm abgebrochen	
-                                    std::cerr &lt;&lt; msg &lt;&lt; std::endl;
-                                    return response_code;
-                                }}
-                            </code>
-                    </pre>
+                                <code>
+                                    # checkerMain.cpp
+                                    int main()
+                                    { // blabla
+                                    
+                                    int response_code;
+                                    try {
+                                        // Funktion wird ausgeführt
+                                        response_code = constraints.parse_csv();
+                                        response_code = // weitere funktionen
+                                    } catch (const char *msg) {
+                                        // Wenn ein Fehler auftritt, bzw. wenn eine Nachricht zurückgegeben (throw) wird, wird diese und der Fehlercode ausgegeben und das Programm abgebrochen	
+                                        std::cerr &lt;&lt; msg &lt;&lt; std::endl;
+                                        return response_code;
+                                    }}
+                                </code>
+                        </pre>
                     </div>
 
                     Wegen diesem "durchreichen" erhalte ich dann immer den Fehlercode der Funktion, in der der Fehler
@@ -3649,11 +3650,11 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    enum class ERROR {NO_ERROR, FILE_NOT_READABLE, PARSING_ERROR};
-                                ERROR error = NO_ERROR;
-                                </code>
-                    </pre>
+                                    <code>
+                                        enum class ERROR {NO_ERROR, FILE_NOT_READABLE, PARSING_ERROR};
+                                    ERROR error = NO_ERROR;
+                                    </code>
+                        </pre>
                     </div>
 
                     und dann in der main Datei übersetzt du den Fehler im Return code:<br>
@@ -3661,17 +3662,17 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    switch(parser.error) {
-                                    case FILE_NOT_READABLE:
-                                    return 30;
-                                    case PARSING_ERROR:
-                                    return 10;
-                                    default:
-                                    // just continue
-                                }
-                                </code>
-                            </pre>
+                                    <code>
+                                        switch(parser.error) {
+                                        case FILE_NOT_READABLE:
+                                        return 30;
+                                        case PARSING_ERROR:
+                                        return 10;
+                                        default:
+                                        // just continue
+                                    }
+                                    </code>
+                                </pre>
                     </div>
                     Und in der parser Klasse hörst du dann auf wenn ein Fehler passiert. Und schreibst als Doku für die
                     Funktion
@@ -4116,21 +4117,21 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    Konfiguration = []
-                                        n = #anzahl optionen zu besetzen
-                                        solange n &gt; 0
-                                        i := random integer von 0 bis n
-                                        wenn i = n (also geringe wahrscheinlichkeit): 
-                                            opt :=  erste nicht besetzte Option mit einem Wert
-                                            Konfiguration.append(opt)
-                                            n = n-1;
-                                        sonst // hohe wahrscheinlichkeit
-                                            opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
-                                            Konfiguration.append(opt)
-                                            update n
-                                </code>
-                            </pre>
+                                    <code>
+                                        Konfiguration = []
+                                            n = #anzahl optionen zu besetzen
+                                            solange n &gt; 0
+                                            i := random integer von 0 bis n
+                                            wenn i = n (also geringe wahrscheinlichkeit): 
+                                                opt :=  erste nicht besetzte Option mit einem Wert
+                                                Konfiguration.append(opt)
+                                                n = n-1;
+                                            sonst // hohe wahrscheinlichkeit
+                                                opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
+                                                Konfiguration.append(opt)
+                                                update n
+                                    </code>
+                                </pre>
                     </div>
                 </div>
             </div>
@@ -4208,15 +4209,15 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    $ echo a.options
-                                    A,1,2
-                                    B,1,2
-                                    C,1,2
-                                    D,1,2
-                                    $ echo a.constraints #leer
-                                </code>
-                                </pre>
+                                    <code>
+                                        $ echo a.options
+                                        A,1,2
+                                        B,1,2
+                                        C,1,2
+                                        D,1,2
+                                        $ echo a.constraints #leer
+                                    </code>
+                                    </pre>
                     </div>
                 </div>
             </div>
@@ -4376,21 +4377,21 @@
                             <div class="codebox">
                                 <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                                 <pre>
-                                        <code>
-                                            Konfiguration = []
-                                            n = #anzahl optionen zu besetzen
-                                            solange n &gt; 0
-                                            i := random integer von 0 bis n
-                                            wenn i = n (also geringe wahrscheinlichkeit): 
-                                                opt :=  erste nicht besetzte Option mit einem Wert
-                                                Konfiguration.append(opt)
-                                                n = n-1;
-                                            sonst // hohe wahrscheinlichkeit
-                                                opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
-                                                Konfiguration.append(opt)
-                                                update n
-                                            </code>
-                                    </pre>
+                                            <code>
+                                                Konfiguration = []
+                                                n = #anzahl optionen zu besetzen
+                                                solange n &gt; 0
+                                                i := random integer von 0 bis n
+                                                wenn i = n (also geringe wahrscheinlichkeit): 
+                                                    opt :=  erste nicht besetzte Option mit einem Wert
+                                                    Konfiguration.append(opt)
+                                                    n = n-1;
+                                                sonst // hohe wahrscheinlichkeit
+                                                    opt := das erste nicht bedeckte Paar kompatibel mit Konfiguration
+                                                    Konfiguration.append(opt)
+                                                    update n
+                                                </code>
+                                        </pre>
                             </div>
                         </div>
                     </blockquote>
@@ -4648,19 +4649,19 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre>
-                                <code>
-                                    failed = 0
-                                    while (tests &lt; 1000)
-                                    ++test
-                                    ./fuzzerMain a.options a.constraints
-                                    ./solverMain a.options a.constraints a.models
-                                    ./checkerMain a.options a.constraints a.models
-                                    if(any failure)
-                                        ++fail
-                                        
-                                    Grade_student := maximum * ((1000 - fail) / 1000)
-                                </code>
-                    </pre>
+                                    <code>
+                                        failed = 0
+                                        while (tests &lt; 1000)
+                                        ++test
+                                        ./fuzzerMain a.options a.constraints
+                                        ./solverMain a.options a.constraints a.models
+                                        ./checkerMain a.options a.constraints a.models
+                                        if(any failure)
+                                            ++fail
+                                            
+                                        Grade_student := maximum * ((1000 - fail) / 1000)
+                                    </code>
+                        </pre>
                     </div>
 
                     (das Skript zum fuzzen gibt es übrigens da: <a
@@ -4786,17 +4787,17 @@
                     <div class="codebox">
                         <p>Code: <a href="#" onclick="selectCode(this); return false;">Select all</a></p>
                         <pre><code>void Constrains::parse(const std::string&amp; filename){
-            
-            
-            CSV csv;
-            // csv benutzt und befüllt
-            }
-            
-            
-            void Constrains::writeToFile(const std::string&amp; filename){
-            // constrains.reprentation benutzt   
-            }
-            </code></pre>
+                
+                
+                CSV csv;
+                // csv benutzt und befüllt
+                }
+                
+                
+                void Constrains::writeToFile(const std::string&amp; filename){
+                // constrains.reprentation benutzt   
+                }
+                </code></pre>
                     </div>
                 </div>
             </div>
