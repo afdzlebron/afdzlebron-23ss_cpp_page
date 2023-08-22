@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmiertes Program C++
+        Programm IN C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -331,45 +331,242 @@
                     afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
-                    Constraint.cpp:13:62: error: non-member function cannot have 'const' qualifier
-                    std::vector<std::pair<std::string, std::string> > getPairs() const {
-                                                                                ^~~~~~
-                    Constraint.cpp:15:13: error: ordered comparison between pointer and zero ('char *(*)(const char *, int)' and 'int')
-                    if (index >= 0 && index < pairs.size()) {
-                        ~~~~~ ^  ~
-                    Constraint.cpp:15:29: error: use of undeclared identifier 'pairs'
-                    if (index >= 0 && index < pairs.size()) {
-                                                ^
-                    Constraint.cpp:17:12: error: use of undeclared identifier 'pairs'
-                        return pairs[index];
-                            ^
-                    4 errors generated.
-                    make: *** [Constraint.o] Error 1
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all
-                    rm -f *Main *.o 
-                    g++ -std=c++17 -c Constraint.cpp
-                    Constraint.cpp:15:13: error: ordered comparison between pointer and zero ('char *(*)(const char *, int)' and 'int')
-                    if (index >= 0 && index < pairs.size()) {
-                        ~~~~~ ^  ~
-                    Constraint.cpp:15:29: error: use of undeclared identifier 'pairs'
-                    if (index >= 0 && index < pairs.size()) {
-                                                ^
-                    Constraint.cpp:17:12: error: use of undeclared identifier 'pairs'
-                        return pairs[index];
-                            ^
-                    3 errors generated.
-                    make: *** [Constraint.o] Error 1
+                    g++ -std=c++17 -c Fuzzer.cpp
+                    Fuzzer.cpp:18:14: error: no viable overloaded operator[] for type 'std::map<std::string, std::vector<std::string> >' (aka
+                        'map<basic_string<char, char_traits<char>, allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char> > > >')
+                        options[option] =
+                        ~~~~~~~^~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1129:18: note: candidate function not viable: no known conversion from
+                        'char' to 'const std::__1::map<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > >, std::__1::less<std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > > >::key_type' (aka 'const std::__1::basic_string<char>') for 1st argument
+                        mapped_type& operator[](const key_type& __k);
+                                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1131:18: note: candidate function not viable: no known conversion from
+                        'char' to 'std::__1::map<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > >, std::__1::less<std::__1::basic_string<char> >,
+                        std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > > > > >::key_type' (aka 'std::__1::basic_string<char>') for 1st argument
+                        mapped_type& operator[](key_type&& __k);
+                                    ^
+                    Fuzzer.cpp:43:12: error: no viable conversion from 'const std::__1::basic_string<char>' to 'char'
+                        char option = it->first;
+                            ^        ~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:875:5: note: candidate function
+                        operator __self_view() const _NOEXCEPT { return __self_view(data(), size()); }
+                        ^
+                    Fuzzer.cpp:45:11: error: no viable conversion from 'const std::__1::__vector_base<std::__1::basic_string<char>,
+                        std::__1::allocator<std::__1::basic_string<char> > >::value_type' (aka 'const std::__1::basic_string<char>') to 'int'
+                        int value = values[randomInt(0, values.size() - 1)];
+                            ^       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:875:5: note: candidate function
+                        operator __self_view() const _NOEXCEPT { return __self_view(data(), size()); }
+                        ^
+                    Fuzzer.cpp:55:21: error: out-of-line definition of 'fuzz' does not match any declaration in 'Fuzzer'
+                    std::string Fuzzer::fuzz() {
+                                        ^~~~
+                    Fuzzer.cpp:121:13: error: redefinition of 'randomInt'
+                    int Fuzzer::randomInt(int min, int max) {
+                                ^
+                    Fuzzer.cpp:66:13: note: previous definition is here
+                    int Fuzzer::randomInt(int min, int max) {
+                                ^
+                    In file included from Fuzzer.cpp:1:
+                    In file included from ./Fuzzer.hpp:4:
+                    In file included from /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:187:
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:919:22: error: invalid operands to binary expression
+                        ('std::__1::basic_string<char>' and 'const int')
+                            if (*__first == __value_)
+                                ~~~~~~~~ ^  ~~~~~~~~
+                    Fuzzer.cpp:28:16: note: in instantiation of function template specialization
+                        'std::__1::find<std::__1::__wrap_iter<std::__1::basic_string<char> *>, int>' requested here
+                        if (std::find(pair.second.begin(), pair.second.end(), value) ==
+                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:390:1: note: candidate function not viable: no known conversion
+                        from 'std::__1::basic_string<char>' to 'const std::__1::error_code' for 1st argument
+                    operator==(const error_code& __x, const error_code& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:397:1: note: candidate function not viable: no known conversion
+                        from 'std::__1::basic_string<char>' to 'const std::__1::error_code' for 1st argument
+                    operator==(const error_code& __x, const error_condition& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:405:1: note: candidate function not viable: no known conversion
+                        from 'std::__1::basic_string<char>' to 'const std::__1::error_condition' for 1st argument
+                    operator==(const error_condition& __x, const error_code& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/system_error:412:1: note: candidate function not viable: no known conversion
+                        from 'std::__1::basic_string<char>' to 'const std::__1::error_condition' for 1st argument
+                    operator==(const error_condition& __x, const error_condition& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/utility:576:1: note: candidate template ignored: could not match 'pair' against
+                        'basic_string'
+                    operator==(const pair<_T1,_T2>& __x, const pair<_T1,_T2>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:807:1: note: candidate template ignored: could not match
+                        'reverse_iterator' against 'basic_string'
+                    operator==(const reverse_iterator<_Iter1>& __x, const reverse_iterator<_Iter2>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1036:1: note: candidate template ignored: could not match
+                        'istream_iterator' against 'basic_string'
+                    operator==(const istream_iterator<_Tp, _CharT, _Traits, _Distance>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1140:6: note: candidate template ignored: could not match
+                        'istreambuf_iterator' against 'basic_string'
+                    bool operator==(const istreambuf_iterator<_CharT,_Traits>& __a,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1243:1: note: candidate template ignored: could not match
+                        'move_iterator' against 'basic_string'
+                    operator==(const move_iterator<_Iter1>& __x, const move_iterator<_Iter2>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1615:1: note: candidate template ignored: could not match '__wrap_iter'
+                        against 'basic_string'
+                    operator==(const __wrap_iter<_Iter1>& __x, const __wrap_iter<_Iter2>& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/tuple:1176:1: note: candidate template ignored: could not match 'tuple' against
+                        'basic_string'
+                    operator==(const tuple<_Tp...>& __x, const tuple<_Up...>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2042:6: note: candidate template ignored: could not match 'allocator'
+                        against 'basic_string'
+                    bool operator==(const allocator<_Tp>&, const allocator<_Up>&) _NOEXCEPT {return true;}
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2877:1: note: candidate template ignored: could not match 'unique_ptr'
+                        against 'basic_string'
+                    operator==(const unique_ptr<_T1, _D1>& __x, const unique_ptr<_T2, _D2>& __y) {return __x.get() == __y.get();}
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2913:1: note: candidate template ignored: could not match 'unique_ptr'
+                        against 'basic_string'
+                    operator==(const unique_ptr<_T1, _D1>& __x, nullptr_t) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:2921:1: note: candidate template ignored: could not match
+                        'unique_ptr<type-parameter-0-0, type-parameter-0-1>' against 'const int'
+                    operator==(nullptr_t, const unique_ptr<_T1, _D1>& __x) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4426:1: note: candidate template ignored: could not match 'shared_ptr'
+                        against 'basic_string'
+                    operator==(const shared_ptr<_Tp>& __x, const shared_ptr<_Up>& __y) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4480:1: note: candidate template ignored: could not match 'shared_ptr'
+                        against 'basic_string'
+                    operator==(const shared_ptr<_Tp>& __x, nullptr_t) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/memory:4488:1: note: candidate template ignored: could not match
+                        'shared_ptr<type-parameter-0-0>' against 'const int'
+                    operator==(nullptr_t, const shared_ptr<_Tp>& __x) _NOEXCEPT
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/functional:2581:1: note: candidate template ignored: could not match 'function'
+                        against 'basic_string'
+                    operator==(const function<_Rp(_ArgTypes...)>& __f, nullptr_t) _NOEXCEPT {return !__f;}
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/functional:2586:1: note: candidate template ignored: could not match
+                        'function<type-parameter-0-0 (type-parameter-0-1...)>' against 'const int'
+                    operator==(nullptr_t, const function<_Rp(_ArgTypes...)>& __f) _NOEXCEPT {return !__f;}
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/list:2418:1: note: candidate template ignored: could not match 'list' against
+                        'basic_string'
+                    operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1035:1: note: candidate template ignored: could not match 'optional'
+                        against 'basic_string'
+                    operator==(const optional<_Tp>& __x, const optional<_Up>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1128:1: note: candidate template ignored: could not match 'optional'
+                        against 'basic_string'
+                    operator==(const optional<_Tp>& __x, nullopt_t) noexcept
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1136:1: note: candidate template ignored: could not match
+                        'optional<type-parameter-0-0>' against 'const int'
+                    operator==(nullopt_t, const optional<_Tp>& __x) noexcept
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1229:1: note: candidate template ignored: could not match 'optional'
+                        against 'basic_string'
+                    operator==(const optional<_Tp>& __x, const _Up& __v)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/optional:1241:1: note: candidate template ignored: could not match
+                        'optional<type-parameter-0-1>' against 'const int'
+                    operator==(const _Tp& __v, const optional<_Up>& __x)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:1594:1: note: candidate template ignored: could not match 'map' against
+                        'basic_string'
+                    operator==(const map<_Key, _Tp, _Compare, _Allocator>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/map:2176:1: note: candidate template ignored: could not match 'multimap' against
+                        'basic_string'
+                    operator==(const multimap<_Key, _Tp, _Compare, _Allocator>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:614:6: note: candidate template ignored: could not match
+                        'basic_string_view' against 'basic_string'
+                    bool operator==(basic_string_view<_CharT, _Traits> __lhs,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:623:6: note: candidate template ignored: could not match
+                        'basic_string_view' against 'basic_string'
+                    bool operator==(basic_string_view<_CharT, _Traits> __lhs,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string_view:632:6: note: candidate template ignored: could not match
+                        'basic_string_view<type-parameter-0-0, type-parameter-0-1>' against 'int'
+                    bool operator==(typename common_type<basic_string_view<_CharT, _Traits> >::type __lhs,
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:563:6: note: candidate template ignored: could not match 'fpos' against
+                        'basic_string'
+                    bool operator==(const fpos<_StateT>& __x, const fpos<_StateT>& __y)
+                        ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3850:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'const int'
+                    operator==(const basic_string<_CharT, _Traits, _Allocator>& __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3862:1: note: candidate template ignored: could not match
+                        'basic_string<char, std::__1::char_traits<char>, type-parameter-0-0>' against 'const int'
+                    operator==(const basic_string<char, char_traits<char>, _Allocator>& __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3881:1: note: candidate template ignored: could not match
+                        'const _CharT *' against 'std::__1::basic_string<char>'
+                    operator==(const _CharT* __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:3894:1: note: candidate template ignored: could not match
+                        'const _CharT *' against 'int'
+                    operator==(const basic_string<_CharT,_Traits,_Allocator>& __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:3335:1: note: candidate template ignored: could not match 'vector'
+                        against 'basic_string'
+                    operator==(const vector<_Tp, _Allocator>& __x, const vector<_Tp, _Allocator>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/deque:2967:1: note: candidate template ignored: could not match 'deque' against
+                        'basic_string'
+                    operator==(const deque<_Tp, _Allocator>& __x, const deque<_Tp, _Allocator>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stack:256:1: note: candidate template ignored: could not match 'stack' against
+                        'basic_string'
+                    operator==(const stack<_Tp, _Container>& __x, const stack<_Tp, _Container>& __y)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2393:1: note: candidate template ignored: could not match
+                        'mersenne_twister_engine' against 'basic_string'
+                    operator==(const mersenne_twister_engine<_UInt, _Wp, _Np, _Mp, _Rp, _Ap, _Up, _Dp, _Sp,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2718:1: note: candidate template ignored: could not match
+                        'subtract_with_carry_engine' against 'basic_string'
+                    operator==(
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:2936:1: note: candidate template ignored: could not match
+                        'discard_block_engine' against 'basic_string'
+                    operator==(const discard_block_engine<_Eng, _Pp, _Rp>& __x,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:3187:1: note: candidate template ignored: could not match
+                        'independent_bits_engine' against 'basic_string'
+                    operator==(
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/random:3418:1: note: candidate template ignored: could not match
+                        'shuffle_order_engine' against 'basic_string'
+                    operator==(
+                    ^
+                    6 errors generated.
+                    make: *** [Fuzzer.o] Error 1
                 </pre>
             <pre id="p2">
-                    [{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-01-Debug-01-230821-01/archiv/formatter.cpp","owner": "clang","severity": 8,"message": "'Solver.hpp' file not found","startLineNumber": 3,"startColumn": 10,"endLineNumber": 3,"endColumn": 22
-                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "clang","severity": 8,"message": "ordered comparison between pointer and zero ('char *(*)(const char *, int)' and 'int')","startLineNumber": 15,"startColumn": 7,"endLineNumber": 15,"endColumn": 17
-                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'pairs'","startLineNumber": 15,"startColumn": 29,"endLineNumber": 15,"endColumn": 29
-                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 15,"startColumn": 29,"endLineNumber": 15,"endColumn": 34
-                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'pairs'","startLineNumber": 17,"startColumn": 12,"endLineNumber": 17,"endColumn": 12
-                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Main.cpp","owner": "clang","severity": 8,"message": "'Solver.hpp' file not found","startLineNumber": 5,"startColumn": 10,"endLineNumber": 5,"endColumn": 22
-                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Main.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Solver\"\" hat keinen Member \"\"getModels\"\".","source": "C/C++","startLineNumber": 49,"startColumn": 37,"endLineNumber": 49,"endColumn": 46
-                },{"resource": "Untitled-2","owner": "_generated_diagnostic_collection_name_#5","severity": 8,"message": "Expected a JSON object, array or literal.","source": "json","startLineNumber": 1,"startColumn": 1,"endLineNumber": 1,"endColumn": 8
+                    [{"resource": "Solver.hpp","owner": "C/C++: IntelliSense","code": "292","severity": 8,"message": "\"\"parser\"\" ist kein nicht statischer Datenmember bzw. nicht statische Basisklasse von \"\"Solver\"\".","source": "C/C++","startLineNumber": 13,"startColumn": 34,"endLineNumber": 13,"endColumn": 40
+                },{"resource": "Solver.hpp","owner": "clang","severity": 8,"message": "member initializer 'parser' does not name a non-static data member or base class","startLineNumber": 13,"startColumn": 34,"endLineNumber": 13,"endColumn": 48
                 }]
+                
                 </pre>
         </div>
 
@@ -380,7 +577,7 @@
                 #define CONSTRAINT_HPP
                 
                 #include <string>
-                #include <utility>  // Include this header to use std::pair
+                #include <utility>
                 #include <vector>
                 
                 // A class that represents a constraint with a vector of pairs of options and
@@ -394,13 +591,16 @@
                 }
                 
                 // A getter method that returns the vector of pairs of the constraint
-                std::vector<std::pair<std::string, std::string> > getPairs()  {
+                std::vector<std::pair<std::string, std::string> > getPairs() const {
                     // Return the member variable
                     return pairs;
                 }
                 
                 // A method that adds a pair of option and value to the vector of pairs
                 void addPair(const std::string& option, const std::string& value);
+                
+                // A method that returns the pair of option and value at the given index
+                std::pair<std::string, std::string> getPair(int index) const;
                 
                 private:
                 // A vector of pairs of strings that stores the options and values of the
@@ -518,7 +718,6 @@
             Hier ist Option.hpp:
             <pre><code>
                 #ifndef OPTION_HPP
-                
                 #define OPTION_HPP
                 
                 #include <string>
@@ -627,6 +826,36 @@
                 
                 #endif
                 </code></pre>
+            Hier ist Solver.hpp:
+            <pre><code>
+                #ifndef SOLVER_HPP
+                #define SOLVER_HPP
+                
+                #include <fstream>
+                #include <iostream>
+                #include <random>
+                
+                #include "Parser.hpp"
+                
+                class Solver {
+                public:
+                // The constructor stores the parser in the member variable
+                Solver(const Parser& parser) : parser(parser) {}
+                
+                // This method generates the models and stores them in a list of maps of
+                // options to values
+                void solve(){};
+                
+                // This method returns the list of maps
+                const std::list<std::map<std::string, std::string> >& getModels() const {}
+                
+                // This method checks if a configuration is compatible with the constraints
+                bool checkConstraints(
+                    const std::map<std::string, std::string>& config) const {};
+                };
+                
+                #endif
+                </code></pre>
             Hier ist Constraint.cpp:
             <pre><code>
                 #include "Constraint.hpp"
@@ -635,13 +864,12 @@
                 void Constraint::addPair(const std::string& option, const std::string& value) {
                 // Create a pair from the parameters
                 std::pair<std::string, std::string> pair(option, value);
-                
                 // Add it to the vector of pairs
                 pairs.push_back(pair);
                 }
                 
                 // A method that returns the pair of option and value at the given index
-                std::vector<std::pair<std::string, std::string> > getPairs()  {
+                std::pair<std::string, std::string> Constraint::getPair(int index) const {
                 // Check if the index is valid
                 if (index >= 0 && index < pairs.size()) {
                     // Return the pair at the index
