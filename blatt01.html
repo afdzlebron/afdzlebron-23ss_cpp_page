@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmier C++
+        Programmiertes Program C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -328,45 +328,48 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all          
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
-                    Constraint.cpp:4:18: error: out-of-line definition of 'addPair' does not match any declaration in 'Constraint'
-                    void Constraint::addPair(const std::string& option, const std::string& value) {
-                                    ^~~~~~~
-                    Constraint.cpp:12:49: error: out-of-line definition of 'getPair' does not match any declaration in 'Constraint'
-                    std::pair<std::string, std::string> Constraint::getPair(int index) const {
-                                                                    ^~~~~~~
-                    Constraint.cpp:28:3: error: use of undeclared identifier 'pairs'; did you mean 'pair'?
-                    pairs.push_back(pair);
-                    ^~~~~
-                    pair
-                    Constraint.cpp:26:39: note: 'pair' declared here
-                    std::pair<std::string, std::string> pair(option, value);
-                                                        ^
-                    Constraint.cpp:28:9: error: no member named 'push_back' in 'std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >'
-                    pairs.push_back(pair);
-                    ~~~~~ ^
+                    Constraint.cpp:13:62: error: non-member function cannot have 'const' qualifier
+                    std::vector<std::pair<std::string, std::string> > getPairs() const {
+                                                                                ^~~~~~
+                    Constraint.cpp:15:13: error: ordered comparison between pointer and zero ('char *(*)(const char *, int)' and 'int')
+                    if (index >= 0 && index < pairs.size()) {
+                        ~~~~~ ^  ~
+                    Constraint.cpp:15:29: error: use of undeclared identifier 'pairs'
+                    if (index >= 0 && index < pairs.size()) {
+                                                ^
+                    Constraint.cpp:17:12: error: use of undeclared identifier 'pairs'
+                        return pairs[index];
+                            ^
                     4 errors generated.
+                    make: *** [Constraint.o] Error 1
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02 % make all
+                    rm -f *Main *.o 
+                    g++ -std=c++17 -c Constraint.cpp
+                    Constraint.cpp:15:13: error: ordered comparison between pointer and zero ('char *(*)(const char *, int)' and 'int')
+                    if (index >= 0 && index < pairs.size()) {
+                        ~~~~~ ^  ~
+                    Constraint.cpp:15:29: error: use of undeclared identifier 'pairs'
+                    if (index >= 0 && index < pairs.size()) {
+                                                ^
+                    Constraint.cpp:17:12: error: use of undeclared identifier 'pairs'
+                        return pairs[index];
+                            ^
+                    3 errors generated.
+                    make: *** [Constraint.o] Error 1
                 </pre>
             <pre id="p2">
-                    [{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Constraint\"\" hat keinen Member \"\"addPair\"\".","source": "C/C++","startLineNumber": 4,"startColumn": 18,"endLineNumber": 4,"endColumn": 25
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 8,"startColumn": 3,"endLineNumber": 8,"endColumn": 8
-                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "redefinition of 'getPair'","startLineNumber": 12,"startColumn": 49,"endLineNumber": 12,"endColumn": 49
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Constraint\"\" hat keinen Member \"\"getPair\"\".","source": "C/C++","startLineNumber": 12,"startColumn": 49,"endLineNumber": 12,"endColumn": 56
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "1670","severity": 8,"message": "Ein Typqualifizierer ist in einer statischen Nichtmemberfunktion nicht zulässig.","source": "C/C++","startLineNumber": 12,"startColumn": 68,"endLineNumber": 12,"endColumn": 73
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 14,"startColumn": 29,"endLineNumber": 14,"endColumn": 34
-                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'pairs'; did you mean 'pair'?","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 3
-                },{"resource": "/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 8
-                },{"resource": "/Constraint.cpp","owner": "clang","severity": 8,"message": "no member named 'push_back' in 'std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >'","startLineNumber": 28,"startColumn": 3,"endLineNumber": 28,"endColumn": 8
-                }].
-                [{"resource": "/Constraint.hpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 13,"startColumn": 66,"endLineNumber": 13,"endColumn": 66
-                },{"resource": "/Constraint.hpp","owner": "clang","severity": 8,"message": "a space is required between consecutive right angle brackets (use '> >')","startLineNumber": 28,"startColumn": 49,"endLineNumber": 28,"endColumn": 49
-                }].
-                [{"resource": "/Option.cpp","owner": "clang","severity": 8,"message": "redefinition of 'addValue'","startLineNumber": 10,"startColumn": 14,"endLineNumber": 10,"endColumn": 14
-                }].
-                
-                
+                    [{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-01-Debug-01-230821-01/archiv/formatter.cpp","owner": "clang","severity": 8,"message": "'Solver.hpp' file not found","startLineNumber": 3,"startColumn": 10,"endLineNumber": 3,"endColumn": 22
+                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "clang","severity": 8,"message": "ordered comparison between pointer and zero ('char *(*)(const char *, int)' and 'int')","startLineNumber": 15,"startColumn": 7,"endLineNumber": 15,"endColumn": 17
+                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'pairs'","startLineNumber": 15,"startColumn": 29,"endLineNumber": 15,"endColumn": 29
+                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "C/C++: IntelliSense","code": "20","severity": 8,"message": "Der Bezeichner \"\"pairs\"\" ist nicht definiert.","source": "C/C++","startLineNumber": 15,"startColumn": 29,"endLineNumber": 15,"endColumn": 34
+                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Constraint.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'pairs'","startLineNumber": 17,"startColumn": 12,"endLineNumber": 17,"endColumn": 12
+                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Main.cpp","owner": "clang","severity": 8,"message": "'Solver.hpp' file not found","startLineNumber": 5,"startColumn": 10,"endLineNumber": 5,"endColumn": 22
+                },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02/Main.cpp","owner": "C/C++: IntelliSense","code": "135","severity": 8,"message": "\"Klasse \"Solver\"\" hat keinen Member \"\"getModels\"\".","source": "C/C++","startLineNumber": 49,"startColumn": 37,"endLineNumber": 49,"endColumn": 46
+                },{"resource": "Untitled-2","owner": "_generated_diagnostic_collection_name_#5","severity": 8,"message": "Expected a JSON object, array or literal.","source": "json","startLineNumber": 1,"startColumn": 1,"endLineNumber": 1,"endColumn": 8
+                }]
                 </pre>
         </div>
 
@@ -377,7 +380,7 @@
                 #define CONSTRAINT_HPP
                 
                 #include <string>
-                #include <utility>
+                #include <utility>  // Include this header to use std::pair
                 #include <vector>
                 
                 // A class that represents a constraint with a vector of pairs of options and
@@ -385,22 +388,24 @@
                 class Constraint {
                 public:
                 // A constructor that takes a vector of pairs as a parameter
-                Constraint(const std::vector<std::pair<std::string, std::string>>& pairs) {
+                Constraint(const std::vector<std::pair<std::string, std::string> >& pairs) {
                     // Assign the parameter to the member variable
                     this->pairs = pairs;
                 }
                 
                 // A getter method that returns the vector of pairs of the constraint
-                std::vector<std::pair<std::string, std::string> > getPairs()
-                    const {
+                std::vector<std::pair<std::string, std::string> > getPairs()  {
                     // Return the member variable
                     return pairs;
                 }
                 
+                // A method that adds a pair of option and value to the vector of pairs
+                void addPair(const std::string& option, const std::string& value);
+                
                 private:
                 // A vector of pairs of strings that stores the options and values of the
                 // constraint
-                std::vector<std::pair<std::string, std::string>> pairs;
+                std::vector<std::pair<std::string, std::string> > pairs;
                 };
                 
                 #endif
@@ -513,6 +518,7 @@
             Hier ist Option.hpp:
             <pre><code>
                 #ifndef OPTION_HPP
+                
                 #define OPTION_HPP
                 
                 #include <string>
@@ -535,7 +541,7 @@
                 }
                 
                 // A method that adds a value to the vector of values
-                void addValue(const std::string& value) {}
+                void addValue(const std::string& value);
                 
                 // A getter method that returns the vector of values of the option
                 std::vector<std::string> getValues() const {
@@ -629,12 +635,13 @@
                 void Constraint::addPair(const std::string& option, const std::string& value) {
                 // Create a pair from the parameters
                 std::pair<std::string, std::string> pair(option, value);
+                
                 // Add it to the vector of pairs
                 pairs.push_back(pair);
                 }
                 
                 // A method that returns the pair of option and value at the given index
-                std::pair<std::string, std::string> Constraint::getPair(int index) const {
+                std::vector<std::pair<std::string, std::string> > getPairs()  {
                 // Check if the index is valid
                 if (index >= 0 && index < pairs.size()) {
                     // Return the pair at the index
@@ -643,14 +650,6 @@
                     // Throw an exception if the index is out of range
                     throw std::out_of_range("Invalid index");
                 }
-                }
-                
-                // A method that adds a pair of option and value to the vector of pairs
-                void addPair(const std::string& option, const std::string& value) {
-                // Create a pair from the parameters
-                std::pair<std::string, std::string> pair(option, value);
-                // Add it to the vector of pairs
-                pairs.push_back(pair);
                 }
                 </code></pre>
             Hier ist Fuzzer.cpp:
@@ -801,49 +800,60 @@
                     // If not, print an error message and exit the program
                     std::cerr << "Usage: " << argv[0]
                             << " input_options input_constraints output_models num_models\n";
-                    return 1;
+                    return -1;
                 }
                 
                 // Get the names of the input and output files from the parameters
                 std::string inputOptions = argv[1];
                 std::string inputConstraints = argv[2];
                 std::string outputModels = argv[3];
-                int numModels = std::stoi(argv[4]);
                 
-                // Create a Parser object with the names of the input files
-                Parser parser(inputOptions, inputConstraints);
+                try {
+                    int numModels = std::stoi(argv[4]);
+                    if (numModels < 0) {
+                    throw std::invalid_argument("num_models must be non-negative");
+                    }
                 
-                // Create a Solver object with the Parser object
-                Solver solver(parser);
+                    // Create a Parser object with the names of the input files
+                    Parser parser(inputOptions, inputConstraints);
                 
-                // Generate the models using the solve method of the Solver object
-                solver.solve();
+                    // Create a Solver object with the Parser object
+                    Solver solver(parser);
                 
-                // Open the output file for writing
-                std::ofstream out(outputModels);
+                    // Generate the models using the solve method of the Solver object
+                    solver.solve();
                 
-                // Check if the file is opened successfully
-                if (!out) {
+                    // Open the output file for writing
+                    std::ofstream out(outputModels);
+                
+                    // Check if the file is opened successfully
+                    if (!out) {
                     // If not, print an error message and exit the program
                     std::cerr << "Cannot open " << outputModels << '\n';
-                    return 1;
-                }
+                    return -1;
+                    }
                 
-                // Write the models to the output file
-                int count = 0;
-                for (const auto& model : solver.getModels()) {
+                    // Write the models to the output file
+                    int count = 0;
+                    for (const auto& model : solver.getModels()) {
                     if (count >= numModels) {
-                    break;
+                        break;
                     }
                     for (const auto& pair : model) {
-                    out << pair.first << ',' << pair.second << '\n';
+                        out << pair.first << ',' << pair.second << '\n';
                     }
                     out << '\n';
                     count++;
-                }
+                    }
                 
-                // Close the output file
-                out.close();
+                    // Close the output file
+                    out.close();
+                
+                } catch (const std::exception& e) {
+                    // If any exception occurs, print the error message and exit the program
+                    std::cerr << e.what() << '\n';
+                    return -1;
+                }
                 
                 return 0;
                 }
@@ -1035,18 +1045,14 @@
                 </code></pre>
             Hier ist Option.cpp:
             <pre><code>
-                
-                #include "Constraint.hpp"
                 #include "Option.hpp"
-                
-                #include <string>
-                #include <vector>
-                
                 
                 // A method that adds a value to the vector of values
                 void Option::addValue(const std::string& value) {
-                // Add the value to the vector of values
-                values.push_back(value);
+                // Add the value to the vector of values if it is not already in it
+                if (std::find(values.begin(), values.end(), value) == values.end()) {
+                    values.push_back(value);
+                }
                 }
                 </code></pre>
             Hier ist Parser.cpp:
