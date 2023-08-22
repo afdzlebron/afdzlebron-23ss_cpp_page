@@ -37,7 +37,7 @@
 
 
     <main>
-        Programmieren Sie jetzt in C++
+        Programmiert: C++
 
         <div>
             <h1>Projekt: Übersicht</h1>
@@ -328,179 +328,282 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all          
+
+                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all
                     rm -f *Main *.o 
                     g++ -std=c++17 -c Constraint.cpp
                     g++ -std=c++17 -c Fuzzer.cpp
                     g++ -std=c++17 -c Main.cpp
-                    Main.cpp:49:50: error: member reference type 'const std::__1::basic_string<char>' is not a pointer; did you mean to use '.'?
-                            convertedConstraint.push_back({pair.first->name, pair.second});
-                                                        ~~~~~~~~~~^~
-                                                                    .
-                    Main.cpp:49:52: error: no member named 'name' in 'std::__1::basic_string<char>'
-                            convertedConstraint.push_back({pair.first->name, pair.second});
-                                                        ~~~~~~~~~~  ^
-                    2 errors generated.
-                    make: *** [Main.o] Error 1
-                                    </pre>
+                    g++ -std=c++17 -c ModelGenerator.cpp
+                    g++ -std=c++17 -c Option.cpp
+                    g++ -std=c++17 -c Parser.cpp
+                    Parser.cpp:18:17: error: call to implicitly-deleted copy constructor of 'std::ifstream' (aka 'basic_ifstream<char>')
+                    std::ifstream file(optionsFile);
+                                    ^    ~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/fstream:1160:5: note: copy constructor is implicitly deleted because
+                        'basic_ifstream<char, std::__1::char_traits<char> >' has a user-declared move constructor
+                        basic_ifstream(basic_ifstream&& __rhs);
+                        ^
+                    Parser.cpp:21:53: error: invalid operands to binary expression ('const char [21]' and 'std::ifstream' (aka 'basic_ifstream<char>'))
+                        throw std::runtime_error("Could not open file " + optionsFile);
+                                                ~~~~~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:874:1: note: candidate template ignored: could not match
+                        'reverse_iterator' against 'basic_ifstream'
+                    operator+(typename reverse_iterator<_Iter>::difference_type __n, const reverse_iterator<_Iter>& __x)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1310:1: note: candidate template ignored: could not match
+                        'move_iterator' against 'basic_ifstream'
+                    operator+(typename move_iterator<_Iter>::difference_type __n, const move_iterator<_Iter>& __x)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iterator:1726:1: note: candidate template ignored: could not match '__wrap_iter'
+                        against 'basic_ifstream'
+                    operator+(typename __wrap_iter<_Iter>::difference_type __n,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4051:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(const basic_string<_CharT, _Traits, _Allocator>& __lhs,
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4064:1: note: candidate template ignored: could not match 'basic_string'
+                        against 'basic_ifstream'
+                    operator+(const _CharT* __lhs , const basic_string<_CharT,_Traits,_Allocator>& __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4076:1: note: candidate template ignored: could not match 'basic_string'
+                        against 'basic_ifstream'
+                    operator+(_CharT __lhs, const basic_string<_CharT,_Traits,_Allocator>& __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4088:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(const basic_string<_CharT, _Traits, _Allocator>& __lhs, const _CharT* __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4100:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(const basic_string<_CharT, _Traits, _Allocator>& __lhs, _CharT __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4114:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(basic_string<_CharT, _Traits, _Allocator>&& __lhs, const basic_string<_CharT, _Traits, _Allocator>& __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4122:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(const basic_string<_CharT, _Traits, _Allocator>& __lhs, basic_string<_CharT, _Traits, _Allocator>&& __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4130:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(basic_string<_CharT, _Traits, _Allocator>&& __lhs, basic_string<_CharT, _Traits, _Allocator>&& __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4138:1: note: candidate template ignored: could not match 'basic_string'
+                        against 'basic_ifstream'
+                    operator+(const _CharT* __lhs , basic_string<_CharT,_Traits,_Allocator>&& __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4146:1: note: candidate template ignored: could not match 'basic_string'
+                        against 'basic_ifstream'
+                    operator+(_CharT __lhs, basic_string<_CharT,_Traits,_Allocator>&& __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4155:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(basic_string<_CharT, _Traits, _Allocator>&& __lhs, const _CharT* __rhs)
+                    ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string:4163:1: note: candidate template ignored: could not match
+                        'basic_string<type-parameter-0-0, type-parameter-0-1, type-parameter-0-2>' against 'char const[21]'
+                    operator+(basic_string<_CharT, _Traits, _Allocator>&& __lhs, _CharT __rhs)
+                    ^
+                    Parser.cpp:34:12: error: no matching constructor for initialization of 'Option'
+                        Option option(name);
+                            ^      ~~~~
+                    ./Option.hpp:8:7: note: candidate constructor (the implicit copy constructor) not viable: no known conversion from 'std::string' (aka
+                        'basic_string<char, char_traits<char>, allocator<char> >') to 'const Option' for 1st argument
+                    class Option {
+                        ^
+                    ./Option.hpp:8:7: note: candidate constructor (the implicit move constructor) not viable: no known conversion from 'std::string' (aka
+                        'basic_string<char, char_traits<char>, allocator<char> >') to 'Option' for 1st argument
+                    ./Option.hpp:11:3: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+                    Option(const std::string& name, const std::vector<std::string>& values) {
+                    ^
+                    Parser.cpp:43:12: error: no viable overloaded operator[] for type 'std::vector<Option>'
+                        options[name] = option;
+                        ~~~~~~~^~~~~
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:667:47: note: candidate function not viable: no known conversion from
+                        'std::string' (aka 'basic_string<char, char_traits<char>, allocator<char> >') to 'std::__1::vector<Option, std::__1::allocator<Option>
+                        >::size_type' (aka 'unsigned long') for 1st argument
+                        _LIBCPP_INLINE_VISIBILITY reference       operator[](size_type __n) _NOEXCEPT;
+                                                                ^
+                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:668:47: note: candidate function not viable: no known conversion from
+                        'std::string' (aka 'basic_string<char, char_traits<char>, allocator<char> >') to 'std::__1::vector<Option, std::__1::allocator<Option>
+                        >::size_type' (aka 'unsigned long') for 1st argument
+                        _LIBCPP_INLINE_VISIBILITY const_reference operator[](size_type __n) const _NOEXCEPT;
+                                                                ^
+                    Parser.cpp:53:22: error: unknown type name 'constraintsFile'
+                    std::ifstream file(constraintsFile);
+                                        ^
+                    Parser.cpp:53:21: warning: parentheses were disambiguated as a function declaration [-Wvexing-parse]
+                    std::ifstream file(constraintsFile);
+                                        ^~~~~~~~~~~~~~~~~
+                    Parser.cpp:53:22: note: add a pair of parentheses to declare a variable
+                    std::ifstream file(constraintsFile);
+                                        ^
+                                        (
+                    Parser.cpp:56:55: error: use of undeclared identifier 'constraintsFile'
+                        throw std::runtime_error("Could not open file " + constraintsFile);
+                                                                        ^
+                    Parser.cpp:66:16: error: no matching constructor for initialization of 'Constraint'
+                        Constraint constraint;
+                                ^
+                    ./Constraint.hpp:12:3: note: candidate constructor not viable: requires single argument 'pairs', but no arguments were provided
+                    Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
+                    ^
+                    ./Constraint.hpp:9:7: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 0 were provided
+                    class Constraint {
+                        ^
+                    ./Constraint.hpp:9:7: note: candidate constructor (the implicit move constructor) not viable: requires 1 argument, but 0 were provided
+                    1 warning and 7 errors generated.
+                    make: *** [Parser.o] Error 1</pre>
             <pre id="p2">
+
                     [{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 8,
                         "message": "a space is required between consecutive right angle brackets (use '> >')",
-                        "startLineNumber": 37,
+                        "startLineNumber": 40,
                         "startColumn": 63,
-                        "endLineNumber": 37,
+                        "endLineNumber": 40,
                         "endColumn": 63
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 8,
                         "message": "expected expression",
-                        "startLineNumber": 40,
+                        "startLineNumber": 43,
                         "startColumn": 34,
-                        "endLineNumber": 40,
+                        "endLineNumber": 43,
                         "endColumn": 34
                     },{
-                        "resource": "Main.cpp",
-                        "owner": "clang",
-                        "severity": 8,
-                        "message": "a space is required between consecutive right angle brackets (use '> >')",
-                        "startLineNumber": 44,
-                        "startColumn": 63,
-                        "endLineNumber": 44,
-                        "endColumn": 63
-                    },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 8,
                         "message": "a space is required between consecutive right angle brackets (use '> >')",
                         "startLineNumber": 47,
-                        "startColumn": 53,
+                        "startColumn": 63,
                         "endLineNumber": 47,
+                        "endColumn": 63
+                    },{
+                        "resource": "/Main.cpp",
+                        "owner": "clang",
+                        "severity": 8,
+                        "message": "a space is required between consecutive right angle brackets (use '> >')",
+                        "startLineNumber": 50,
+                        "startColumn": 53,
+                        "endLineNumber": 50,
                         "endColumn": 53
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 8,
                         "message": "expected expression",
-                        "startLineNumber": 49,
+                        "startLineNumber": 52,
                         "startColumn": 39,
-                        "endLineNumber": 49,
+                        "endLineNumber": 52,
                         "endColumn": 39
                     },{
-                        "resource": "Main.cpp",
-                        "owner": "C/C++: IntelliSense",
-                        "code": "3364",
-                        "severity": 8,
-                        "message": "Der Operator \"->\" oder \"->*\" wurde auf \"\"const std::__1::string\"\" statt auf einen Zeigertyp angewendet.",
-                        "source": "C/C++",
-                        "startLineNumber": 49,
-                        "startColumn": 40,
-                        "endLineNumber": 49,
-                        "endColumn": 44
-                    },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 39,
+                        "startLineNumber": 42,
                         "startColumn": 16,
-                        "endLineNumber": 39,
+                        "endLineNumber": 42,
                         "endColumn": 16
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "range-based for loop is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 39,
+                        "startLineNumber": 42,
                         "startColumn": 29,
-                        "endLineNumber": 39,
+                        "endLineNumber": 42,
                         "endColumn": 29
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 46,
+                        "startLineNumber": 49,
                         "startColumn": 16,
-                        "endLineNumber": 46,
+                        "endLineNumber": 49,
                         "endColumn": 16
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "range-based for loop is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 46,
+                        "startLineNumber": 49,
                         "startColumn": 33,
-                        "endLineNumber": 46,
+                        "endLineNumber": 49,
                         "endColumn": 33
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 48,
+                        "startLineNumber": 51,
                         "startColumn": 18,
-                        "endLineNumber": 48,
+                        "endLineNumber": 51,
                         "endColumn": 18
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "range-based for loop is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 48,
+                        "startLineNumber": 51,
                         "startColumn": 29,
-                        "endLineNumber": 48,
+                        "endLineNumber": 51,
                         "endColumn": 29
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 60,
+                        "startLineNumber": 63,
                         "startColumn": 5,
-                        "endLineNumber": 60,
+                        "endLineNumber": 63,
                         "endColumn": 5
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 74,
+                        "startLineNumber": 77,
                         "startColumn": 16,
-                        "endLineNumber": 74,
+                        "endLineNumber": 77,
                         "endColumn": 16
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "range-based for loop is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 74,
+                        "startLineNumber": 77,
                         "startColumn": 28,
-                        "endLineNumber": 74,
+                        "endLineNumber": 77,
                         "endColumn": 28
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "'auto' type specifier is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 78,
+                        "startLineNumber": 81,
                         "startColumn": 18,
-                        "endLineNumber": 78,
+                        "endLineNumber": 81,
                         "endColumn": 18
                     },{
-                        "resource": "Main.cpp",
+                        "resource": "/Main.cpp",
                         "owner": "clang",
                         "severity": 4,
                         "message": "range-based for loop is a C++11 extension [-Wc++11-extensions]",
-                        "startLineNumber": 78,
+                        "startLineNumber": 81,
                         "startColumn": 29,
-                        "endLineNumber": 78,
+                        "endLineNumber": 81,
                         "endColumn": 29
-                    }],
-                                    </pre>
+                    }]</pre>
         </div>
 
         <div id="codesInCPlusPlus">
@@ -898,6 +1001,9 @@
             <pre><code>
                 #include <fstream>
                 #include <iostream>
+                #include <sstream>
+                #include <string>
+                #include <vector>
                 
                 #include "ModelGenerator.hpp"  // Include this header instead of Solver.hpp
                 #include "Parser.hpp"
@@ -919,7 +1025,7 @@
                 std::string outputModels = argv[3];
                 
                 try {
-                    int numModels = std::stoi(argv[4]);
+                    int numModels = std::stoi(argv[4]);  // Remove the semicolon here
                     if (numModels < 0) {
                     throw std::invalid_argument("num_models must be non-negative");
                     }
@@ -933,7 +1039,7 @@
                 
                     // Konvertiere die Optionen in den erwarteten Typ
                     std::vector<std::pair<std::string, std::vector<std::string>>>
-                        convertedOptions;
+                        convertedOptions;  // Use a vector instead of a map here
                     for (const auto &option : parser.options) {
                     convertedOptions.push_back({option.getName(), option.getValues()});
                     }
@@ -944,8 +1050,8 @@
                     for (const auto &constraint : parser.constraints) {
                     std::vector<std::pair<std::string, std::string>> convertedConstraint;
                     for (const auto &pair : constraint.getPairs()) {
-                        convertedConstraint.push_back({pair.first->name, pair.second});
-                    }
+                        convertedConstraint.push_back({pair.first, pair.second});
+                    }  // Add a closing brace here
                     convertedConstraints.push_back(convertedConstraint);
                     }
                 
