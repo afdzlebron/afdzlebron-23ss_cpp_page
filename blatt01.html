@@ -328,1170 +328,1170 @@
         <div id="problemeMitCode">
             Probleme mit den codes:
             <pre id="p1">
-                    afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all                                       
-                    rm -f *Main *.o 
-                    g++ -std=c++17 -c Constraint.cpp
-                    g++ -std=c++17 -c Fuzzer.cpp
-                    g++ -std=c++17 -c Main.cpp
-                    g++ -std=c++17 -c ModelGenerator.cpp
-                    ModelGenerator.cpp:9:7: error: no matching constructor for initialization of 'std::vector<std::pair<std::string, std::vector<std::string> > >'
-                        (aka 'vector<pair<basic_string<char, char_traits<char>, allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char>
-                        > > > >')
-                        : options(parser.getOptions()), constraints(parser.getConstraints()) {}
-                        ^       ~~~~~~~~~~~~~~~~~~~
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:501:40: note: candidate constructor not viable: no known conversion from
-                        'std::vector<Option>' to 'const std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > > > >::allocator_type' (aka 'const
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > > >') for 1st argument
-                        _LIBCPP_INLINE_VISIBILITY explicit vector(const allocator_type& __a)
-                                                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:513:14: note: candidate constructor not viable: no known conversion from
-                        'std::vector<Option>' to 'std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > > >::size_type'
-                        (aka 'unsigned long') for 1st argument
-                        explicit vector(size_type __n);
+                            afdzlebron@Andress-MBP blatt-11-230820-BNG-Nachts-01-02-230822-Tag % make all                                       
+                            rm -f *Main *.o 
+                            g++ -std=c++17 -c Constraint.cpp
+                            g++ -std=c++17 -c Fuzzer.cpp
+                            g++ -std=c++17 -c Main.cpp
+                            g++ -std=c++17 -c ModelGenerator.cpp
+                            ModelGenerator.cpp:9:7: error: no matching constructor for initialization of 'std::vector<std::pair<std::string, std::vector<std::string> > >'
+                                (aka 'vector<pair<basic_string<char, char_traits<char>, allocator<char> >, vector<basic_string<char, char_traits<char>, allocator<char>
+                                > > > >')
+                                : options(parser.getOptions()), constraints(parser.getConstraints()) {}
+                                ^       ~~~~~~~~~~~~~~~~~~~
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:501:40: note: candidate constructor not viable: no known conversion from
+                                'std::vector<Option>' to 'const std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                                std::__1::allocator<std::__1::basic_string<char> > > > > >::allocator_type' (aka 'const
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                                std::__1::allocator<std::__1::basic_string<char> > > > >') for 1st argument
+                                _LIBCPP_INLINE_VISIBILITY explicit vector(const allocator_type& __a)
+                                                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:513:14: note: candidate constructor not viable: no known conversion from
+                                'std::vector<Option>' to 'std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                                std::__1::allocator<std::__1::basic_string<char> > > >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > > >::size_type'
+                                (aka 'unsigned long') for 1st argument
+                                explicit vector(size_type __n);
+                                        ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:557:5: note: candidate constructor not viable: no known conversion from
+                                'vector<Option, allocator<Option>>' to 'const vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                                allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                                std::__1::allocator<std::__1::basic_string<char> > > >>>' for 1st argument
+                                vector(const vector& __x);
                                 ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:557:5: note: candidate constructor not viable: no known conversion from
-                        'vector<Option, allocator<Option>>' to 'const vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
-                        allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > >>>' for 1st argument
-                        vector(const vector& __x);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:564:5: note: candidate constructor not viable: no known conversion from
-                        'std::vector<Option>' to 'initializer_list<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > > > >::value_type>' (aka
-                        'initializer_list<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > > >') for 1st argument
-                        vector(initializer_list<value_type> __il);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:570:5: note: candidate constructor not viable: no known conversion from
-                        'vector<Option, allocator<Option>>' to 'vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
-                        allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
-                        std::__1::allocator<std::__1::basic_string<char> > > >>>' for 1st argument
-                        vector(vector&& __x)
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:520:9: note: candidate constructor template not viable: requires 2
-                        arguments, but 1 was provided
-                            vector(_InputIterator __first,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:528:9: note: candidate constructor template not viable: requires at least
-                        3 arguments, but 1 was provided
-                            vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:535:9: note: candidate constructor template not viable: requires 2
-                        arguments, but 1 was provided
-                            vector(_ForwardIterator __first,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:542:9: note: candidate constructor template not viable: requires at least
-                        3 arguments, but 1 was provided
-                            vector(_ForwardIterator __first, _ForwardIterator __last, const allocator_type& __a,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:495:5: note: candidate constructor not viable: requires 0 arguments, but
-                        1 was provided
-                        vector() _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:515:14: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        explicit vector(size_type __n, const allocator_type& __a);
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:564:5: note: candidate constructor not viable: no known conversion from
+                                'std::vector<Option>' to 'initializer_list<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                                std::__1::allocator<std::__1::basic_string<char> > > > > >::value_type>' (aka
+                                'initializer_list<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                                std::__1::allocator<std::__1::basic_string<char> > > > >') for 1st argument
+                                vector(initializer_list<value_type> __il);
                                 ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:517:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(size_type __n, const value_type& __x);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:558:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(const vector& __x, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:567:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(initializer_list<value_type> __il, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:578:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(vector&& __x, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:518:5: note: candidate constructor not viable: requires 3 arguments, but
-                        1 was provided
-                        vector(size_type __n, const value_type& __x, const allocator_type& __a);
-                        ^
-                    ModelGenerator.cpp:9:37: error: no matching constructor for initialization of
-                        'std::vector<std::vector<std::pair<std::string, std::string> > >' (aka 'vector<vector<pair<basic_string<char, char_traits<char>,
-                        allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > > >')
-                        : options(parser.getOptions()), constraints(parser.getConstraints()) {}
-                                                        ^           ~~~~~~~~~~~~~~~~~~~~~~~
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:501:40: note: candidate constructor not viable: no known conversion from
-                        'std::vector<Constraint>' to 'const std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
-                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::allocator_type' (aka 'const
-                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > >') for 1st argument
-                        _LIBCPP_INLINE_VISIBILITY explicit vector(const allocator_type& __a)
-                                                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:513:14: note: candidate constructor not viable: no known conversion from
-                        'std::vector<Constraint>' to 'std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
-                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::size_type'
-                        (aka 'unsigned long') for 1st argument
-                        explicit vector(size_type __n);
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:570:5: note: candidate constructor not viable: no known conversion from
+                                'vector<Option, allocator<Option>>' to 'vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > >,
+                                allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::vector<std::__1::basic_string<char>,
+                                std::__1::allocator<std::__1::basic_string<char> > > >>>' for 1st argument
+                                vector(vector&& __x)
                                 ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:557:5: note: candidate constructor not viable: no known conversion from
-                        'vector<Constraint, allocator<Constraint>>' to 'const vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
-                        allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >>>' for 1st argument
-                        vector(const vector& __x);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:564:5: note: candidate constructor not viable: no known conversion from
-                        'std::vector<Constraint>' to 'initializer_list<std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
-                        std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::value_type>' (aka
-                        'initializer_list<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > >') for 1st argument
-                        vector(initializer_list<value_type> __il);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:570:5: note: candidate constructor not viable: no known conversion from
-                        'vector<Constraint, allocator<Constraint>>' to 'vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
-                        std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
-                        allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
-                        std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >>>' for 1st argument
-                        vector(vector&& __x)
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:520:9: note: candidate constructor template not viable: requires 2
-                        arguments, but 1 was provided
-                            vector(_InputIterator __first,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:528:9: note: candidate constructor template not viable: requires at least
-                        3 arguments, but 1 was provided
-                            vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:535:9: note: candidate constructor template not viable: requires 2
-                        arguments, but 1 was provided
-                            vector(_ForwardIterator __first,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:542:9: note: candidate constructor template not viable: requires at least
-                        3 arguments, but 1 was provided
-                            vector(_ForwardIterator __first, _ForwardIterator __last, const allocator_type& __a,
-                            ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:495:5: note: candidate constructor not viable: requires 0 arguments, but
-                        1 was provided
-                        vector() _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:515:14: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        explicit vector(size_type __n, const allocator_type& __a);
-                                ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:517:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(size_type __n, const value_type& __x);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:558:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(const vector& __x, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:567:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(initializer_list<value_type> __il, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:578:5: note: candidate constructor not viable: requires 2 arguments, but
-                        1 was provided
-                        vector(vector&& __x, const allocator_type& __a);
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:518:5: note: candidate constructor not viable: requires 3 arguments, but
-                        1 was provided
-                        vector(size_type __n, const value_type& __x, const allocator_type& __a);
-                        ^
-                    ModelGenerator.cpp:17:38: error: function cannot return function type 'std::random_device ()'
-                    std::mt19937 gen(std::random_device()());  // Create a random number generator
-                                                        ^
-                    ModelGenerator.cpp:17:19: warning: parentheses were disambiguated as a function declaration [-Wvexing-parse]
-                    std::mt19937 gen(std::random_device()());  // Create a random number generator
-                                    ^~~~~~~~~~~~~~~~~~~~~~~~
-                    ModelGenerator.cpp:17:20: note: add a pair of parentheses to declare a variable
-                    std::mt19937 gen(std::random_device()());  // Create a random number generator
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:520:9: note: candidate constructor template not viable: requires 2
+                                arguments, but 1 was provided
+                                    vector(_InputIterator __first,
                                     ^
-                                    (
-                    ModelGenerator.cpp:31:37: error: no viable constructor or deduction guide for deduction of template arguments of 'uniform_int_distribution'
-                        std::uniform_int_distribution dist(
-                                                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:3008:14: note: candidate template ignored: deduced conflicting types
-                        for parameter '_IntType' ('int' vs. 'unsigned long')
-                        explicit uniform_int_distribution(result_type __a = 0,
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:528:9: note: candidate constructor template not viable: requires at least
+                                3 arguments, but 1 was provided
+                                    vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a,
+                                    ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:535:9: note: candidate constructor template not viable: requires 2
+                                arguments, but 1 was provided
+                                    vector(_ForwardIterator __first,
+                                    ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:542:9: note: candidate constructor template not viable: requires at least
+                                3 arguments, but 1 was provided
+                                    vector(_ForwardIterator __first, _ForwardIterator __last, const allocator_type& __a,
+                                    ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:495:5: note: candidate constructor not viable: requires 0 arguments, but
+                                1 was provided
+                                vector() _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
                                 ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:2977:7: note: candidate function template not viable: requires 1
-                        argument, but 2 were provided
-                    class uniform_int_distribution
-                        ^
-                    /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:3011:14: note: candidate function template not viable: requires single
-                        argument '__p', but 2 arguments were provided
-                        explicit uniform_int_distribution(const param_type& __p) : __p_(__p) {}
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:515:14: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                explicit vector(size_type __n, const allocator_type& __a);
+                                        ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:517:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(size_type __n, const value_type& __x);
                                 ^
-                    1 warning and 4 errors generated.
-                    make: *** [ModelGenerator.o] Error 1
-                        </pre>
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:558:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(const vector& __x, const allocator_type& __a);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:567:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(initializer_list<value_type> __il, const allocator_type& __a);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:578:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(vector&& __x, const allocator_type& __a);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:518:5: note: candidate constructor not viable: requires 3 arguments, but
+                                1 was provided
+                                vector(size_type __n, const value_type& __x, const allocator_type& __a);
+                                ^
+                            ModelGenerator.cpp:9:37: error: no matching constructor for initialization of
+                                'std::vector<std::vector<std::pair<std::string, std::string> > >' (aka 'vector<vector<pair<basic_string<char, char_traits<char>,
+                                allocator<char> >, basic_string<char, char_traits<char>, allocator<char> > > > >')
+                                : options(parser.getOptions()), constraints(parser.getConstraints()) {}
+                                                                ^           ~~~~~~~~~~~~~~~~~~~~~~~
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:501:40: note: candidate constructor not viable: no known conversion from
+                                'std::vector<Constraint>' to 'const std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                                std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::allocator_type' (aka 'const
+                                std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > >') for 1st argument
+                                _LIBCPP_INLINE_VISIBILITY explicit vector(const allocator_type& __a)
+                                                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:513:14: note: candidate constructor not viable: no known conversion from
+                                'std::vector<Constraint>' to 'std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                                std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::size_type'
+                                (aka 'unsigned long') for 1st argument
+                                explicit vector(size_type __n);
+                                        ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:557:5: note: candidate constructor not viable: no known conversion from
+                                'vector<Constraint, allocator<Constraint>>' to 'const vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                                allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >>>' for 1st argument
+                                vector(const vector& __x);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:564:5: note: candidate constructor not viable: no known conversion from
+                                'std::vector<Constraint>' to 'initializer_list<std::__1::vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                                std::__1::allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > > >::value_type>' (aka
+                                'initializer_list<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > > >') for 1st argument
+                                vector(initializer_list<value_type> __il);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:570:5: note: candidate constructor not viable: no known conversion from
+                                'vector<Constraint, allocator<Constraint>>' to 'vector<std::__1::vector<std::__1::pair<std::__1::basic_string<char>,
+                                std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >,
+                                allocator<std::__1::vector<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> >,
+                                std::__1::allocator<std::__1::pair<std::__1::basic_string<char>, std::__1::basic_string<char> > > >>>' for 1st argument
+                                vector(vector&& __x)
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:520:9: note: candidate constructor template not viable: requires 2
+                                arguments, but 1 was provided
+                                    vector(_InputIterator __first,
+                                    ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:528:9: note: candidate constructor template not viable: requires at least
+                                3 arguments, but 1 was provided
+                                    vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a,
+                                    ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:535:9: note: candidate constructor template not viable: requires 2
+                                arguments, but 1 was provided
+                                    vector(_ForwardIterator __first,
+                                    ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:542:9: note: candidate constructor template not viable: requires at least
+                                3 arguments, but 1 was provided
+                                    vector(_ForwardIterator __first, _ForwardIterator __last, const allocator_type& __a,
+                                    ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:495:5: note: candidate constructor not viable: requires 0 arguments, but
+                                1 was provided
+                                vector() _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:515:14: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                explicit vector(size_type __n, const allocator_type& __a);
+                                        ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:517:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(size_type __n, const value_type& __x);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:558:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(const vector& __x, const allocator_type& __a);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:567:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(initializer_list<value_type> __il, const allocator_type& __a);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:578:5: note: candidate constructor not viable: requires 2 arguments, but
+                                1 was provided
+                                vector(vector&& __x, const allocator_type& __a);
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector:518:5: note: candidate constructor not viable: requires 3 arguments, but
+                                1 was provided
+                                vector(size_type __n, const value_type& __x, const allocator_type& __a);
+                                ^
+                            ModelGenerator.cpp:17:38: error: function cannot return function type 'std::random_device ()'
+                            std::mt19937 gen(std::random_device()());  // Create a random number generator
+                                                                ^
+                            ModelGenerator.cpp:17:19: warning: parentheses were disambiguated as a function declaration [-Wvexing-parse]
+                            std::mt19937 gen(std::random_device()());  // Create a random number generator
+                                            ^~~~~~~~~~~~~~~~~~~~~~~~
+                            ModelGenerator.cpp:17:20: note: add a pair of parentheses to declare a variable
+                            std::mt19937 gen(std::random_device()());  // Create a random number generator
+                                            ^
+                                            (
+                            ModelGenerator.cpp:31:37: error: no viable constructor or deduction guide for deduction of template arguments of 'uniform_int_distribution'
+                                std::uniform_int_distribution dist(
+                                                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:3008:14: note: candidate template ignored: deduced conflicting types
+                                for parameter '_IntType' ('int' vs. 'unsigned long')
+                                explicit uniform_int_distribution(result_type __a = 0,
+                                        ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:2977:7: note: candidate function template not viable: requires 1
+                                argument, but 2 were provided
+                            class uniform_int_distribution
+                                ^
+                            /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/algorithm:3011:14: note: candidate function template not viable: requires single
+                                argument '__p', but 2 arguments were provided
+                                explicit uniform_int_distribution(const param_type& __p) : __p_(__p) {}
+                                        ^
+                            1 warning and 4 errors generated.
+                            make: *** [ModelGenerator.o] Error 1
+                                </pre>
             <pre id="p2">
-                    [{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "invalid operands to binary expression ('const char [21]' and 'std::ifstream' (aka 'basic_ifstream<char>'))","startLineNumber": 21,"startColumn": 30,"endLineNumber": 21,"endColumn": 66
-                    },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Option'","startLineNumber": 34,"startColumn": 19,"endLineNumber": 34,"endColumn": 23
-                    },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "no viable overloaded operator[] for type 'std::vector<Option>'","startLineNumber": 43,"startColumn": 5,"endLineNumber": 43,"endColumn": 17
-                    },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "unknown type name 'constraintsFile'","startLineNumber": 53,"startColumn": 22,"endLineNumber": 53,"endColumn": 22
-                    },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'constraintsFile'","startLineNumber": 56,"startColumn": 55,"endLineNumber": 56,"endColumn": 55
-                    },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Constraint'","startLineNumber": 66,"startColumn": 16,"endLineNumber": 66,"endColumn": 16
-                    },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 4,"message": "parentheses were disambiguated as a function declaration [-Wvexing-parse]","startLineNumber": 53,"startColumn": 21,"endLineNumber": 53,"endColumn": 38
-                    },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Solver.hpp","owner": "clang","severity": 8,"message": "no template named 'list' in namespace 'std'","startLineNumber": 23,"startColumn": 9,"endLineNumber": 23,"endColumn": 14
-                    }],
-                    
-                        </pre>
+                            [{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "invalid operands to binary expression ('const char [21]' and 'std::ifstream' (aka 'basic_ifstream<char>'))","startLineNumber": 21,"startColumn": 30,"endLineNumber": 21,"endColumn": 66
+                            },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Option'","startLineNumber": 34,"startColumn": 19,"endLineNumber": 34,"endColumn": 23
+                            },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "no viable overloaded operator[] for type 'std::vector<Option>'","startLineNumber": 43,"startColumn": 5,"endLineNumber": 43,"endColumn": 17
+                            },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "unknown type name 'constraintsFile'","startLineNumber": 53,"startColumn": 22,"endLineNumber": 53,"endColumn": 22
+                            },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "use of undeclared identifier 'constraintsFile'","startLineNumber": 56,"startColumn": 55,"endLineNumber": 56,"endColumn": 55
+                            },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 8,"message": "no matching constructor for initialization of 'Constraint'","startLineNumber": 66,"startColumn": 16,"endLineNumber": 66,"endColumn": 16
+                            },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Parser.cpp","owner": "clang","severity": 4,"message": "parentheses were disambiguated as a function declaration [-Wvexing-parse]","startLineNumber": 53,"startColumn": 21,"endLineNumber": 53,"endColumn": 38
+                            },{"resource": "/Users/afdzlebron/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/_edu_2021_alu_info/_23ss_cpp/cpp_svn/af231_workspace/blatt-11/blatt-11-230820-BNG-Nachts-01-02-230822-Tag/Solver.hpp","owner": "clang","severity": 8,"message": "no template named 'list' in namespace 'std'","startLineNumber": 23,"startColumn": 9,"endLineNumber": 23,"endColumn": 14
+                            }],
+                            
+                                </pre>
         </div>
 
         <div id="codesInCPlusPlus">
             Hier ist Constraint.hpp:
             <pre><code>
-                #ifndef CONSTRAINT_HPP
-                #define CONSTRAINT_HPP
-                
-                #include <string>
-                #include <vector>
-                
-                // A class that represents a constraint with a vector of pairs of options and
-                // values
-                class Constraint {
-                public:
-                // A constructor that takes a vector of pairs as a parameter
-                Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
-                    : pairs(pairs) {}
-                
-                // A getter method that returns the vector of pairs of the constraint as a
-                // const reference
-                const std::vector<std::pair<std::string, std::string> > &getPairs() const;
-                
-                // A method that adds a pair of option and value to the vector of pairs
-                void addPair(const std::string &option, const std::string &value);
-                
-                private:
-                // A vector of pairs of strings that stores the options and values of the
-                // constraint
-                std::vector<std::pair<std::string, std::string> > pairs;
-                };
-                
-                #endif
-                </code></pre>
+                        #ifndef CONSTRAINT_HPP
+                        #define CONSTRAINT_HPP
+                        
+                        #include <string>
+                        #include <vector>
+                        
+                        // A class that represents a constraint with a vector of pairs of options and
+                        // values
+                        class Constraint {
+                        public:
+                        // A constructor that takes a vector of pairs as a parameter
+                        Constraint(const std::vector<std::pair<std::string, std::string> > &pairs)
+                            : pairs(pairs) {}
+                        
+                        // A getter method that returns the vector of pairs of the constraint as a
+                        // const reference
+                        const std::vector<std::pair<std::string, std::string> > &getPairs() const;
+                        
+                        // A method that adds a pair of option and value to the vector of pairs
+                        void addPair(const std::string &option, const std::string &value);
+                        
+                        private:
+                        // A vector of pairs of strings that stores the options and values of the
+                        // constraint
+                        std::vector<std::pair<std::string, std::string> > pairs;
+                        };
+                        
+                        #endif
+                        </code></pre>
             Hier ist Fuzzer.hpp:
             <pre><code>
-                #ifndef FUZZER_HPP
-                #define FUZZER_HPP
-                
-                #include <fstream>
-                #include <list>
-                #include <map>
-                #include <random>
-                #include <string>
-                #include <vector>
-                
-                // A class that generates random options, values and constraints
-                class Fuzzer {
-                public:
-                // A constructor that takes the number of options, the maximum number of
-                // values per option and the maximum number of constraints as parameters
-                Fuzzer();
-                
-                Fuzzer(const std::map<std::string, std::vector<std::string> > &options)
-                    : options(options){};
-                
-                // A method that writes the options and values to a file with the extension
-                // .options
-                void writeOptions(const std::string &optionsFile);
-                
-                // A method that writes the constraints to a file with the extension
-                // .constraints
-                void writeConstraints(const std::string &constraintsFile);
-                
-                // A method that generates a random string of a given length
-                std::string randomString(int length);
-                
-                private:
-                std::mt19937 gen;  // Random number generator as a member variable
-                
-                // A map of options to vectors of values
-                std::map<std::string, std::vector<std::string> > options;
-                
-                // A list of vectors of pairs of options and values
-                std::list<std::vector<std::pair<std::string, std::string> > > constraints;
-                
-                // A helper method that generates a random number between min and max
-                int randomInt(int min, int max);
-                };
-                
-                #endif
-                </code></pre>
+                        #ifndef FUZZER_HPP
+                        #define FUZZER_HPP
+                        
+                        #include <fstream>
+                        #include <list>
+                        #include <map>
+                        #include <random>
+                        #include <string>
+                        #include <vector>
+                        
+                        // A class that generates random options, values and constraints
+                        class Fuzzer {
+                        public:
+                        // A constructor that takes the number of options, the maximum number of
+                        // values per option and the maximum number of constraints as parameters
+                        Fuzzer();
+                        
+                        Fuzzer(const std::map<std::string, std::vector<std::string> > &options)
+                            : options(options){};
+                        
+                        // A method that writes the options and values to a file with the extension
+                        // .options
+                        void writeOptions(const std::string &optionsFile);
+                        
+                        // A method that writes the constraints to a file with the extension
+                        // .constraints
+                        void writeConstraints(const std::string &constraintsFile);
+                        
+                        // A method that generates a random string of a given length
+                        std::string randomString(int length);
+                        
+                        private:
+                        std::mt19937 gen;  // Random number generator as a member variable
+                        
+                        // A map of options to vectors of values
+                        std::map<std::string, std::vector<std::string> > options;
+                        
+                        // A list of vectors of pairs of options and values
+                        std::list<std::vector<std::pair<std::string, std::string> > > constraints;
+                        
+                        // A helper method that generates a random number between min and max
+                        int randomInt(int min, int max);
+                        };
+                        
+                        #endif
+                        </code></pre>
             Hier ist Model.hpp:
             <pre><code>
-                #ifndef MODEL_HPP
-                #define MODEL_HPP
-                
-                #include <map>
-                #include <string>
-                
-                // A class that represents a model with a map of options and values
-                class Model {
-                public:
-                // A constructor that takes a map as a parameter
-                Model(const std::map<std::string, std::string>& map) {
-                    // Assign the parameter to the member variable
-                    this->map = map;
-                }
-                
-                // A getter method that returns the map of the model
-                std::map<std::string, std::string> getMap() const {
-                    // Return the member variable
-                    return map;
-                }
-                
-                private:
-                // A map of strings that stores the options and values of the model
-                std::map<std::string, std::string> map;
-                };
-                
-                #endif</code></pre>
+                        #ifndef MODEL_HPP
+                        #define MODEL_HPP
+                        
+                        #include <map>
+                        #include <string>
+                        
+                        // A class that represents a model with a map of options and values
+                        class Model {
+                        public:
+                        // A constructor that takes a map as a parameter
+                        Model(const std::map<std::string, std::string>& map) {
+                            // Assign the parameter to the member variable
+                            this->map = map;
+                        }
+                        
+                        // A getter method that returns the map of the model
+                        std::map<std::string, std::string> getMap() const {
+                            // Return the member variable
+                            return map;
+                        }
+                        
+                        private:
+                        // A map of strings that stores the options and values of the model
+                        std::map<std::string, std::string> map;
+                        };
+                        
+                        #endif</code></pre>
             Hier ist ModelGenerator.hpp:
             <pre><code>
-                #ifndef MODELGENERATOR_HPP
-                #define MODELGENERATOR_HPP
-                
-                #include <list>
-                #include <map>
-                #include <string>
-                #include <vector>
-                
-                #include "Parser.hpp"
-                
-                // A class that generates models based on a given set of options and constraints
-                class ModelGenerator {
-                public:
-                // A constructor that takes a Parser object as a parameter
-                ModelGenerator(const Parser &parser);
-                
-                // A method that generates models and returns them as a list of maps of
-                // options to values
-                std::list<std::map<std::string, std::string> > generateModels() const;
-                
-                private:
-                // A vector of pairs of strings and vectors of strings that stores the options
-                std::vector<std::pair<std::string, std::vector<std::string> > > options;
-                
-                // A vector of vectors of pairs of strings that stores the constraints
-                std::vector<std::vector<std::pair<std::string, std::string> > > constraints;
-                };
-                
-                #endif
-                </code></pre>
+                        #ifndef MODELGENERATOR_HPP
+                        #define MODELGENERATOR_HPP
+                        
+                        #include <list>
+                        #include <map>
+                        #include <string>
+                        #include <vector>
+                        
+                        #include "Parser.hpp"
+                        
+                        // A class that generates models based on a given set of options and constraints
+                        class ModelGenerator {
+                        public:
+                        // A constructor that takes a Parser object as a parameter
+                        ModelGenerator(const Parser &parser);
+                        
+                        // A method that generates models and returns them as a list of maps of
+                        // options to values
+                        std::list<std::map<std::string, std::string> > generateModels() const;
+                        
+                        private:
+                        // A vector of pairs of strings and vectors of strings that stores the options
+                        std::vector<std::pair<std::string, std::vector<std::string> > > options;
+                        
+                        // A vector of vectors of pairs of strings that stores the constraints
+                        std::vector<std::vector<std::pair<std::string, std::string> > > constraints;
+                        };
+                        
+                        #endif
+                        </code></pre>
             Hier ist Option.hpp:
             <pre><code>
-                #ifndef OPTION_HPP
-                #define OPTION_HPP
-                
-                #include <string>
-                #include <vector>
-                
-                // A class that represents an option with a name and a vector of possible values
-                class Option {
-                public:
-                // A constructor that takes a name and a vector of values as parameters
-                Option(const std::string& name, const std::vector<std::string>& values) {
-                    // Assign the parameters to the member variables
-                    this->name = name;
-                    this->values = values;
-                }
-                
-                // A getter method that returns the name of the option
-                std::string getName() const {
-                    // Return the member variable
-                    return name;
-                }
-                
-                // A method that adds a value to the vector of values
-                void addValue(const std::string& value);
-                
-                // A getter method that returns the vector of values of the option
-                std::vector<std::string> getValues() const {
-                    // Return the member variable
-                    return values;
-                }
-                
-                private:
-                // A string that stores the name of the option
-                std::string name;
-                
-                // A vector of strings that stores the possible values of the option
-                std::vector<std::string> values;
-                };
-                
-                #endif
-                </code></pre>
+                        #ifndef OPTION_HPP
+                        #define OPTION_HPP
+                        
+                        #include <string>
+                        #include <vector>
+                        
+                        // A class that represents an option with a name and a vector of possible values
+                        class Option {
+                        public:
+                        // A constructor that takes a name and a vector of values as parameters
+                        Option(const std::string& name, const std::vector<std::string>& values) {
+                            // Assign the parameters to the member variables
+                            this->name = name;
+                            this->values = values;
+                        }
+                        
+                        // A getter method that returns the name of the option
+                        std::string getName() const {
+                            // Return the member variable
+                            return name;
+                        }
+                        
+                        // A method that adds a value to the vector of values
+                        void addValue(const std::string& value);
+                        
+                        // A getter method that returns the vector of values of the option
+                        std::vector<std::string> getValues() const {
+                            // Return the member variable
+                            return values;
+                        }
+                        
+                        private:
+                        // A string that stores the name of the option
+                        std::string name;
+                        
+                        // A vector of strings that stores the possible values of the option
+                        std::vector<std::string> values;
+                        };
+                        
+                        #endif
+                        </code></pre>
             Hier ist Parser.hpp:
             <pre><code>
-                // Parser.hpp
-                
-                #ifndef PARSER_HPP
-                #define PARSER_HPP
-                
-                #include <map>
-                #include <string>
-                #include <vector>
-                
-                #include "Constraint.hpp"
-                #include "Option.hpp"
-                
-                class Parser {
-                private:
-                // Speichert die Optionen aus der .options Datei
-                std::vector<Option> options;
-                
-                // Speichert die Constraints aus der .constraints Datei
-                std::vector<Constraint> constraints;
-                
-                public:
-                Parser();
-                // Liest die Optionen aus der .options Datei ein
-                void parseOptions(const std::string& filename);
-                
-                // Liest die Constraints aus der .constraints Datei ein
-                void parseConstraints(const std::string& filename);
-                
-                // Gibt die Optionen zurück
-                std::vector<Option> getOptions() const;
-                
-                // Gibt die Constraints zurück
-                std::vector<Constraint> getConstraints() const;
-                
-                // method  that returns a string from an input stream
-                std::string readString(std::istream& in);
-                };
-                
-                #endif
-                </code></pre>
+                        // Parser.hpp
+                        
+                        #ifndef PARSER_HPP
+                        #define PARSER_HPP
+                        
+                        #include <map>
+                        #include <string>
+                        #include <vector>
+                        
+                        #include "Constraint.hpp"
+                        #include "Option.hpp"
+                        
+                        class Parser {
+                        private:
+                        // Speichert die Optionen aus der .options Datei
+                        std::vector<Option> options;
+                        
+                        // Speichert die Constraints aus der .constraints Datei
+                        std::vector<Constraint> constraints;
+                        
+                        public:
+                        Parser();
+                        // Liest die Optionen aus der .options Datei ein
+                        void parseOptions(const std::string& filename);
+                        
+                        // Liest die Constraints aus der .constraints Datei ein
+                        void parseConstraints(const std::string& filename);
+                        
+                        // Gibt die Optionen zurück
+                        std::vector<Option> getOptions() const;
+                        
+                        // Gibt die Constraints zurück
+                        std::vector<Constraint> getConstraints() const;
+                        
+                        // method  that returns a string from an input stream
+                        std::string readString(std::istream& in);
+                        };
+                        
+                        #endif
+                        </code></pre>
             Hier ist PrettyPrinter.hpp:
             <pre><code>
-                #ifndef PRETTYPRINTER_HPP
-                #define PRETTYPRINTER_HPP
-                
-                #include <list>
-                #include <map>
-                #include <string>
-                
-                #include "Constraint.hpp"
-                #include "Option.hpp"
-                
-                // A class that prints the options and constraints in a readable format
-                class PrettyPrinter {
-                public:
-                // A constructor that takes two file names as parameters
-                PrettyPrinter(const std::string& optionsFile,
-                                const std::string& constraintsFile);
-                
-                // A method that prints the options to the .options file
-                void printOptions(const std::vector<Option>& options);
-                
-                // A method that prints the constraints to the .constraints file
-                void printConstraints(const std::vector<Constraint>& constraints);
-                
-                private:
-                // Two strings that store the file names
-                std::string optionsFile;
-                std::string constraintsFile;
-                };
-                
-                #endif
-                </code></pre>
+                        #ifndef PRETTYPRINTER_HPP
+                        #define PRETTYPRINTER_HPP
+                        
+                        #include <list>
+                        #include <map>
+                        #include <string>
+                        
+                        #include "Constraint.hpp"
+                        #include "Option.hpp"
+                        
+                        // A class that prints the options and constraints in a readable format
+                        class PrettyPrinter {
+                        public:
+                        // A constructor that takes two file names as parameters
+                        PrettyPrinter(const std::string& optionsFile,
+                                        const std::string& constraintsFile);
+                        
+                        // A method that prints the options to the .options file
+                        void printOptions(const std::vector<Option>& options);
+                        
+                        // A method that prints the constraints to the .constraints file
+                        void printConstraints(const std::vector<Constraint>& constraints);
+                        
+                        private:
+                        // Two strings that store the file names
+                        std::string optionsFile;
+                        std::string constraintsFile;
+                        };
+                        
+                        #endif
+                        </code></pre>
             Hier ist Solver.hpp:
             <pre><code>
-                #ifndef SOLVER_HPP
-                #define SOLVER_HPP
-                
-                #include <fstream>
-                #include <iostream>
-                #include <random>
-                
-                #include "Parser.hpp"
-                
-                class Solver {
-                public:
-                // A Parser object as a member variable
-                Parser parser;
-                
-                // The constructor stores the parser in the member variable
-                Solver(const Parser& parser) : parser(parser) {}
-                
-                // This method generates the models and stores them in a list of maps of
-                // options to values
-                void solve();
-                
-                // This method returns the list of maps
-                const std::list<std::map<std::string, std::string> >& getModels() const {}
-                
-                // This method checks if a configuration is compatible with the constraints
-                bool checkConstraints(
-                    const std::map<std::string, std::string>& config) const {};
-                };
-                
-                #endif
-                </code></pre>
+                        #ifndef SOLVER_HPP
+                        #define SOLVER_HPP
+                        
+                        #include <fstream>
+                        #include <iostream>
+                        #include <random>
+                        
+                        #include "Parser.hpp"
+                        
+                        class Solver {
+                        public:
+                        // A Parser object as a member variable
+                        Parser parser;
+                        
+                        // The constructor stores the parser in the member variable
+                        Solver(const Parser& parser) : parser(parser) {}
+                        
+                        // This method generates the models and stores them in a list of maps of
+                        // options to values
+                        void solve();
+                        
+                        // This method returns the list of maps
+                        const std::list<std::map<std::string, std::string> >& getModels() const {}
+                        
+                        // This method checks if a configuration is compatible with the constraints
+                        bool checkConstraints(
+                            const std::map<std::string, std::string>& config) const {};
+                        };
+                        
+                        #endif
+                        </code></pre>
             Hier ist Constraint.cpp:
             <pre><code>
-                #include "Constraint.hpp"
-                
-                // A method that adds a pair of option and value to the vector of pairs
-                
-                void Constraint::addPair(const std::string& option, const std::string& value) {
-                pairs.emplace_back(option, value);
-                } 
-                
-                // A method that returns the vector of pairs of the constraint as a const
-                // reference
-                
-                const std::vector<std::pair<std::string, std::string> >& Constraint::getPairs()
-                    const {
-                return pairs;
-                }</code></pre>
+                        #include "Constraint.hpp"
+                        
+                        // A method that adds a pair of option and value to the vector of pairs
+                        
+                        void Constraint::addPair(const std::string& option, const std::string& value) {
+                        pairs.emplace_back(option, value);
+                        } 
+                        
+                        // A method that returns the vector of pairs of the constraint as a const
+                        // reference
+                        
+                        const std::vector<std::pair<std::string, std::string> >& Constraint::getPairs()
+                            const {
+                        return pairs;
+                        }</code></pre>
             Hier ist Fuzzer.cpp:
             <pre><code>
-                // Fuzzer.cpp
-                #include "Fuzzer.hpp"
-                
-                #include <iostream>
-                #include <sstream>
-                
-                Fuzzer::Fuzzer() : gen(std::random_device()()) {
-                // Initialize the random number generator with a random number
-                }
-                
-                std::string Fuzzer::randomString(int length) {
-                std::string result;  // Create an empty string to store the result
-                for (int i = 0; i < length; i++) {
-                    char c = 'a' + randomInt(0, 25);  // Choose a random lowercase letter
-                    result += c;  // Append the letter to the end of the string
-                }
-                return result;  // Return the string
-                }
-                
-                int Fuzzer::randomInt(int min, int max) {
-                std::uniform_int_distribution dist(
-                    min, max);     // Create a uniform distribution between min and max
-                return dist(gen);  // Return a random number from the distribution
-                }
-                
-                void Fuzzer::writeOptions(const std::string &optionsFile) {
-                std::ofstream out(optionsFile);  // Open the output file for writing
-                
-                if (!out) {  // Check if the file is opened successfully
-                    throw std::runtime_error("Cannot open " +
-                                            optionsFile);  // If not, throw an exception
-                }
-                
-                for (auto &pair : options) {  // Iterate over all pairs in the map
-                    out << pair.first
-                        << ",";  // Write the option to the file with a comma separator
-                    for (auto &value : pair.second) {  // Iterate over all values in the vector
-                    out << value
-                        << ",";  // Write the value to the file with a comma separator
-                    }
-                    out << "\n";  // Write a newline to the file
-                }
-                
-                out.close();  // Close the output file
-                }
-                
-                void Fuzzer::writeConstraints(const std::string &constraintsFile) {
-                std::ofstream out(constraintsFile);  // Open the output file for writing
-                
-                if (!out) {  // Check if the file is opened successfully
-                    throw std::runtime_error("Cannot open " +
-                                            constraintsFile);  // If not, throw an exception
-                }
-                
-                for (auto &vec : constraints) {  // Iterate over all vectors in the list
-                    for (auto &pair : vec) {       // Iterate over all pairs in the vector
-                    out << pair.first
-                        << ",";  // Write the option to the file with a comma separator
-                    out << pair.second
-                        << ",";  // Write the value to the file with a comma separator
-                    }
-                    out << "\n";  // Write a newline to the file
-                }
-                
-                out.close();  // Close the output file
-                }
-                </code></pre>
+                        // Fuzzer.cpp
+                        #include "Fuzzer.hpp"
+                        
+                        #include <iostream>
+                        #include <sstream>
+                        
+                        Fuzzer::Fuzzer() : gen(std::random_device()()) {
+                        // Initialize the random number generator with a random number
+                        }
+                        
+                        std::string Fuzzer::randomString(int length) {
+                        std::string result;  // Create an empty string to store the result
+                        for (int i = 0; i < length; i++) {
+                            char c = 'a' + randomInt(0, 25);  // Choose a random lowercase letter
+                            result += c;  // Append the letter to the end of the string
+                        }
+                        return result;  // Return the string
+                        }
+                        
+                        int Fuzzer::randomInt(int min, int max) {
+                        std::uniform_int_distribution dist(
+                            min, max);     // Create a uniform distribution between min and max
+                        return dist(gen);  // Return a random number from the distribution
+                        }
+                        
+                        void Fuzzer::writeOptions(const std::string &optionsFile) {
+                        std::ofstream out(optionsFile);  // Open the output file for writing
+                        
+                        if (!out) {  // Check if the file is opened successfully
+                            throw std::runtime_error("Cannot open " +
+                                                    optionsFile);  // If not, throw an exception
+                        }
+                        
+                        for (auto &pair : options) {  // Iterate over all pairs in the map
+                            out << pair.first
+                                << ",";  // Write the option to the file with a comma separator
+                            for (auto &value : pair.second) {  // Iterate over all values in the vector
+                            out << value
+                                << ",";  // Write the value to the file with a comma separator
+                            }
+                            out << "\n";  // Write a newline to the file
+                        }
+                        
+                        out.close();  // Close the output file
+                        }
+                        
+                        void Fuzzer::writeConstraints(const std::string &constraintsFile) {
+                        std::ofstream out(constraintsFile);  // Open the output file for writing
+                        
+                        if (!out) {  // Check if the file is opened successfully
+                            throw std::runtime_error("Cannot open " +
+                                                    constraintsFile);  // If not, throw an exception
+                        }
+                        
+                        for (auto &vec : constraints) {  // Iterate over all vectors in the list
+                            for (auto &pair : vec) {       // Iterate over all pairs in the vector
+                            out << pair.first
+                                << ",";  // Write the option to the file with a comma separator
+                            out << pair.second
+                                << ",";  // Write the value to the file with a comma separator
+                            }
+                            out << "\n";  // Write a newline to the file
+                        }
+                        
+                        out.close();  // Close the output file
+                        }
+                        </code></pre>
             Hier ist Main.cpp:
             <pre><code>
-                #include <fstream>
-                #include <iostream>
-                
-                #include "ModelGenerator.hpp"  // Include this header instead of Solver.hpp
-                #include "Parser.hpp"
-                
-                // The main function that starts the program
-                int main(int argc, char *argv[]) {
-                // Check if the correct number of parameters is given
-                if (argc != 5) {
-                    // If not, print an error message and exit the program
-                    std::cerr << "Usage: " << argv[0]
-                            << " input_options input_constraints output_models num_models\n";
-                    return -1;
-                }
-                
-                // Get the names of the input and output files from the parameters
-                std::string inputOptions = argv[1];
-                std::string inputConstraints = argv[2];
-                std::string outputModels = argv[3];
-                
-                try {
-                    int numModels = std::stoi(argv[4]);
-                    if (numModels < 0) {
-                    throw std::invalid_argument("num_models must be non-negative");
-                    }
-                
-                    // Create a Parser object with the names of the input files
-                    Parser parser;
-                
-                    // Parse the options and constraints from the input files
-                    parser.parseOptions(inputOptions);
-                    parser.parseConstraints(inputConstraints);
-                
-                    // Create a ModelGenerator object with the Parser object as a parameter
-                    ModelGenerator generator(parser);
-                
-                    // Generate the models using the generateModels method of the ModelGenerator
-                    // object
-                    auto models = generator.generateModels();
-                
-                    // Open the output file for writing
-                    std::ofstream out(outputModels);
-                
-                    // Check if the file is opened successfully
-                    if (!out) {
-                    // If not, print an error message and exit the program
-                    std::cerr << "Cannot open " << outputModels << '\n';
-                    return -1;
-                    }
-                
-                    // Write the models to the output file
-                    int count = 0;
-                    for (const auto &model : models) {
-                    if (count >= numModels) {
-                        break;
-                    }
-                    for (const auto &pair : model) {
-                        out << pair.first << ',' << pair.second << '\n';
-                    }
-                    out << '\n';
-                    count++;
-                    }
-                
-                    // Close the output file
-                    out.close();
-                
-                } catch (const std::exception &e) {
-                    // If any exception occurs, print the error message and exit the program
-                    std::cerr << e.what() << '\n';
-                    return -1;
-                }
-                
-                return 0;
-                }
-                </code></pre>
+                        #include <fstream>
+                        #include <iostream>
+                        
+                        #include "ModelGenerator.hpp"  // Include this header instead of Solver.hpp
+                        #include "Parser.hpp"
+                        
+                        // The main function that starts the program
+                        int main(int argc, char *argv[]) {
+                        // Check if the correct number of parameters is given
+                        if (argc != 5) {
+                            // If not, print an error message and exit the program
+                            std::cerr << "Usage: " << argv[0]
+                                    << " input_options input_constraints output_models num_models\n";
+                            return -1;
+                        }
+                        
+                        // Get the names of the input and output files from the parameters
+                        std::string inputOptions = argv[1];
+                        std::string inputConstraints = argv[2];
+                        std::string outputModels = argv[3];
+                        
+                        try {
+                            int numModels = std::stoi(argv[4]);
+                            if (numModels < 0) {
+                            throw std::invalid_argument("num_models must be non-negative");
+                            }
+                        
+                            // Create a Parser object with the names of the input files
+                            Parser parser;
+                        
+                            // Parse the options and constraints from the input files
+                            parser.parseOptions(inputOptions);
+                            parser.parseConstraints(inputConstraints);
+                        
+                            // Create a ModelGenerator object with the Parser object as a parameter
+                            ModelGenerator generator(parser);
+                        
+                            // Generate the models using the generateModels method of the ModelGenerator
+                            // object
+                            auto models = generator.generateModels();
+                        
+                            // Open the output file for writing
+                            std::ofstream out(outputModels);
+                        
+                            // Check if the file is opened successfully
+                            if (!out) {
+                            // If not, print an error message and exit the program
+                            std::cerr << "Cannot open " << outputModels << '\n';
+                            return -1;
+                            }
+                        
+                            // Write the models to the output file
+                            int count = 0;
+                            for (const auto &model : models) {
+                            if (count >= numModels) {
+                                break;
+                            }
+                            for (const auto &pair : model) {
+                                out << pair.first << ',' << pair.second << '\n';
+                            }
+                            out << '\n';
+                            count++;
+                            }
+                        
+                            // Close the output file
+                            out.close();
+                        
+                        } catch (const std::exception &e) {
+                            // If any exception occurs, print the error message and exit the program
+                            std::cerr << e.what() << '\n';
+                            return -1;
+                        }
+                        
+                        return 0;
+                        }
+                        </code></pre>
             Hier ist ModelGenerator.cpp:
             <pre><code>
-                #include "ModelGenerator.hpp"
-                
-                #include <algorithm>
-                #include <random>
-                
-                // A constructor that takes a Parser object as a parameter and initializes the
-                // options and constraints from it
-                ModelGenerator::ModelGenerator(const Parser &parser)
-                    : options(parser.getOptions()), constraints(parser.getConstraints()) {}
-                
-                // A method that generates models and returns them as a list of maps of options
-                // to values
-                std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
-                    const {
-                std::list<std::map<std::string, std::string> >
-                    models;  // Create an empty list to store the models
-                std::mt19937 gen(std::random_device()());  // Create a random number generator
-                int maxTries =
-                    1000;  // Set a maximum number of tries to generate a valid configuration
-                
-                while (maxTries > 0) {
-                    std::map<std::string, std::string>
-                        model;  // Create an empty map to store the model
-                
-                    for (const auto &pair :
-                        options) {  // Iterate over all pairs in the vector of options
-                    const auto &option = pair.first;  // Get the option from the pair
-                    const auto &values =
-                        pair.second;  // Get the vector of values from the pair
-                
-                    std::uniform_int_distribution dist(
-                        0, values.size() - 1);  // Create a uniform distribution between 0 and
-                                                // the size of the vector of values minus one
-                    int index = dist(gen);  // Generate a random index from the distribution
-                
-                    model[option] = values[index];  // Add the option and value to the map
-                    }
-                
-                    bool valid = true;  // Assume that the model is valid
-                
-                    for (const auto &vec : constraints) {  // Iterate over all vectors in the
-                                                        // vector of constraints
-                    bool satisfied = false;  // Assume that the constraint is not satisfied
-                
-                    for (const auto &pair : vec) {  // Iterate over all pairs in the vector
-                        const auto &option = pair.first;  // Get the option from the pair
-                        const auto &value = pair.second;  // Get the value from the pair
-                
-                        if (model[option] == value) {  // Check if the option in the model has
-                                                    // the same value as in the constraint
-                        satisfied = true;            // If so, set satisfied to true
-                        break;                       // Break out of the inner loop
+                        #include "ModelGenerator.hpp"
+                        
+                        #include <algorithm>
+                        #include <random>
+                        
+                        // A constructor that takes a Parser object as a parameter and initializes the
+                        // options and constraints from it
+                        ModelGenerator::ModelGenerator(const Parser &parser)
+                            : options(parser.getOptions()), constraints(parser.getConstraints()) {}
+                        
+                        // A method that generates models and returns them as a list of maps of options
+                        // to values
+                        std::list<std::map<std::string, std::string> > ModelGenerator::generateModels()
+                            const {
+                        std::list<std::map<std::string, std::string> >
+                            models;  // Create an empty list to store the models
+                        std::mt19937 gen(std::random_device()());  // Create a random number generator
+                        int maxTries =
+                            1000;  // Set a maximum number of tries to generate a valid configuration
+                        
+                        while (maxTries > 0) {
+                            std::map<std::string, std::string>
+                                model;  // Create an empty map to store the model
+                        
+                            for (const auto &pair :
+                                options) {  // Iterate over all pairs in the vector of options
+                            const auto &option = pair.first;  // Get the option from the pair
+                            const auto &values =
+                                pair.second;  // Get the vector of values from the pair
+                        
+                            std::uniform_int_distribution dist(
+                                0, values.size() - 1);  // Create a uniform distribution between 0 and
+                                                        // the size of the vector of values minus one
+                            int index = dist(gen);  // Generate a random index from the distribution
+                        
+                            model[option] = values[index];  // Add the option and value to the map
+                            }
+                        
+                            bool valid = true;  // Assume that the model is valid
+                        
+                            for (const auto &vec : constraints) {  // Iterate over all vectors in the
+                                                                // vector of constraints
+                            bool satisfied = false;  // Assume that the constraint is not satisfied
+                        
+                            for (const auto &pair : vec) {  // Iterate over all pairs in the vector
+                                const auto &option = pair.first;  // Get the option from the pair
+                                const auto &value = pair.second;  // Get the value from the pair
+                        
+                                if (model[option] == value) {  // Check if the option in the model has
+                                                            // the same value as in the constraint
+                                satisfied = true;            // If so, set satisfied to true
+                                break;                       // Break out of the inner loop
+                                }
+                            }
+                        
+                            if (!satisfied) {  // Check if the constraint is not satisfied
+                                valid = false;   // If so, set valid to false
+                                break;           // Break out of the outer loop
+                            }
+                            }
+                        
+                            if (valid) {                // Check if the model is valid
+                            models.push_back(model);  // If so, add it to the list of models
+                            }
+                        
+                            maxTries--;  // Decrement maxTries by one
                         }
-                    }
-                
-                    if (!satisfied) {  // Check if the constraint is not satisfied
-                        valid = false;   // If so, set valid to false
-                        break;           // Break out of the outer loop
-                    }
-                    }
-                
-                    if (valid) {                // Check if the model is valid
-                    models.push_back(model);  // If so, add it to the list of models
-                    }
-                
-                    maxTries--;  // Decrement maxTries by one
-                }
-                
-                return models;  // Return the list of models
-                }
-                </code></pre>
+                        
+                        return models;  // Return the list of models
+                        }
+                        </code></pre>
             Hier ist Option.cpp:
             <pre><code>
-                #include "Option.hpp"
-                
-                // A method that adds a value to the vector of values
-                void Option::addValue(const std::string& value) {
-                // Add the value to the vector of values if it is not already in it
-                if (std::find(values.begin(), values.end(), value) == values.end()) {
-                    values.push_back(value);
-                }
-                }
-                </code></pre>
+                        #include "Option.hpp"
+                        
+                        // A method that adds a value to the vector of values
+                        void Option::addValue(const std::string& value) {
+                        // Add the value to the vector of values if it is not already in it
+                        if (std::find(values.begin(), values.end(), value) == values.end()) {
+                            values.push_back(value);
+                        }
+                        }
+                        </code></pre>
             Hier ist Parser.cpp:
             <pre><code>
-                #include "Parser.hpp"
-                
-                #include <fstream>
-                #include <sstream>
-                #include <stdexcept>
-                
-                #include "Constraint.hpp"
-                #include "Option.hpp"
-                
-                // The constructor stores the names of the files in the member variables
-                Parser::Parser() {}
-                
-                // This method reads the .options file and fills the map of options
-                void Parser::parseOptions(const std::string& filename) {
-                // Declare and initialize the variable optionsFile with the filename parameter
-                std::ifstream optionsFile(filename);
-                // Open the file for reading
-                std::ifstream file(optionsFile);
-                if (!file) {
-                    // If the file cannot be opened, throw an exception
-                    throw std::runtime_error("Could not open file " + optionsFile);
-                }
-                
-                // Read the file line by line
-                std::string line;
-                while (std::getline(file, line)) {
-                    // Create a stream from the line
-                    std::istringstream stream(line);
-                
-                    // Read the name of the option from the stream
-                    std::string name = readString(stream);
-                
-                    // Create an Option object with the name
-                    Option option(name);
-                
-                    // Read the possible values from the stream and add them to the option
-                    std::string value;
-                    while ((value = readString(stream)) != "") {
-                    option.addValue(value);
-                    }
-                
-                    // Add the option to the map
-                    options[name] = option;
-                }
-                
-                // Close the file
-                file.close();
-                }
-                
-                // This method reads the .constraints file and fills the list of constraints
-                void Parser::parseConstraints(const std::string& filename) {
-                // Open the file for reading
-                std::ifstream file(constraintsFile);
-                if (!file) {
-                    // If the file cannot be opened, throw an exception
-                    throw std::runtime_error("Could not open file " + constraintsFile);
-                }
-                
-                // Read the file line by line
-                std::string line;
-                while (std::getline(file, line)) {
-                    // Create a stream from the line
-                    std::istringstream stream(line);
-                
-                    // Create a Constraint object
-                    Constraint constraint;
-                
-                    // Read pairs of option and value from the stream and add them to the
-                    // constraint
-                    std::string option, value;
-                    while ((option = readString(stream)) != "" &&
-                        (value = readString(stream)) != "") {
-                    constraint.addPair(option, value);
-                    }
-                
-                    // Add the constraint to the list
-                    constraints.push_back(constraint);
-                }
-                
-                // Close the file
-                file.close();
-                }
-                
-                // This method returns the map of options
-                std::vector<Option> Parser::getOptions() const { return options; }
-                
-                // This method returns the list of constraints
-                std::vector<Constraint> Parser::getConstraints() const { return constraints; }
-                
-                // This method reads a string from a stream until a comma or a newline is found
-                // or until the end of the stream is reached
-                std::string Parser::readString(std::istream& stream) {
-                // Create an empty string
-                std::string result;
-                
-                // Read from the stream character by character
-                char c;
-                while (stream.get(c)) {
-                    // If the character is a comma or a newline, break out of the loop
-                    if (c == ',' || c == '\n') {
-                    break;
-                    }
-                
-                    // Otherwise, add it to the string
-                    result += c;
-                }
-                
-                // Return the string
-                return result;
-                }
-                </code></pre>
+                        #include "Parser.hpp"
+                        
+                        #include <fstream>
+                        #include <sstream>
+                        #include <stdexcept>
+                        
+                        #include "Constraint.hpp"
+                        #include "Option.hpp"
+                        
+                        // The constructor stores the names of the files in the member variables
+                        Parser::Parser() {}
+                        
+                        // This method reads the .options file and fills the map of options
+                        void Parser::parseOptions(const std::string& filename) {
+                        // Declare and initialize the variable optionsFile with the filename parameter
+                        std::ifstream optionsFile(filename);
+                        // Open the file for reading
+                        std::ifstream file(optionsFile);
+                        if (!file) {
+                            // If the file cannot be opened, throw an exception
+                            throw std::runtime_error("Could not open file " + optionsFile);
+                        }
+                        
+                        // Read the file line by line
+                        std::string line;
+                        while (std::getline(file, line)) {
+                            // Create a stream from the line
+                            std::istringstream stream(line);
+                        
+                            // Read the name of the option from the stream
+                            std::string name = readString(stream);
+                        
+                            // Create an Option object with the name
+                            Option option(name);
+                        
+                            // Read the possible values from the stream and add them to the option
+                            std::string value;
+                            while ((value = readString(stream)) != "") {
+                            option.addValue(value);
+                            }
+                        
+                            // Add the option to the map
+                            options[name] = option;
+                        }
+                        
+                        // Close the file
+                        file.close();
+                        }
+                        
+                        // This method reads the .constraints file and fills the list of constraints
+                        void Parser::parseConstraints(const std::string& filename) {
+                        // Open the file for reading
+                        std::ifstream file(constraintsFile);
+                        if (!file) {
+                            // If the file cannot be opened, throw an exception
+                            throw std::runtime_error("Could not open file " + constraintsFile);
+                        }
+                        
+                        // Read the file line by line
+                        std::string line;
+                        while (std::getline(file, line)) {
+                            // Create a stream from the line
+                            std::istringstream stream(line);
+                        
+                            // Create a Constraint object
+                            Constraint constraint;
+                        
+                            // Read pairs of option and value from the stream and add them to the
+                            // constraint
+                            std::string option, value;
+                            while ((option = readString(stream)) != "" &&
+                                (value = readString(stream)) != "") {
+                            constraint.addPair(option, value);
+                            }
+                        
+                            // Add the constraint to the list
+                            constraints.push_back(constraint);
+                        }
+                        
+                        // Close the file
+                        file.close();
+                        }
+                        
+                        // This method returns the map of options
+                        std::vector<Option> Parser::getOptions() const { return options; }
+                        
+                        // This method returns the list of constraints
+                        std::vector<Constraint> Parser::getConstraints() const { return constraints; }
+                        
+                        // This method reads a string from a stream until a comma or a newline is found
+                        // or until the end of the stream is reached
+                        std::string Parser::readString(std::istream& stream) {
+                        // Create an empty string
+                        std::string result;
+                        
+                        // Read from the stream character by character
+                        char c;
+                        while (stream.get(c)) {
+                            // If the character is a comma or a newline, break out of the loop
+                            if (c == ',' || c == '\n') {
+                            break;
+                            }
+                        
+                            // Otherwise, add it to the string
+                            result += c;
+                        }
+                        
+                        // Return the string
+                        return result;
+                        }
+                        </code></pre>
             Hier ist PrettyPrinter.cpp:
             <pre><code>
-                #include "PrettyPrinter.hpp"
-                
-                #include <fstream>
-                #include <stdexcept>
-                
-                // A constructor that takes two file names as parameters
-                PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
-                                            const std::string& constraintsFile) {
-                this->optionsFile = optionsFile;
-                this->constraintsFile = constraintsFile;
-                }
-                
-                // A method that prints the options to the .options file
-                void PrettyPrinter::printOptions(const std::vector<Option>& options) {
-                // Open the .options file for writing
-                std::ofstream out(optionsFile);
-                
-                // Check if the file is opened successfully
-                if (!out) {
-                    // Throw an exception if the file cannot be opened
-                    throw std::runtime_error("Cannot open " + optionsFile);
-                }
-                
-                // Iterate over the vector of options
-                for (const Option& option : options) {
-                    // Write the name of the option to the file
-                    out << option.getName();
-                
-                    // Iterate over the vector of values of the option
-                    for (const std::string& value : option.getValues()) {
-                    // Write a comma and the value to the file
-                    out << ',' << value;
-                    }
-                
-                    // Write a newline character to the file
-                    out << '\n';
-                }
-                
-                // Close the file
-                out.close();
-                }
-                
-                // A method that prints the constraints to the .constraints file
-                void PrettyPrinter::printConstraints(
-                    const std::vector<Constraint>& constraints) {
-                // Open the .constraints file for writing
-                std::ofstream out(constraintsFile);
-                
-                // Check if the file is opened successfully
-                if (!out) {
-                    // Throw an exception if the file cannot be opened
-                    throw std::runtime_error("Cannot open " + constraintsFile);
-                }
-                
-                // Iterate over the vector of constraints
-                for (const Constraint& constraint : constraints) {
-                    // Create a flag that indicates whether this is the first pair in the
-                    // constraint
-                    bool first = true;
-                
-                    // Iterate over the vector of pairs of the constraint
-                    for (const std::pair<std::string, std::string>& pair :
-                        constraint.getPairs()) {
-                    // Check if this is not the first pair in the constraint
-                    if (!first) {
-                        // Write a comma to the file
-                        out << ',';
-                    } else {
-                        // Set the flag to false
-                        first = false;
-                    }
-                
-                    // Write the option and value of the pair to the file separated by a comma
-                    out << pair.first << ',' << pair.second;
-                    }
-                
-                    // Write a newline character to the file
-                    out << '\n';
-                }
-                
-                // Close the file
-                out.close();
-                }
-                </code></pre>
+                        #include "PrettyPrinter.hpp"
+                        
+                        #include <fstream>
+                        #include <stdexcept>
+                        
+                        // A constructor that takes two file names as parameters
+                        PrettyPrinter::PrettyPrinter(const std::string& optionsFile,
+                                                    const std::string& constraintsFile) {
+                        this->optionsFile = optionsFile;
+                        this->constraintsFile = constraintsFile;
+                        }
+                        
+                        // A method that prints the options to the .options file
+                        void PrettyPrinter::printOptions(const std::vector<Option>& options) {
+                        // Open the .options file for writing
+                        std::ofstream out(optionsFile);
+                        
+                        // Check if the file is opened successfully
+                        if (!out) {
+                            // Throw an exception if the file cannot be opened
+                            throw std::runtime_error("Cannot open " + optionsFile);
+                        }
+                        
+                        // Iterate over the vector of options
+                        for (const Option& option : options) {
+                            // Write the name of the option to the file
+                            out << option.getName();
+                        
+                            // Iterate over the vector of values of the option
+                            for (const std::string& value : option.getValues()) {
+                            // Write a comma and the value to the file
+                            out << ',' << value;
+                            }
+                        
+                            // Write a newline character to the file
+                            out << '\n';
+                        }
+                        
+                        // Close the file
+                        out.close();
+                        }
+                        
+                        // A method that prints the constraints to the .constraints file
+                        void PrettyPrinter::printConstraints(
+                            const std::vector<Constraint>& constraints) {
+                        // Open the .constraints file for writing
+                        std::ofstream out(constraintsFile);
+                        
+                        // Check if the file is opened successfully
+                        if (!out) {
+                            // Throw an exception if the file cannot be opened
+                            throw std::runtime_error("Cannot open " + constraintsFile);
+                        }
+                        
+                        // Iterate over the vector of constraints
+                        for (const Constraint& constraint : constraints) {
+                            // Create a flag that indicates whether this is the first pair in the
+                            // constraint
+                            bool first = true;
+                        
+                            // Iterate over the vector of pairs of the constraint
+                            for (const std::pair<std::string, std::string>& pair :
+                                constraint.getPairs()) {
+                            // Check if this is not the first pair in the constraint
+                            if (!first) {
+                                // Write a comma to the file
+                                out << ',';
+                            } else {
+                                // Set the flag to false
+                                first = false;
+                            }
+                        
+                            // Write the option and value of the pair to the file separated by a comma
+                            out << pair.first << ',' << pair.second;
+                            }
+                        
+                            // Write a newline character to the file
+                            out << '\n';
+                        }
+                        
+                        // Close the file
+                        out.close();
+                        }
+                        </code></pre>
             Hier ist Solver.cpp:
             <pre><code>
-                #include "Solver.hpp"
-                
-                #include <fstream>
-                #include <iostream>
-                #include <random>
-                
-                #include "Parser.hpp"
-                
-                // The constructor stores the parser in the member variable
-                Solver::Solver(const Parser& parser) : parser(parser) {}
-                
-                // This method generates the models and stores them in a list of maps of options
-                // to values
-                void Solver::solve() {
-                // Create an empty list of maps of options to values that will store the
-                // models
-                models.clear();
-                
-                // Create an empty map of pairs to booleans that will store which pairs are
-                // already covered
-                std::map<std::pair<std::string, std::string>, bool> coveredPairs;
-                
-                // Create an empty map of options to booleans that will store which options
-                // are already set
-                std::map<std::string, bool> setOptions;
-                
-                // Create an empty map of options to values that will store the current
-                // configuration
-                std::map<std::string, std::string> currentConfig;
-                
-                // Create a random number generator with a fixed seed (e.g. 42) to generate
-                // random values
-                std::mt19937 gen(42);
-                
-                // Repeat the following steps until either all pairs are covered or 1000
-                // configurations are generated that do not satisfy the constraints
-                int invalidCount = 0;
-                while (coveredPairs.size() < parser.getOptions().size() *
-                                                (parser.getOptions().size() - 1) / 2 &&
-                        invalidCount < 1000) {
-                    // Set all options to false in the map of options to booleans
-                    for (const auto& pair : parser.getOptions()) {
-                    setOptions[pair.first] = false;
-                    }
-                
-                    // Set all values to "" in the map of options to values
-                    for (const auto& pair : parser.getOptions()) {
-                    currentConfig[pair.first] = "";
-                    }
-                
-                    // Choose a random option from the map of options of the parser
-                    std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
-                    auto it1 = parser.getOptions().begin();
-                    std::advance(it1, dis1(gen));
-                    std::string option1 = it1->first;
-                
-                    // Choose a random value from the list of values of the option
-                    const auto& values1 = it1->second.getValues();
-                    std::uniform_int_distribution<> dis2(0, values1.size() - 1);
-                    std::string value1 = values1[dis2(gen)];
-                
-                    // Set the option to true in the map of options to booleans
-                    setOptions[option1] = true;
-                
-                    // Set the value in the map of options to values
-                    currentConfig[option1] = value1;
-                
-                    // Repeat the following steps until all options are set
-                    while (std::find(setOptions.begin(), setOptions.end(), false) !=
-                        setOptions.end()) {
-                    // Choose a random number between 0 and 99
-                    std::uniform_int_distribution<> dis3(0, 99);
-                    int r = dis3(gen);
-                    if (r < 10) {
-                        // If the number is less than 10, choose a random option that is not yet
-                        // set and choose a random value from its list of values. Set the option
-                        // and value as described above.
-                        // Find all options that are not yet set
-                        std::vector<std::string> unsetOptions;
-                        for (const auto& pair : setOptions) {
-                        if (!pair.second) {
-                            unsetOptions.push_back(pair.first);
-                        }
-                        }
-                
-                        // Choose a random option from them
-                        std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
-                        std::string option2 = unsetOptions[dis4(gen)];
-                
-                        // Find the list of values of the option
-                        const auto& values2 = parser.getOptions().at(option2).getValues();
-                
-                        // Choose a random value from them
-                        std::uniform_int_distribution<> dis5(0, values2.size() - 1);
-                        std::string value2 = values2[dis5(gen)];
-                
-                        // Set the option and value as described above
-                        setOptions[option2] = true;
-                        currentConfig[option2] = value2;
-                
-                    } else {
-                        // If the number is greater or equal to 10, choose a random pair that is
-                        // not yet covered. Set the two options and their values as described
-                        // above.
-                        // Find all pairs that are not yet covered
-                        std::vector<std::pair<std::string, std::string>> uncoveredPairs;
-                        for (const auto& pair1 : parser.getOptions()) {
-                        for (const auto& pair2 : parser.getOptions()) {
-                            if (pair1.first < pair2.first &&
-                                coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
-                                    coveredPairs.end()) {
-                            uncoveredPairs.push_back(
-                                std::make_pair(pair1.first, pair2.first));
+                        #include "Solver.hpp"
+                        
+                        #include <fstream>
+                        #include <iostream>
+                        #include <random>
+                        
+                        #include "Parser.hpp"
+                        
+                        // The constructor stores the parser in the member variable
+                        Solver::Solver(const Parser& parser) : parser(parser) {}
+                        
+                        // This method generates the models and stores them in a list of maps of options
+                        // to values
+                        void Solver::solve() {
+                        // Create an empty list of maps of options to values that will store the
+                        // models
+                        models.clear();
+                        
+                        // Create an empty map of pairs to booleans that will store which pairs are
+                        // already covered
+                        std::map<std::pair<std::string, std::string>, bool> coveredPairs;
+                        
+                        // Create an empty map of options to booleans that will store which options
+                        // are already set
+                        std::map<std::string, bool> setOptions;
+                        
+                        // Create an empty map of options to values that will store the current
+                        // configuration
+                        std::map<std::string, std::string> currentConfig;
+                        
+                        // Create a random number generator with a fixed seed (e.g. 42) to generate
+                        // random values
+                        std::mt19937 gen(42);
+                        
+                        // Repeat the following steps until either all pairs are covered or 1000
+                        // configurations are generated that do not satisfy the constraints
+                        int invalidCount = 0;
+                        while (coveredPairs.size() < parser.getOptions().size() *
+                                                        (parser.getOptions().size() - 1) / 2 &&
+                                invalidCount < 1000) {
+                            // Set all options to false in the map of options to booleans
+                            for (const auto& pair : parser.getOptions()) {
+                            setOptions[pair.first] = false;
+                            }
+                        
+                            // Set all values to "" in the map of options to values
+                            for (const auto& pair : parser.getOptions()) {
+                            currentConfig[pair.first] = "";
+                            }
+                        
+                            // Choose a random option from the map of options of the parser
+                            std::uniform_int_distribution<> dis1(0, parser.getOptions().size() - 1);
+                            auto it1 = parser.getOptions().begin();
+                            std::advance(it1, dis1(gen));
+                            std::string option1 = it1->first;
+                        
+                            // Choose a random value from the list of values of the option
+                            const auto& values1 = it1->second.getValues();
+                            std::uniform_int_distribution<> dis2(0, values1.size() - 1);
+                            std::string value1 = values1[dis2(gen)];
+                        
+                            // Set the option to true in the map of options to booleans
+                            setOptions[option1] = true;
+                        
+                            // Set the value in the map of options to values
+                            currentConfig[option1] = value1;
+                        
+                            // Repeat the following steps until all options are set
+                            while (std::find(setOptions.begin(), setOptions.end(), false) !=
+                                setOptions.end()) {
+                            // Choose a random number between 0 and 99
+                            std::uniform_int_distribution<> dis3(0, 99);
+                            int r = dis3(gen);
+                            if (r < 10) {
+                                // If the number is less than 10, choose a random option that is not yet
+                                // set and choose a random value from its list of values. Set the option
+                                // and value as described above.
+                                // Find all options that are not yet set
+                                std::vector<std::string> unsetOptions;
+                                for (const auto& pair : setOptions) {
+                                if (!pair.second) {
+                                    unsetOptions.push_back(pair.first);
+                                }
+                                }
+                        
+                                // Choose a random option from them
+                                std::uniform_int_distribution<> dis4(0, unsetOptions.size() - 1);
+                                std::string option2 = unsetOptions[dis4(gen)];
+                        
+                                // Find the list of values of the option
+                                const auto& values2 = parser.getOptions().at(option2).getValues();
+                        
+                                // Choose a random value from them
+                                std::uniform_int_distribution<> dis5(0, values2.size() - 1);
+                                std::string value2 = values2[dis5(gen)];
+                        
+                                // Set the option and value as described above
+                                setOptions[option2] = true;
+                                currentConfig[option2] = value2;
+                        
+                            } else {
+                                // If the number is greater or equal to 10, choose a random pair that is
+                                // not yet covered. Set the two options and their values as described
+                                // above.
+                                // Find all pairs that are not yet covered
+                                std::vector<std::pair<std::string, std::string>> uncoveredPairs;
+                                for (const auto& pair1 : parser.getOptions()) {
+                                for (const auto& pair2 : parser.getOptions()) {
+                                    if (pair1.first < pair2.first &&
+                                        coveredPairs.find(std::make_pair(pair1.first, pair2.first)) ==
+                                            coveredPairs.end()) {
+                                    uncoveredPairs.push_back(
+                                        std::make_pair(pair1.first, pair2.first));
+                                    }
+                                }
+                                }
+                        
+                                // Choose a random pair from them
+                                std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
+                                auto pair = uncoveredPairs[dis6(gen)];
+                        
+                                // Find the list of values of the first option
+                                const auto& values3 = parser.getOptions().at(pair.first).getValues();
+                        
+                                // Choose a random value from them
+                                std::uniform_int_distribution<> dis7(0, values3.size() - 1);
+                                std::string value3 = values3[dis7(gen)];
+                        
+                                // Set the first option and value as described above
+                                setOptions[pair.first] = true;
+                                currentConfig[pair.first] = value3;
+                        
+                                // Find the list of values of the second option
+                                const auto& values4 = parser.getOptions().at(pair.second).getValues();
+                        
+                                // Choose a random value from them
+                                std::uniform_int_distribution<> dis8(0, values4.size() - 1);
+                                std::string value4 = values4[dis8(gen)];
+                        
+                                // Set the second option and value as described above
+                                setOptions[pair.second] = true;
+                                currentConfig[pair.second] = value4;
+                            }
+                            }
+                        
+                            // Check if the current configuration is compatible with the constraints of
+                            // the parser
+                            if (checkConstraints(currentConfig)) {
+                            // If yes, add it to the list of maps and mark all pairs as covered
+                            models.push_back(currentConfig);
+                            for (const auto& pair1 : currentConfig) {
+                                for (const auto& pair2 : currentConfig) {
+                                if (pair1.first < pair2.first) {
+                                    coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
+                                }
+                                }
+                            }
+                            } else {
+                            // If no, increase a counter by one
+                            invalidCount++;
                             }
                         }
                         }
-                
-                        // Choose a random pair from them
-                        std::uniform_int_distribution<> dis6(0, uncoveredPairs.size() - 1);
-                        auto pair = uncoveredPairs[dis6(gen)];
-                
-                        // Find the list of values of the first option
-                        const auto& values3 = parser.getOptions().at(pair.first).getValues();
-                
-                        // Choose a random value from them
-                        std::uniform_int_distribution<> dis7(0, values3.size() - 1);
-                        std::string value3 = values3[dis7(gen)];
-                
-                        // Set the first option and value as described above
-                        setOptions[pair.first] = true;
-                        currentConfig[pair.first] = value3;
-                
-                        // Find the list of values of the second option
-                        const auto& values4 = parser.getOptions().at(pair.second).getValues();
-                
-                        // Choose a random value from them
-                        std::uniform_int_distribution<> dis8(0, values4.size() - 1);
-                        std::string value4 = values4[dis8(gen)];
-                
-                        // Set the second option and value as described above
-                        setOptions[pair.second] = true;
-                        currentConfig[pair.second] = value4;
-                    }
-                    }
-                
-                    // Check if the current configuration is compatible with the constraints of
-                    // the parser
-                    if (checkConstraints(currentConfig)) {
-                    // If yes, add it to the list of maps and mark all pairs as covered
-                    models.push_back(currentConfig);
-                    for (const auto& pair1 : currentConfig) {
-                        for (const auto& pair2 : currentConfig) {
-                        if (pair1.first < pair2.first) {
-                            coveredPairs[std::make_pair(pair1.first, pair2.first)] = true;
+                        
+                        // This method returns the list of maps
+                        const std::list<std::map<std::string, std::string>>& Solver::getModels() const {
+                        return models;
                         }
+                        
+                        // This method checks if a configuration is compatible with the constraints
+                        bool Solver::checkConstraints(
+                            const std::map<std::string, std::string>& config) const {
+                        // Iterate over the list of constraints of the parser
+                        for (const auto& constraint : parser.getConstraints()) {
+                            // Get the list of pairs of option and value
+                            const auto& pairs = constraint.getPairs();
+                        
+                            // Check if all pairs occur in the configuration
+                            bool allPairsInConfig = true;
+                            for (const auto& pair : pairs) {
+                            if (config.at(pair.first) != pair.second) {
+                                allPairsInConfig = false;
+                                break;
+                            }
+                            }
+                        
+                            // If all pairs occur in the configuration, return false, as the
+                            // configuration is not compatible with the constraints
+                            if (allPairsInConfig) {
+                            return false;
+                            }
                         }
-                    }
-                    } else {
-                    // If no, increase a counter by one
-                    invalidCount++;
-                    }
-                }
-                }
-                
-                // This method returns the list of maps
-                const std::list<std::map<std::string, std::string>>& Solver::getModels() const {
-                return models;
-                }
-                
-                // This method checks if a configuration is compatible with the constraints
-                bool Solver::checkConstraints(
-                    const std::map<std::string, std::string>& config) const {
-                // Iterate over the list of constraints of the parser
-                for (const auto& constraint : parser.getConstraints()) {
-                    // Get the list of pairs of option and value
-                    const auto& pairs = constraint.getPairs();
-                
-                    // Check if all pairs occur in the configuration
-                    bool allPairsInConfig = true;
-                    for (const auto& pair : pairs) {
-                    if (config.at(pair.first) != pair.second) {
-                        allPairsInConfig = false;
-                        break;
-                    }
-                    }
-                
-                    // If all pairs occur in the configuration, return false, as the
-                    // configuration is not compatible with the constraints
-                    if (allPairsInConfig) {
-                    return false;
-                    }
-                }
-                
-                // If no constraints are violated, return true
-                return true;
-                }
-                </code></pre>
+                        
+                        // If no constraints are violated, return true
+                        return true;
+                        }
+                        </code></pre>
 
 
 
